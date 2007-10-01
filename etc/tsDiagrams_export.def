@@ -1,0 +1,247 @@
+# ---------------------------------------------------
+# List available models (from data sources) with name
+# used in GUI
+# Syntax: <SourceName>=<MenuName>
+# ---------------------------------------------------
+[MODELS]
+HIRLAM.20km=Hirlam 20km
+ECOM3D_20km=Ecom3d_20km
+WAM=Wam
+LAMEPS=LAMEPS
+HIRLAM_U=Hirlam ukorr.
+t2m=T2m
+
+
+# ---------------------------------------------------
+# Diagram definition
+# Standard meteogram
+# ---------------------------------------------------
+[DIAGRAM]
+# name of diagram
+NAME=Meteogram                  
+# plotting instructions in this style-file
+STYLEFILE=style/style.meteogram 
+
+# legal models for this diagram
+# (add new MODEL=.. here)
+[LEGALMODELS]
+MODEL=HIRLAM.20km
+
+# model-independent parameters
+# parameters defined as PARAM=ALIAS,LEVEL,MODEL,RUN
+# (x=undefined)
+[MODELINDEPENDENT]
+PARAM=WVFD,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=TT,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR,x,x,x
+PARAM=FG,x,x,x
+PARAM=CL,x,x,x
+PARAM=CM,x,x,x
+PARAM=CH,x,x,x
+PARAM=CC,x,x,x
+PARAM=TT_U,x,x,x
+
+# End of diagram definition
+[ADD]
+
+# ---------------------------------------------------
+# Diagram definition
+# Sea diagram
+# ---------------------------------------------------
+[DIAGRAM]
+NAME=Seadiagram
+STYLEFILE=style/style.meteogram
+
+[LEGALMODELS]
+MODEL=ECOM3D_20km
+
+[MODELINDEPENDENT]
+PARAM=HS,x,x,x
+PARAM=CUV,x,x,x
+PARAM=CU,x,x,x
+PARAM=CV,x,x,x
+PARAM=CFD,x,x,x
+
+[ADD]
+
+# ---------------------------------------------------
+# Diagram definition
+# Wave diagram
+# ---------------------------------------------------
+[DIAGRAM]
+NAME=Wavediagram
+STYLEFILE=style/style.meteogram
+
+[LEGALMODELS]
+MODEL=WAM
+
+[MODELINDEPENDENT]
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=WVFD,x,x,x
+PARAM=HST,x,x,x
+PARAM=TST,x,x,x
+PARAM=HSD,x,x,x
+PARAM=TSD,x,x,x
+PARAM=HSP,x,x,x
+PARAM=TSP,x,x,x
+PARAM=DDPD,x,x,x
+PARAM=DDPP,x,x,x
+
+[ADD]
+
+# ---------------------------------------------------
+# Diagram definition
+# Standard meteogram with weather symbols
+# ---------------------------------------------------
+[DIAGRAM]
+NAME=S-Meteogram
+STYLEFILE=style/style.meteogram
+
+[LEGALMODELS]
+MODEL=HIRLAM.20km
+
+[MODELINDEPENDENT]
+PARAM=WVFD,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=TT,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR,x,x,x
+PARAM=FG,x,x,x
+PARAM=CL,x,x,x
+PARAM=CM,x,x,x
+PARAM=CH,x,x,x
+PARAM=CC,x,x,x
+PARAM=WW,x,x,x
+
+[ADD]
+
+# ---------------------------------------------------
+# Diagram definition
+# Standard meteogram with snow
+# ---------------------------------------------------
+[DIAGRAM]
+NAME=Meteogram w/snow
+STYLEFILE=style/style.meteogram
+
+[LEGALMODELS]
+MODEL=HIRLAM.20km
+
+[MODELINDEPENDENT]
+PARAM=WVFD,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=TT,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR,x,x,x
+PARAM=FG,x,x,x
+PARAM=CL,x,x,x
+PARAM=CM,x,x,x
+PARAM=CH,x,x,x
+PARAM=CC,x,x,x
+PARAM=SNPR,x,x,x
+PARAM=TT_U,x,x,x
+
+[ADD]
+
+
+# ---------------------------------------------------
+# Diagram definition
+# Smokeplume T2m Decils+Ensembles
+# Example of diagram that mixes data from different models
+# ---------------------------------------------------
+[DIAGRAM]
+NAME=LAMEPS_T2M
+STYLEFILE=style/style.lameps_t2m
+
+# model-dependent parameters
+# parameters defined as PARAM=ALIAS,LEVEL,MODEL,RUN
+# (x=undefined)
+[MODELSPECIFIC]
+MODEL=LAMEPS
+PARAM=EPTD,x,x,x
+PARAM=EPTT,x,x,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIRLAM.20km
+PARAM=TT,x,x,x
+PARAM=TT_U,x,x,x
+[END]
+
+
+[ADD]
+
+# ---------------------------------------------------
+# Diagram definition
+# Smokeplume RR Decils+Ensembles (precipitation)
+# ---------------------------------------------------
+[DIAGRAM]
+NAME=LAMEPS_RR
+STYLEFILE=style/style.lameps_rr
+
+[MODELSPECIFIC]
+MODEL=LAMEPS
+PARAM=EPRD,x,x,x
+PARAM=EPRR,x,x,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIRLAM.20km
+PARAM=RR,x,x,x
+[END]
+
+
+
+[ADD]
+
+
+# ---------------------------------------------------
+# Diagram definition
+# Smokeplume Z500 Decils+Ensembles (height of 500 hpa)
+# ---------------------------------------------------
+[DIAGRAM]
+NAME=LAMEPS_Z500
+STYLEFILE=style/style.lameps_z500
+
+[MODELSPECIFIC]
+MODEL=LAMEPS
+PARAM=EPZD,x,x,x
+PARAM=EPZ,x,x,x
+[END]
+
+
+[ADD]
+
+# ---------------------------------------------------
+# Diagram definition
+# Boxplot of T2m probabilities
+# ---------------------------------------------------
+[DIAGRAM]
+NAME=Boxplot-Temperature2m
+STYLEFILE=style/style.t2mqgram
+
+[MODELSPECIFIC]
+MODEL=t2m
+PARAM=t2m_PROB,x,x,x,x
+PARAM=t2m_Q5,x,x,x,x
+PARAM=t2m_Q25,x,x,x,x
+PARAM=t2m_Q50,x,x,x,x
+PARAM=t2m_Q75,x,x,x,x
+PARAM=t2m_Q95,x,x,x,x
+PARAM=t2m_EC,x,x,x,x
+PARAM=t2mQT,x,x,x,x
+[END]
+
+[ADD]
+

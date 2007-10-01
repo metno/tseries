@@ -1,0 +1,117 @@
+/*
+  Tseries - A Free Meteorological Timeseries Viewer
+
+  $Id$
+
+  Copyright (C) 2006 met.no
+
+  Contact information:
+  Norwegian Meteorological Institute
+  Box 43 Blindern
+  0313 OSLO
+  NORWAY
+  email: diana@met.no
+  
+  This file is part of Tseries
+
+  Tseries is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  Tseries is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with Tseries; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+#ifndef _tsDrawArea_h
+#define _tsDrawArea_h
+
+
+#include <tsRequest.h>
+#include <tsDatafileColl.h>
+#include <tsSession.h>
+
+#include <map>
+#include <vector>
+#include <miTime.h>
+
+#include <ptGlobals.h>
+#include <ptDiagram.h>
+#include <ptWeatherParameter.h>
+#include <ptPlotElement.h>
+#include <ptEditLineElement.h>
+#include <tsSetup.h>
+
+
+
+//#include <GLP.h>
+#include <diPrintOptions.h>
+
+
+using namespace std; 
+
+class tsDrawArea {
+private:
+  tsRequest     * request;
+  tsSetup         setup;
+  DatafileColl  * data; 
+  SessionManager* session;
+
+  ptDiagram     * diagram;
+  ptDiagramData * theData;
+  ptStyle         diaStyle;
+  printOptions    printoptions;
+
+  int   width;
+  int   height;
+  float pixwidth;
+  float pixheight;
+  bool  Initialised;
+  bool  hardcopy;
+  bool  hardcopystarted;
+  bool  oco; // original
+  bool  ico; // new colour
+
+  map<miString,miTime> timemarks;
+  void useTimemarks();
+  bool prepareData();
+  bool prepareDiagram();
+
+
+  int  maxProg;
+  int  minProg;
+
+public:
+  tsDrawArea( tsRequest* tsr, DatafileColl* tsd, SessionManager* ses);
+  
+  void prepare();
+ 
+  void setViewport(int w, int h,float,float);
+
+  void startHardcopy(const printOptions&,
+		     bool delay_creation= true);
+  void endHardcopy();
+
+  void plot();
+
+  void setTimemark(miTime nt,miString name="");
+  void clearTimemarks(miString name="");
+
+  void setProgintervall(int mi,int ma)
+  {minProg=mi; maxProg=ma;}
+
+};
+
+#endif
+
+
+
+
+
+
+

@@ -1,0 +1,985 @@
+* The official PETS team parameter definition file.
+* Refurbished 20 Oct 1997, LBS.
+* A lex/yacc parser for this file is available from your fave PETS dealer.
+
+PARAMETER "NULL" {
+  NUM=    0
+  NAME=   "Dummy parameter"
+  UNIT=   "-"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "u" {
+  NUM=    2
+  NAME=   "Wind x component"
+  UNIT=   "u [m/s]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "v" {
+  NUM=    3
+  NAME=   "Wind y component"
+  UNIT=   "v [m/s]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "T" {
+  NUM=    4
+  NAME=   "Absolute temperature"
+  UNIT=   "T [K]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "TD" {
+  NUM=    5
+  NAME=   "Dewpoint temperature"
+  UNIT=   "Td [C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "p" {
+  NUM=    8
+  NAME=   "Air pressure"
+  UNIT=   "p [hPa]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "omeg" {
+  NUM=    13
+  NAME=   "Omega (vertical speed)"
+  UNIT=   "[hPa/s]"
+  SCALE=  -5
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "RR1" {
+  NUM=    19
+  NAME=   "Stratiform precipitation"
+  UNIT=   "RR [mm]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_HIST
+}
+
+PARAMETER "RR2" {
+  NUM=    20
+  NAME=   "Convective precipitation"
+  UNIT=   "RR [mm]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_HIST
+}
+
+PARAMETER "RR" {
+  NUM=    17
+  NAME=   "Total precipitation"
+  UNIT=   "RR [mm]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_HIST
+}
+
+PARAMETER "SNPR" {
+  NUM=    63
+  NAME=   "Precip Snow"
+  UNIT=   "[mm]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "RAPR" {
+  NUM=    76
+  NAME=   "Precip Rain"
+  UNIT=   "[mm]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "STSN" {
+  NUM=    64
+  NAME=   "Stratiform Snow"
+  UNIT=   "[mm]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "COSN" {
+  NUM=    65
+  NAME=   "Convective Snow"
+  UNIT=   "[mm]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "STRA" {
+  NUM=    74
+  NAME=   "Stratiform Rain"
+  UNIT=   "[mm]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "CORA" {
+  NUM=    75
+  NAME=   "Convective Rain"
+  UNIT=   "[mm]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+
+PARAMETER "CC" {
+  NUM=25
+  NAME="Clouds"
+  UNIT="CT [%]"
+  SCALE=0
+  ORDER=1
+  SIZE=2
+  TYPE=scalar
+  PLOT=PLOT_CLOUD
+}
+
+PARAMETER "TS" {
+  NUM=    29
+  NAME=   "Soil temperature"
+  UNIT=   "T [C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "T0" {
+  NUM=    30
+  NAME=   "0 m temperature"
+  UNIT=   "T [C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "TT" {
+  NUM=    31
+  NAME=   "2 m temperature"
+  UNIT=   "T [C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "TT_U" {
+  NUM=    10031
+  NAME=   "Uncorrected 2 m temperature"
+  UNIT=   "T [C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "TT_K" {
+  NUM=    3101
+  NAME=   "Kalman filtered 2 m TT"
+  UNIT=   "T [C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "RH" {
+  NUM=    32
+  NAME=   "Relative humidity"
+  UNIT=   "%"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "TD" {
+  NUM=    3201
+  NAME=   "Dewpoint temperature"
+  UNIT=   "Td [C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "TDI" {
+  NUM=    1005
+  NAME=   "Dewpoint temperature over ice"
+  UNIT=   "Td/ice [C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "UU" {
+  NUM=    33
+  NAME=   "10 m wind x component"
+  UNIT=   "[m/s]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "VV" {
+  NUM=    34
+  NAME=   "10 m wind y component"
+  UNIT=   "[m/s]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "WV" {
+  NUM=    3300
+  NAME=   "10 m wind vector"
+  UNIT=   "[]"
+  SCALE=  -2
+  ORDER=  2
+  SIZE=   2
+  TYPE=   cartesian
+  PLOT=   PLOT_WIND_VECTOR
+}
+
+PARAMETER "FG" {
+  NUM=    3901
+  NAME=   "Fog"
+  UNIT=   "Fog [%]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_CLOUD
+}
+
+PARAMETER "CL" {
+  NUM=    3902
+  NAME=   "Low clouds"
+  UNIT=   "CL [%]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_CLOUD
+}
+
+PARAMETER "CM" {
+  NUM=    3903
+  NAME=   "Middle clouds"
+  UNIT=   "CM [%]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_CLOUD
+}
+
+PARAMETER "CH" {
+  NUM=    3904
+  NAME=   "High clouds"
+  UNIT=   "CH [%]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_CLOUD
+}
+
+PARAMETER "VVC" {
+  NUM=    3000
+  NAME=   "Visibility"
+  UNIT=   "[km]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "VVQ" {
+  NUM=    3001
+  NAME=   "Discrete Visibility"
+  UNIT=   "[]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "WW" {
+  NUM=    2000
+  NAME=   "Weather"
+  UNIT=   "[]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "XWW" {
+  NUM=    2001
+  NAME=   "Additional Weather"
+  UNIT=   "[]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "MSLP" {
+  NUM=    58
+  NAME=   "Pressure"
+  UNIT=   "MSLP [hPa]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "HST" {
+  NUM=    200
+  NAME=   "Significant wave height"
+  UNIT=   "HS [m]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "HSX" {
+  NUM=    1200
+  NAME=   "Maximum wave height"
+  UNIT=   "Hmax [m]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "HSTX" {
+  NUM=    1250
+  NAME=   "Total and maximum wave height"
+  UNIT=   "[m]"
+  SCALE=  -2
+  ORDER=  2
+  SIZE=   2
+  TYPE=   cartesian
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "HSTE" {
+  NUM=    1255
+  NAME=   "Total and extreme wave height"
+  UNIT=   "[m]"
+  SCALE=  -2
+  ORDER=  2
+  SIZE=   2
+  TYPE=   cartesian
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "HSEX" {
+  NUM=    1300
+  NAME=   "Extreme wave height"
+  UNIT=   "Hext [m]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "HSXF" {
+  NUM=    1700
+  NAME=   "Hmax factor"
+  UNIT=   "[]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "HEXF" {
+  NUM=    1705
+  NAME=   "Hextreme factor"
+  UNIT=   "[]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+
+PARAMETER "TPT" {
+  NUM=    201
+  NAME=   "Peak wave period"
+  UNIT=   "P [s]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "DDPT" {
+  NUM=    202
+  NAME=   "Total wave direction"
+  UNIT=   "Dir"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "TST" {
+  NUM=    203
+  NAME=   "Mean wave period"
+  UNIT=   "P [s]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "HSP" {
+  NUM=    210
+  NAME=   "Wind wave height"
+  UNIT=   "HS [m]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "TSP" {
+  NUM=    211
+  NAME=   "Wind wave period"
+  UNIT=   "P [s]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "DDPP" {
+  NUM=    212
+  NAME=   "Wind wave direction"
+  UNIT=   "Dir"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "HSD" {
+  NUM=    220
+  NAME=   "Swell wave height"
+  UNIT=   "HS [m]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "TSD" {
+  NUM=    221
+  NAME=   "Swell wave period"
+  UNIT=   "P [s]"
+  SCALE=  -2
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "DDPD" {
+  NUM=    222
+  NAME=   "Swell wave direction"
+  UNIT=   "Dir"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "HSDD" {
+  NUM=    225
+  NAME=   "Swell wave height/dir."
+  UNIT=   "HSD []"
+  SCALE=  -2
+  ORDER=  2
+  SIZE=   2
+  TYPE=   polar
+  PLOT=   PLOT_VECTOR
+}
+
+PARAMETER "FF" {
+  NUM=    298
+  NAME=   "Wind ff"
+  UNIT=   "FF [knots]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "DD" {
+  NUM=    299
+  NAME=   "Wind dd"
+  UNIT=   "DD [deg]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "GU" {
+  NUM=    310
+  NAME=   "Gust"
+  UNIT=   "gust [kts]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "WVFD" {
+  NUM=    2900
+  NAME=   "Wind vector"
+  UNIT=   "WV [knots]"
+  SCALE=  -1
+  ORDER=  2
+  SIZE=   2
+  TYPE=   polar
+  PLOT=   PLOT_WIND_VECTOR
+}
+
+PARAMETER "WVMD" {
+  NUM=    2901
+  NAME=   "Wind vector"
+  UNIT=   "WV [m/s]"
+  SCALE=  -1
+  ORDER=  2
+  SIZE=   2
+  TYPE=   polar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "HS" {
+  NUM=    301
+  NAME=   "Sea level"
+  UNIT=   "Hs [m]"
+  SCALE=  -3
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "CU" {
+  NUM=    302
+  NAME=   "Current u component"
+  UNIT=   "[]"
+  SCALE=  -4
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "CV" {
+  NUM=    303
+  NAME=   "Current v component"
+  UNIT=   "[]"
+  SCALE=  -4
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "CUV" {
+  NUM=    3100
+  NAME=   "Sea current"
+  UNIT=   "[]"
+  SCALE=  -4
+  ORDER=  2
+  SIZE=   2
+  TYPE=   cartesian
+  PLOT=   PLOT_VECTOR
+}
+
+PARAMETER "CFD" {
+  NUM=    3200
+  NAME=   "Sea current (polar)"
+  UNIT=   "[]"
+  SCALE=  -4
+  ORDER=  2
+  SIZE=   2
+  TYPE=   polar
+  PLOT=   PLOT_VECTOR
+}
+
+PARAMETER "STA" {
+  NUM=    4000
+  NAME=   "Stability"
+  UNIT=   "[]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "STAQ" {
+  NUM=    4001
+  NAME=   "Discrete stability"
+  UNIT=   "[]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "CON" {
+  NUM=    4050
+  NAME=   "Confidence"
+  UNIT=   "[%]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "CONQ" {
+  NUM=    4051
+  NAME=   "Discrete confidence"
+  UNIT=   "[]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPTC" {
+  NUM=    5131
+  NAME=   "EPS TT control"
+  UNIT=   "[C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPTM" {
+  NUM=    5231
+  NAME=   "EPS TT ensemble mean"
+  UNIT=   "[C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPTE" {
+  NUM=    5331
+  NAME=   "EPS TT ensemble median"
+  UNIT=   "[C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPTD" {
+  NUM=    5431
+  NAME=   "EPS TT decil"
+  UNIT=   "[C]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPTT" {
+  NUM=    5031
+  NAME=   "EPS TT"
+  UNIT=   "[C]"
+  SCALE=  -1
+  ORDER=  50
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "CCQ" {
+  NUM=    1025
+  NAME=   "Discrete cloudcover"
+  UNIT=   "[]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPRR" {
+  NUM=    5017
+  NAME=   "EPS RR"
+  UNIT=   "[mm]"
+  SCALE=  -1
+  ORDER=  50
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPRC" {
+  NUM=    5117
+  NAME=   "EPS RR control"
+  UNIT=   "[mm]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPRM" {
+  NUM=    5217
+  NAME=   "EPS RR ensemble mean"
+  UNIT=   "[mm]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPRE" {
+  NUM=    5317
+  NAME=   "EPS RR ensemble median"
+  UNIT=   "[mm]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPRD" {
+  NUM=    5417
+  NAME=   "EPS RR decil"
+  UNIT=   "[mm]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "Z" {
+  NUM=    1001
+  NAME=   "Z"
+  UNIT=   "[m]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPZ" {
+  NUM=    5001
+  NAME=   "EPS Z"
+  UNIT=   "[m]"
+  SCALE=  0
+  ORDER=  50
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPZC" {
+  NUM=    5101
+  NAME=   "EPS Z control"
+  UNIT=   "[m]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPZM" {
+  NUM=    5201
+  NAME=   "EPS Z ensemble mean"
+  UNIT=   "[m]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPZE" {
+  NUM=    5301
+  NAME=   "EPS Z ensemble median"
+  UNIT=   "[m]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPZD" {
+  NUM=    5401
+  NAME=   "EPS Z decil"
+  UNIT=   "[m]"
+  SCALE=  0
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPFC" {
+  NUM=    5198
+  NAME=   "EPS FF control"
+  UNIT=   "[m/s]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPDC" {
+  NUM=    5199
+  NAME=   "EPS DD control"
+  UNIT=   "[°]"
+  SCALE=  -1
+  ORDER=  1
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+
+PARAMETER "EPFF" {
+  NUM=    5098
+  NAME=   "EPS FF"
+  UNIT=   "[knots]"
+  SCALE=  -1
+  ORDER=  50
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}
+
+PARAMETER "EPD" {
+  NUM=    5099
+  NAME=   "EPS DD"
+  UNIT=   "[°]"
+  SCALE=  -1
+  ORDER=  50
+  SIZE=   2
+  TYPE=   scalar
+  PLOT=   PLOT_LINE
+}

@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>T-series Manual</title>
+  </head>
+  
+  <body>
+    <a NAME="START"></a>
+    <h1><img SRC="tseries.png" ALT="Ikon" HSPACE=20
+	     VSPACE=10 align=TEXTTOP> T-series Manual</h1>
+
+    <p>
+    <h2>
+      <a NAME="CONTENTS"></a>Innhold</h2>
+
+    <ul>
+ 
+      <li><a href="#MENUBAR">Menubar</a>
+      <li><a href="#DIANALINK">Linking to DIANA</a>
+      <li><a href="#ACCELERATORS">Accelerators</a>
+      <li><a href="#FILTER">Position filter</a>
+     <li><a href="news.html">News</a>
+    </ul>
+
+    <p>
+  
+    <hr>
+    
+    <a NAME="MENUBAR"></a><h3>Menubar</h3>
+     <p>
+      The Menubar contains the following choices:
+    <ul>
+      <li>
+	<b>File</b>
+	<ul>
+	  <li>Print to printer/file <i>Print</i>
+	  <li>Save the diagram as an image with  <i>Save Image</i>
+	    You can choose between XPM/BMP/PNG og EPS.
+	    The default is PNG. Every format exept EPS gives
+	    a screendump (WYSIWYG). EPS is dynamic.
+	  <li>Create your own positionfilter with
+	    <a href="#FILTER" target><i>Change filter </i> </a>
+	  <li>Quit the program with <i>Quit</i>
+	</ul>
+      <li>
+	<b>Preferences</b>
+	<ul>
+	  <li>The user can save the actual set of window -size/pos,
+	    position, type, model by  <i>Save preferences</i>.
+	    The saved values will be reused next time T-series is started
+	    or when the <i>Reset preferences</i> option is used.
+	  <li>The prefernces are saved automatically at exit when the
+	    <i>Save at exit</i> option is on.
+	  <li> <i>Show postitions (DIANA) </i>
+	    Displays all position names at the DIANA map in case of
+	    linking between DIANA and T-series.
+	    This option can distract the user at large datasets but
+	    is ok for small sets...
+	  <li>  <i>Show active position (DIANA) </i>
+	    Shows just the name of the diagram position on the map
+	    (recommended)
+	  <li> <i> Vis timemark </i> shows a gray line at the current time
+	    and a red line at the DIANA-time.
+	</ul>
+      <li>
+	<b>Help</b>
+	<ul>
+	  <li><i>Manual</i> Shows this document
+	  <li><i>About T-series..</i>Version number etc.
+	</ul>
+    </ul>
+    <br>
+    <a href="#START" target><img SRC="pil.png" ALT="opp" BORDER=0 align=TOP></a>
+    <p>
+
+    <hr>
+    <a NAME="DIANALINK"></a><h3>Linking to DIANA</h3>
+    <br>
+    T-series can link up to a <b>diana</b>-instance
+    if DIANA is open to such linking. The linking is controlled by an
+    external application (coserver) which is socket based.
+    coserver starts automtically when needed.
+    The user can couple by T-series and DIANA by activate the  
+    <img SRC="connect.png"> in both applications.
+    <p>
+      After the linking the following happens:
+    <ul>
+      <li>T-series sends a full list of all positions to DIANA.
+	Those will show up in the DIANA map as icons if the <i>Show icons (DIANA)</i>
+	option is on. T-series Icons look like:<img SRC="ts_station.xpm">
+      <li>BY choosing a position in DIANA, T-series will show the belonging Diagram.
+      <li>By clicking<img SRC="ts_find.xpm"> T-series will  send
+	a pointer to DIANA to find the position of the actual diagram.
+    </ul>
+    
+    <br>
+    <a href="#START" target><img SRC="pil.png" ALT="opp" BORDER=0 align=TOP></a>
+    <br>
+
+    <hr>
+    <a NAME="FILTER"></a><h3>Position filter</h3>
+    <p>
+      Its possible to build an overlay filter for your stationlist.
+      To use the filter the  <img SRC="ts_filter.xpm"> option must be ON.
+      There is a standardfilter which can be changed by the user in the
+      position filter dialog: Changed filters can be saved for further use.
+    <p>
+      The dialog has two lists. The one on the left is a list off all
+      stations foound in the datasets, The one in the right is the filter.
+
+      You can choose positions in the filter and take them out by 
+      <img SRC="delete.xpm"> ( or the DEL-key ).
+      By pushing <img SRC="copy.xpm"> (or the SPACE-Key)
+      The hightlighted position in the big list is copied into the filter.
+      filter.
+      <br><B>
+	The filter can be reset to standard by
+	på <img SRC="tb_refresh.xpm">
+       </B>
+      <br>
+      <a href="#START" target><img SRC="pil.png" ALT="opp" BORDER=0 align=TOP></a>
+      <br>
+
+
+    <hr>
+    <a NAME="ACCELERATORS"></a><h3>Accelerators</h3>
+    <p>
+    <table BORDER = 2>
+	<tr>
+	  <th ALIGN = CENTER COLSPAN = 2> General accelerators
+	<tr>
+	  <th ALIGN = LEFT> Manual 
+	  <td ALIGN = CENTER> <b>F1</b>
+	<tr>
+	  <th ALIGN = LEFT> Change model
+	  <td ALIGN = CENTER> <b>Ctrl-Arrow opp/ned</b>
+	<tr>
+	  <th ALIGN = LEFT> Print
+	  <td ALIGN = CENTER> <b>Ctrl-P</b>
+	<tr>
+	  <th ALIGN = LEFT> Quit
+	  <td ALIGN = CENTER> <b>Ctrl-Q</b>
+    </table>
+    
+    
+    <br>
+    <a href="#START" target><img SRC="pil.png" ALT="opp" BORDER=0 align=TOP></a>
+    <br>
+
+
+    <!-- Created: Mon Apr 22 16:44:18 GMT 2002 -->
+    <!-- hhmts start -->
+Last modified: Thu Jun  2 12:50:30 CEST 2005
+<!-- hhmts end -->
+  </body>
+</html>
