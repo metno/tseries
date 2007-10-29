@@ -204,17 +204,7 @@ DataDescription=MM5.1km
 DataType=HDF
 Contents=x,x,MM5.1km,x
 
-DataFile=$(Odata)/byluft/operational/run/res/DRAMMEN/plot/byluft_pose.hdf
-DataDescription=MM5.1km
-DataType=HDF
-Contents=x,x,MM5.1km,x
-
 DataFile=$(Odata)/byluft/operational/run/res/BERGEN/plot/byluft_pose.hdf
-DataDescription=MM5.1km
-DataType=HDF
-Contents=x,x,MM5.1km,x
-
-DataFile=$(Odata)/byluft/operational/run/res/STAVANGER/plot/byluft_pose.hdf
 DataDescription=MM5.1km
 DataType=HDF
 Contents=x,x,MM5.1km,x
@@ -224,10 +214,6 @@ DataDescription=MM5.1km
 DataType=HDF
 Contents=x,x,MM5.1km,x
 
-DataFile=$(Odata)/byluft/operational/run/res/GRENLAND/plot/byluft_pose.hdf
-DataDescription=MM5.1km
-DataType=HDF
-Contents=x,x,MM5.1km,x
 []
 
 # -------------------------------------------------
