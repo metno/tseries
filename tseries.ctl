@@ -283,6 +283,7 @@ Contents=x,x,ECOM3D_20km,12
 
 []
 
+# -------------------------------------------------
 
 [FOU:PU:VA:VV:VNN]
 
@@ -299,6 +300,25 @@ DataFile=$(Sdata)/Nordic_4km_npl12.hdf
 DataDescription=Nordic_4km 
 DataType=HDF
 Contents=x,x,Nordic_4km,12
+[]
+
+# -------------------------------------------------
+
+[FOU:PU:VA:VV:VNN]
+
+CollectionName=Nordic4residHavdiagrammer
+PreferredDiagram=Havdiagram
+InitialOpen=1
+
+DataFile=$(Sdata)/Nordic_4km_resid_npl00.hdf
+DataDescription=Nordic_4km_resid
+DataType=HDF
+Contents=x,x,Nordic_4km_resid,0
+
+DataFile=$(Sdata)/Nordic_4km_resid_npl12.hdf
+DataDescription=Nordic_4km_resid
+DataType=HDF
+Contents=x,x,Nordic_4km_resid,12
 []
 
 # -------------------------------------------------

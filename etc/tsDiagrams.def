@@ -5,6 +5,7 @@ ECMWF=Ecmwf
 ECOM3D=Ecom3d
 ECOM3D_20km=Ecom3d_20km
 Nordic_4km=Nordic 4km
+Nordic_4km_resid=Nordic 4km resid
 WAM=Wam
 WAM_EC=Wam (ec-vind)
 ECMWF_WAM=ECMWF_WAM
@@ -73,6 +74,7 @@ STYLEFILE=/metno/local/tseries/style/style.meteogram
 MODEL=ECOM3D
 MODEL=ECOM3D_20km
 MODEL=Nordic_4km
+MODEL=Nordic_4km_resid
 
 [MODELINDEPENDENT]
 PARAM=HS,x,x,x
