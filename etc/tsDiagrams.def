@@ -16,6 +16,7 @@ HIRLAM.10km=Hirlam 10km
 HIRLAM.4km=Hirlam 4km
 UM.4km=UM 4km
 UM.1km=UM 1km
+UM1.exp=UM 1km exp
 MM5.1km=MM5 1km
 rr24=rr24
 fx10-6h=fx10-6h
@@ -33,6 +34,7 @@ MODEL=HIRLAM.4km
 MODEL=ECMWF
 MODEL=UM.4km
 MODEL=UM.1km
+MODEL=UM1.exp
 MODEL=MM5.1km
 
 

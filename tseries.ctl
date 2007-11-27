@@ -190,6 +190,21 @@ DataDescription=UM.1km
 DataType=HDF
 Contents=x,x,UM.1km,x
 
+# -------------------------------------------------
+
+CollectionName=UM1kmExpMeteogrammer
+PreferredDiagram=Meteogram
+InitialOpen=0
+
+
+DataFile=$(Odata)/um1exp/um1exp00.hdf
+DataDescription=UM1.exp 
+DataType=HDF
+Contents=x,x,UM1.exp,x
+
+
+
+
 
 
 # -------------------------------------------------

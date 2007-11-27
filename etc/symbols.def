@@ -20,45 +20,45 @@ PICTURES = true
 {
 SUN
 1	@{fine}
-	sun.rgba
+	weather_01.png
 16	@{fine}
-	dark.rgba
+	weather_16.png
 9
 }
 
 {     
 LIGHTCLOUD
 2	@{fine}
-	lightCloud.rgba
+	weather_02.png
 17	@{fine}
-	darkPartlyCloud.rgba
+        weather_17.png
 9
 }
 
 {
 PARTLYCLOUD
 3	@{dry}
-	partlyCloud.rgba
+	weather_03.png
 17	@{dry}
-	darkPartlyCloud.rgba
+        weather_17.png
 9
 }
 
 {
 CLOUD
 4	@{cloudy}
-	cloud.rgba
+	weather_04.png
 4	@{cloudy}
-	cloud.rgba
+	weather_04.png
 8
 }	
 
 {
 LIGHTRAINSUN
 5	@{showers}	
-	lightRainSun.rgba
+	weather_05.png
 18	@{showers}	
-	rainDark.rgba
+	weather_18.png
 7
 }
 
@@ -66,9 +66,9 @@ LIGHTRAINSUN
 {
 LIGHTRAINTHUNDERSUN
 6      @{lightrainthundersun}
-       lightRainThunderSun.rgba
+       weather_06.png
 6      @{lightrainthundersun}
-       lightRainThunderSun.rgba
+       weather_06.png
 5
 }
 
@@ -76,27 +76,27 @@ LIGHTRAINTHUNDERSUN
 {    
 SLEETSUN
 7 	@{sleetshowers}	
-	sleetSun.rgba
+	weather_07.png
 7	@{sleetshowers}	
-	sleetSun.rgba
+	weather_07.png
 4
 }
 
 {
 SNOWSUN
 8	@{snowshowers}
-	snowSun.rgba
+        weather_08.png
 19	@{snowshowers}
-	snowDark.rgba
+        weather_19.png
 4
 }
 
 {
 LIGHTRAIN
 9	@{drizzly}
-	lightRain.rgba
+        weather_09.png
 9	@{drizzly}
-	lightRain.rgba
+        weather_09.png
 3
 }
 
@@ -105,9 +105,9 @@ LIGHTRAIN
 {
 RAIN
 10	@{rain}
-	rain.rgba
+        weather_10.png
 10	@{rain}
-	rain.rgba
+        weather_10.png
 6
 }
 
@@ -115,9 +115,9 @@ RAIN
 {
 RAINTHUNDER
 11     @{rainthunder}
-       RainThunder.rgba
+        weather_11.png
 11     @{rainthunder}
-       RainThunder.rgba
+        weather_11.png
 3
 }
 
@@ -125,9 +125,9 @@ RAINTHUNDER
 {
 SLEET
 12	@{sleet}
-	sleet.rgba
+        weather_12.png
 12	@{sleet}
-	sleet.rgba
+        weather_12.png
 3
 }
 
@@ -135,9 +135,9 @@ SLEET
 {
 SNOW
 13	@{snow}
-	snow.rgba
+        weather_13.png
 13	@{snow}
-	snow.rgba
+        weather_13.png
 3
 }
 
@@ -146,18 +146,18 @@ SNOW
 {
 SNOWTHUNDER
 14      @{snowthunder}
-	SnowThunder.rgba
+        weather_14.png
 14      @{snowthunder}
-        SnowThunder.rgba
+        weather_14.png
 3
 }
 
 {
 FOG
 15	@{fog}
-	fog.rgba
+        weather_15.png
 15	@{fog}
-	fog.rgba
+        weather_15.png
 1
 }
 
@@ -165,9 +165,9 @@ FOG
 {
 ERROR
 0  error
-   circle_mixed.rgba
+   weather_999.png
 0  error
-   circle_mixed.rgba
+   weather_999.png
 0
 }
 
