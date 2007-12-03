@@ -95,12 +95,12 @@ InitialOpen=0
 DataFile=$(Mdata)/hirlam4km00.hdf
 DataDescription=HIRLAM.4km
 DataType=HDF
-Contents=x,x,HIRLAM.4km,x
+Contents=x,x,HIRLAM.4km,0
 
 DataFile=$(Mdata)/hirlam4km12.hdf
 DataDescription=HIRLAM.4km
 DataType=HDF
-Contents=x,x,HIRLAM.4km,x
+Contents=x,x,HIRLAM.4km,12
 
 # -------------------------------------------------
 
@@ -131,22 +131,22 @@ Contents=x,x,HIRLAM.20km,x
 DataFile=$(Mdata)/hirlam2000.hdf
 DataDescription=HIRLAM.20km
 DataType=HDF
-Contents=x,x,HIRLAM.20km,x
+Contents=x,x,HIRLAM.20km,0
 
 DataFile=$(Mdata)/hirlam2006.hdf
 DataDescription=HIRLAM.20km
 DataType=HDF
-Contents=x,x,HIRLAM.20km,x
+Contents=x,x,HIRLAM.20km,6
 
 DataFile=$(Mdata)/hirlam2012.hdf
 DataDescription=HIRLAM.20km
 DataType=HDF
-Contents=x,x,HIRLAM.20km,x
+Contents=x,x,HIRLAM.20km,12
 
 DataFile=$(Mdata)/hirlam2018.hdf
 DataDescription=HIRLAM.20km
 DataType=HDF
-Contents=x,x,HIRLAM.20km,x
+Contents=x,x,HIRLAM.20km,18
 []
 
 # -------------------------------------------------
@@ -167,12 +167,12 @@ Contents=x,x,UM.4km,x
 DataFile=$(Mdata)/um4km00.hdf
 DataDescription=UM.4km
 DataType=HDF
-Contents=x,x,UM.4km,x
+Contents=x,x,UM.4km,0
 
 DataFile=$(Mdata)/um4km12.hdf
 DataDescription=UM.4km
 DataType=HDF
-Contents=x,x,UM.4km,x
+Contents=x,x,UM.4km,12
 
 []
 
@@ -188,7 +188,7 @@ InitialOpen=0
 DataFile=$(Mdata)/um1km00.hdf
 DataDescription=UM.1km
 DataType=HDF
-Contents=x,x,UM.1km,x
+Contents=x,x,UM.1km,0
 
 # -------------------------------------------------
 

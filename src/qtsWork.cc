@@ -31,6 +31,7 @@
 #include <qtsWork.h>
 #include <tsConfigure.h>
 #include <QLetterCommands.h>
+#include <qapplication.h>
 
 bool qStr2miStr(const QString& i, miString& o)
 {
@@ -91,7 +92,8 @@ void qtsWork::Initialise()
 {
   session.readSessions(setup.files.defs);
   
-  
+  data.setVerbose(false);
+
   for (int i=0; i<setup.streams.size(); i++) {
     data.addDataset(setup.streams[i].collectionName);
 
@@ -105,12 +107,12 @@ void qtsWork::Initialise()
     }
   }
   
-  data.openStreams();
+  //data.openStreams();
+  //getStationList();
   
   myTarget.command       = qmstrings::positions;
   myTarget.description   = TARGETS_TSERIES+";name:lat:lon:image";
 
-  makeStationList();
   makeStyleList();
 
   filter = createFilter();
@@ -146,14 +148,16 @@ set<miString> qtsWork::fullPosList()
 
 void qtsWork::makeStationList(bool forced)
 {
+  //cerr << "qtsWork::makeStationList" << endl;
+
   if(!request.model().exists()) 
     restoreModelFromLog();
+
   if(!forced)
     if( oldModel == request.model()) 
       return;
 
   oldModel = request.model();
-
 
   QStringList slist;
   myStations.clear();
@@ -161,7 +165,8 @@ void qtsWork::makeStationList(bool forced)
   myList = data.getPositions(request.model());
   map<miString,miString>::iterator itr = myList.begin();
   miString pos;
-  
+
+//   cerr << "model:" << request.model() << " myList.size:" << myList.size() << endl;
 
   for (;itr!=myList.end();itr++) {
     pos = itr->first;
@@ -208,7 +213,6 @@ bool qtsWork::makeModelList(const miString& st)
     if(modname.size() > 1 )
       modname.erase(modname.begin()+1,modname.end());
   
-  
   QString qtmp = sidebar->fillList(modname,qtsSidebar::CMMODEL);
   
   miString tmp;
@@ -216,6 +220,10 @@ bool qtsWork::makeModelList(const miString& st)
   
   tmp = modelMap[tmp];
   
+  QApplication::setOverrideCursor( waitCursor );
+  data.openStreams(tmp);
+  QApplication::restoreOverrideCursor();
+
   changed = request.setModel(tmp);
   return (makeRunList(tmp) || changed);
 }
@@ -224,18 +232,18 @@ bool qtsWork::makeRunList(const miString& st)
 {
   vector <miString> runList;
   runList = data.findRuns(st);
+
   QString qtmp = sidebar->fillList(runList,qtsSidebar::CMRUN);
   miString tmp;
   qStr2miStr(qtmp,tmp);
   return request.setRun(atoi(tmp.cStr()));
-   
-  return false;
 }
 
 bool qtsWork::makeRunList(const miString& st,const miString& ru)
 {
   vector <miString> runList;
   runList = data.findRuns(st);
+
   sidebar->fillList(runList,qtsSidebar::CMRUN);
   if(runList.size()) {
     for(int i=0;i<runList.size();i++)
@@ -262,7 +270,6 @@ void qtsWork::changeStyle(const QString& qstr)
     changeStyle(st);
 
   makeStationList();
-
 }
 
 void qtsWork::changeModel(const QString& qstr)
@@ -302,6 +309,9 @@ void qtsWork::changeStyle(const miString& st)
 void qtsWork::changeModel(const miString& st)
 {
   miString tmp = modelMap[st];
+  QApplication::setOverrideCursor( waitCursor );
+  data.openStreams(tmp);
+  QApplication::restoreOverrideCursor();
   bool changed = request.setModel(tmp);
   if(makeRunList(tmp) || changed)
     refresh();
@@ -326,8 +336,18 @@ void qtsWork::changeRun(const miString& st)
 
 void qtsWork::refresh()
 {
-  if(activeRefresh)
+  //cerr << "qtsWork::refresh, request=" << request << endl;
+  QApplication::setOverrideCursor( waitCursor );
+  if (activeRefresh){
     show->refresh();
+  }
+  // check if any streams recently opened
+  if ( data.has_opened_streams() ){
+    //cerr << "qtsWork::refresh - remaking station list" << endl;
+    data.makeStationList();
+    makeStationList();
+  }
+  QApplication::restoreOverrideCursor();
 }
 
 
@@ -365,6 +385,10 @@ void qtsWork::restoreLog()
     }
   
   request.setModel(mo);
+  QApplication::setOverrideCursor( waitCursor );
+  data.openStreams(mo);
+  QApplication::restoreOverrideCursor();
+
   makeRunList(mo,miString(ru));
 
   sidebar->searchStation(po.cStr());
@@ -372,7 +396,6 @@ void qtsWork::restoreLog()
 
   activeRefresh = true;
   refresh();
-
 }
 
 

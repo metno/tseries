@@ -40,17 +40,14 @@
 #include <ptDataStream.h>
 #include <ptParameterDefinition.h>
 
-#define MAXDATASETS 16
+#define MAXDATASETS 50
 #define MAXMODELSINSTREAM 100
 
 
 using namespace std;
 
-
-
 class dataset {
-  unsigned int bits;
-  static unsigned int bmask[MAXDATASETS];
+  bool bits[MAXDATASETS];
 public:
   dataset() { clear(); }
 
@@ -58,12 +55,12 @@ public:
   bool isdata(const int& d) const {
     if (d<0) return true;
     else if (d>=MAXDATASETS) return false;
-    return (bits & bmask[d]);
+    return (bits[d]);
   }
   // set dataset d, return prior status
   bool setdata(const int& d){
     bool is = isdata(d);
-    if (!is && d<MAXDATASETS) bits |= bmask[d];
+    if (!is && d<MAXDATASETS) bits[d]=true;
     return is;
   }
   // return first dataset and total number of datasets
@@ -79,10 +76,18 @@ public:
     return f;
   }
 
-  bool empty() const { return (bits==0);      }
-  void clear()       { bits = (unsigned int)0;}
-
+  bool empty() const { 
+    for (int i=0; i<MAXDATASETS; i++)
+      if (bits[i])
+	return false;
+    return true;
+  }
+  void clear(){ 
+    for (int i=0; i<MAXDATASETS; i++)
+      bits[i] = false;
+  }
 };
+
 
 bool Union(const dataset& d1, const dataset& d2);
 bool Union(const dataset& d1, const dataset& d2, dataset& result);
@@ -120,11 +125,12 @@ private:
   vector<ExtStation> stations;   // List of stations
   vector<miString> datasetname;  // name of dataset
   int numStationsDS[MAXDATASETS];// number of positions in each dataset
-  vector<miString> priorStations;// ..name of these
+  //vector<miString> priorStations;// names of prioritized stations 
   float tolerance;               // 10000*degrees
   dataset customerds;            // datasets with customerinfo
   ParameterDefinition parDef;
   bool verbose;
+  bool streams_opened;
   
   unsigned long _modtime(miString&); // get file modification time
   void _filestat(miString&, struct stat&); // get file stats
@@ -138,19 +144,17 @@ public:
 
   // adds a new dataset
   int  addDataset(miString);
-  // adds a name to a dataset
-  bool addNameToDataset(int dset, miString name);
-  // adds a new station
-  bool addStation(ExtStation&);
-  // name of station with priority=1
-  bool addPriorStation(const miString);
-  // check if name is prioritized
-  bool isPriorStation(const miString);
+//   // name of station with priority=1
+//   bool addPriorStation(const miString);
+//   // check if name is prioritized
+//   bool isPriorStation(const miString);
   // adds file to collection, return index
   int  addStream(const miString,const miString,
 		 const miString,
 		 const int, const int,
 		 const miString= "x,x,x,x");
+  // opens streams containing this model
+  bool openStreams(const miString mod);
   // opens one stream
   bool openStream(const int);
   // opens all streams in collection
@@ -161,8 +165,6 @@ public:
   void closeStreams();
   // check if newer files on disk, return indexes
   bool check(vector<int>&);
-  // returns name and number of streams in collection
-  void getCollInfo(int&,miString&);
   // returns name, desc, filesize, dataset and n_in_dataset for file
   bool getStreamInfo(int,miString&,miString&,int&,int&,int&);
   // returns pointer to datastream object
@@ -174,29 +176,18 @@ public:
 		   float&,float&,int&);
   // returns info about position idx in dset
   bool getPosition(int dset, int &idx, ExtStation** es);
-  // returns next station with Union(dataset,dset)
-  bool getPosition(const dataset& dset, int& idx, ExtStation** es);
+  map<miString,miString> getPositions(const miString mod);
   // get list of indices for files which contain data for a
   // specific model and run. Returns number of files found
-  map<miString,miString> getPositions(const miString mod);
   int findModel(const Model& mid, const Run& rid, int* idx, int max);
-  bool findStation(const miString& name, const Model& mid,const Run& rid);
-  bool findStation(const miString& name, float& lat, float& lng);
-  bool findStation(const miString& name, miPosition& pos);
   vector<miString> findRuns(const Model& mid);
 
-
-  // get number of datasets with data for this posindex
-  int getPosNumSets(int idx);
-  void getDatasets(vector<miString>&);
-  void getCustomers(dataset& ds){ds = customerds; }
-
   void setVerbose(bool v){verbose= v;}
+  bool has_opened_streams() {
+    bool b= streams_opened; 
+    streams_opened = false;
+    return b;
+  }
 };
 
 #endif
-
-
-
-
-

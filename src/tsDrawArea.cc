@@ -128,7 +128,10 @@ bool tsDrawArea::prepareData()
       numstreams = data->findModel(modid.model,modid.run,
 				   streamidx,10);
 
-//       cerr << "Number of streams:" << numstreams << endl;
+      if (numstreams < 1)
+	cerr << "tsDrawArea::prepareData, found " << numstreams
+	     << " matching streams for model " << modid.model << endl;
+
       if (numstreams>0) {
 	datafound = false;
 	for (int j=0; j<numstreams && !datafound;j++){

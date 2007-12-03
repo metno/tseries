@@ -33,8 +33,6 @@
 #include <ptAsciiStream.h>
 #include <set>
 
-unsigned int dataset::bmask[MAXDATASETS]=
-{1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768};
 
 bool Union(const dataset& d1, const dataset& d2){
   for (int i=0; i<MAXDATASETS;i++)
@@ -52,7 +50,7 @@ bool Union(const dataset& d1, const dataset& d2, dataset& result){
 }
 
 DatafileColl::DatafileColl()
-  : tolerance(1000.0), verbose(false) {
+  : tolerance(1000.0), verbose(false), streams_opened(false) {
 }
 
 DatafileColl::~DatafileColl(){
@@ -69,57 +67,22 @@ int DatafileColl::addDataset(miString name){
   return -1;
 }
 
-bool DatafileColl::addNameToDataset(int dset, miString name){
-  // Check if station exists
-  bool exists = false;
-  int n= stations.size();
-  if (n > 0) {
-    for (int j=0; j<n; j++) {
-      if (name==stations[j].station.Name()) {
-	exists = true;
-	if (!(stations[j].d.setdata(dset)))
-	  numStationsDS[dset]++;
-	break;
-      }
-    }
-  }
-  return exists;
-}
 
-bool DatafileColl::addStation(ExtStation& es){
-  // Check if station already exists
-  vector<ExtStation>::iterator p;
-  int j;
-  for (p=stations.begin(); p!=stations.end(); p++) {
-    if (es.station.Name()<=p->station.Name()){
-      if (es.station.Name()==p->station.Name())
-	return false;
-      break;
-    }
-  }
-  // add the station
-  stations.insert(p,es);
-  // update numStations in each dataset
-  for (j=0; j<MAXDATASETS; j++)
-    if (es.d.isdata(j)) numStationsDS[j]++;
-  return true;
-}
+// bool DatafileColl::addPriorStation(const miString name)
+// {
+//   priorStations.push_back(name);
+//   return true;
+// }
 
-bool DatafileColl::addPriorStation(const miString name)
-{
-  priorStations.push_back(name);
-  return true;
-}
-
-bool DatafileColl::isPriorStation(const miString n)
-{
-  miString name= n.upcase();
-  int j= priorStations.size();
-  for (int i=0; i<j; i++)
-    if (name == priorStations[i].upcase())
-      return true;
-  return false;
-}
+// bool DatafileColl::isPriorStation(const miString n)
+// {
+//   miString name= n.upcase();
+//   int j= priorStations.size();
+//   for (int i=0; i<j; i++)
+//     if (name == priorStations[i].upcase())
+//       return true;
+//   return false;
+// }
 
 int DatafileColl::addStream(const miString name,
 			    const miString desc,
@@ -154,14 +117,6 @@ int DatafileColl::addStream(const miString name,
       datastreams[n].runList[i]  = parid.run;
     }
 
-    if(datastreams[n].sType == "HDF") {
-      datastreams[n].dataStream =
-	new HDFFile(datastreams[n].streamname);
-    } else if (datastreams[n].sType == "ASCII") {
-      datastreams[n].dataStream =
-	new AsciiStream(datastreams[n].streamname);
-    }
-
     if (verbose) cout << "Has added stream:"
 		      << datastreams[n].streamname
 		      << endl;
@@ -171,6 +126,23 @@ int DatafileColl::addStream(const miString name,
 }
 
 
+
+bool DatafileColl::openStreams(const miString mod)
+{
+  if (verbose) cout << "- Open streams with model "<< mod << endl;
+  bool b=false;
+  for (int i=0; i<datastreams.size(); i++) {
+    if (datastreams[i].streamOpen)
+      continue;
+    for (int m=0; m<datastreams[i].numModels; m++){
+      if ( datastreams[i].modelList[m] == mod ) {
+	b |= openStream(i);
+	break;
+      }
+    }
+  }  
+  return b;
+}
 
 bool DatafileColl::openStream(const int idx)
 {
@@ -224,6 +196,7 @@ bool DatafileColl::openStream(const int idx)
 #endif
     }
   }
+  streams_opened = true;
   return true;
 }
 
@@ -234,42 +207,9 @@ bool DatafileColl::openStreams()
   bool ok = true;
   ErrorFlag ef=OK;
 
-  if (verbose) cout << "- Open datafiles.."<< endl;
+  if (verbose) cout << "- Open streams.."<< endl;
   for (i=0; i<datastreams.size(); i++) {
-    if (!datastreams[i].streamOpen) {
-      datastreams[i].dataStream=0;
-      datastreams[i].numModels=0;
-      if (datastreams[i].sType == "HDF") {
-      	datastreams[i].dataStream =
-	  new HDFFile(datastreams[i].streamname);
-      } else if (datastreams[i].sType == "ASCII") {
-	datastreams[i].dataStream =
-	  new AsciiStream(datastreams[i].streamname);
-      }
-
-      if (datastreams[i].sType != "CUSTOMER"){
-	datastreams[i].mtime = _modtime(datastreams[i].streamname);
-	if (datastreams[i].dataStream)
-	  datastreams[i].streamOpen = datastreams[i].dataStream->openStream(&ef);
-	if (!datastreams[i].streamOpen) {
-	  // error message
-	  cerr << "ERROR Datafilecollection: could not open stream:"
-	       << datastreams[i].streamname << endl;
-	} else {
-	  // get model list from file
-	  int numm = 0;
-	  while (numm < MAXMODELSINSTREAM &&
-		 datastreams[i].dataStream->
-		 getModelSeq(numm,
-			     datastreams[i].modelList[numm],
-			     datastreams[i].runList[numm],
-			     datastreams[i].idList[numm],
-			     datastreams[i].txtList[numm]))
-	    numm++;
-	  datastreams[i].numModels=numm;
-	}
-      }
-    }
+    openStream(i);
   }
   makeStationList();
   return ok;
@@ -317,9 +257,11 @@ bool DatafileColl::check(vector<int>& idx)
   int i;
   unsigned long mtime;
   bool changed = false;
-  idx.erase(idx.begin(),idx.end());
+  idx.clear();
   if (datastreams.size() > 0) {
     for (i=0; i<datastreams.size(); i++) {
+      if ( !datastreams[i].streamOpen )
+	continue;
       mtime = _modtime(datastreams[i].streamname);
       if (mtime > datastreams[i].mtime) {
 	changed = true;
@@ -332,8 +274,6 @@ bool DatafileColl::check(vector<int>& idx)
 
 
 
-
-
 void DatafileColl::makeStationList()
 {
   int nums, i, j, k, n, posidx, ns=0, nsp;
@@ -342,7 +282,7 @@ void DatafileColl::makeStationList()
   miPosition st;
   vector<ExtStation>::iterator p;
 
-  if (verbose) cout << "- Reading positions from file.."<< endl;
+  if (verbose) cout << "- Reading positions from streams.."<< endl;
   stations.clear();
   for (i=0; i<datasetname.size(); i++) numStationsDS[i]=0;
 
@@ -381,110 +321,97 @@ void DatafileColl::makeStationList()
     } // for numdatastreams
   } // if numdatastreams > 0
 
+
+  return;
+
   // Test for proximity and set priority
 
-  ns=  stations.size();
-  nsp= priorStations.size();
-  for (i=0; i<nsp; i++){
-    if (findpos(priorStations[i],posidx)){
-      stations[posidx].priority = 0;
-    }
-  }
+//   ns=  stations.size();
+//   nsp= priorStations.size();
+//   for (i=0; i<nsp; i++){
+//     if (findpos(priorStations[i],posidx)){
+//       stations[posidx].priority = 0;
+//     }
+//   }
 
-  // Set priority to the remaining stations based on proximity
-  float lngdiff, latdiff;
-  float tolerance2= 2*tolerance;
-  float tolerance3= 3*tolerance;
-  float tolerance4= 4*tolerance;
-  float tolerance5= 5*tolerance;
+//   // Set priority to the remaining stations based on proximity
+//   float lngdiff, latdiff;
+//   float tolerance2= 2*tolerance;
+//   float tolerance3= 3*tolerance;
+//   float tolerance4= 4*tolerance;
+//   float tolerance5= 5*tolerance;
 
-  vector<int> area1,area2,area3,area4,area5;
-  bool *taken= new bool[ns];
-  for (j=0; j<ns; j++) taken[j]= false;
+//   vector<int> area1,area2,area3,area4,area5;
+//   bool *taken= new bool[ns];
+//   for (j=0; j<ns; j++) taken[j]= false;
   
-  for (j=0; j<ns; j++){
-    if (!taken[j]){
+//   for (j=0; j<ns; j++){
+//     if (!taken[j]){
 
-      lat  = stations[j].station.lat();
-      lng  = stations[j].station.lon();
-      taken[j]=true;
-      area1.clear();
-      area2.clear();
-      area3.clear();
-      area4.clear();
-      area5.clear();
-      for (k=0; k<ns; k++){
-	if (!taken[k]){
-	  latdiff = fabs(10000*(lat-stations[k].station.lat()));
-	  lngdiff = fabs(10000*(lng-stations[k].station.lon()));
-	  if ((latdiff<tolerance) && (lngdiff<tolerance) ) {
-	    area1.push_back(k);
-	    taken[k]= true;
-	  } 
-	  else if ((latdiff<tolerance2) && (lngdiff<tolerance2) ) {
-	    area2.push_back(k);
-	    taken[k]= true;
-	  } 
-	  else if ((latdiff<tolerance3) && (lngdiff<tolerance3) ) {
-	    area3.push_back(k);
-	    taken[k]= true;
-	  } 
-	  else if ((latdiff<tolerance4) && (lngdiff<tolerance4) ) {
-	    area4.push_back(k);
-	    taken[k]= true;
-	  } 
-	  else if ((latdiff<tolerance5) && (lngdiff<tolerance5) ) {
-	    area5.push_back(k);
-	    taken[k]= true;
-	  }
-	}
-      }
-      int i1=area1.size();
-      int i2=area2.size();
-      int i3=area3.size();
-      int i4=area4.size();
-      int i5=area5.size();
-      if (i1>2)
-	for (k=0; k<i1; k++)
-	  if (stations[area1[k]].priority>1)
-	    stations[area1[k]].priority = 7;
-      if (i2>2)
-	for (k=0; k<i2; k++)
-	  if (stations[area2[k]].priority>1)
-	    stations[area2[k]].priority = 6;
-      if (i3>2)
-	for (k=0; k<i3; k++)
-	  if (stations[area3[k]].priority>1)
-	    stations[area3[k]].priority = 5;
-      if (i4>2)
-	for (k=0; k<i4; k++)
-	  if (stations[area4[k]].priority>1)
-	    stations[area4[k]].priority = 4;
-      if (i5>2)
-	for (k=0; k<i5; k++)
-	  if (stations[area5[k]].priority>1)
-	    stations[area5[k]].priority = 3;
-    }
-  }
+//       lat  = stations[j].station.lat();
+//       lng  = stations[j].station.lon();
+//       taken[j]=true;
+//       area1.clear();
+//       area2.clear();
+//       area3.clear();
+//       area4.clear();
+//       area5.clear();
+//       for (k=0; k<ns; k++){
+// 	if (!taken[k]){
+// 	  latdiff = fabs(10000*(lat-stations[k].station.lat()));
+// 	  lngdiff = fabs(10000*(lng-stations[k].station.lon()));
+// 	  if ((latdiff<tolerance) && (lngdiff<tolerance) ) {
+// 	    area1.push_back(k);
+// 	    taken[k]= true;
+// 	  } 
+// 	  else if ((latdiff<tolerance2) && (lngdiff<tolerance2) ) {
+// 	    area2.push_back(k);
+// 	    taken[k]= true;
+// 	  } 
+// 	  else if ((latdiff<tolerance3) && (lngdiff<tolerance3) ) {
+// 	    area3.push_back(k);
+// 	    taken[k]= true;
+// 	  } 
+// 	  else if ((latdiff<tolerance4) && (lngdiff<tolerance4) ) {
+// 	    area4.push_back(k);
+// 	    taken[k]= true;
+// 	  } 
+// 	  else if ((latdiff<tolerance5) && (lngdiff<tolerance5) ) {
+// 	    area5.push_back(k);
+// 	    taken[k]= true;
+// 	  }
+// 	}
+//       }
+//       int i1=area1.size();
+//       int i2=area2.size();
+//       int i3=area3.size();
+//       int i4=area4.size();
+//       int i5=area5.size();
+//       if (i1>2)
+// 	for (k=0; k<i1; k++)
+// 	  if (stations[area1[k]].priority>1)
+// 	    stations[area1[k]].priority = 7;
+//       if (i2>2)
+// 	for (k=0; k<i2; k++)
+// 	  if (stations[area2[k]].priority>1)
+// 	    stations[area2[k]].priority = 6;
+//       if (i3>2)
+// 	for (k=0; k<i3; k++)
+// 	  if (stations[area3[k]].priority>1)
+// 	    stations[area3[k]].priority = 5;
+//       if (i4>2)
+// 	for (k=0; k<i4; k++)
+// 	  if (stations[area4[k]].priority>1)
+// 	    stations[area4[k]].priority = 4;
+//       if (i5>2)
+// 	for (k=0; k<i5; k++)
+// 	  if (stations[area5[k]].priority>1)
+// 	    stations[area5[k]].priority = 3;
+//     }
+//   }
 
-  delete[] taken;
+//   delete[] taken;
 
-}
-
-int DatafileColl::getPosNumSets(int idx)
-{
-  int num = 0;
-  if (idx>=0 && idx<stations.size())
-    for (int i=0; i<datasetname.size(); i++)
-      if (stations[idx].d.isdata(i)) num++;
-
-  return num;  
-}
-
-void DatafileColl::getCollInfo(int &num, miString& name)
-{
-  num = datastreams.size();
-  name = collectName;
 }
 
 bool DatafileColl::getStreamInfo(int idx,
@@ -511,8 +438,13 @@ bool DatafileColl::getStreamInfo(int idx,
 DataStream* DatafileColl::getDataStream(int idx)
 {
   if ((idx>=0) && (idx<datastreams.size())) {
-    return datastreams[idx].dataStream;
-  } else return 0;
+    bool b=true;
+    if ( !datastreams[idx].dataStream || !datastreams[idx].streamOpen ){
+      b = openStream(idx);
+    }
+    if ( b ) return datastreams[idx].dataStream;
+  }
+  return 0;
 }
 
 // return number of positions in dataset dset.
@@ -571,21 +503,6 @@ bool DatafileColl::getPosition(int dset, int &idx, ExtStation** es)
   return true;
 }
 
-// returns next station with Union(dataset,dset)
-bool DatafileColl::getPosition(const dataset& dset,
-			       int& idx,
-			       ExtStation** es){
-  int n= stations.size();
-  if ((idx <0) || (idx>=n)) return false;
-
-  while (!Union(stations[idx].d,dset) && (idx<n)) idx++;
-  if (idx>=n) return false;
-
-  *es = &(stations[idx]);
-  idx++;
-  return true;
-}
-
 map<miString,miString> DatafileColl::getPositions(const miString mod)
 {
   map<miString,miString> result;
@@ -596,18 +513,12 @@ map<miString,miString> DatafileColl::getPositions(const miString mod)
 
   for (i=0; i<n; i++)
     for (j=0; j<datastreams[i].numModels;j++) 
-      if (mod == datastreams[i].modelList[j] ) 
+      if ( mod == datastreams[i].modelList[j] ) 
 	ds.setdata(datastreams[i].dataSet);
 
   n= stations.size();
   for( i=0 ; i<n ; i++ ) {
-    bool ok = true;
-    for(j=0;j<MAXDATASETS;j++)
-      if (ds.isdata(j) && !stations[i].d.isdata(j)){
-	ok = false;
-	break;
-      }
-    if (ok){
+    if (Union(ds,stations[i].d)){
       result[stations[i].station.Name()] = 
 	miString(stations[i].station.lat()) + ":" + 
 	miString(stations[i].station.lon());
@@ -626,12 +537,8 @@ int DatafileColl::findModel(const Model& mid,
 {
   int numi=0;
   int n= datastreams.size();
-  //   cerr << "Number of datastreams:" << n << endl;
   for (int i=0; i<n; i++){
-    //     cerr << "Datastr:" << i << endl;
     for (int j=0; j<datastreams[i].numModels;j++){
-      //       cerr << "datastr.model:" <<  datastreams[i].modelList[j] << endl;
-      //       cerr << "datastr.run:" <<  datastreams[i].runList[j] << endl;
       if ((mid == datastreams[i].modelList[j] || mid == M_UNDEF) &&
 	  (rid == datastreams[i].runList[j] || rid == R_UNDEF ||
 	   datastreams[i].runList[j]==R_UNDEF)){
@@ -665,57 +572,6 @@ vector<miString> DatafileColl::findRuns(const Model& mid)
 }
 
 
-// Check if any files contain data for a
-// specific station, model and run.
-bool DatafileColl::findStation(const miString& name,
-			       const Model& mid, 
-			       const Run& rid)
-{
-  int idx[30],numf,pinFile;
-  bool namefound=false;
-  DataStream *testStream;
-
-  numf = findModel(mid,rid,idx,30);
-
-  if (numf>0){
-    for (int i=0;i<numf;i++){
-      testStream=getDataStream(idx[i]);
-      if (testStream){
-	if (testStream->isOpen())
-	  pinFile=testStream->findStation(name);
-	else pinFile= 0; // test: if file not yet opened, return true
-	namefound = (namefound || (pinFile>=0));
-      }
-    }
-  }
-  return namefound;
-}
-
-
-bool DatafileColl::findStation(const miString& name,
-			       float& lat,
-			       float& lng)
-{
-  miPosition pos;
-  if (findStation(name,pos)){
-    lat  = pos.lat();
-    lng  = pos.lon();
-    return true;
-  }
-  return false;
-}
-
-bool DatafileColl::findStation(const miString& name,
-			       miPosition& pos)
-{
-  int idx;
-  if (findpos(name.upcase(),idx)){
-    pos= stations[idx].station;
-    return true;
-  }
-  return false;
-}
-
 // Binary search for position by name
 bool DatafileColl::findpos(const miString& name, int& idx)
 {
@@ -739,18 +595,3 @@ bool DatafileColl::findpos(const miString& name, int& idx)
   idx= max+1;
   return false;
 }
-
-void DatafileColl::getDatasets(vector<miString>& names){
-  names = datasetname;
-}
-
-
-
-
-
-
-
-
-
-
-
