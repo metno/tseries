@@ -265,25 +265,6 @@ Contents=x,x,LAMEPS,18
 
 # -------------------------------------------------
 
-[VA:VV:VNN:MA:FOU:PU]
-
-CollectionName=Havdiagrammer
-PreferredDiagram=Havdiagram
-InitialOpen=1
-
-DataFile=$(Sdata)/ecom3d_20km_npl00.hdf
-DataDescription=ECOM3D_20km 00 UTC
-DataType=HDF
-Contents=x,x,ECOM3D_20km,0
-
-DataFile=$(Sdata)/ecom3d_20km_npl12.hdf
-DataDescription=ECOM3D_20km 12 UTC
-DataType=HDF
-Contents=x,x,ECOM3D_20km,12
-
-[]
-
-# -------------------------------------------------
 
 [FOU:PU:VA:VV:VNN]
 
@@ -323,19 +304,7 @@ Contents=x,x,Nordic_4km_resid,12
 
 # -------------------------------------------------
 
-[VA:VV:VNN:MA:FOU:PU]
 
-CollectionName=GamleHavdiagrammer
-PreferredDiagram=Havdiagram
-InitialOpen=1
-
-DataFile=$(Sdata)/ecom3d.hdf
-DataDescription=ECOM3D
-DataType=HDF
-Contents=x,x,ECOM3D,x
-[]
-
-# -------------------------------------------------
 
 [VA:VV:VNN:MA:FOU:PU]
 

@@ -2,8 +2,6 @@
 HIRLAM.20km=Hirlam 20km
 SUBJ=Subjective
 ECMWF=Ecmwf
-ECOM3D=Ecom3d
-ECOM3D_20km=Ecom3d_20km
 Nordic_4km=Nordic 4km
 Nordic_4km_resid=Nordic 4km resid
 WAM=Wam
@@ -71,8 +69,6 @@ NAME=Havdiagram
 STYLEFILE=/metno/local/tseries/style/style.meteogram
 
 [LEGALMODELS]
-MODEL=ECOM3D
-MODEL=ECOM3D_20km
 MODEL=Nordic_4km
 MODEL=Nordic_4km_resid
 
