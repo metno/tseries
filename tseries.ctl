@@ -102,6 +102,37 @@ DataDescription=HIRLAM.4km
 DataType=HDF
 Contents=x,x,HIRLAM.4km,12
 
+
+
+
+
+# -------------------------------------------------
+
+CollectionName=HIRLAM8Meteogrammer
+PreferredDiagram=Meteogram
+InitialOpen=0
+
+DataFile=$(Mdata)/hirlam800.hdf
+DataDescription=HIRLAM.8km
+DataType=HDF
+Contents=x,x,HIRLAM.8km,0
+
+DataFile=$(Mdata)/hirlam806.hdf
+DataDescription=HIRLAM.8km
+DataType=HDF
+Contents=x,x,HIRLAM.8km,6
+
+DataFile=$(Mdata)/hirlam812.hdf
+DataDescription=HIRLAM.8km
+DataType=HDF
+Contents=x,x,HIRLAM.8km,12
+
+DataFile=$(Mdata)/hirlam818.hdf
+DataDescription=HIRLAM.8km
+DataType=HDF
+Contents=x,x,HIRLAM.8km,18
+
+
 # -------------------------------------------------
 
 CollectionName=HIRLAM10Meteogrammer
@@ -112,6 +143,33 @@ DataFile=$(Mdata)/hirlam10.hdf
 DataDescription=HIRLAM.10km
 DataType=HDF
 Contents=x,x,HIRLAM.10km,x
+
+# -------------------------------------------------
+
+
+CollectionName=HIRLAM12Meteogrammer
+PreferredDiagram=Meteogram
+InitialOpen=0
+
+DataFile=$(Mdata)/hirlam1200.hdf
+DataDescription=HIRLAM.12km
+DataType=HDF
+Contents=x,x,HIRLAM.12km,0
+
+DataFile=$(Mdata)/hirlam1206.hdf
+DataDescription=HIRLAM.12km
+DataType=HDF
+Contents=x,x,HIRLAM.12km,6
+
+DataFile=$(Mdata)/hirlam1212.hdf
+DataDescription=HIRLAM.12km
+DataType=HDF
+Contents=x,x,HIRLAM.12km,12
+
+DataFile=$(Mdata)/hirlam1218.hdf
+DataDescription=HIRLAM.12km
+DataType=HDF
+Contents=x,x,HIRLAM.12km,18
 
 # -------------------------------------------------
 
