@@ -36,8 +36,6 @@
 #include <ptFontManager.h>
 #include <glTextX.h>
 
-extern symbolMaker wsymbols;
-
 using namespace d_print;
 
 tsDrawArea::tsDrawArea( tsRequest* tsr,
@@ -111,7 +109,7 @@ bool tsDrawArea::prepareData()
   if (theData) 
     delete theData;
   
-  theData = new ptDiagramData();
+  theData = new ptDiagramData(setup.wsymbols);
 
 //   cerr << "RUN:" << request->run() << endl;
 //   cerr << "POS:" << request->pos() << endl;
@@ -225,7 +223,7 @@ bool tsDrawArea::prepareDiagram()
   PlotElement* pe=0;
   vector<SymbolElement*> sev;
   int i;
-  int minsymb =  wsymbols.minCustom(), maxsymb= wsymbols.maxCustom();
+  int minsymb =  setup.wsymbols.minCustom(), maxsymb= setup.wsymbols.maxCustom();
   while (pe = diagram->findElement(SYMBOL,pe)){
     sev.push_back((SymbolElement*)pe);
     pe= pe->next;
@@ -234,7 +232,7 @@ bool tsDrawArea::prepareDiagram()
     vector<miString> symbimages;
     miString stmp;
     for(i= minsymb; i<=maxsymb; i++){
-      tmpSymbol = wsymbols.getSymbol(i);
+      tmpSymbol = setup.wsymbols.getSymbol(i);
       stmp= setup.path.images+tmpSymbol.picture();
       symbimages.push_back(stmp);
     }

@@ -44,7 +44,7 @@ tsSetup::dostruct          tsSetup::doc;
 bool                       tsSetup::Initialised = false;
 miString                   tsSetup::lang;
 
-symbolMaker wsymbols;
+symbolMaker tsSetup::wsymbols;
  
 tsSetup::tsSetup() : sec(PUBLIC) , line(0)
 {
