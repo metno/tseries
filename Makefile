@@ -34,30 +34,18 @@ INCLUDE= -I$(INCDIR) \
 	 $(XINCLUDE)
 
 LINKS = \
-	-L$(LOCALDIR)/$(LIBDIR)/qutilities -lqUtilities \
-	-L$(LOCALDIR)/$(LIBDIR)/pets2 -lpets2 \
-	-L$(LOCALDIR)/$(LIBDIR)/tsdata -ltsdata \
-	-L$(LOCALDIR)/$(LIBDIR)/pumet -lpuMet \
-	-L$(LOCALDIR)/$(LIBDIR)/gltext -lglText \
-	-L$(LOCALDIR)/$(LIBDIR)/glp -lglp \
-	-L$(LOCALDIR)/$(LIBDIR)/pudatatypes -lpudatatypes \
-	-L$(LOCALDIR)/$(LIBDIR)/parameter -lparameter \
-	-L$(LOCALDIR)/$(LIBDIR)/putools -lputools \
-	-L$(LOCALDIR)/$(LIBDIR)/puctools -lpuctools \
+	-L$(LOCALDIR)/$(LIBDIR) -lqUtilities \
+	-lpets2 -ltsData -lpuMet -lglText -lglp \
+	-lpuDatatypes -lparameter -lpuTools \
+	-lpuCtools \
 	-L$(QTDIR)/lib $(QT_LIBS) \
 	$(GLLIBDIR) -lGL -lGLU \
 	-L$(HDF4DIR)/lib -ldf -lz -lm $(XLIBDIR) -lXext -lXmu -lXt -lX11  $(XTRALIBS)
 
 BLINKS = \
-	-L$(LOCALDIR)/$(LIBDIR)/pets2 -lpets2 \
-	-L$(LOCALDIR)/$(LIBDIR)/tsdata -ltsdata \
-	-L$(LOCALDIR)/$(LIBDIR)/pumet -lpuMet \
-	-L$(LOCALDIR)/$(LIBDIR)/gltext -lglText \
-	-L$(LOCALDIR)/$(LIBDIR)/glp -lglp \
-	-L$(LOCALDIR)/$(LIBDIR)/putools -lputools \
-	-L$(LOCALDIR)/$(LIBDIR)/pudatatypes -lpudatatypes \
-	-L$(LOCALDIR)/$(LIBDIR)/parameter -lparameter \
-	-L$(LOCALDIR)/$(LIBDIR)/puctools -lpuctools \
+	-L$(LOCALDIR)/$(LIBDIR) -lpets2 \
+	-ltsData -lpuMet -lglText -lglp -lpuTools \
+	-lpuDatatypes -lparameter -lpuCtools \
 	$(GLLIBDIR) -lGL -lGLU -lpthread -lpng -ljpeg \
 	-L$(HDF4DIR)/lib -ldf -lz -lm \
 	$(XLIBDIR) -lXext -lXmu -lXt -lX11 -lSM -lICE -lXxf86vm -lm  $(XTRALIBS)
