@@ -32,6 +32,7 @@
 #define _tsSetup_h
 
 #include <miString.h>
+#include <puMet/symbolMaker.h>
 
 #include <vector>
 #include <map>
@@ -159,6 +160,8 @@ public:
   static distruct diana;           ///< DIANA information
   static dostruct doc;             ///< Documentation locations
   static miString lang;            ///< Languages
+
+  static symbolMaker wsymbols;
 
 private:
   enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC} sec;
