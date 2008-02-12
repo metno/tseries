@@ -58,7 +58,7 @@ BLINKS = \
 	-L$(LOCALDIR)/$(LIBDIR)/pudatatypes -lpudatatypes \
 	-L$(LOCALDIR)/$(LIBDIR)/parameter -lparameter \
 	-L$(LOCALDIR)/$(LIBDIR)/puctools -lpuctools \
-	$(GLLIBDIR) -lGL -lGLU -lpthread -lpng \
+	$(GLLIBDIR) -lGL -lGLU -lpthread -lpng -ljpeg \
 	-L$(HDF4DIR)/lib -ldf -lz -lm \
 	$(XLIBDIR) -lXext -lXmu -lXt -lX11 -lSM -lICE -lXxf86vm -lm  $(XTRALIBS)
 
