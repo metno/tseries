@@ -36,11 +36,13 @@
 #include <qdialog.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
-#include <qlistbox.h>
+#include <QListWidget>
 #include <qstringlist.h>
 #include <qlayout.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
 
-#include <miString.h>
+#include <puTools/miString.h>
 
 #include <vector>
 #include <set>
@@ -54,14 +56,14 @@ class qtsFilterManager : public QDialog
   Q_OBJECT
   
 private:
-  QVBoxLayout*   vlayout;
+  Q3VBoxLayout*   vlayout;
 
   QPushButton*   removeB;
   QPushButton*   copyB;
   QPushButton*   reloadB;
 
-  QListBox    *  all;
-  QListBox    *  filtered;
+  QListWidget  *  all;
+  QListWidget  *  filtered;
 
   QStringList original;
 

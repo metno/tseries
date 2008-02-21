@@ -31,7 +31,9 @@
 #ifndef _qtsShow_h
 #define _qtsShow_h
 
-#include <qgl.h>
+#include <qgl.h> 
+#include <QGLFormat>
+#include <QGLWidget>
 #include <tsDrawArea.h>
 
 
@@ -39,8 +41,7 @@
 
 using namespace std; 
 
-class qtsShow : public QGLWidget 
-{
+class qtsShow : public QGLWidget {
   Q_OBJECT
 private:
   int plotw;

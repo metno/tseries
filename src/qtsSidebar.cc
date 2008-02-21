@@ -29,6 +29,10 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <qtsSidebar.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <Q3HBoxLayout>
+#include <Q3VBoxLayout>
 #include <iostream>
 #include <qtooltip.h>
 #include <tsSetup.h>
@@ -40,14 +44,14 @@ qtsSidebar::qtsSidebar(QWidget* parent)
 { 
 
 
-  vlayout = new QVBoxLayout(this, 10, 10, "listLayout");
-  QHBoxLayout * hlayout =  new QHBoxLayout(0, "hLayout");;
-  QHBoxLayout * blayout =  new QHBoxLayout(0, "bLayout");;
+  vlayout = new Q3VBoxLayout(this, 10, 10, "listLayout");
+  Q3HBoxLayout * hlayout =  new Q3HBoxLayout(0, "hLayout");;
+  Q3HBoxLayout * blayout =  new Q3HBoxLayout(0, "bLayout");;
 
   modell  = new QComboBox(this,"modellist");
   runl    = new QComboBox(this,"runlist");
   stylel  = new QComboBox(this,"stylelist");
-  statl   = new QListBox(this,"stationList");
+  statl   = new Q3ListBox(this,"stationList");
   searchw = new QLineEdit(this,"searchEdit");
   timecontrol= new TimeControl(this);
 
@@ -122,7 +126,7 @@ qtsSidebar::qtsSidebar(QWidget* parent)
 
 void qtsSidebar::searchStation(const QString& str )
 {
-  QListBoxItem * item = statl->findItem(str);
+  Q3ListBoxItem * item = statl->findItem(str);
   
   if(item)
     statl->setCurrentItem(item);  

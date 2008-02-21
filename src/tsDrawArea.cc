@@ -29,12 +29,12 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <tsDrawArea.h>
-#include <miSymbol.h>
-#include <symbolMaker.h>
-#include <ptSymbolElement.h>
-#include <ptTimemarkerElement.h>
-#include <ptFontManager.h>
-#include <glTextX.h>
+#include <puMet/miSymbol.h>
+#include <puMet/symbolMaker.h>
+#include <pets2/ptSymbolElement.h>
+#include <pets2/ptTimemarkerElement.h>
+#include <pets2/ptFontManager.h>
+#include <glText/glTextX.h>
 
 using namespace d_print;
 

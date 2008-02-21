@@ -31,7 +31,7 @@
 #ifndef _tsConfigure_h
 #define _tsConfigure_h
 
-#include <miString.h>
+#include <puTools/miString.h>
 
 #include <vector>
 #include <map>

@@ -32,29 +32,29 @@
 #include <qtsTimeControl.h>
 
 
-#include <qlayout.h>
-#include <qtooltip.h>
+#include <QLayout>
+#include <QToolTip>
+
 
 #include <iostream>
-#include <qslider.h>
 
 
 TimeControl::TimeControl(QWidget* parent)
-  : QFrame( parent)
+  : Q3Frame( parent)
 {
-  QGridLayout* timeLayout = new QGridLayout(this,2,5,5,5); 
-  setFrameStyle(QFrame::Panel | QFrame::Sunken);
+  Q3GridLayout* timeLayout = new Q3GridLayout(this,2,5,5,5); 
+  setFrameStyle(Q3Frame::Panel | Q3Frame::Sunken);
 
 
   QLabel  *lab1 = new QLabel(tr("Start:"),this,"startlabel" );
   QLabel  *lab2 = new QLabel(tr("Hours:"),this,"lengthlabel");
   
-  startSlider   = new QSlider( 0,300,1,0,QSlider::Horizontal,this,  "startslider" );
-  stopSlider    = new QSlider( 0,300,1,300,QSlider::Horizontal,this, "stopslider"  );
+  startSlider   = new QSlider( 0,300,1,0,Qt::Horizontal,this,  "startslider" );
+  stopSlider    = new QSlider( 0,300,1,300,Qt::Horizontal,this, "stopslider"  );
   
-  startSlider->setTickmarks(QSlider::Below);
+  startSlider->setTickmarks(QSlider::TicksBelow);
   startSlider->setTickInterval(24);
-  stopSlider->setTickmarks(QSlider::Below);
+  stopSlider->setTickmarks(QSlider::TicksBelow);
   stopSlider->setTickInterval(24);
 
 

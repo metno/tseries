@@ -38,13 +38,13 @@
 
 #include <map>
 #include <vector>
-#include <miTime.h>
+#include <puTools/miTime.h>
 
-#include <ptGlobals.h>
-#include <ptDiagram.h>
-#include <ptWeatherParameter.h>
-#include <ptPlotElement.h>
-#include <ptEditLineElement.h>
+#include <pets2/ptGlobals.h>
+#include <pets2/ptDiagram.h>
+#include <tsData/ptWeatherParameter.h>
+#include <pets2/ptPlotElement.h>
+#include <pets2/ptEditLineElement.h>
 #include <tsSetup.h>
 
 

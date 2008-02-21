@@ -30,45 +30,46 @@
 */
 #ifndef _qtsMain_h
 #define _qtsMain_h
-
-#include <qapplication.h>
-#include <qmainwindow.h>
-#include <qpopupmenu.h>
+#include <qtextstream.h>
 #include <qprinter.h>
+#include <q3mainwindow.h>
+#include <q3popupmenu.h>
 #include <qmessagebox.h>
 #include <qmenubar.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qimage.h>
-#include <qaccel.h>
+#include <q3accel.h>
+#include <QTimerEvent>
+#include <QCloseEvent>
+#include <qapplication.h>
+
+#include <qUtilities/ClientButton.h>
+#include <qUtilities/miMessage.h>
+
 
 #include <qtHelpDialog.h>
 #include <qtsWork.h>
 #include <qtsFilterManager.h>
-
-#include <tsConfigure.h>
-
-#include <qtClientButton.h>
-#include <miMessage.h>
-
 #include <qtPrintManager.h>
 #include <qtsTimeControl.h>
 
+#include <tsConfigure.h>
 #include <map>
 #include <set>
 
 
 using namespace std; 
 
-class qtsMain : public QMainWindow {
+class qtsMain : public Q3MainWindow {
   Q_OBJECT
 private:
   qtsWork      * work;
   tsConfigure config;
   
-  QPopupMenu * menu_setting;
-  QPopupMenu * menu_file; 
-  QPopupMenu * menu_help;
-  QPopupMenu * menu_lang;
+  Q3PopupMenu * menu_setting;
+  Q3PopupMenu * menu_file; 
+  Q3PopupMenu * menu_help;
+  Q3PopupMenu * menu_lang;
 
   map<int,miString> langID;
 

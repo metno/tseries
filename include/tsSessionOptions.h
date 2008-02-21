@@ -34,13 +34,13 @@
 
 #include <vector>
 
-#include <miString.h>
-#include <miTime.h>
-#include <miPosition.h>
+#include <puTools/miString.h>
+#include <puTools/miTime.h>
+#include <puDatatypes/miPosition.h>
 
-#include <ptGlobals.h>
-#include <ptParameterDefinition.h>
-#include <ptPrimitiveType.h>
+#include <pets2/ptGlobals.h>
+#include <tsData/ptParameterDefinition.h>
+#include <tsData/ptPrimitiveType.h>
 
 using namespace std;
 

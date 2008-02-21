@@ -36,17 +36,19 @@
 #include <qlayout.h>
 #include <qwidget.h>
 #include <qlabel.h>
+#include <Q3HBoxLayout>
 
-#include <qtsShow.h>
 #include <qtsSidebar.h>
+#include <qtsShow.h>
+//Added by qt3to4:
 
 #include <tsSession.h>
 #include <tsDatafileColl.h>
 #include <tsSetup.h>
 #include <tsRequest.h>
 
-#include <miString.h>
-#include <miMessage.h>
+#include <puTools/miString.h>
+#include <qUtilities/miMessage.h>
 
 #include <set>
 
@@ -121,7 +123,7 @@ private:
   bool activeRefresh;
   bool filterOn;
 
-  QHBoxLayout* hlayout;
+  Q3HBoxLayout* hlayout;
 
   void Initialise();
   void refresh();

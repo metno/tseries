@@ -35,10 +35,10 @@
 #include <map>
 #include <sys/stat.h>
 
-#include <miString.h>
+#include <puTools/miString.h>
 
-#include <ptDataStream.h>
-#include <ptParameterDefinition.h>
+#include <tsData/ptDataStream.h>
+#include <tsData/ptParameterDefinition.h>
 
 #define MAXDATASETS 50
 #define MAXMODELSINSTREAM 100

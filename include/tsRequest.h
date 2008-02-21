@@ -31,7 +31,7 @@
 #ifndef _tsRequest_h
 #define _tsRequest_h
 
-#include <miString.h>
+#include <puTools/miString.h>
 
 
 using namespace std; 

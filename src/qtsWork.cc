@@ -29,8 +29,10 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <qtsWork.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
 #include <tsConfigure.h>
-#include <QLetterCommands.h>
+#include <qUtilities/QLetterCommands.h>
 #include <qapplication.h>
 
 bool qStr2miStr(const QString& i, miString& o)
@@ -53,7 +55,7 @@ qtsWork::qtsWork(QWidget* parent)
   fmt.setDoubleBuffer(true);
   fmt.setDirectRendering(false);
 
-  hlayout  = new QHBoxLayout(this, 1, 1, "worklayout");
+  hlayout  = new Q3HBoxLayout(this, 1, 1, "worklayout");
   oldModel = NOMODEL_TSERIES;
 
   sidebar = new qtsSidebar(this);
@@ -220,7 +222,7 @@ bool qtsWork::makeModelList(const miString& st)
   
   tmp = modelMap[tmp];
   
-  QApplication::setOverrideCursor( waitCursor );
+  QApplication::setOverrideCursor( Qt::waitCursor );
   data.openStreams(tmp);
   QApplication::restoreOverrideCursor();
 
@@ -309,7 +311,7 @@ void qtsWork::changeStyle(const miString& st)
 void qtsWork::changeModel(const miString& st)
 {
   miString tmp = modelMap[st];
-  QApplication::setOverrideCursor( waitCursor );
+  QApplication::setOverrideCursor( Qt::waitCursor );
   data.openStreams(tmp);
   QApplication::restoreOverrideCursor();
   bool changed = request.setModel(tmp);
@@ -337,7 +339,7 @@ void qtsWork::changeRun(const miString& st)
 void qtsWork::refresh()
 {
   //cerr << "qtsWork::refresh, request=" << request << endl;
-  QApplication::setOverrideCursor( waitCursor );
+  QApplication::setOverrideCursor( Qt::waitCursor );
   if (activeRefresh){
     show->refresh();
   }
@@ -385,7 +387,7 @@ void qtsWork::restoreLog()
     }
   
   request.setModel(mo);
-  QApplication::setOverrideCursor( waitCursor );
+  QApplication::setOverrideCursor( Qt::waitCursor );
   data.openStreams(mo);
   QApplication::restoreOverrideCursor();
 

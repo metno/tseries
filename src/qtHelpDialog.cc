@@ -31,12 +31,15 @@
 #include <qlayout.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qtextbrowser.h>
+#include <q3textbrowser.h>
 #include <qmime.h> 
 #include <qapplication.h> 
 
 #include <qtHelpDialog.h>
-#include <miString.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <Q3HBoxLayout>
+#include <Q3VBoxLayout>
 #include <iostream>
 
 #include <tb_close.xpm>
@@ -60,9 +63,9 @@ void HelpDialog::ConstructorCernel( const miString& filepath,
 
   m_font= qApp->font();
 
-  tb = new QTextBrowser( this ); 
+  tb = new Q3TextBrowser( this ); 
   
-  QMimeSourceFactory::defaultFactory()->addFilePath(filepath.c_str() );
+  Q3MimeSourceFactory::defaultFactory()->addFilePath(filepath.c_str() );
  
   tb->setSource( source.c_str());  
    
@@ -78,13 +81,13 @@ void HelpDialog::ConstructorCernel( const miString& filepath,
 				tr("Close"), this );
   connect( closebutton, SIGNAL( clicked()), this, SLOT( hideHelp()) );
 
-  hlayout = new QHBoxLayout( 5 );    
+  hlayout = new Q3HBoxLayout( 5 );    
   hlayout->addWidget( pushbackward );
   hlayout->addWidget( pushforward );
   hlayout->addWidget( closebutton );
   hlayout->addStretch();
   
-  vlayout = new QVBoxLayout( this, 5, 5 );
+  vlayout = new Q3VBoxLayout( this, 5, 5 );
   vlayout->addLayout( hlayout );
   vlayout->addWidget( tb );
   
@@ -98,7 +101,7 @@ void HelpDialog::hideHelp(){
 
 
 void HelpDialog::addFilePath( const miString& filepath ){
-  QMimeSourceFactory::defaultFactory()->addFilePath(filepath.c_str() );
+  Q3MimeSourceFactory::defaultFactory()->addFilePath(filepath.c_str() );
   return;
 }
 

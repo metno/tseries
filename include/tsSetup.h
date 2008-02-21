@@ -31,7 +31,7 @@
 #ifndef _tsSetup_h
 #define _tsSetup_h
 
-#include <miString.h>
+#include <puTools/miString.h>
 #include <puMet/symbolMaker.h>
 
 #include <vector>

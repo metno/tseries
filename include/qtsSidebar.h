@@ -32,17 +32,20 @@
 #define _qtsSidebar_h
 
 #include <qlayout.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qlineedit.h>
 #include <qwidget.h>
 #include <qstringlist.h>
 #include <qcombobox.h>
+#include <Q3VBoxLayout>
+#include <qpushbutton.h>
+
+#include <qtsTimeControl.h>
 
 #include <vector>
-#include <miString.h>
-#include <qpushbutton.h>
-#include <qtClientButton.h>
-#include <qtsTimeControl.h>
+#include <puTools/miString.h>
+#include <qUtilities/ClientButton.h>
+
 
 
 
@@ -55,10 +58,10 @@ public:
   enum lEntry { CMMODEL, CMSTYLE,CMRUN };
 
 private:
-  QVBoxLayout * vlayout;
+  Q3VBoxLayout * vlayout;
   QLineEdit   * searchw;    // search widget (stations)
 
-  QListBox    * statl;      // list of stations
+  Q3ListBox    * statl;      // list of stations
   QComboBox   * modell;     // list of models
   QComboBox   * stylel;     // list of styles (meteogram etc.)
   QComboBox   * runl;       // list of runs

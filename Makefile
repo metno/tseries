@@ -16,28 +16,23 @@ LOCALINC=$(LOCALDIR)/include
 
 DEPENDSFILE=$(OBJDIR)/make.depends
 MOCFILE=$(OBJDIR)/make.moc
-DEFINES=
-
-INCLUDE= -I$(INCDIR) \
-	 -I$(LOCALINC) \
-	 -I$(LOCALINC)/puTools \
-	 -I$(LOCALINC)/tsData \
-	 -I$(LOCALINC)/pets2 \
-	 -I$(LOCALINC)/puDatatypes \
-	 -I$(LOCALINC)/parameter \
-	 -I$(LOCALINC)/puMet \
-	 -I$(LOCALINC)/qUtilities \
-	 -I$(LOCALINC)/glp \
-	 -I$(LOCALINC)/glText \
-	 -I$(HDF4DIR)/include \
+DEFINES=-DQT3_SUPPORT 
+INCLUDE= -I$(INCDIR) -I$(LOCALINC) \
+	-I$(HDF4DIR)/include \
 	 $(QTINCLUDE) \
 	 $(XINCLUDE)
 
 LINKS = \
-	-L$(LOCALDIR)/$(LIBDIR) -lqUtilities \
-	-lpets2 -ltsData -lpuMet -lglText -lglp \
-	-lpuDatatypes -lparameter -lpuTools \
-	-lpuCtools \
+	`pkg-config --libs putools`    \
+	`pkg-config --libs puctools`   \
+	`pkg-config --libs tsdata`     \
+	`pkg-config --libs pets2`      \
+	`pkg-config --libs pudatatypes`\
+	`pkg-config --libs parameter`  \
+	`pkg-config --libs pumet`      \
+	`pkg-config --libs qutilities` \
+	`pkg-config --libs glp`        \
+	`pkg-config --libs gltext`     \
 	-L$(QTDIR)/lib $(QT_LIBS) \
 	$(GLLIBDIR) -lGL -lGLU \
 	-L$(HDF4DIR)/lib -ldf -lz -lm $(XLIBDIR) -lXext -lXmu -lXt -lX11  $(XTRALIBS)

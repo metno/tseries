@@ -28,14 +28,14 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-#include <qapplication.h>
 #include <qtsMain.h>
+#include <qapplication.h>
 #include <fstream>
 #include <tsSetup.h>
 #include <tsConfigure.h>
-#include <miCommandLine.h> 
+#include <puTools/miCommandLine.h> 
 #include <qtranslator.h>
-#include <miTime.h>
+#include <puTools/miTime.h>
 
 using namespace std;
 

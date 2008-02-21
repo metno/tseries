@@ -35,8 +35,8 @@
 #include <X11/Intrinsic.h>
 #include <GL/glx.h>
 #include <GL/glu.h>
-#include <miString.h>
-#include <miTime.h>
+#include <puTools/miString.h>
+#include <puTools/miTime.h>
 #include <diImageIO.h>
 #include <glob.h>
 

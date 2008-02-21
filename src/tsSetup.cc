@@ -31,7 +31,7 @@
 #include <tsSetup.h>
 #include <iostream>
 #include <fstream>
-#include <symbolMaker.h>
+#include <puMet/symbolMaker.h>
 
 
 vector<tsSetup::dsStruct>  tsSetup::streams;

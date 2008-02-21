@@ -30,12 +30,17 @@
 */
 #include <iostream>
 #include <qtsMain.h>
+//Added by qt3to4:
+#include <QTimerEvent>
+#include <QPixmap>
+#include <Q3PopupMenu>
+#include <QCloseEvent>
 #include <tsVersion.h>
 
 #include <qfileinfo.h>
 #include <qfontdialog.h>
-#include <QLetterCommands.h>
-#include <ttycols.h>
+#include <qUtilities/QLetterCommands.h>
+#include <puTools/ttycols.h>
 //#include <qdir.h>
 #include <qstringlist.h>
 
@@ -44,7 +49,7 @@
 const miString thisTM  = "MARKEDTIME";
 const miString dianaTM = "DIANATIME";
 
-qtsMain::qtsMain(miString l) : lang(l), QMainWindow(0) 
+qtsMain::qtsMain(miString l) : lang(l), Q3MainWindow(0) 
 {
   makeMenuBar();
   dianaconnected = false;
@@ -83,31 +88,31 @@ void qtsMain::makeMenuBar()
 
 void qtsMain::makeHelpMenu()
 {
-  menu_help  = new QPopupMenu( this );
+  menu_help  = new Q3PopupMenu( this );
   menuBar()->insertItem( tr("Help"), menu_help);
   
-  menu_help->insertItem(tr("Manual"), this, SLOT(showHelp()),Key_F1);
+  menu_help->insertItem(tr("Manual"), this, SLOT(showHelp()),Qt::Key_F1);
   menu_help->insertItem( tr("About.."), this, SLOT(about()));
 }
 
 
 void qtsMain::makeFileMenu()
 {
-  menu_file = new QPopupMenu( this );
+  menu_file = new Q3PopupMenu( this );
   menuBar()->insertItem( tr("File"), menu_file);
   
-  menu_file->insertItem( tr("Print"), this, SLOT(print()), CTRL+Key_P);
+  menu_file->insertItem( tr("Print"), this, SLOT(print()), Qt::CTRL+Qt::Key_P);
   menu_file->insertItem( tr("Save Image"),this,SLOT(raster()));
   menu_file->insertSeparator();
   menu_file->insertItem( tr("Change filter"),this,SLOT(manageFilter()));
   menu_file->insertSeparator();
-  menu_file->insertItem( tr("Quit"), this, SLOT(quit()), CTRL+Key_Q);
+  menu_file->insertItem( tr("Quit"), this, SLOT(quit()), Qt::CTRL+Qt::Key_Q);
 }
 
 
 void qtsMain::makeSettingsMenu()
 {
-  menu_setting  = new QPopupMenu( this );
+  menu_setting  = new Q3PopupMenu( this );
   menuBar()->insertItem( tr("Preferences"), menu_setting);
   menu_setting->insertItem( tr("Reset Preferences"), this, SLOT(readLog()));
   menu_setting->insertItem( tr("Save Preferences"), this, SLOT(writeLog()));
@@ -133,7 +138,7 @@ void qtsMain::makeSettingsMenu()
   menu_setting->insertItem(tr("Font"),this,SLOT(chooseFont()));
   menu_setting->insertSeparator();
   
-  menu_lang= new QPopupMenu(this);
+  menu_lang= new Q3PopupMenu(this);
   
   
   findLanguages();
@@ -172,7 +177,7 @@ void qtsMain::makeConnectButtons()
   connect(targetB,SIGNAL(pressed()),this,SLOT(sendTarget()));
   connect(targetB,SIGNAL(released()),this,SLOT(clearTarget()));
   
-  connect(pluginB, SIGNAL(receivedLetter(miMessage&)),
+  connect(pluginB, SIGNAL(receivedMessage(miMessage&)),
 	  SLOT(processLetter(miMessage&)));
   connect(pluginB, SIGNAL(addressListChanged()),
 	  SLOT(processConnect()));
@@ -184,11 +189,11 @@ void qtsMain::makeConnectButtons()
 void qtsMain::makeAccelerators()
 {
   
-  QAccel *a = new QAccel( this );
-  a->connectItem( a->insertItem(Key_Up+CTRL), 
+  Q3Accel *a = new Q3Accel( this );
+  a->connectItem( a->insertItem(Qt::Key_Up+Qt::CTRL), 
 		  work->sideBar(),
 		  SLOT(nextModel()) );
-  a->connectItem( a->insertItem(Key_Down+CTRL), 
+  a->connectItem( a->insertItem(Qt::Key_Down+Qt::CTRL), 
 		  work->sideBar(),
 		  SLOT(prevModel()));
 
@@ -217,7 +222,7 @@ void qtsMain::raster()
 
   static QString fpath = ".";
 
-  QString s = QFileDialog::getSaveFileName( fpath + fname.cStr(),
+  QString s = Q3FileDialog::getSaveFileName( fpath + fname.cStr(),
 					   "Pictures (*.png *.xpm *.bmp *.eps);;All (*.*)",
 					    this, "save file dialog",tr("Save Image") );
     
@@ -293,7 +298,7 @@ void qtsMain::print()
       priop.printer= printer->printerName().latin1();
 
     // start the postscript production
-    QApplication::setOverrideCursor( waitCursor );
+    QApplication::setOverrideCursor( Qt::waitCursor );
     work->Show()->hardcopy(priop);
     
     // if output to printer: call appropriate command
@@ -317,7 +322,7 @@ void qtsMain::print()
 
 void qtsMain::makeEPS(const miString& filename)
 {
-  QApplication::setOverrideCursor( waitCursor );
+  QApplication::setOverrideCursor( Qt::waitCursor );
   printOptions priop;
   priop.fname= filename;
   priop.colop= d_print::incolour;
@@ -343,7 +348,7 @@ void qtsMain::about()
 {
   QMessageBox::about( this, tr("About T-series"),
 		      tr("T-series: Times series viewer\nVersion: %1\n\nmet.no 2002")
-		      .arg(version_string));
+		      .arg(version_string.c_str()));
 }
 
 
@@ -486,8 +491,8 @@ void qtsMain::sendImage(const miString name, const QImage& image)
   if (!dianaconnected) return;
   if (image.isNull()) return;
 
-  QByteArray a;
-  QDataStream s(a, IO_WriteOnly);
+  QByteArray *a=new QByteArray();
+  QDataStream s(a, QIODevice::WriteOnly);
   s << image;
 
   miMessage m;
@@ -497,9 +502,11 @@ void qtsMain::sendImage(const miString name, const QImage& image)
   ostringstream ost;
   ost << name << ":";
 
-  int n= a.count();
-  for (int i=0; i<n; i++)
-    ost << setw(7) << int(a[i]);
+  int n= a->count();
+  for (int i=0; i<n; i++) {
+    
+    ost << setw(7) << int(*a[i]);
+  }
   miString txt= ost.str();
   m.data.push_back(txt);
 
@@ -591,9 +598,8 @@ void qtsMain::clearTarget()
 void qtsMain::processConnect()
 {  
   tsSetup s;
-  QString type(s.server.client.cStr());
-   
-  if(pluginB->connectClient(type)){
+     
+  if(pluginB->clientTypeExist(s.server.client)){
     dianaconnected= true;
 
     cout << ttc::color(ttc::Blue)

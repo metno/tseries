@@ -31,14 +31,15 @@
 #ifndef _qtstimeControl_h
 #define _qtstimeControl_h
 
-#include <qframe.h>
-#include <qlabel.h>
+#include <QSlider>
+#include <Q3Frame>
+#include <Q3GridLayout>
+#include <QLabel>
 
-class QSlider;
 
 using namespace std;
 
-class TimeControl : public QFrame {
+class TimeControl : public Q3Frame {
   Q_OBJECT
 private:
   QSlider* startSlider;

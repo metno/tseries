@@ -35,15 +35,18 @@
 #include <qdialog.h>
 #include <qfont.h>
 #include <qpalette.h>
-#include <miString.h>
+#include <Q3VBoxLayout>
+#include <Q3HBoxLayout>
+#include <QLabel>
+#include <puTools/miString.h>
 #include <vector>
 
 using namespace std;
 
-class QVBoxLayout;
-class QHBoxLayout;
+class Q3VBoxLayout;
+class Q3HBoxLayout;
 class QPushButton;
-class QTextBrowser;
+class Q3TextBrowser;
 class QLabel;
 
 
@@ -79,7 +82,7 @@ private slots:
 private:
   void ConstructorCernel(const miString& filepath, const miString& source);
   
-  QTextBrowser* tb;
+  Q3TextBrowser* tb;
 
   Info info;
 
@@ -88,8 +91,8 @@ private:
   QPushButton* closebutton;
   QLabel* plabel; 
 
-  QVBoxLayout* vlayout;
-  QHBoxLayout* hlayout;
+  Q3VBoxLayout* vlayout;
+  Q3HBoxLayout* hlayout;
 
   QFont m_font; 
 };

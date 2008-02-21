@@ -31,9 +31,12 @@
 #include <qtsFilterManager.h>
 
 #include <qtooltip.h>
-#include <qaccel.h>
+#include <q3accel.h>
 
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <Q3VBoxLayout>
 #include "delete.xpm"
 #include "copy.xpm"
 #include "tb_refresh.xpm"
@@ -47,12 +50,12 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
 
   original = createList(o);
 
-  QVBoxLayout*  vlayout  = new QVBoxLayout(this, 10, 10, "vayout");
+  Q3VBoxLayout*  vlayout  = new Q3VBoxLayout(this, 10, 10, "vayout");
   
 
-  QVBoxLayout*  bvlayout = new QVBoxLayout(5, "bvlayout"); 
-  QHBoxLayout*  hlayout  = new QHBoxLayout(5, "hLayout");
-  QHBoxLayout*  bhlayout = new QHBoxLayout(5, "bhLayout");
+  Q3VBoxLayout*  bvlayout = new Q3VBoxLayout(5, "bvlayout"); 
+  Q3HBoxLayout*  hlayout  = new Q3HBoxLayout(5, "hLayout");
+  Q3HBoxLayout*  bhlayout = new Q3HBoxLayout(5, "bhLayout");
 
 
   
@@ -88,9 +91,9 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
 
 
   
-  QAccel *a = new QAccel( this );
+  Q3Accel *a = new Q3Accel( this );
 
-  a->connectItem( a->insertItem(Key_Delete),this, SLOT(remove()));
+  a->connectItem( a->insertItem(Qt::Key_Delete),this, SLOT(remove()));
 
   // Horizontal Button Tab
 
@@ -113,23 +116,23 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
 
   QStringList posl = createList(p);
 
-  all = new QListBox(this,"allpos");
+  all = new QListWidget(this);
 
   all->setMinimumWidth(250);
-  all->insertStringList(posl);
+  all->addItems(posl);
 
-  QAccel *b = new QAccel( all );
-  a->connectItem( a->insertItem(Key_Space),this, SLOT(copy()));
+  Q3Accel *b = new Q3Accel( all );
+  a->connectItem( a->insertItem(Qt::Key_Space),this, SLOT(copy()));
 
 
   // FILTERED LIST
   QStringList filt = createList(f);
 
-  filtered = new QListBox(this,"filtered");
+  filtered = new QListWidget(this);
 
   filtered->setMinimumWidth(250);
-  filtered->insertStringList(filt);
-  filtered->setSelectionMode(QListBox::Multi);
+  filtered->addItems(filt);
+  filtered->setSelectionMode(QAbstractItemView::MultiSelection);
   
 
   // LAYOUT MANAGING
@@ -160,7 +163,7 @@ set<miString> qtsFilterManager::result()
   set<miString> res;
   if(filtered->count()) {
     for(int i=0; i < filtered->count();i++) {
-      miString a = filtered->text(i).latin1();
+      miString a = filtered->item(i)->text().latin1();
       res.insert(a);
     }
   }
@@ -171,39 +174,43 @@ set<miString> qtsFilterManager::result()
 void qtsFilterManager::reload()
 {
   filtered->clear();
-  filtered->insertStringList(original);
+  filtered->addItems(original);
 };
 
 
 void qtsFilterManager::remove()
 {
   int last=0;
-  for(int i=0;i < filtered->count(); i++ ) 
-    if(filtered->isSelected(i)) {
-      filtered->removeItem(i);
+    
+  for(int i=0;i<filtered->count();i++) {
+    QListWidgetItem * it = filtered->item(i);
+    if(it->isSelected()) {
+      it =  filtered->takeItem(i);
+      delete it ;
       last=i;
       i--;
-    }
-  
+    }   
+  }
+        
   int max = filtered->count() -1;
 
   if(max >= 0) {
     if(last > max  )
       last = max;
-    filtered->setSelected(last,true);
+    filtered->setCurrentRow(last);
   }
 }
 
 void qtsFilterManager::copy()
 {
-  QString txt = all->currentText();
-
+  QString txt = all->currentItem()->text();
   if(!txt.isEmpty()) {
-    if(filtered->findItem(txt,Qt::ExactMatch))
+    QList<QListWidgetItem *> q=filtered->findItems( txt,Qt::MatchExactly);
+    if(!q.isEmpty()) 
       return;
 
-    filtered->insertItem(txt);
-  }
+    filtered->addItem(txt);
+  }   
 }
 
 

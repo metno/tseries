@@ -32,12 +32,12 @@
 #ifndef _SessionManager_h
 #define _SessionManager_h
 
-#include <miString.h>
-#include <miTime.h>
+#include <puTools/miString.h>
+#include <puTools/miTime.h>
 
-#include <ptGlobals.h>
-#include <ptParameterDefinition.h>
-#include <ptStyle.h>
+#include <pets2/ptGlobals.h>
+#include <tsData/ptParameterDefinition.h>
+#include <pets2/ptStyle.h>
 
 #include <tsSessionOptions.h>
 #include <tsRequest.h>

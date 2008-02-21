@@ -29,8 +29,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <tsDatafileColl.h>
-#include <ptHDFFile.h>
-#include <ptAsciiStream.h>
+#include <tsData/ptHDFFile.h>
+#include <tsData/ptAsciiStream.h>
 #include <set>
 
 
