@@ -504,12 +504,11 @@ void qtsMain::sendImage(const miString name, const QImage& image)
 
   int n= a->count();
   for (int i=0; i<n; i++) {
-    
-    ost << setw(7) << int(*a[i]);
+    ost << setw(7) << int((*a).data()[i]);
   }
   miString txt= ost.str();
   m.data.push_back(txt);
-
+  
   pluginB->sendMessage(m);
 }
 
