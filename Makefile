@@ -91,10 +91,12 @@ mark:
 	@echo "[1;34m = = = = = = = = = = = = = = = = = = = = = = [0m "
 
 # install
-COPYFILES=bin/tseries tseries.png tseries.sh tseries.ctl tseries.ctl_batch tseries.ctl_export bin/btseries README
+COPYFILES=bin/tseries tseries.png tseries.sh tseries.ctl tseries.ctl_batch tseries.ctl_export bin/btseries README tseriesTEST.sh
 COPYDIRS=doc etc images style batch lang
 COPYTREES=
 BINLINKS= tseries.sh bin/tseries bin/btseries
 DESTNAME=tseries
+TESTDESTNAME=tseriesTEST
+TESTBINLINKS=tseriesTEST.sh 
 
 include ../conf/install.mk
