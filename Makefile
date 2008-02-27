@@ -35,7 +35,7 @@ LINKS = \
 	`pkg-config --libs gltext`     \
 	-L$(QTDIR)/lib $(QT_LIBS) \
 	$(GLLIBDIR) -lGL -lGLU \
-	-L$(HDF4DIR)/lib -ldf -lz -lm $(XLIBDIR) -lXext -lXmu -lXt -lX11  $(XTRALIBS)
+	-L$(HDF4DIR)/lib -ldf -ljpeg -lz -lm $(XLIBDIR) -lXext -lXmu -lXt -lX11  $(XTRALIBS)
 
 BLINKS = \
 	-L$(LOCALDIR)/$(LIBDIR) -lpets2 \
