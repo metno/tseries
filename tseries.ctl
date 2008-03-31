@@ -319,6 +319,12 @@ DataDescription=LAMEPS-data
 DataType=HDF
 Contents=x,x,LAMEPS,18
 
+
+DataFile=$(Mdata)/lameps06.hdf
+DataDescription=LAMEPS-data
+DataType=HDF
+Contents=x,x,LAMEPS,06
+
 []
 
 # -------------------------------------------------
