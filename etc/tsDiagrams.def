@@ -11,9 +11,7 @@ EPS=EPS
 LAMEPS=LAMEPS
 HIRLAM_U=Hirlam ukorr.
 ECMWF_U=Ecmwf ukorr.
-HIRLAM.20km=Hirlam 20km
 HIRLAM.12km=Hirlam 12km
-HIRLAM.10km=Hirlam 10km
 HIRLAM.8km=Hirlam 8km
 HIRLAM.4km=Hirlam 4km
 UM.4km=UM 4km
@@ -30,9 +28,7 @@ NAME=Meteogram
 STYLEFILE=/metno/local/tseries/style/style.meteogram
 
 [LEGALMODELS]
-MODEL=HIRLAM.20km
 MODEL=HIRLAM.12km
-MODEL=HIRLAM.10km
 MODEL=HIRLAM.8km
 MODEL=HIRLAM.4km
 MODEL=ECMWF
@@ -117,9 +113,7 @@ NAME=S-Meteogram
 STYLEFILE=/metno/local/tseries/style/style.meteogram
 
 [LEGALMODELS]
-MODEL=HIRLAM.20km
 MODEL=HIRLAM.12km
-MODEL=HIRLAM.10km
 MODEL=HIRLAM.8km
 MODEL=HIRLAM.4km
 MODEL=ECMWF
@@ -160,9 +154,7 @@ NAME=Meteogram m/snø
 STYLEFILE=/metno/local/tseries/style/style.snow_meteogram
 
 [LEGALMODELS]
-MODEL=HIRLAM.20km
 MODEL=HIRLAM.12km
-MODEL=HIRLAM.10km
 MODEL=HIRLAM.8km
 MODEL=HIRLAM.4km
 MODEL=UM.4km

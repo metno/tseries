@@ -133,16 +133,6 @@ DataType=HDF
 Contents=x,x,HIRLAM.8km,18
 
 
-# -------------------------------------------------
-
-CollectionName=HIRLAM10Meteogrammer
-PreferredDiagram=Meteogram
-InitialOpen=0
-
-DataFile=$(Mdata)/hirlam10.hdf
-DataDescription=HIRLAM.10km
-DataType=HDF
-Contents=x,x,HIRLAM.10km,x
 
 # -------------------------------------------------
 
@@ -171,41 +161,7 @@ DataDescription=HIRLAM.12km
 DataType=HDF
 Contents=x,x,HIRLAM.12km,18
 
-# -------------------------------------------------
 
-CollectionName=HIRLAM20Meteogrammer
-PreferredDiagram=Meteogram
-InitialOpen=0
-
-[VTK]
-
-DataFile=$(Mdata)/hirlam20.hdf
-DataDescription=HIRLAM.20km
-DataType=HDF
-Contents=x,x,HIRLAM.20km,x
-
-[VA:VV:VNN:MA:FOU:PU]
-
-DataFile=$(Mdata)/hirlam2000.hdf
-DataDescription=HIRLAM.20km
-DataType=HDF
-Contents=x,x,HIRLAM.20km,0
-
-DataFile=$(Mdata)/hirlam2006.hdf
-DataDescription=HIRLAM.20km
-DataType=HDF
-Contents=x,x,HIRLAM.20km,6
-
-DataFile=$(Mdata)/hirlam2012.hdf
-DataDescription=HIRLAM.20km
-DataType=HDF
-Contents=x,x,HIRLAM.20km,12
-
-DataFile=$(Mdata)/hirlam2018.hdf
-DataDescription=HIRLAM.20km
-DataType=HDF
-Contents=x,x,HIRLAM.20km,18
-[]
 
 # -------------------------------------------------
 
@@ -318,6 +274,12 @@ DataFile=$(Mdata)/lameps18.hdf
 DataDescription=LAMEPS-data
 DataType=HDF
 Contents=x,x,LAMEPS,18
+
+
+DataFile=$(Mdata)/lameps06.hdf
+DataDescription=LAMEPS-data
+DataType=HDF
+Contents=x,x,LAMEPS,06
 
 []
 
