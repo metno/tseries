@@ -366,6 +366,17 @@ DataFile=$(Edata)/ecwam_npl_12.hdf
 DataDescription=ECMWF_WAM
 DataType=HDF
 Contents=x,x,ECMWF_WAM,12
+[]
+
+# -------------------------------------------------
+
+
+
+[VA:VV:VNN:MA:FOU:PU]
+
+CollectionName=Bølgediagrammer
+PreferredDiagram=Bølgediagram
+InitialOpen=1
 
 DataFile=$(Wdata)/wam_10km_npl00.hdf
 DataDescription=WAM_10km
@@ -379,6 +390,7 @@ Contents=x,x,WAM_10km,12
 []
 
 # -------------------------------------------------
+
 
 [VA:VV:VNN:MA:FOU:PU]
 
