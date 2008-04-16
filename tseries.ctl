@@ -39,7 +39,7 @@ baseFilter=$(Etc)/tseries.filter
 
 Client=Diana
 Name=tseries
-Command=/metno/local/bin/coserver
+Command=/home/martinls/local/src/coserver2/bin/coserver2
 
 <doc>
 mainsource=index.html
@@ -366,6 +366,16 @@ DataFile=$(Edata)/ecwam_npl_12.hdf
 DataDescription=ECMWF_WAM
 DataType=HDF
 Contents=x,x,ECMWF_WAM,12
+
+DataFile=$(Wdata)/wam_10km_npl00.hdf
+DataDescription=WAM_10km
+DataType=HDF
+Contents=x,x,WAM_10km,0
+
+DataFile=$(Wdata)/wam_10km_npl12.hdf
+DataDescription=WAM_10km
+DataType=HDF
+Contents=x,x,WAM_10km,12
 []
 
 # -------------------------------------------------

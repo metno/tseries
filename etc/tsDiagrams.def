@@ -5,6 +5,7 @@ ECMWF=Ecmwf
 Nordic_4km=Nordic 4km
 Nordic_4km_resid=Nordic 4km resid
 WAM=Wam
+WAM_10km=Wam 10km
 WAM_EC=Wam (ec-vind)
 ECMWF_WAM=ECMWF_WAM
 EPS=EPS
@@ -89,6 +90,7 @@ STYLEFILE=/metno/local/tseries/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=WAM
+MODEL=WAM_10km
 MODEL=WAM_EC
 MODEL=ECMWF_WAM
 
