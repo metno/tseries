@@ -39,7 +39,8 @@ baseFilter=$(Etc)/tseries.filter
 
 Client=Diana
 Name=tseries
-Command=/home/martinls/local/src/coserver2/bin/coserver2
+
+Command=/metno/local/bin/coserver4
 
 <doc>
 mainsource=index.html
