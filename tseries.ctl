@@ -25,7 +25,6 @@ Lang=$(Work)/lang:${QTDIR}/translations:/metno/local/translations
 #------------------
 
 <files>
-
 Defs=$(Etc)/tsDiagrams.def
 Configure=$(Home)/.tseries.conf
 WeatherSymbols=$(Etc)/symbols.def
@@ -189,8 +188,18 @@ DataDescription=UM.4km
 DataType=HDF
 Contents=x,x,UM.4km,12
 
-[]
 
+[VA:VNN:VV:FOU]
+CollectionName=UM4km Barentshavet
+PreferredDiagram=Meteogram
+InitialOpen=0
+
+DataFile=$(Mdata)/um4bx.hdf
+DataDescription=UM4BX 
+DataType=HDF
+Contents=x,x,UM4BX,x
+
+[]
 
 
 # -------------------------------------------------
@@ -220,31 +229,6 @@ Contents=x,x,UM1.exp,x
 
 
 
-
-
-# -------------------------------------------------
-
-[VA:FOU:PU]
-CollectionName=MM5.1kmMeteogrammer
-PreferredDiagram=Meteogram
-InitialOpen=0
-
-DataFile=$(Odata)/byluft/operational/run/res/OSLO/plot/byluft_pose.hdf
-DataDescription=MM5.1km
-DataType=HDF
-Contents=x,x,MM5.1km,x
-
-DataFile=$(Odata)/byluft/operational/run/res/BERGEN/plot/byluft_pose.hdf
-DataDescription=MM5.1km
-DataType=HDF
-Contents=x,x,MM5.1km,x
-
-DataFile=$(Odata)/byluft/operational/run/res/TRONDHEIM/plot/byluft_pose.hdf
-DataDescription=MM5.1km
-DataType=HDF
-Contents=x,x,MM5.1km,x
-
-[]
 
 # -------------------------------------------------
 
