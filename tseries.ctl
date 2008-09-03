@@ -25,7 +25,8 @@ Lang=$(Work)/lang:${QTDIR}/translations:/metno/local/translations
 #------------------
 
 <files>
-Defs=$(Etc)/tsDiagrams.def
+
+Defs=$(Home)/tsDiagrams.def
 Configure=$(Home)/.tseries.conf
 WeatherSymbols=$(Etc)/symbols.def
 stdImage=$(Images)/ts_station.xpm
@@ -83,6 +84,22 @@ Contents=x,x,ECMWF,00
 
 
 
+
+# -------------------------------------------------
+
+CollectionName=HARMONIE4Meteogrammer
+PreferredDiagram=Meteogram
+InitialOpen=0
+
+DataFile=$(Mdata)/harmonie4km00.hdf
+DataDescription=HARMONIE.4km
+DataType=HDF
+Contents=x,x,HARMONIE.4km,0
+
+DataFile=$(Mdata)/harmonie4km12.hdf
+DataDescription=HARMONIE.4km
+DataType=HDF
+Contents=x,x,HARMONIE.4km,12
 
 # -------------------------------------------------
 
