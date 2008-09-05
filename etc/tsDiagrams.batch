@@ -1,20 +1,28 @@
 [MODELS]
-HIRLAM.20km=Hirlam 20km
 
 SUBJ=Subjective
 ECMWF=Ecmwf
-ECOM3D=Ecom3d
-ECOM3D_20km=Ecom3d_20km
+Nordic_4km=Nordic 4km
+Nordic_4km_resid=Nordic 4km resid
 WAM=Wam
+WAM_10km=Wam 10km
 WAM_EC=Wam (ec-vind)
+ECMWF_WAM=ECMWF_WAM
 EPS=EPS
 LAMEPS=LAMEPS
 HIRLAM_U=Hirlam ukorr.
 ECMWF_U=Ecmwf ukorr.
-
-HIRLAM.10km=Hirlam 10km
-HIRLAM.5km=Hirlam 5km
-UM.3km=UM 3km
+HIRLAM.12km=Hirlam 12km
+HIRLAM.8km=Hirlam 8km
+HIRLAM.4km=Hirlam 4km
+HARMONIE.4km=Harmonie 4km
+UM.4km=UM 4km
+UM4BX=UM 4km bx
+UM.1km=UM 1km
+UM1.exp=UM 1km exp
+rr24=rr24
+fx10-6h=fx10-6h
+t2m=t2m
 
 # Standard meteogram
 [DIAGRAM]
@@ -22,80 +30,34 @@ NAME=Meteogram
 STYLEFILE=/metno/local/tseries/style/style.meteogram
 
 [LEGALMODELS]
-MODEL=HIRLAM.20km
-MODEL=HIRLAM.10km
-MODEL=HIRLAM.5km
+MODEL=HIRLAM.12km
+MODEL=HIRLAM.8km
+MODEL=HIRLAM.4km
+MODEL=HARMONIE.4km
 MODEL=ECMWF
-MODEL=UM.3km
+MODEL=UM.4km
+MODEL=UM4BX
+MODEL=UM.1km
+MODEL=UM1.exp
+
 
 [MODELINDEPENDENT]
-PARAM=WVFD,x,x,x
-PARAM=FF,x,x,x
-PARAM=DD,x,x,x
 PARAM=UU,x,x,x
 PARAM=VV,x,x,x
-PARAM=TT,x,x,x
-PARAM=MSLP,x,x,x
-PARAM=RR,x,x,x
-PARAM=FG,x,x,x
-PARAM=CL,x,x,x
-PARAM=CM,x,x,x
-PARAM=CH,x,x,x
-PARAM=CC,x,x,x
-
-[ADD]
-
-# Batch meteogram med snø
-[DIAGRAM]
-NAME=Batch_Meteogram
-STYLEFILE=/metno/local/tseries/style/style.meteogram_batch
-
-[LEGALMODELS]
-MODEL=HIRLAM.20km
-MODEL=HIRLAM.10km
-MODEL=HIRLAM.5km
-MODEL=ECMWF
-MODEL=UM.3km
-
-[MODELINDEPENDENT]
-PARAM=WVFD,x,x,x
 PARAM=FF,x,x,x
 PARAM=DD,x,x,x
-PARAM=UU,x,x,x
-PARAM=VV,x,x,x
+PARAM=WVFD,x,x,x
 PARAM=TT,x,x,x
-PARAM=MSLP,x,x,x
-PARAM=RR,x,x,x
-PARAM=FG,x,x,x
-PARAM=CL,x,x,x
-PARAM=CM,x,x,x
-PARAM=CH,x,x,x
-PARAM=CC,x,x,x
-PARAM=SNPR,x,x,x
 PARAM=TT_U,x,x,x
-
-[ADD]
-
-# Standard meteogram
-[DIAGRAM]
-NAME=Batch_Meteogram_ec
-STYLEFILE=/metno/local/tseries/style/style.meteogram_batch
-
-[LEGALMODELS]
-MODEL=HIRLAM.20km
-MODEL=HIRLAM.10km
-MODEL=HIRLAM.5km
-MODEL=ECMWF
-MODEL=UM.3km
-
-[MODELINDEPENDENT]
-PARAM=WVFD,x,x,x
-PARAM=FF,x,x,x
-PARAM=DD,x,x,x
-PARAM=UU,x,x,x
-PARAM=VV,x,x,x
-PARAM=TT,x,x,x
 PARAM=MSLP,x,x,x
+PARAM=RR1,x,x,x
+PARAM=RR2,x,x,x
+PARAM=SNPR,x,x,x
+PARAM=RAPR,x,x,x
+PARAM=COSN,x,x,x
+PARAM=CORA,x,x,x
+PARAM=STSN,x,x,x
+PARAM=STRA,x,x,x
 PARAM=RR,x,x,x
 PARAM=FG,x,x,x
 PARAM=CL,x,x,x
@@ -104,7 +66,6 @@ PARAM=CH,x,x,x
 PARAM=CC,x,x,x
 
 [ADD]
-
 
 # Havdiagram
 [DIAGRAM]
@@ -112,8 +73,8 @@ NAME=Havdiagram
 STYLEFILE=/metno/local/tseries/style/style.meteogram
 
 [LEGALMODELS]
-MODEL=ECOM3D
-MODEL=ECOM3D_20km
+MODEL=Nordic_4km
+MODEL=Nordic_4km_resid
 
 [MODELINDEPENDENT]
 PARAM=HS,x,x,x
@@ -131,7 +92,9 @@ STYLEFILE=/metno/local/tseries/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=WAM
+MODEL=WAM_10km
 MODEL=WAM_EC
+MODEL=ECMWF_WAM
 
 [MODELINDEPENDENT]
 PARAM=FF,x,x,x
@@ -154,21 +117,33 @@ NAME=S-Meteogram
 STYLEFILE=/metno/local/tseries/style/style.meteogram
 
 [LEGALMODELS]
-MODEL=HIRLAM.20km
-MODEL=HIRLAM.10km
-MODEL=HIRLAM.5km
+MODEL=HIRLAM.12km
+MODEL=HIRLAM.8km
+MODEL=HIRLAM.4km
+MODEL=HARMONIE.4km
 MODEL=ECMWF
-MODEL=UM.3km
+MODEL=UM.4km
+MODEL=UM4BX
 MODEL=SUBJ
+MODEL=UM.1km
+
 
 [MODELINDEPENDENT]
-PARAM=WVFD,x,x,x
-PARAM=FF,x,x,x
-PARAM=DD,x,x,x
 PARAM=UU,x,x,x
 PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=WVFD,x,x,x
 PARAM=TT,x,x,x
 PARAM=MSLP,x,x,x
+PARAM=RR1,x,x,x
+PARAM=RR2,x,x,x
+PARAM=SNPR,x,x,x
+PARAM=RAPR,x,x,x
+PARAM=COSN,x,x,x
+PARAM=CORA,x,x,x
+PARAM=STSN,x,x,x
+PARAM=STRA,x,x,x
 PARAM=RR,x,x,x
 PARAM=FG,x,x,x
 PARAM=CL,x,x,x
@@ -181,29 +156,39 @@ PARAM=WW,x,x,x
 
 [DIAGRAM]
 NAME=Meteogram m/snø
-STYLEFILE=/metno/local/tseries/style/style.meteogram
+STYLEFILE=/metno/local/tseries/style/style.snow_meteogram
 
 [LEGALMODELS]
-MODEL=HIRLAM.20km
-MODEL=HIRLAM.10km
-MODEL=HIRLAM.5km
-MODEL=UM.3km
+MODEL=HIRLAM.12km
+MODEL=HIRLAM.8km
+MODEL=HIRLAM.4km
+MODEL=UM.4km
+MODEL=UM4BX
+MODEL=UM.1km
 
 [MODELINDEPENDENT]
-PARAM=WVFD,x,x,x
-PARAM=FF,x,x,x
-PARAM=DD,x,x,x
 PARAM=UU,x,x,x
 PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=WVFD,x,x,x
 PARAM=TT,x,x,x
+PARAM=TT_U,x,x,x
 PARAM=MSLP,x,x,x
+PARAM=RR1,x,x,x
+PARAM=RR2,x,x,x
+PARAM=SNPR,x,x,x
+PARAM=RAPR,x,x,x
+PARAM=COSN,x,x,x
+PARAM=CORA,x,x,x
+PARAM=STSN,x,x,x
+PARAM=STRA,x,x,x
 PARAM=RR,x,x,x
 PARAM=FG,x,x,x
 PARAM=CL,x,x,x
 PARAM=CM,x,x,x
 PARAM=CH,x,x,x
 PARAM=CC,x,x,x
-PARAM=SNPR,x,x,x
 
 [ADD]
 
@@ -214,14 +199,22 @@ NAME=Marinogram
 STYLEFILE=/metno/local/tseries/style/style.marinogram
 
 [MODELSPECIFIC]
-MODEL=HIRLAM.20km
-PARAM=WVFD,x,x,x
-PARAM=FF,x,x,x
-PARAM=DD,x,x,x
+MODEL=HIRLAM.12km
 PARAM=UU,x,x,x
 PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=WVFD,x,x,x
 PARAM=TT,x,x,x
 PARAM=MSLP,x,x,x
+PARAM=RR1,x,x,x
+PARAM=RR2,x,x,x
+PARAM=SNPR,x,x,x
+PARAM=RAPR,x,x,x
+PARAM=COSN,x,x,x
+PARAM=CORA,x,x,x
+PARAM=STSN,x,x,x
+PARAM=STRA,x,x,x
 PARAM=RR,x,x,x
 PARAM=FG,x,x,x
 PARAM=CL,x,x,x
@@ -267,10 +260,10 @@ PARAM=TT,x,x,x
 
 [ADD]
 
-# Røykfane RR24 Deciler+Ensembler+operasjonell
+# Røykfane RR Deciler+Ensembler+operasjonell
 [DIAGRAM]
-NAME=EPS_RR24
-STYLEFILE=/metno/local/tseries/style/style.eps_rr24
+NAME=EPS_RR
+STYLEFILE=/metno/local/tseries/style/style.eps_rr
 
 [MODELSPECIFIC]
 MODEL=EPS
@@ -327,16 +320,81 @@ PARAM=EPTT,x,x,x
 [ADD]
 
 
+# 
+[DIAGRAM]
+NAME=Boksplott-Døgnnedbør
+STYLEFILE=/metno/local/tseries/style/style.rrqgram
+
+[MODELSPECIFIC]
+MODEL=rr24
+PARAM=rr24_PROB,x,x,x,x
+PARAM=rr24_Q5,x,x,x,x
+PARAM=rr24_Q25,x,x,x,x
+PARAM=rr24_Q50,x,x,x,x
+PARAM=rr24_Q75,x,x,x,x
+PARAM=rr24_Q95,x,x,x,x
+PARAM=rr24_EC,x,x,x,x
+PARAM=RRQT,x,x,x,x
+[END]
+
+[ADD]
+
+# 
+[DIAGRAM]
+NAME=Boksplott-Maks.vind
+STYLEFILE=/metno/local/tseries/style/style.fxqgram
+
+[MODELSPECIFIC]
+MODEL=fx10-6h
+PARAM=fx10-6h_PROB,x,x,x,x
+PARAM=fx10-6h_Q5,x,x,x,x
+PARAM=fx10-6h_Q25,x,x,x,x
+PARAM=fx10-6h_Q50,x,x,x,x
+PARAM=fx10-6h_Q75,x,x,x,x
+PARAM=fx10-6h_Q95,x,x,x,x
+PARAM=fx10-6h_EC,x,x,x,x
+PARAM=FXQT-6h,x,x,x,x
+[END]
+
+[ADD]
+
+# 
+[DIAGRAM]
+NAME=Boksplott-Temperatur2m
+STYLEFILE=/metno/local/tseries/style/style.t2mqgram
+
+[MODELSPECIFIC]
+MODEL=t2m
+PARAM=t2m_PROB,x,x,x,x
+PARAM=t2m_Q5,x,x,x,x
+PARAM=t2m_Q25,x,x,x,x
+PARAM=t2m_Q50,x,x,x,x
+PARAM=t2m_Q75,x,x,x,x
+PARAM=t2m_Q95,x,x,x,x
+PARAM=t2m_EC,x,x,x,x
+PARAM=t2mQT,x,x,x,x
+[END]
+
+[ADD]
+
+
+
 # Røykfane T2m Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_T2M
 STYLEFILE=/metno/local/tseries/style/style.lameps_t2m
-
 [MODELSPECIFIC]
 MODEL=LAMEPS
 PARAM=EPTD,x,x,x
 PARAM=EPTT,x,x,x
 [END]
+
+[MODELSPECIFIC]
+MODEL=HIRLAM.12km
+PARAM=TT,x,x,x
+PARAM=TT_U,x,x,x
+[END]
+
 
 [ADD]
 
