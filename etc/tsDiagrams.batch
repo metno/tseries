@@ -67,6 +67,92 @@ PARAM=CC,x,x,x
 
 [ADD]
 
+# Batch meteogram med snø
+[DIAGRAM]
+NAME=Batch_Meteogram
+STYLEFILE=/metno/local/tseries/style/style.meteogram_batch
+
+[LEGALMODELS]
+MODEL=HIRLAM.12km
+MODEL=HIRLAM.8km
+MODEL=HIRLAM.4km
+MODEL=HARMONIE.4km
+MODEL=ECMWF
+MODEL=UM.4km
+MODEL=UM4BX
+MODEL=UM.1km
+MODEL=UM1.exp
+MODEL=UM.3km
+
+[MODELINDEPENDENT]
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=WVFD,x,x,x
+PARAM=TT,x,x,x
+PARAM=TT_U,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR1,x,x,x
+PARAM=RR2,x,x,x
+PARAM=SNPR,x,x,x
+PARAM=RAPR,x,x,x
+PARAM=COSN,x,x,x
+PARAM=CORA,x,x,x
+PARAM=STSN,x,x,x
+PARAM=STRA,x,x,x
+PARAM=RR,x,x,x
+PARAM=FG,x,x,x
+PARAM=CL,x,x,x
+PARAM=CM,x,x,x
+PARAM=CH,x,x,x
+PARAM=CC,x,x,x
+
+[ADD]
+
+# Standard meteogram
+[DIAGRAM]
+NAME=Batch_Meteogram_ec
+STYLEFILE=/metno/local/tseries/style/style.meteogram_batch
+
+[LEGALMODELS]
+MODEL=HIRLAM.12km
+MODEL=HIRLAM.8km
+MODEL=HIRLAM.4km
+MODEL=HARMONIE.4km
+MODEL=ECMWF
+MODEL=UM.4km
+MODEL=UM4BX
+MODEL=UM.1km
+MODEL=UM1.exp
+MODEL=UM.3km
+
+[MODELINDEPENDENT]
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=WVFD,x,x,x
+PARAM=TT,x,x,x
+PARAM=TT_U,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR1,x,x,x
+PARAM=RR2,x,x,x
+PARAM=SNPR,x,x,x
+PARAM=RAPR,x,x,x
+PARAM=COSN,x,x,x
+PARAM=CORA,x,x,x
+PARAM=STSN,x,x,x
+PARAM=STRA,x,x,x
+PARAM=RR,x,x,x
+PARAM=FG,x,x,x
+PARAM=CL,x,x,x
+PARAM=CM,x,x,x
+PARAM=CH,x,x,x
+PARAM=CC,x,x,x
+
+[ADD]
+
 # Havdiagram
 [DIAGRAM]
 NAME=Havdiagram
@@ -262,8 +348,8 @@ PARAM=TT,x,x,x
 
 # Røykfane RR Deciler+Ensembler+operasjonell
 [DIAGRAM]
-NAME=EPS_RR
-STYLEFILE=/metno/local/tseries/style/style.eps_rr
+NAME=EPS_RR24
+STYLEFILE=/metno/local/tseries/style/style.eps_rr24
 
 [MODELSPECIFIC]
 MODEL=EPS
