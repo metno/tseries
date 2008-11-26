@@ -1,6 +1,5 @@
 #!/bin/sh
 
-export LD_LIBRARY_PATH=/metno/local/lib/mesa:$LD_LIBRARY_PATH
 
 tsdir="/metno/local/tseriesTEST"
   

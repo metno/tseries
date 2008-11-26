@@ -12,26 +12,25 @@ Edata=$(Odata)/ec
 #------------------
 
 <Path>
-Work=/metno/local/tseries
-[PU]
-Work=./
-[]
+Work=/usr/local
 
-Etc=$(Work)/etc
-Images=$(Work)/images/
-Doc=$(Work)/doc
-Lang=$(Work)/lang:${QTDIR}/translations:/metno/local/translations
+Etc=$(Work)/etc/tseries
+
+
+Images=$(Work)/share/pixmaps/tseries
+Doc=$(Work)/share/doc/tseries
+Lang=$(Work)/share/lang
 
 #------------------
 
 <files>
 
 Defs=$(Etc)/tsDiagrams.def
-Configure=$(Home)/.tseries.conf
+Configure=$(Home)/.tseries/tseries.conf
 WeatherSymbols=$(Etc)/symbols.def
 stdImage=$(Images)/ts_station.xpm
 finImage=$(Images)/ts_find.xpm
-iconImage=$(Work)/tseries.png
+iconImage=$(Work)/share/pixmaps/tseries.png
 baseFilter=$(Etc)/tseries.filter
 
 
@@ -40,7 +39,7 @@ baseFilter=$(Etc)/tseries.filter
 Client=Diana
 Name=tseries
 
-Command=/metno/local/bin/coserver4
+Command=$(Work)/bin/coserver4
 
 <doc>
 mainsource=index.html

@@ -10,7 +10,7 @@ SRCDIR=src
 LIBDIR=lib$(PLT)
 OBJDIR=obj$(PLT)
 BINDIR=bin$(PLT)
-LANGDIR=lang
+LANGDIR=share/lang
 INCDIR=../include
 LOCALINC=$(LOCALDIR)/include
 
@@ -91,11 +91,10 @@ mark:
 	@echo "[1;34m = = = = = = = = = = = = = = = = = = = = = = [0m "
 
 # install
-COPYFILES=bin/tseries tseries.png tseries.sh tseries.ctl tseries.ctl_batch tseries.ctl_export bin/btseries README tseriesTEST.sh tseriesTEST.ctl
-COPYDIRS=doc etc images style batch lang
-COPYTREES=
-BINLINKS= tseries.sh bin/tseries bin/btseries
-DESTNAME=tseries
+COPYDIRS=bin
+COPYTREES=share etc
+DESTNAME=tseries-4.0
+
 TESTDESTNAME=tseriesTEST
 TESTBINLINKS=tseriesTEST.sh 
 

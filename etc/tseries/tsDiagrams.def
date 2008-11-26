@@ -27,7 +27,7 @@ t2m=t2m
 # Standard meteogram
 [DIAGRAM]
 NAME=Meteogram
-STYLEFILE=/metno/local/tseries/style/style.meteogram
+STYLEFILE= /usr/local/share/tseries/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=HIRLAM.12km
@@ -70,7 +70,7 @@ PARAM=CC,x,x,x
 # Havdiagram
 [DIAGRAM]
 NAME=Havdiagram
-STYLEFILE=/metno/local/tseries/style/style.meteogram
+STYLEFILE= /usr/local/share/tseries/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=Nordic_4km
@@ -88,7 +88,7 @@ PARAM=CFD,x,x,x
 # Bølgediagram
 [DIAGRAM]
 NAME=Bølgediagram
-STYLEFILE=/metno/local/tseries/style/style.meteogram
+STYLEFILE= /usr/local/share/tseries/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=WAM
@@ -114,7 +114,7 @@ PARAM=DDPP,x,x,x
 # Standard meteogram med vær
 [DIAGRAM]
 NAME=S-Meteogram
-STYLEFILE=/metno/local/tseries/style/style.meteogram
+STYLEFILE= /usr/local/share/tseries/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=HIRLAM.12km
@@ -156,7 +156,7 @@ PARAM=WW,x,x,x
 
 [DIAGRAM]
 NAME=Meteogram m/snø
-STYLEFILE=/metno/local/tseries/style/style.snow_meteogram
+STYLEFILE= /usr/local/share/tseries/style/style.snow_meteogram
 
 [LEGALMODELS]
 MODEL=HIRLAM.12km
@@ -196,7 +196,7 @@ PARAM=CC,x,x,x
 # Marinogram
 [DIAGRAM]
 NAME=Marinogram
-STYLEFILE=/metno/local/tseries/style/style.marinogram
+STYLEFILE= /usr/local/share/tseries/style/style.marinogram
 
 [MODELSPECIFIC]
 MODEL=HIRLAM.12km
@@ -244,7 +244,7 @@ PARAM=HSDD,x,x,x
 # Røykfane T2m Deciler+Ensembler+Operasjonell
 [DIAGRAM]
 NAME=EPS_T2M
-STYLEFILE=/metno/local/tseries/style/style.eps_t2m
+STYLEFILE= /usr/local/share/tseries/style/style.eps_t2m
 
 [MODELSPECIFIC]
 MODEL=EPS
@@ -263,7 +263,7 @@ PARAM=TT,x,x,x
 # Røykfane RR Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_RR
-STYLEFILE=/metno/local/tseries/style/style.eps_rr
+STYLEFILE= /usr/local/share/tseries/style/style.eps_rr
 
 [MODELSPECIFIC]
 MODEL=EPS
@@ -282,7 +282,7 @@ PARAM=RR,x,x,x
 # Røykfane Z500 Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_Z500
-STYLEFILE=/metno/local/tseries/style/style.eps_z500
+STYLEFILE= /usr/local/share/tseries/style/style.eps_z500
 
 [MODELSPECIFIC]
 MODEL=EPS
@@ -301,7 +301,7 @@ PARAM=Z,x,x,x
 # Røykfane RR/T2m Deciler + operasjonell
 [DIAGRAM]
 NAME=EPS_RR/T2M
-STYLEFILE=/metno/local/tseries/style/style.eps_rrt2m
+STYLEFILE= /usr/local/share/tseries/style/style.eps_rrt2m
 
 [MODELSPECIFIC]
 MODEL=ECMWF_U
@@ -323,7 +323,7 @@ PARAM=EPTT,x,x,x
 # 
 [DIAGRAM]
 NAME=Boksplott-Døgnnedbør
-STYLEFILE=/metno/local/tseries/style/style.rrqgram
+STYLEFILE= /usr/local/share/tseries/style/style.rrqgram
 
 [MODELSPECIFIC]
 MODEL=rr24
@@ -342,7 +342,7 @@ PARAM=RRQT,x,x,x,x
 # 
 [DIAGRAM]
 NAME=Boksplott-Maks.vind
-STYLEFILE=/metno/local/tseries/style/style.fxqgram
+STYLEFILE= /usr/local/share/tseries/style/style.fxqgram
 
 [MODELSPECIFIC]
 MODEL=fx10-6h
@@ -361,7 +361,7 @@ PARAM=FXQT-6h,x,x,x,x
 # 
 [DIAGRAM]
 NAME=Boksplott-Temperatur2m
-STYLEFILE=/metno/local/tseries/style/style.t2mqgram
+STYLEFILE= /usr/local/share/tseries/style/style.t2mqgram
 
 [MODELSPECIFIC]
 MODEL=t2m
@@ -382,7 +382,7 @@ PARAM=t2mQT,x,x,x,x
 # Røykfane T2m Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_T2M
-STYLEFILE=/metno/local/tseries/style/style.lameps_t2m
+STYLEFILE= /usr/local/share/tseries/style/style.lameps_t2m
 [MODELSPECIFIC]
 MODEL=LAMEPS
 PARAM=EPTD,x,x,x
@@ -401,7 +401,7 @@ PARAM=TT_U,x,x,x
 # Røykfane RR Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_RR
-STYLEFILE=/metno/local/tseries/style/style.lameps_rr
+STYLEFILE= /usr/local/share/tseries/style/style.lameps_rr
 
 [MODELSPECIFIC]
 MODEL=LAMEPS
@@ -422,7 +422,7 @@ PARAM=RR,x,x,x
 # Røykfane Z500 Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_Z500
-STYLEFILE=/metno/local/tseries/style/style.lameps_z500
+STYLEFILE= /usr/local/share/tseries/style/style.lameps_z500
 
 [MODELSPECIFIC]
 MODEL=LAMEPS
@@ -437,7 +437,7 @@ PARAM=EPFC,x,x,x
 
 [DIAGRAM]
 NAME=LAMEPS_FF
-STYLEFILE=/metno/local/tseries/style/style.lameps_ff
+STYLEFILE= /usr/local/share/tseries/style/style.lameps_ff
 
 
 [MODELSPECIFIC]
@@ -460,7 +460,7 @@ PARAM=FFMS,x,x,x
 # Offshore
 [DIAGRAM]
 NAME=MariProd
-STYLEFILE=/metno/local/tseries/style/style.maritim
+STYLEFILE= /usr/local/share/tseries/style/style.maritim
 
 [LEGALMODELS]
 MODEL=SUBJ

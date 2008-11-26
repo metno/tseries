@@ -38,7 +38,7 @@ BALLOBJ= $(CCOBJ) $(COBJ) $(BOBJ)
 
 
 
-all: $(BINDIR)/tseries $(BINDIR)/btseries
+all: $(BINDIR)/tseries.bin $(BINDIR)/btseries.bin
 
 #----------------------------------------------------------------------------
 
@@ -81,13 +81,13 @@ languages:
 
 #----------------------------------------------------------------------------
 
-$(BINDIR)/tseries: $(ALLOBJ) 
+$(BINDIR)/tseries.bin: $(ALLOBJ) 
 	$(CXX) -o $@ $(CCFLAGS) $(ALLOBJ)  $(LINKS)
 
 
 #-----------------------------------------------------
 
-$(BINDIR)/btseries: $(BALLOBJ) 
+$(BINDIR)/btseries.bin: $(BALLOBJ) 
 	$(CXX) -o $@ $(CCFLAGS) $(BALLOBJ) $(BLINKS)
 
 
