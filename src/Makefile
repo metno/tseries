@@ -76,7 +76,9 @@ LANGUAGES= $(LANGDIR)/tseries_de.ts \
 languages:
 	lupdate  -verbose $(QSRC) -ts $(LANGUAGES)
 	cd $(LANGDIR) ; 
-	lrelease -verbose $(LANGUAGES)
+	lrelease -verbose $(LANGUAGES) ; \
+	mkdir -p  $(LANGDEST) ; \
+	cp $(LANGDIR)/*.qm $(LANGDEST)
 
 
 #----------------------------------------------------------------------------
@@ -87,7 +89,7 @@ $(BINDIR)/tseries.bin: $(ALLOBJ)
 
 #-----------------------------------------------------
 
-$(BINDIR)/btseries.bin: $(BALLOBJ) 
+$(BINDIR)/btseries: $(BALLOBJ) 
 	$(CXX) -o $@ $(CCFLAGS) $(BALLOBJ) $(BLINKS)
 
 

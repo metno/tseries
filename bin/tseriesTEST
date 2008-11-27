@@ -1,7 +1,6 @@
 #!/bin/sh
 
-
-tsdir="/metno/local/tseriesTEST"
+tsdir=/usr/local/etc/tseries/
   
 SUBNET=`/sbin/ifconfig eth0 | grep "inet addr" | cut -d. -f3`
 
@@ -15,4 +14,4 @@ case $SUBNET in
 esac
 
 
-$tsdir/bin/tseries -s $tsdir/tseriesTEST.ctl -S $region 
+tseries.bin $@ -s $tsdir/tseriesTEST.ctl -S $region 

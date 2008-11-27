@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -33,11 +33,12 @@
 #include <fstream>
 #include <tsSetup.h>
 #include <tsConfigure.h>
-#include <puTools/miCommandLine.h> 
+#include <puTools/miCommandLine.h>
 #include <qtranslator.h>
 #include <puTools/miTime.h>
 
 using namespace std;
+
 
 
 main(int argc, char **argv)
@@ -60,14 +61,14 @@ main(int argc, char **argv)
   miString    lang;
 
   if(cl.hasFlag('h')){
-    cerr << "Usage: " << argv[0] << " [-s setupfile] [ -S site ] -l [lang] " << endl;  
+    cerr << "Usage: " << argv[0] << " [-s setupfile] [ -S site ] -l [lang] " << endl;
     exit (0);
   }
-  
-  if(cl.hasFlag('S')) 
+
+  if(cl.hasFlag('S'))
     site =  cl.arg('S')[0];
-  
-  if(cl.hasFlag('s')) 
+
+  if(cl.hasFlag('s'))
     setupfile= cl.arg('s')[0];
 
   if(!setup.read(setupfile,site))
@@ -77,13 +78,13 @@ main(int argc, char **argv)
     lang=setup.lang;
 
   config.read(setup.files.configure);
-  
+
   config.get("LANG",lang);
 
-  if(cl.hasFlag('l')) 
+  if(cl.hasFlag('l'))
     lang=cl.arg('l')[0];
- 
-  
+
+
   QApplication a( argc, argv );
   QTranslator myapp( 0 );
   QTranslator qt( 0 );
@@ -94,7 +95,7 @@ main(int argc, char **argv)
 
   if(setup.gui.style.exists())
     a.setStyle(setup.gui.style.cStr());
-  
+
 
   if(lang.exists()) {
 
@@ -105,18 +106,18 @@ main(int argc, char **argv)
 
     for(int i=0;i<setup.path.lang.size(); i++ )
       if( qt.load( qtlang.cStr(),setup.path.lang[i].cStr()))
-	break; 
+	break;
 
-    for(int i=0;i<setup.path.lang.size(); i++ ) 
+    for(int i=0;i<setup.path.lang.size(); i++ )
       if( myapp.load( langfile.cStr(),setup.path.lang[i].cStr()))
 	break;
-    
+
     a.installTranslator( &qt    );
     a.installTranslator( &myapp );
   }
 
 
-  qtsMain *main = new qtsMain(lang); 
+  qtsMain *main = new qtsMain(lang);
   a.setMainWidget(main);
   main->setCaption( "T-series" );
   main->show();
