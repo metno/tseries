@@ -38,7 +38,7 @@ BALLOBJ= $(CCOBJ) $(COBJ) $(BOBJ)
 
 
 
-all: $(BINDIR)/tseries.bin $(BINDIR)/btseries.bin
+all: $(BINDIR)/tseries.bin $(BINDIR)/btseries
 
 #----------------------------------------------------------------------------
 
