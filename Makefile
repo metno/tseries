@@ -15,6 +15,7 @@ LANGDEST=share/lang
 INCDIR=../include
 LOCALINC=$(LOCALDIR)/include
 VERSION="4.0"
+LOCALINC=$(LOCALDIR)/include
 
 DEPENDSFILE=$(OBJDIR)/make.depends
 MOCFILE=$(OBJDIR)/make.moc
@@ -23,7 +24,6 @@ INCLUDE= -I$(INCDIR) -I$(LOCALINC) \
 	-I$(HDF4DIR)/include \
 	 $(QTINCLUDE) \
 	 $(XINCLUDE)
-
 LINKS = \
 	`pkg-config --libs putools`    \
 	`pkg-config --libs puctools`   \
