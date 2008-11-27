@@ -1,5 +1,5 @@
 /* XPM */
-static char * tseries_xpm[] = {
+static const char* tseries_xpm[] = {
 "64 64 530 2",
 "  	c None",
 ". 	c #D1D1D1",

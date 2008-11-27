@@ -106,7 +106,7 @@ version:
 	  rm -f $(VERSIONHEADER); \
 	  echo '#ifndef _version_h_' > $(VERSIONHEADER); \
 	  echo '#define _version_h_' >> $(VERSIONHEADER); \
-	  echo 'const string version_string= "'$$today'- Version 3.1  ";' >> $(VERSIONHEADER); \
+	  echo 'const string version_string= "'$$today'- ${VERSION}  ";' >> $(VERSIONHEADER); \
 	  echo '#endif' >> $(VERSIONHEADER); \
 	  chmod 0664 $(VERSIONHEADER); \
 	  echo "UPDATED $(VERSIONHEADER) $$today"; \
