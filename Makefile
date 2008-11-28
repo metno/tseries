@@ -14,7 +14,7 @@ LANGDIR=lang
 LANGDEST=share/lang
 INCDIR=../include
 LOCALINC=$(LOCALDIR)/include
-VERSION="4.0"
+VERSION="4.0.1"
 LOCALINC=$(LOCALDIR)/include
 
 DEPENDSFILE=$(OBJDIR)/make.depends
