@@ -17,7 +17,7 @@ Work=/usr/local
 Etc=$(Work)/etc/tseries
 
 
-Images=$(Work)/share/pixmaps/tseries
+Images=$(Work)/share/pixmaps/tseries/
 Doc=$(Work)/share/doc/tseries
 Lang=$(Work)/share/lang
 
