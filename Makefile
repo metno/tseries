@@ -14,7 +14,7 @@ LANGDIR=lang
 LANGDEST=share/lang
 INCDIR=../include
 LOCALINC=$(LOCALDIR)/include
-VERSION="4.0.1"
+VERSION="4.0.2"
 LOCALINC=$(LOCALDIR)/include
 
 DEPENDSFILE=$(OBJDIR)/make.depends
@@ -24,17 +24,25 @@ INCLUDE= -I$(INCDIR) -I$(LOCALINC) \
 	-I$(HDF4DIR)/include \
 	 $(QTINCLUDE) \
 	 $(XINCLUDE)
+
+ifdef STATIC
+LFLAG=--static
+else
+LFLAG=--libs
+
+endif
+
 LINKS = \
-	`pkg-config --libs putools`    \
-	`pkg-config --libs puctools`   \
-	`pkg-config --libs tsdata`     \
-	`pkg-config --libs pets2`      \
-	`pkg-config --libs pudatatypes`\
-	`pkg-config --libs parameter`  \
-	`pkg-config --libs pumet`      \
-	`pkg-config --libs qutilities` \
-	`pkg-config --libs glp`        \
-	`pkg-config --libs gltext`     \
+	`pkg-config $(LFLAG) putools`    \
+	`pkg-config $(LFLAG) puctools`   \
+	`pkg-config $(LFLAG) tsdata`     \
+	`pkg-config $(LFLAG) pets2`      \
+	`pkg-config $(LFLAG) pudatatypes`\
+	`pkg-config $(LFLAG) parameter`  \
+	`pkg-config $(LFLAG) pumet`      \
+	`pkg-config $(LFLAG) qutilities` \
+	`pkg-config $(LFLAG) glp`        \
+	`pkg-config $(LFLAG) gltext`     \
 	-L$(QTDIR)/lib $(QT_LIBS) \
 	$(GLLIBDIR) -lGL -lGLU \
 	-L$(HDF4DIR)/lib -ldf -ljpeg -lz -lm $(XLIBDIR) -lXext -lXmu -lXt -lX11  $(XTRALIBS)
