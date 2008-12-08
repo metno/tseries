@@ -1,0 +1,10 @@
+Package: tseries
+Version: 4.0.1
+Priority: optional
+Architecture: i386
+Depends: 
+Installed-Size:
+Maintainer: Juergen Schulze <diana@met.no>
+Conflicts:
+Replaces:
+Description: Timeseries viewer for metorological data

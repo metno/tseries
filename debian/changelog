@@ -1,0 +1,12 @@
+tseries (4.0.1) stable; urgency=low
+
+  * added a slash in setup to get images from /share/tseries
+     	 
+ -- Juergen Schulze <diana@met.no>  Sun, 7 Dec 2008 11:17:34 +0200
+
+tseries (4.0.0) stable; urgency=high (not compatible to lower versions)
+
+  * first version in ubuntu architecture
+  * changed all input directories from metno to standard
+     	 
+ -- Juergen Schulze <diana@met.no>  Fri, 5 Dec 2008 13:17:34 +0200
