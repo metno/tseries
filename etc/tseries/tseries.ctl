@@ -62,20 +62,13 @@ CollectionName=ECMeteogrammer
 PreferredDiagram=Meteogram
 InitialOpen=0
 
-[VV:PU:FOU:VA:VNN]
-DataFile=$(Mdata)/NEW_ecmwf12.hdf
-[MA:VTK]
-DataFile=$(Mdata)/ecmwf12.hdf
-[]
+
+DataFile=$(Mdata)/ecatmo12.hdf
 DataDescription=ECMWF12
 DataType=HDF
 Contents=x,x,ECMWF,12
 
-[VV:PU:FOU:VA:VNN]
-DataFile=$(Mdata)/NEW_ecmwf00.hdf
-[MA:VTK]
-DataFile=$(Mdata)/ecmwf00.hdf
-[]
+DataFile=$(Mdata)/ecatmo00.hdf
 DataDescription=ECMWF00
 DataType=HDF
 Contents=x,x,ECMWF,00
