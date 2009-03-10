@@ -25,7 +25,7 @@ Lang=$(Work)/share/lang
 
 <files>
 
-Defs=./tsDiagrams.def
+Defs=/usr/local/etc/tseries/tsDiagrams.def
 Configure=$(Home)/.tseries/tseries.conf
 WeatherSymbols=$(Etc)/symbols.def
 stdImage=$(Images)/ts_station.xpm
