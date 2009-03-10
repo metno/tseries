@@ -12,6 +12,9 @@ EPS=EPS
 LAMEPS=LAMEPS
 HIRLAM_U=Hirlam ukorr.
 ECMWF_U=Ecmwf ukorr.
+PROFF.APPROVED=proff approved
+PROFF.RAW=proff raw
+PROFF.DEFAULT=proff default
 HIRLAM.12km=Hirlam 12km
 HIRLAM.8km=Hirlam 8km
 HIRLAM.4km=Hirlam 4km
@@ -457,6 +460,10 @@ PARAM=FFMS,x,x,x
 
 [ADD]
 
+
+
+
+
 # Offshore
 [DIAGRAM]
 NAME=MariProd
@@ -478,6 +485,70 @@ PARAM=TPT,x,x,x
 PARAM=ICEA,x,x,x
 PARAM=VIS,x,x,x
 PARAM=CWW,x,x,x
+
+[END]
 [ADD]
 
+
+# Proff analysis
+
+[DIAGRAM]
+NAME=Proff Meteogrammer
+STYLEFILE=/usr/local/share/tseries/style/style.meteogram
+
+[LEGALMODELS]
+MODEL=PROFF.APPROVED
+MODEL=PROFF.RAW
+MODEL=PROFF.DEFAULT
+
+
+[MODELINDEPENDENT]
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=TT,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR,x,x,x
+PARAM=CC,x,x,x
+PARAM=WW,x,x,x
+PARAM=WVFD,x,x,x
+[ADD]
+
+
+[DIAGRAM]
+NAME=Proff Kombinert
+STYLEFILE=/usr/local/share/tseries/style/style.proff_combi
+
+
+[MODELSPECIFIC]
+MODEL=PROFF.APPROVED
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=TT,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR,x,x,x
+PARAM=CC,x,x,x
+PARAM=WW,x,x,x
+PARAM=WVFD,x,x,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=PROFF.RAW
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=TT,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR,x,x,x
+PARAM=CC,x,x,x
+PARAM=WW,x,x,x
+PARAM=WVFD,x,x,x
+[END]
+
+
+[ADD]
 

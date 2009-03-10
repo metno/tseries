@@ -25,7 +25,7 @@ Lang=$(Work)/share/lang
 
 <files>
 
-Defs=$(Etc)/tsDiagrams.def
+Defs=./tsDiagrams.def
 Configure=$(Home)/.tseries/tseries.conf
 WeatherSymbols=$(Etc)/symbols.def
 stdImage=$(Images)/ts_station.xpm
@@ -76,6 +76,20 @@ Contents=x,x,ECMWF,00
 
 
 
+# -------------------------------------------------
+# Proff data streams - for analysis
+
+
+# raw...
+
+CollectionName=Proff-data
+PreferredDiagram=Meteogram
+InitialOpen=0
+
+DataFile=/opdata/proff/proff_all.hdf
+DataDescription=PROFF
+DataType=HDF
+Contents=x,x,PROFF.APPROVED,x
 
 # -------------------------------------------------
 [FOU:PU]

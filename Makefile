@@ -14,7 +14,7 @@ LANGDIR=lang
 LANGDEST=share/lang
 INCDIR=../include
 LOCALINC=$(LOCALDIR)/include
-VERSION=4.0.2
+VERSION=4.0.4
 
 LOCALINC=$(LOCALDIR)/include
 
@@ -99,7 +99,7 @@ veryclean:
 
 
 mark:	
-	@echo "[1;34m = = = = = = = = = = = = = = = = = = = = = = [0m "
+	@echo " = = = = = = = = = = = = = = = = = = = = = =  "
 
 # install
 COPYDIRS=bin
