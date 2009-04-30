@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=TseriesTEST	
+GenericName=TseriesTEST
+Comment=Tidsserie visning test version
+Exec=tseriesTEST
+Icon=tseries
+BinaryPattern=
+Protocols=
+MimeType=;
+ServiceTypes=
+Terminal=false
+TerminalOptions=
+Type=Application
+MapNotify=false
+Categories=Meteorologisk;Meteorologisk-Test

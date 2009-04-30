@@ -86,10 +86,7 @@ CollectionName=Proff-data
 PreferredDiagram=Meteogram
 InitialOpen=0
 
-DataFile=/opdata/proff/proff_all.hdf
-[TEST]
 DataFile=/opdata/proff_test/proff_all.hdf
-[]
 DataDescription=PROFF
 DataType=HDF
 Contents=x,x,PROFF.APPROVED,x

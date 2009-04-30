@@ -1,0 +1,18 @@
+#!/bin/sh
+
+  
+SUBNET=`/sbin/ifconfig eth0 | grep "inet addr" | cut -d. -f3`
+
+mkdir -p $HOME/.tseries
+
+case $SUBNET in
+    20)                       region="FOU" ;;
+    36|40)                    region="VV"  ;;
+    48)                       region="VNN" ;;
+### 50)                       region="MA"  ;;
+    16|18|24|26|56|90|104|50) region="VA"  ;;
+    *)                        region="VTK" ;;
+esac
+
+
+tseries.bin $@ -S $region -s /usr/local/etc/tseriesTEST/tseries.ctl
