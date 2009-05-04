@@ -41,7 +41,7 @@ using namespace std;
 
 
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
   vector<miCommandLine::option> o;
   o.push_back(miCommandLine::option( 's',"setup"    , 1 ));
@@ -49,13 +49,16 @@ main(int argc, char **argv)
   o.push_back(miCommandLine::option( 'f',"file"     , 1 ));
   o.push_back(miCommandLine::option( 'S',"site"     , 1 ));
   o.push_back(miCommandLine::option( 'l',"lang"     , 1 ));
+  o.push_back(miCommandLine::option( 'T',"title"    , 1 ));
+
 
   miCommandLine cl(o,argc, argv);
 
    // read setup
 
-  miString    site="FOU";
-  miString    setupfile="tseries.ctl";
+  miString    site      = "FOU";
+  miString    setupfile = "tseries.ctl";
+  miString    title     = "T-series";
   tsSetup     setup;
   tsConfigure config;
   miString    lang;
@@ -70,6 +73,9 @@ main(int argc, char **argv)
 
   if(cl.hasFlag('s'))
     setupfile= cl.arg('s')[0];
+
+  if(cl.hasFlag('T'))
+      title+=" " +  cl.arg('T')[0];
 
   if(!setup.read(setupfile,site))
     exit(0);
@@ -119,7 +125,7 @@ main(int argc, char **argv)
 
   qtsMain *main = new qtsMain(lang);
   a.setMainWidget(main);
-  main->setCaption( "T-series" );
+  main->setCaption( title.cStr() );
   main->show();
   return a.exec();
 }

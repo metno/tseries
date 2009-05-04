@@ -106,7 +106,8 @@ COPYDIRS=bin
 COPYTREES=share etc
 DESTNAME=tseries-${VERSION}
 
-DEBIANNAME=tseries_${VERSION}_i386
-COPYDEBIAN= share etc bin
+COPYTESTTREES=etc share
+COPYTESTFILES=bin/tseriesTEST
+RENAMETESTFILES=bin/tseries.bin
 
 include ../conf/install.mk
