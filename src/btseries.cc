@@ -1,33 +1,33 @@
 /*
-  Tseries - A Free Meteorological Timeseries Viewer
+ Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
+ $Id$
 
-  Copyright (C) 2006 met.no
+ Copyright (C) 2006 met.no
 
-  Contact information:
-  Norwegian Meteorological Institute
-  Box 43 Blindern
-  0313 OSLO
-  NORWAY
-  email: diana@met.no
-  
-  This file is part of Tseries
+ Contact information:
+ Norwegian Meteorological Institute
+ Box 43 Blindern
+ 0313 OSLO
+ NORWAY
+ email: diana@met.no
 
-  Tseries is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
-  (at your option) any later version.
+ This file is part of Tseries
 
-  Tseries is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with Tseries; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ Tseries is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ Tseries is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Tseries; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 #include <fstream>
 #include <iostream>
 
@@ -47,43 +47,48 @@
 
 #include <tsVersion.h>
 
-using namespace std; 
+using namespace std;
 
-tsDrawArea     *drawarea;
+tsDrawArea *drawarea;
 
-bool verbose= false;
+bool verbose = false;
 bool hardcopy_started;
 
-void startHardcopy(const printOptions priop){
-  if (verbose) cout << "- startHardcopy" << endl;
+void startHardcopy(const printOptions priop)
+{
+  if (verbose)
+    cout << "- startHardcopy" << endl;
   drawarea->startHardcopy(priop, false);
-  hardcopy_started= true;
+  hardcopy_started = true;
 }
 
-void endHardcopy(){
+void endHardcopy()
+{
   // finish off postscript-session
-  if (hardcopy_started){
-    if (verbose) cout << "- endHardcopy " << endl;
+  if (hardcopy_started) {
+    if (verbose)
+      cout << "- endHardcopy " << endl;
     drawarea->endHardcopy();
   }
-  hardcopy_started= false;
+  hardcopy_started = false;
 }
 
 /*
-  key/value pairs from commandline-parameters
-*/
+ key/value pairs from commandline-parameters
+ */
 struct keyvalue {
   miString key;
   miString value;
 };
 
 /*
-  clean an input-string: remove preceding and trailing blanks,
-  remove comments
-*/
-void cleanstr(miString& s){
+ clean an input-string: remove preceding and trailing blanks,
+ remove comments
+ */
+void cleanstr(miString& s)
+{
   int p;
-  if ((p=s.find("#"))!=string::npos)
+  if ((p = s.find("#")) != string::npos)
     s.erase(p);
 
   s.remove('\n');
@@ -99,93 +104,86 @@ struct stringlist {
 // list of lists..
 vector<stringlist> lists;
 
-
-
 /*
-  Recursively unpack one (or several nested) LOOP-section(s)
-  1) convert a LOOP-section to multiple copies of original text
-  with VARIABLES set from ARGUMENTS
-  2) ARGUMENTS may be a previously defined LIST
+ Recursively unpack one (or several nested) LOOP-section(s)
+ 1) convert a LOOP-section to multiple copies of original text
+ with VARIABLES set from ARGUMENTS
+ 2) ARGUMENTS may be a previously defined LIST
 
-  Syntax for LOOPS:
-  LOOP VAR1 [ | VAR2 ... ] = ARG1 [ | ARG2 ... ] , ARG1 [ | ARG2 ... ] , ..
-  <contents, all VAR1,VAR2,.. replaced by ARG1,ARG2,.. for each iteration>
-  ENDLOOP or LOOP.END
-*/
-void unpackloop(vector<miString>& orig,   // original strings..
-		vector<int>& origlines,   // ..with corresponding line-numbers
-		int& index,               // original string-counter to update
-		vector<miString>& part,   // final strings from loop-unpacking..
-		vector<int>& partlines)   // ..with corresponding line-numbers
+ Syntax for LOOPS:
+ LOOP VAR1 [ | VAR2 ... ] = ARG1 [ | ARG2 ... ] , ARG1 [ | ARG2 ... ] , ..
+ <contents, all VAR1,VAR2,.. replaced by ARG1,ARG2,.. for each iteration>
+ ENDLOOP or LOOP.END
+ */
+void unpackloop(vector<miString>& orig, // original strings..
+    vector<int>& origlines, // ..with corresponding line-numbers
+    int& index, // original string-counter to update
+    vector<miString>& part, // final strings from loop-unpacking..
+    vector<int>& partlines) // ..with corresponding line-numbers
 {
-  int start= index;
-  
-  miString loops= orig[index];
-  loops= loops.substr(4,loops.length()-4);
+  int start = index;
+
+  miString loops = orig[index];
+  loops = loops.substr(4, loops.length() - 4);
 
   vector<miString> vs, vs2;
 
-  vs= loops.split('=');
-  if (vs.size() < 2){
+  vs = loops.split('=');
+  if (vs.size() < 2) {
     cerr << "ERROR missing \'=\' in loop-statement at line:"
-	 << origlines[start] << endl;
+        << origlines[start] << endl;
     exit(1);
   }
-  
-  miString keys= vs[0]; // key-part
-  vector<miString> vkeys= keys.split('|');
-  int nkeys= vkeys.size();
 
-  miString argu= vs[1]; // argument-part
+  miString keys = vs[0]; // key-part
+  vector<miString> vkeys = keys.split('|');
+  int nkeys = vkeys.size();
+
+  miString argu = vs[1]; // argument-part
   int nargu;
-  vector< vector<miString> > arguments;
+  vector<vector<miString> > arguments;
 
   /* Check if argument is name of list
-     Lists are recognized with preceding '@' */
-  if (argu.length()>1 && argu.substr(0,1)=="@"){
-    miString name= argu.substr(1,argu.length()-1);
+   Lists are recognized with preceding '@' */
+  if (argu.length() > 1 && argu.substr(0, 1) == "@") {
+    miString name = argu.substr(1, argu.length() - 1);
     // search for list..
     int k;
-    for (k=0; k<lists.size();k++){
+    for (k = 0; k < lists.size(); k++) {
       if (lists[k].name == name)
-	break;
+        break;
     }
-    if (k==lists.size()){
+    if (k == lists.size()) {
       // list not found
-      cerr << "ERROR reference to unknown list at line:"
-	   << origlines[start] << endl;
+      cerr << "ERROR reference to unknown list at line:" << origlines[start]
+          << endl;
       exit(1);
     }
-    nargu= lists[k].l.size();
+    nargu = lists[k].l.size();
     // split listentries into separate arguments for loop
-    for (int j=0; j<nargu; j++){
-      vs= lists[k].l[j].split('|');
+    for (int j = 0; j < nargu; j++) {
+      vs = lists[k].l[j].split('|');
       // check if correct number of arguments
-      if (vs.size() != nkeys){
-	cerr << "ERROR number of arguments in loop at:'"
-	     << lists[k].l[j]
-	     << "' line:" << origlines[start]
-	     << " does not match key:" << keys
-	     << endl;
-	exit(1);
+      if (vs.size() != nkeys) {
+        cerr << "ERROR number of arguments in loop at:'" << lists[k].l[j]
+            << "' line:" << origlines[start] << " does not match key:" << keys
+            << endl;
+        exit(1);
       }
       arguments.push_back(vs);
     }
 
   } else {
     // ordinary arguments to loop: comma-separated
-    vs2= argu.split(',');
-    nargu= vs2.size();
-    for (int k=0; k<nargu; k++){
-      vs= vs2[k].split('|');
+    vs2 = argu.split(',');
+    nargu = vs2.size();
+    for (int k = 0; k < nargu; k++) {
+      vs = vs2[k].split('|');
       // check if correct number of arguments
-      if (vs.size() != nkeys){
-	cerr << "ERROR number of arguments in loop at:'"
-	     << vs2[k]
-	     << "' line:" << origlines[start]
-	     << " does not match key:" << keys
-	     << endl;
-	exit(1);
+      if (vs.size() != nkeys) {
+        cerr << "ERROR number of arguments in loop at:'" << vs2[k] << "' line:"
+            << origlines[start] << " does not match key:" << keys << endl;
+        exit(1);
       }
       arguments.push_back(vs);
     }
@@ -199,77 +197,75 @@ void unpackloop(vector<miString>& orig,   // original strings..
   index++;
 
   // start unpacking loop
-  for (; index < orig.size(); index++){
-    if (orig[index] == "ENDLOOP" || orig[index] == "LOOP.END"){ // reached end
+  for (; index < orig.size(); index++) {
+    if (orig[index] == "ENDLOOP" || orig[index] == "LOOP.END") { // reached end
       // we have the loop-contents
-      for (int i=0; i<nargu; i++){ // loop over arguments
-	for (int j=0; j<tmppart.size(); j++){ // loop over lines
-	  miString l= tmppart[j];
-	  for (int k=0; k<nkeys; k++){ // loop over keywords
-	    // replace all variables
-	    l.replace(vkeys[k],arguments[i][k]);
-	  }
-	  part.push_back(l);
-	  partlines.push_back(tmppartlines[j]);
-	}
+      for (int i = 0; i < nargu; i++) { // loop over arguments
+        for (int j = 0; j < tmppart.size(); j++) { // loop over lines
+          miString l = tmppart[j];
+          for (int k = 0; k < nkeys; k++) { // loop over keywords
+            // replace all variables
+            l.replace(vkeys[k], arguments[i][k]);
+          }
+          part.push_back(l);
+          partlines.push_back(tmppartlines[j]);
+        }
       }
       break;
 
-    } else if (orig[index].substr(0,4) == "LOOP"){ // start of new loop
-      unpackloop(orig,origlines,index,tmppart,tmppartlines);
-      
+    } else if (orig[index].substr(0, 4) == "LOOP") { // start of new loop
+      unpackloop(orig, origlines, index, tmppart, tmppartlines);
+
     } else { // fill loop-contents to temporary vector
       tmppart.push_back(orig[index]);
       tmppartlines.push_back(origlines[index]);
     }
   }
-  if (index==orig.size()){
-    cerr << "ERROR missing \'LOOP.END\' for loop at line:"
-	 << origlines[start] << endl;
+  if (index == orig.size()) {
+    cerr << "ERROR missing \'LOOP.END\' for loop at line:" << origlines[start]
+        << endl;
     exit(1);
   }
 }
 
-
 /*
-  Prepare input-lines
-  1. unpack loops
-  2. recognize and store lists
+ Prepare input-lines
+ 1. unpack loops
+ 2. recognize and store lists
 
-  Syntax for list with name: <listname>
-  LIST.<listname>
-  <entry>
-  <entry>
-  ...
-  LIST.END
-*/
-void unpackinput(vector<miString>& orig,  // original setup
-		 vector<int>& origlines,  // original list of linenumbers
-		 vector<miString>& final, // final setup
-		 vector<int>& finallines) // final list of linenumbers
+ Syntax for list with name: <listname>
+ LIST.<listname>
+ <entry>
+ <entry>
+ ...
+ LIST.END
+ */
+void unpackinput(vector<miString>& orig, // original setup
+    vector<int>& origlines, // original list of linenumbers
+    vector<miString>& final, // final setup
+    vector<int>& finallines) // final list of linenumbers
 {
   int i;
-  for (i=0; i<orig.size(); i++){
-    if (orig[i].substr(0,4) == "LOOP"){
+  for (i = 0; i < orig.size(); i++) {
+    if (orig[i].substr(0, 4) == "LOOP") {
       // found start of loop - unpack it
-      unpackloop(orig,origlines,i,final,finallines);
-    } else if (orig[i].substr(0,5) == "LIST."){
+      unpackloop(orig, origlines, i, final, finallines);
+    } else if (orig[i].substr(0, 5) == "LIST.") {
       // save a list
       stringlist li;
-      if (orig[i].length() < 6){
-	cerr << "ERROR missing name for LIST at line:"
-	     << origlines[i] << endl;
-	exit(1);
+      if (orig[i].length() < 6) {
+        cerr << "ERROR missing name for LIST at line:" << origlines[i] << endl;
+        exit(1);
       }
-      li.name= orig[i].substr(5,orig[i].length()-5);
-      int start= i;
+      li.name = orig[i].substr(5, orig[i].length() - 5);
+      int start = i;
       i++;
-      for (; i<orig.size() && orig[i] != "LIST.END"; i++)
-	li.l.push_back(orig[i]);
-      if (i==orig.size() || orig[i]!="LIST.END"){
-	cerr << "ERROR missing LIST.END for list starting at line:"
-	     << origlines[start] << endl;
-	exit(1);
+      for (; i < orig.size() && orig[i] != "LIST.END"; i++)
+        li.l.push_back(orig[i]);
+      if (i == orig.size() || orig[i] != "LIST.END") {
+        cerr << "ERROR missing LIST.END for list starting at line:"
+            << origlines[start] << endl;
+        exit(1);
       }
       // push it..
       lists.push_back(li);
@@ -281,44 +277,36 @@ void unpackinput(vector<miString>& orig,  // original setup
   }
 }
 
-
 /*
-  parse setupfile
-  perform other initialisations based on setup information
-*/
-bool readSetup(const miString& setupfile,
-	       const miString& site,
-	       SessionManager& session,
-	       DatafileColl& data)
+ parse setupfile
+ perform other initialisations based on setup information
+ */
+bool readSetup(const miString& setupfile, const miString& site,
+    SessionManager& session, DatafileColl& data)
 {
-  cout << "Reading setupfile:"
-       << setupfile
-       << " for site "
-       << site
-       << endl;
+  cout << "Reading setupfile:" << setupfile << " for site " << site << endl;
 
   tsSetup setup;
-  if (!setup.read(setupfile,site)){
-    cerr << "ERROR an error occured while reading setup: "
-	 << setupfile << endl;
+  if (!setup.read(setupfile, site)) {
+    cerr << "ERROR an error occured while reading setup: " << setupfile << endl;
     return false;
   }
-    
+
   session.readSessions(setup.files.defs, verbose);
 
-  for (int i=0; i<setup.streams.size(); i++) {
+  for (int i = 0; i < setup.streams.size(); i++) {
     data.addDataset(setup.streams[i].collectionName);
-      
-    for (int j=0; j<setup.streams[i].data.size(); j++) {
-      data.addStream(setup.streams[i].data[j].name,      // streamname
-		     setup.streams[i].data[j].descript,  // description
-		     setup.streams[i].data[j].type,      // streamtype
-		     i, j,                               // dataset and
-		     // number in dataset
-		     setup.streams[i].data[j].contents); // models/runs
+
+    for (int j = 0; j < setup.streams[i].data.size(); j++) {
+      data.addStream(setup.streams[i].data[j].name, // streamname
+          setup.streams[i].data[j].descript, // description
+          setup.streams[i].data[j].type, // streamtype
+          i, j, // dataset and
+          // number in dataset
+          setup.streams[i].data[j].contents); // models/runs
     }
   }
-  
+
   data.openStreams();
 
   return true;
@@ -331,948 +319,958 @@ bool readSetup(const miString& setupfile,
 */
 void printUsage(bool showexample)
 {
-  const miString help=
-    "***************************************************               \n"
-    "* TSERIES batch version:" + version_string +  "                  *\n"
-    "* plot products in batch and dump result to file. *               \n"
-    "***************************************************               \n"
-    "* Available output-formats:                       *               \n"
-    "* - as PostScript (to file and printer)          *               \n"
-    "* - as EPS (Encapsulated PostScript)              *               \n"
-    "* - as RGB (raster-format, Irix)                  *               \n"
-    "* - as PNG (raster-format)                        *               \n"
-    "***************************************************               \n"
-    "                                                                  \n"
-    "Usage: btseries "
-    "-i <JOB-FILENAME> [-s <SETUP-FILENAME>] [-S <SITE-NAME>] [-v] [-display XHOST:DISPLAY] [-example] "
-    "[key=value key=value]                                             \n"
-    "                                                                  \n"
-    "-i       : job-control file. See example below.                   \n"
-    "                                                                  \n"
-    "-s       : setupfile for tseries                                  \n"
-    "                                                                  \n"
-    "-S       : site [VA:VV:VNN:VTK:MA:FOU] (default FOU)              \n"
-    "                                                                  \n"
-    "-v       : (verbose) for more job-output                          \n"
-    "                                                                  \n"
-    "-display : btseries needs access to X-server.                     \n"
-    "           HINT: for true batch, try Xvfb                         \n"
-    "                                                                  \n"
-    "-example : list example input-file and exit                       \n"
-    "                                                                  \n"
-    "                                                                  \n";
+  const miString
+      help =
+                "***************************************************               \n"
+                "* TSERIES batch version:" + version_string +
+                "                  *\n"
+                "* plot products in batch and dump result to file. *               \n"
+                "***************************************************               \n"
+                "* Available output-formats:                       *               \n"
+                "* - as PostScript (to file and printer)          *                \n"
+                "* - as EPS (Encapsulated PostScript)              *               \n"
+                "* - as RGB (raster-format, Irix)                  *               \n"
+                "* - as PNG (raster-format)                        *               \n"
+                "***************************************************               \n"
+                "                                                                  \n"
+                "Usage: btseries "
+                "-i <JOB-FILENAME> [-s <SETUP-FILENAME>] [-S <SITE-NAME>] [-v] [-display XHOST:DISPLAY] [-example] "
+                "[key=value key=value]                                             \n"
+                "                                                                  \n"
+                "-i       : job-control file. See example below.                   \n"
+                "                                                                  \n"
+                "-s       : setupfile for tseries                                  \n"
+                "                                                                  \n"
+                "-S       : site [VA:VV:VNN:VTK:MA:FOU] (default FOU)              \n"
+                "                                                                  \n"
+                "-v       : (verbose) for more job-output                          \n"
+                "                                                                  \n"
+                "-display : btseries needs access to X-server.                     \n"
+                "           HINT: for true batch, try Xvfb                         \n"
+                "                                                                  \n"
+                "-example : list example input-file and exit                       \n"
+                "                                                                  \n"
+                "                                                                  \n";
 
-  const miString example=
-    "#--------------------------------------------------------------   \n"
-    "# inputfile for btseries                                            \n"
-    "# - '#' marks start of comment.                                   \n"
-    "# - you may split long lines by adding '\\' at the end.           \n"
-    "#--------------------------------------------------------------   \n"
-    "                                                                  \n"
-    "#- Mandatory:                                                     \n"
-    "buffersize=800x600       # plotbuffer (WIDTHxHEIGHT)              \n"
-    "                         # For output=RASTER: size of plot.       \n"
-    "                         # For output=POSTSCRIPT: size of buffer  \n"
-    "                         #  affects output-quality.      \n"
-    "                                                                  \n"
-    "#- Optional: values for each option below are default-values      \n"
-    "setupfile=tseries.ctl    # use a standard setup-file              \n"
-    "output=POSTSCRIPT        # POSTSCRIPT/EPS/RGB/PNG                 \n"
-    "colour=COLOUR            # GREYSCALE/COLOUR                       \n"
-    "filename=tmp_tseries.ps  # output filename                        \n"
-    "                                                                  \n"
-    "# the following options for output=POSTSCRIPT or EPS only         \n"
-    "toprinter=NO             # send output to printer (postscript) \n"
-    "                         # obsolete command! use PRINT_DOCUMENT instead\n"
-    "printer=fou3             # name of printer        (postscript)    \n"
-    "                         # (see PRINT_DOCUMENT command below)     \n"
-    "papersize=297x420,A4     # size of paper in mm,   (postscript)    \n"
-    "                         # papertype (A4 etc) or both.            \n"
-    "drawbackground=NO        # plot background colour (postscript)    \n"
-    "orientation=LANDSCAPE    # PORTRAIT/LANDSCAPE     (postscript)    \n"
-    "                         # (default here is really 'automatic'    \n"
-    "                         # which sets orientation according to    \n"
-    "                         # width/height-ratio of buffersize)      \n"
-    "                                                                  \n"
-    "#--------------------------------------------------------------   \n"
-    "# Diagram Options\n"
-    "#--------------------------------------------------------------   \n"
-    "# DIAGRAMTYPE=<name>     # Name of diagramtype (defined elsewhere)\n"
-    "# POSITION=<name>        # Name of position in datasources        \n"
-    "# POSITION_NAME=<name>   # Change name on diagram                 \n"
-    "# MODEL=<name>           # Name of model in datasources           \n"
-    "# RUN=<run-hour>         # Model runtime (UNDEF is a legal value) \n"
-    "# PLOT                   # Make the diagram-plot                  \n"
-    "#--------------------------------------------------------------   \n"
-    "# Additional:                                                     \n"
-    "#--------------------------------------------------------------   \n"
-    "#- You can add LOOPS with one or more variables:                  \n"
-    "#  LOOP [X]|[Y] = X_value1 | Y_value1 , X_value2 | Y_value2       \n"
-    "#   <any other input lines, all \"[X]\" and \"[Y]\" will be       \n"
-    "#   replaced by the values after '=' for each iteration>          \n"
-    "#  LOOP.END                                                       \n"
-    "#  The example shows a loop with two variables ([X] and [Y],      \n"
-    "#  separated by '|') and two iterations (separated with ',')      \n"
-    "#  Loops kan be nested                                            \n"
-    "#--------------------------------------------------------------   \n"
-    "#- Make a LIST for use in loops:                                  \n"
-    "#  LIST.stations           # A new list with name=stations        \n"
-    "#  OSLO                    # May contain any strings..            \n"
-    "#  KIRKENES                #                                      \n"
-    "#  LIST.END                # Marks End of list                    \n"
-    "#                                                                 \n"
-    "#  To use in a loop:                                              \n"
-    "#  LOOP [VAR]=@stations    # The key here is the \'@\' with the   \n"
-    "#                          # list-name.                           \n"
-    "#  LOOP.END                # This will loop over all list-entries \n"
-    "#                                                                 \n"
-    "#  NOTES:                                                         \n"
-    "#  - To make a list with multiple variables, convenient for       \n"
-    "#    multiple-variable loops, just add \'|\'s in the list-strings.\n"
-    "#    Example:                                                     \n"
-    "#    LIST.name             # new list                             \n"
-    "#    OSLO | blue           # two variables for each entry         \n"
-    "#    KIRKENES | red        #                                      \n"
-    "#    LIST.END                                                     \n"
-    "#                                                                 \n"
-    "#    LOOP [POS] | [COL] = @name # Loop using two variables in list\n"
-    "#    LOOP.END                                                     \n"
-    "#  - Lists must be defined OUTSIDE all loop statements            \n"
-    "#--------------------------------------------------------------   \n"
-    "#- \"key=value\" pairs given on the commandline controls variables\n"
-    "#  in the inputfile: Any \"$key\" found in the text will be       \n"
-    "#  substituted by \"value\".                                      \n"
-    "#--------------------------------------------------------------   \n"
-    "#* PostScript output * \n"
-    "#- Send current postscript-file to printer (immediate command):   \n"
-    "#  PRINT_DOCUMENT                         \n"
-    "#\n"
-    "#- MULTIPLE PLOTS PER PAGE                  \n"
-    "#  You can put several plots in one postscript page by using the \'multiple.plots\'\n"
-    "#  and \'plotcell\' commands. Start with describing the layout you want:\n"
-    "# \n"
-    "#  MULTIPLE.PLOTS=<rows>,<columns> # set the number of rows and columns\n"
-    "# \n"
-    "#  In the same command, you can specify the spacing between plots and \n"
-    "#  the page-margin (given as percent of page width/height [0-100]): \n"
-    "#  MULTIPLE.PLOTS=<rows>,<columns>,<spacing>,<margin> \n"
-    "#  \n"
-    "#  Then, for each separate plot use the plotcell command to place plot on page:\n"
-    "#  PLOTCELL=<row>,<column>         # the row and column, starting with 0\n"
-    "#  \n"
-    "#  Finally, end the page with: \n"
-    "#  MULTIPLE.PLOTS=OFF \n"
-    "#  \n"
-    "#- To produce multi-page postscript files: Just make several plots \n"
-    "#  to the same filename (can be combined with MULTIPLE.PLOTS). \n"
-    "#  \n"
-    "#- Use of alpha-channel blending is not supported in postscript \n"
-    "#--------------------------------------------------------------   \n"
-    "#- Loop over all positions in datasource \n"
-    "#  POSLOOP <POSVARNAME> [ MULTIPLE.PLOTS=<nx>,<ny>,<spac.>,<marg.>  <YVARNAME> <XVARNAME> ] \n"
-    "#  POSITION=<POSVARNAME> \n"
-    "#  if MULTIPLE.PLOTS used:\n"
-    "#    PLOTCELL=<YVARNAME>,<XVARNAME>   \n"
-    "#  PLOT  \n"
-    "#  POSLOOP.END \n"
-    "#--------------------------------------------------------------   \n"
-    "# Product-examples:                                               \n"
-    "#--------------------------------------------------------------   \n"
-    "# == single diagram == \n"
-    "DIAGRAMTYPE=Meteogram # Name of diagramtype  \n"
-    "MODEL=HIRLAM.20km     # Name of model in datasources \n"
-    "RUN=12                # Model runtime \n"
-    "POSITION=OSLO         # Name of position in datasources \n"
-    "POSITION_NAME=Oslo    # Change name on plot \n"
-    "PLOT                  # make the diagram  \n"
-    "\n"
-    "# == several diagrams on one page == \n"
-    "buffersize=1000x1500    # plotbuffer (WIDTHxHEIGHT)              \n"
-    "filename=bt2.ps  \n"
-    "\n"
-    "LIST.stations \n"
-    "BERGEN       | 0 | 0 | HIRLAM.20km | 06 | Meteogram \n"
-    "OSLO         | 0 | 1 | HIRLAM.20km | 06 | Meteogram m/snø \n"
-    "BODØ         | 0 | 2 | EPS         | 12 | EPS_T2M \n"
-    "KRISTIANSAND | 0 | 3 | EPS         | 12 | EPS_RR24 \n"
-    "STAVANGER    | 1 | 0 | EPS         | 12 | EPS_Z500 \n"
-    "STAD         | 1 | 1 | ECOM3D_20km | 00 | Havdiagram \n"
-    "STAD         | 1 | 2 | WAM         | 12 | Bølgediagram \n"
-    "LONDON       | 1 | 3 | ECMWF_U     | 12 | EPS_RR24/T2M \n"
-    "LIST.END \n"
-    "\n"
-    "MULTIPLE.PLOTS=4,2,3,2 \n"
-    "LOOP [POS] | [COL] | [ROW] | [MODEL] | [RUN] | [DTYPE] = @stations \n"
-    "POSITION=[POS] \n"
-    "PLOTCELL=[ROW],[COL] \n"
-    "MODEL=[MODEL] \n"
-    "DIAGRAMTYPE=[DTYPE] \n"
-    "RUN=[RUN] \n"
-    "PLOT \n"
-    "LOOP.END \n"
-    "MULTIPLE.PLOTS=OFF \n"
-    "#--------------------------------------------------------------   \n";
-  
+  const miString
+      example =
+            "#--------------------------------------------------------------   \n"
+            "# inputfile for btseries                                          \n"
+            "# - '#' marks start of comment.                                   \n"
+            "# - you may split long lines by adding '\\' at the end.           \n"
+            "#--------------------------------------------------------------   \n"
+            "                                                                  \n"
+            "#- Mandatory:                                                     \n"
+            "buffersize=800x600       # plotbuffer (WIDTHxHEIGHT)              \n"
+            "                         # For output=RASTER: size of plot.       \n"
+            "                         # For output=POSTSCRIPT: size of buffer  \n"
+            "                         #  affects output-quality.      \n"
+            "                                                                  \n"
+            "#- Optional: values for each option below are default-values      \n"
+            "setupfile=tseries.ctl    # use a standard setup-file              \n"
+            "output=POSTSCRIPT        # POSTSCRIPT/EPS/RGB/PNG                 \n"
+            "colour=COLOUR            # GREYSCALE/COLOUR                       \n"
+            "filename=tmp_tseries.ps  # output filename                        \n"
+            "                                                                  \n"
+            "# the following options for output=POSTSCRIPT or EPS only         \n"
+            "toprinter=NO             # send output to printer (postscript) \n"
+            "                         # obsolete command! use PRINT_DOCUMENT instead\n"
+            "printer=fou3             # name of printer        (postscript)    \n"
+            "                         # (see PRINT_DOCUMENT command below)     \n"
+            "papersize=297x420,A4     # size of paper in mm,   (postscript)    \n"
+            "                         # papertype (A4 etc) or both.            \n"
+            "drawbackground=NO        # plot background colour (postscript)    \n"
+            "orientation=LANDSCAPE    # PORTRAIT/LANDSCAPE     (postscript)    \n"
+            "                         # (default here is really 'automatic'    \n"
+            "                         # which sets orientation according to    \n"
+            "                         # width/height-ratio of buffersize)      \n"
+            "                                                                  \n"
+            "#--------------------------------------------------------------   \n"
+            "# Diagram Options\n"
+            "#--------------------------------------------------------------   \n"
+            "# DIAGRAMTYPE=<name>     # Name of diagramtype (defined elsewhere)\n"
+            "# POSITION=<name>        # Name of position in datasources        \n"
+            "# POSITION_NAME=<name>   # Change name on diagram                 \n"
+            "# MODEL=<name>           # Name of model in datasources           \n"
+            "# RUN=<run-hour>         # Model runtime (UNDEF is a legal value) \n"
+            "# PLOT                   # Make the diagram-plot                  \n"
+            "#--------------------------------------------------------------   \n"
+            "# Additional:                                                     \n"
+            "#--------------------------------------------------------------   \n"
+            "#- You can add LOOPS with one or more variables:                  \n"
+            "#  LOOP [X]|[Y] = X_value1 | Y_value1 , X_value2 | Y_value2       \n"
+            "#   <any other input lines, all \"[X]\" and \"[Y]\" will be       \n"
+            "#   replaced by the values after '=' for each iteration>          \n"
+            "#  LOOP.END                                                       \n"
+            "#  The example shows a loop with two variables ([X] and [Y],      \n"
+            "#  separated by '|') and two iterations (separated with ',')      \n"
+            "#  Loops kan be nested                                            \n"
+            "#--------------------------------------------------------------   \n"
+            "#- Make a LIST for use in loops:                                  \n"
+            "#  LIST.stations           # A new list with name=stations        \n"
+            "#  OSLO                    # May contain any strings..            \n"
+            "#  KIRKENES                #                                      \n"
+            "#  LIST.END                # Marks End of list                    \n"
+            "#                                                                 \n"
+            "#  To use in a loop:                                              \n"
+            "#  LOOP [VAR]=@stations    # The key here is the \'@\' with the   \n"
+            "#                          # list-name.                           \n"
+            "#  LOOP.END                # This will loop over all list-entries \n"
+            "#                                                                 \n"
+            "#  NOTES:                                                         \n"
+            "#  - To make a list with multiple variables, convenient for       \n"
+            "#    multiple-variable loops, just add \'|\'s in the list-strings.\n"
+            "#    Example:                                                     \n"
+            "#    LIST.name             # new list                             \n"
+            "#    OSLO | blue           # two variables for each entry         \n"
+            "#    KIRKENES | red        #                                      \n"
+            "#    LIST.END                                                     \n"
+            "#                                                                 \n"
+            "#    LOOP [POS] | [COL] = @name # Loop using two variables in list\n"
+            "#    LOOP.END                                                     \n"
+            "#  - Lists must be defined OUTSIDE all loop statements            \n"
+            "#--------------------------------------------------------------   \n"
+            "#- \"key=value\" pairs given on the commandline controls variables\n"
+            "#  in the inputfile: Any \"$key\" found in the text will be       \n"
+            "#  substituted by \"value\".                                      \n"
+            "#--------------------------------------------------------------   \n"
+            "#* PostScript output * \n"
+            "#- Send current postscript-file to printer (immediate command):   \n"
+            "#  PRINT_DOCUMENT                         \n"
+            "#\n"
+            "#- MULTIPLE PLOTS PER PAGE                  \n"
+            "#  You can put several plots in one postscript page by using the \'multiple.plots\'\n"
+            "#  and \'plotcell\' commands. Start with describing the layout you want:\n"
+            "# \n"
+            "#  MULTIPLE.PLOTS=<rows>,<columns> # set the number of rows and columns\n"
+            "# \n"
+            "#  In the same command, you can specify the spacing between plots and \n"
+            "#  the page-margin (given as percent of page width/height [0-100]): \n"
+            "#  MULTIPLE.PLOTS=<rows>,<columns>,<spacing>,<margin> \n"
+            "#  \n"
+            "#  Then, for each separate plot use the plotcell command to place plot on page:\n"
+            "#  PLOTCELL=<row>,<column>         # the row and column, starting with 0\n"
+            "#  \n"
+            "#  Finally, end the page with: \n"
+            "#  MULTIPLE.PLOTS=OFF \n"
+            "#  \n"
+            "#- To produce multi-page postscript files: Just make several plots \n"
+            "#  to the same filename (can be combined with MULTIPLE.PLOTS). \n"
+            "#  \n"
+            "#- Use of alpha-channel blending is not supported in postscript \n"
+            "#--------------------------------------------------------------   \n"
+            "#- Loop over all positions in datasource \n"
+            "#  POSLOOP <POSVARNAME> [ MULTIPLE.PLOTS=<nx>,<ny>,<spac.>,<marg.>  <YVARNAME> <XVARNAME> ] \n"
+            "#  POSITION=<POSVARNAME> \n"
+            "#  if MULTIPLE.PLOTS used:\n"
+            "#    PLOTCELL=<YVARNAME>,<XVARNAME>   \n"
+            "#  PLOT  \n"
+            "#  POSLOOP.END \n"
+            "#--------------------------------------------------------------   \n"
+            "# Product-examples:                                               \n"
+            "#--------------------------------------------------------------   \n"
+            "# == single diagram == \n"
+            "DIAGRAMTYPE=Meteogram # Name of diagramtype  \n"
+            "MODEL=HIRLAM.12km     # Name of model in datasources \n"
+            "RUN=12                # Model runtime \n"
+            "POSITION=OSLO         # Name of position in datasources \n"
+            "POSITION_NAME=Oslo    # Change name on plot \n"
+            "PLOT                  # make the diagram  \n"
+            "\n"
+            "# == several diagrams on one page == \n"
+            "buffersize=1000x1500    # plotbuffer (WIDTHxHEIGHT)              \n"
+            "filename=bt2.ps  \n"
+            "\n"
+            "LIST.stations \n"
+            "BERGEN       | 0 | 0 | HIRLAM.20km | 06 | Meteogram \n"
+            "OSLO         | 0 | 1 | HIRLAM.20km | 06 | Meteogram m/snø \n"
+            "BODØ         | 0 | 2 | EPS         | 12 | EPS_T2M \n"
+            "KRISTIANSAND | 0 | 3 | EPS         | 12 | EPS_RR24 \n"
+            "STAVANGER    | 1 | 0 | EPS         | 12 | EPS_Z500 \n"
+            "STAD         | 1 | 1 | ECOM3D_20km | 00 | Havdiagram \n"
+            "STAD         | 1 | 2 | WAM         | 12 | Bølgediagram \n"
+            "LONDON       | 1 | 3 | ECMWF_U     | 12 | EPS_RR24/T2M \n"
+            "LIST.END \n"
+            "\n"
+            "MULTIPLE.PLOTS=4,2,3,2 \n"
+            "LOOP [POS] | [COL] | [ROW] | [MODEL] | [RUN] | [DTYPE] = @stations \n"
+            "POSITION=[POS] \n"
+            "PLOTCELL=[ROW],[COL] \n"
+            "MODEL=[MODEL] \n"
+            "DIAGRAMTYPE=[DTYPE] \n"
+            "RUN=[RUN] \n"
+            "PLOT \n"
+            "LOOP.END \n"
+            "MULTIPLE.PLOTS=OFF \n"
+            "#--------------------------------------------------------------   \n";
+
   if (!showexample)
     cout << help << endl;
   else
     cout << example << endl;
-   
+
   exit(1);
 }
 
 
-/* 
-   =================================================================
-   BTSERIES - BATCH PRODUCTION OF PETS GRAPHICAL PRODUCTS
-   =================================================================
-*/
+/*
+ =================================================================
+ BTSERIES - BATCH PRODUCTION OF PETS GRAPHICAL PRODUCTS
+ =================================================================
+ */
 int main(int argc, char** argv)
 {
-  static int dblBuf[] = {
-    GLX_DOUBLEBUFFER, GLX_RGBA, GLX_DEPTH_SIZE, 16,
-    GLX_RED_SIZE, 1, GLX_GREEN_SIZE, 1, GLX_BLUE_SIZE, 1,
-    GLX_ALPHA_SIZE, 1, 
-    GLX_STENCIL_SIZE, 1,
-    None
-  };
+  static int dblBuf[] = { GLX_DOUBLEBUFFER, GLX_RGBA, GLX_DEPTH_SIZE, 16,
+      GLX_RED_SIZE, 1, GLX_GREEN_SIZE, 1, GLX_BLUE_SIZE, 1, GLX_ALPHA_SIZE, 1,
+      GLX_STENCIL_SIZE, 1, None };
   static int *snglBuf = &dblBuf[1];
 
-
   Display* dpy;
-  XVisualInfo *pdvi;            // X visual
-  GLXContext cx;                // GL drawing context
-  Pixmap pixmap;                // X pixmap
-  GLXPixmap pix;                // GLX pixmap
-  int xsize,ysize;              // total pixmap size
-  bool multiple_plots= false;   // multiple plots per page
-  int numcols, numrows;         // for multiple plots
-  int plotcol, plotrow;         // current plotcell for multiple plots
-  int deltax, deltay;           // width and height of plotcells
-  int margin, spacing;          // margin and spacing for multiple plots
-  bool multiple_newpage= false; // start new page for multiple plots
+  XVisualInfo *pdvi; // X visual
+  GLXContext cx; // GL drawing context
+  Pixmap pixmap; // X pixmap
+  GLXPixmap pix; // GLX pixmap
+  int xsize, ysize; // total pixmap size
+  bool multiple_plots = false; // multiple plots per page
+  int numcols, numrows; // for multiple plots
+  int plotcol, plotrow; // current plotcell for multiple plots
+  int deltax, deltay; // width and height of plotcells
+  int margin, spacing; // margin and spacing for multiple plots
+  bool multiple_newpage = false; // start new page for multiple plots
 
   float pixwidth;
   float pixheight;
 
-  tsSetup        setup;
-  tsRequest      request;
+  tsSetup setup;
+  tsRequest request;
   SessionManager session;
-  DatafileColl   data;
-  
+  DatafileColl data;
+
   // replaceable values for plot-commands
   vector<keyvalue> keys;
-  
+
   miTime time, ptime, fixedtime;
 
-  miString xhost= ":0.0";
+  miString xhost = ":0.0";
   miString sarg;
   miString batchinput;
   // tseries setup file
-  miString setupfile="tseries.ctl";
-  miString site="FOU";
-  bool setupfilegiven=false;
+  miString setupfile = "tseries.ctl";
+  miString site = "FOU";
+  bool setupfilegiven = false;
 
   // check command line arguments
-  if (argc<2) {
+  if (argc < 2) {
     printUsage(false);
   }
 
   vector<miString> ks;
-  int ac= 1;
-  while (ac < argc){
-    sarg= argv[ac];
+  int ac = 1;
+  while (ac < argc) {
+    sarg = argv[ac];
     //cerr << "Checking arg:" << sarg << endl;
 
-    if (sarg=="-display"){
+    if (sarg == "-display") {
       ac++;
-      if (ac >= argc) printUsage(false);
-      xhost= argv[ac];
-      
+      if (ac >= argc)
+        printUsage(false);
+      xhost = argv[ac];
+
       // prepare font-pack for different display
       FontManager::set_display_name(xhost);
 
-    } else if (sarg=="-input" || sarg=="-i") {
+    } else if (sarg == "-input" || sarg == "-i") {
       ac++;
-      if (ac >= argc) printUsage(false);
-      batchinput= argv[ac];
+      if (ac >= argc)
+        printUsage(false);
+      batchinput = argv[ac];
 
-    } else if (sarg=="-setup" || sarg=="-s") {
+    } else if (sarg == "-setup" || sarg == "-s") {
       ac++;
-      if (ac >= argc) printUsage(false);
-      setupfile= argv[ac];
-      setupfilegiven= true;
+      if (ac >= argc)
+        printUsage(false);
+      setupfile = argv[ac];
+      setupfilegiven = true;
 
-    } else if (sarg=="-site" || sarg=="-S") {
+    } else if (sarg == "-site" || sarg == "-S") {
       ac++;
-      if (ac >= argc) printUsage(false);
-      site= argv[ac];
+      if (ac >= argc)
+        printUsage(false);
+      site = argv[ac];
 
-    } else if (sarg=="-v") {
-      verbose= true;
+    } else if (sarg == "-v") {
+      verbose = true;
 
-    } else if (sarg=="-example") {
+    } else if (sarg == "-example") {
       printUsage(true);
 
     } else {
-      ks= sarg.split("=");
-      if (ks.size()==2) {
-	keyvalue tmp;
-	tmp.key= ks[0];
-	tmp.value= ks[1];
-	keys.push_back(tmp);
-	
+      ks = sarg.split("=");
+      if (ks.size() == 2) {
+        keyvalue tmp;
+        tmp.key = ks[0];
+        tmp.value = ks[1];
+        keys.push_back(tmp);
+
       } else {
-	cerr << "WARNING unknown argument on commandline:"
-	     << sarg << endl;
+        cerr << "WARNING unknown argument on commandline:" << sarg << endl;
       }
     }
     ac++;
   }
 
-  if (!batchinput.exists()) printUsage(false);
-  
+  if (!batchinput.exists())
+    printUsage(false);
+
   cout << argv[0] << " : TSERIES batch version " << version_string << endl;
 
   data.setVerbose(verbose);
 
   // open batchinput
   ifstream bfile(batchinput.cStr());
-  if (!bfile){
-    cerr << "ERROR cannot open inputfile " <<
-      batchinput << endl;
+  if (!bfile) {
+    cerr << "ERROR cannot open inputfile " << batchinput << endl;
     return 1;
   }
 
-
   dpy = XOpenDisplay(xhost.cStr());
-  if (!dpy){
-    cerr << "ERROR could not open X-display:"
-	 << xhost << endl;
+  if (!dpy) {
+    cerr << "ERROR could not open X-display:" << xhost << endl;
     return 1;
   }
 
   // find an OpenGL-capable RGB visual with depth buffer
   pdvi = glXChooseVisual(dpy, DefaultScreen(dpy), snglBuf);
-  if (!pdvi){
+  if (!pdvi) {
     cerr << "ERROR no RGB visual with depth buffer" << endl;
     return 1;
   }
-  
+
   //cout << "- Create glx rendering context.." << endl;
   cx = glXCreateContext(dpy, pdvi,// display and visual
-			0, 0);    // sharing and direct rendering
+      0, 0); // sharing and direct rendering
   if (!cx) {
     cerr << "ERROR could not create rendering context" << endl;
     return 1;
   }
 
-  bool toprinter= false;
-  bool raster= false;    // false means postscript
+  bool toprinter = false;
+  bool raster = false; // false means postscript
   enum image_type {
-    image_rgb= 0,
-    image_png= 1
+    image_rgb = 0, image_png = 1
   };
-  int raster_type= image_rgb; // see enum image_type above
+  int raster_type = image_rgb; // see enum image_type above
 
   printerManager printman;
   printOptions priop;
-  priop.fname= "tmp_tseries.ps";
-  priop.colop= d_print::greyscale;
-  priop.drawbackground= false;
-  priop.orientation= d_print::ori_automatic;
-  priop.pagesize= d_print::A4;
+  priop.fname = "tmp_tseries.ps";
+  priop.colop = d_print::greyscale;
+  priop.drawbackground = false;
+  priop.orientation = d_print::ori_automatic;
+  priop.pagesize = d_print::A4;
   // 1.4141
-  priop.papersize.hsize= 297;
-  priop.papersize.vsize= 420;
-  priop.doEPS= false;
+  priop.papersize.hsize = 297;
+  priop.papersize.vsize = 420;
+  priop.doEPS = false;
 
   miString diagramtype;
   miString modelname;
-  int modelrun= R_UNDEF;
+  int modelrun = R_UNDEF;
   miString posname;
   miString newposname;
 
   miString s;
   vector<miString> vs, vvs, vvvs;
   int n, nv;
-  bool setupread=  false;
-  bool buffermade= false;
-  xsize= 1696;
-  ysize= 1200;
+  bool setupread = false;
+  bool buffermade = false;
+  xsize = 1696;
+  ysize = 1200;
 
-  pixwidth= 1.0;
-  pixheight= 1.0;
+  pixwidth = 1.0;
+  pixheight = 1.0;
 
   vector<miString> lines, tmplines;
   vector<int> linenumbers, tmplinenumbers;
-  bool merge= false, newmerge;
-  int linenum=0;
-  int nkeys= keys.size();
+  bool merge = false, newmerge;
+  int linenum = 0;
+  int nkeys = keys.size();
 
-  hardcopy_started= false;
+  hardcopy_started = false;
 
   /*
-    if setupfile specified on the command-line, parse it now
-  */
-  if (setupfilegiven){
-    setupread= readSetup(setupfile, site, session, data);
-    if (!setupread){
-      cerr << "ERROR no setup information ... exiting: "
-	   << endl;
+   if setupfile specified on the command-line, parse it now
+   */
+  if (setupfilegiven) {
+    setupread = readSetup(setupfile, site, session, data);
+    if (!setupread) {
+      cerr << "ERROR no setup information ... exiting: " << endl;
       return 99;
     }
   }
 
   /*
-    read input-file
-    - skip blank lines
-    - strip lines for comments and left/right whitespace
-    - merge lines (ending with \)
-  */ 
-  while (getline(bfile,s)){
+   read input-file
+   - skip blank lines
+   - strip lines for comments and left/right whitespace
+   - merge lines (ending with \)
+   */
+  while (getline(bfile, s)) {
     linenum++;
     cleanstr(s);
-    n= s.length();
-    if (n>0) {
-      newmerge= false;
-      if (s[n-1] == '\\'){
-	newmerge= true;
-	s= s.substr(0,s.length()-1);
+    n = s.length();
+    if (n > 0) {
+      newmerge = false;
+      if (s[n - 1] == '\\') {
+        newmerge = true;
+        s = s.substr(0, s.length() - 1);
       }
-      if (merge){
-	tmplines[tmplines.size()-1]+= s;
+      if (merge) {
+        tmplines[tmplines.size() - 1] += s;
       } else {
-	tmplines.push_back(s);
-	tmplinenumbers.push_back(linenum);
+        tmplines.push_back(s);
+        tmplinenumbers.push_back(linenum);
       }
-      merge= newmerge;
+      merge = newmerge;
     }
   }
   // unpack loops and lists
   unpackinput(tmplines, tmplinenumbers, lines, linenumbers);
-  
-  linenum= lines.size();
+
+  linenum = lines.size();
 
   // substitute key-values
-  if (nkeys>0)
-    for (int k=0; k<linenum; k++)
-      for (int m=0; m<nkeys; m++)
-	lines[k].replace("$"+keys[m].key, keys[m].value);
-  
+  if (nkeys > 0)
+    for (int k = 0; k < linenum; k++)
+      for (int m = 0; m < nkeys; m++)
+        lines[k].replace("$" + keys[m].key, keys[m].value);
+
   // parse input - and perform plots
-  for (int k=0; k<linenum; k++){// input-line loop
-    if (verbose) cout << "PARSING LINE:" << lines[k] << endl;
+  for (int k = 0; k < linenum; k++) {// input-line loop
+    if (verbose)
+      cout << "PARSING LINE:" << lines[k] << endl;
     // start parsing...
 
-    if (lines[k] == "PLOT"){
+    if (lines[k] == "PLOT") {
       // --- START PLOT ---
-      if (verbose) cout << "Start new " << diagramtype
-			<< " plot for pos:" << posname
-			<< " model:" << modelname 
-			<< " and run:" << modelrun << endl;
+      if (verbose)
+        cout << "Start new " << diagramtype << " plot for pos:" << posname
+            << " model:" << modelname << " and run:" << modelrun << endl;
 
-      if (!buffermade){
-	cerr << "ERROR no buffersize set..exiting" << endl;
-	return 1;
+      if (!buffermade) {
+        cerr << "ERROR no buffersize set..exiting" << endl;
+        return 1;
       }
-      if (!setupread){
-	setupread= readSetup(setupfile, site, session, data);
-	if (!setupread){
-	  cerr << "ERROR, no setupinformation..exiting" << endl;
-	  return 99;
-	}
-      }
-
-      if (!drawarea){
-	drawarea= new tsDrawArea(&request,&data,&session);
+      if (!setupread) {
+        setupread = readSetup(setupfile, site, session, data);
+        if (!setupread) {
+          cerr << "ERROR, no setupinformation..exiting" << endl;
+          return 99;
+        }
       }
 
-      if (verbose) cout << "- setPlotWindow" << endl;
-      if (!multiple_plots){
-	pixwidth = (globalWindow.x2 - globalWindow.x1)/float(xsize);
-	pixheight= (globalWindow.y2 - globalWindow.y1)/float(ysize);
-	drawarea->setViewport(xsize,ysize,pixwidth,pixheight);
+      if (!drawarea) {
+        drawarea = new tsDrawArea(&request, &data, &session);
+      }
+
+      if (verbose)
+        cout << "- setPlotWindow" << endl;
+      if (!multiple_plots) {
+        pixwidth = (globalWindow.x2 - globalWindow.x1) / float(xsize);
+        pixheight = (globalWindow.y2 - globalWindow.y1) / float(ysize);
+        drawarea->setViewport(xsize, ysize, pixwidth, pixheight);
       } else {
-	pixwidth = (globalWindow.x2 - globalWindow.x1)/float(deltax);
-	pixheight= (globalWindow.y2 - globalWindow.y1)/float(deltay);
-	drawarea->setViewport(deltax,deltay,pixwidth,pixheight);
+        pixwidth = (globalWindow.x2 - globalWindow.x1) / float(deltax);
+        pixheight = (globalWindow.y2 - globalWindow.y1) / float(deltay);
+        drawarea->setViewport(deltax, deltay, pixwidth, pixheight);
       }
-    
-      if (verbose) cout << "- preparing.." << endl;
-      if (modelname.exists()) request.setModel(modelname);
-      request.setPos(posname,newposname);
+
+      if (verbose)
+        cout << "- preparing.." << endl;
+      if (modelname.exists())
+        request.setModel(modelname);
+      request.setPos(posname, newposname);
       request.setStyle(diagramtype);
       request.setRun(modelrun);
       drawarea->prepare();
-    
+
       if (!raster && (!multiple_plots || multiple_newpage)) {
-	startHardcopy(priop);
-	multiple_newpage= false;
+        startHardcopy(priop);
+        multiple_newpage = false;
       }
-    
-      if (multiple_plots){
-	glViewport(margin+plotcol*(deltax+spacing),
-		   margin+plotrow*(deltay+spacing),
-		   deltax,deltay);
+
+      if (multiple_plots) {
+        glViewport(margin + plotcol * (deltax + spacing), margin + plotrow
+            * (deltay + spacing), deltax, deltay);
       }
-    
-      if (verbose) cout << "- plot" << endl;
+
+      if (verbose)
+        cout << "- plot" << endl;
       glLoadIdentity();
-      glOrtho(globalWindow.x1, globalWindow.x2,
-	      globalWindow.y1, globalWindow.y2,
-	      -1,1);
+      glOrtho(globalWindow.x1, globalWindow.x2, globalWindow.y1,
+          globalWindow.y2, -1, 1);
       drawarea->plot();
-  
-      if (raster){
-	imageIO::Image_data img;
-	img.width = xsize;
-	img.height= ysize;
-	img.filename= priop.fname;
-	int npixels;
-	
-	npixels = img.width*img.height;
-	img.nchannels = 4;
-	img.data = new unsigned char[npixels*img.nchannels];
-	
-	if (verbose) cout << "- Preparing for raster output" << endl;
-	glFlush();
-	glReadPixels(0,0,img.width,img.height,
-		     GL_RGBA, GL_UNSIGNED_BYTE,
-		     img.data);
-	
-	int result;
-	
-	  // save as PNG -----------------------------------------------
-	if (raster_type == image_png){
-	  
-	  if (verbose) cout << "- Saving PNG-image to:" << img.filename;
-	  if (verbose) cout.flush();
-	
-	  result= imageIO::write_png(img);
-	  
-	  if (verbose) cout << " .."
-			    << miString(result ? "Ok" : " **FAILED!**")
-			    << endl;
-	  else if (!result)
-	    cerr << " ERROR saving PNG-image to:" << img.filename << endl;
-	}
-	// -------------------------------------------------------------
-      
+
+      if (raster) {
+        imageIO::Image_data img;
+        img.width = xsize;
+        img.height = ysize;
+        img.filename = priop.fname;
+        int npixels;
+
+        npixels = img.width * img.height;
+        img.nchannels = 4;
+        img.data = new unsigned char[npixels * img.nchannels];
+
+        if (verbose)
+          cout << "- Preparing for raster output" << endl;
+        glFlush();
+        glReadPixels(0, 0, img.width, img.height, GL_RGBA, GL_UNSIGNED_BYTE,
+            img.data);
+
+        int result;
+
+        // save as PNG -----------------------------------------------
+        if (raster_type == image_png) {
+
+          if (verbose)
+            cout << "- Saving PNG-image to:" << img.filename;
+          if (verbose)
+            cout.flush();
+
+          result = imageIO::write_png(img);
+
+          if (verbose)
+            cout << " .." << miString(result ? "Ok" : " **FAILED!**") << endl;
+          else if (!result)
+            cerr << " ERROR saving PNG-image to:" << img.filename << endl;
+        }
+        // -------------------------------------------------------------
+
       } else { // PostScript only
-	if (toprinter) { // automatic print of each page
-	  // Note that this option works bad for multi-page output:
-	  // use PRINT_DOCUMENT instead
-	  if (!priop.printer.exists()){
-	    cerr << " ERROR printing document:" << priop.fname
-		 << "  Printer not defined!" << endl;
-	    continue;
-	  }
-	  // first stop postscript-generation
-	  endHardcopy();
-	  multiple_newpage= true;
-	
-	  miString command= printman.printCommand();
-	  priop.numcopies= 1;
-      
-	  printman.expandCommand(command,priop);
-	
-	  if (verbose) cout << "- Issuing print command:" << command << endl;
-	  system(command.c_str());
-	}
+        if (toprinter) { // automatic print of each page
+          // Note that this option works bad for multi-page output:
+          // use PRINT_DOCUMENT instead
+          if (!priop.printer.exists()) {
+            cerr << " ERROR printing document:" << priop.fname
+                << "  Printer not defined!" << endl;
+            continue;
+          }
+          // first stop postscript-generation
+          endHardcopy();
+          multiple_newpage = true;
+
+          miString command = printman.printCommand();
+          priop.numcopies = 1;
+
+          printman.expandCommand(command, priop);
+
+          if (verbose)
+            cout << "- Issuing print command:" << command << endl;
+          system(command.c_str());
+        }
       }
-      
+
       continue;
-    
+
       /* ==============================================
-	 POSLOOP <POSVARNAME> [ MULTIPLE.PLOTS=<nx>,<ny>,<spac.>,<marg.>  <YVARNAME> <XVARNAME> ]
-            */
+       POSLOOP <POSVARNAME> [ MULTIPLE.PLOTS=<nx>,<ny>,<spac.>,<marg.>  <YVARNAME> <XVARNAME> ]
+       */
     } else if (lines[k].upcase().contains("POSLOOP ")) {
       int j;
-      miString loopvar, xvar="[COL]", yvar="[ROW]";
-      vector<miString> newlines,vs,vvs,positions;
-      vs= lines[k].split(" ");
-      if (vs.size() > 1){
-	loopvar= vs[1];
+      miString loopvar, xvar = "[COL]", yvar = "[ROW]";
+      vector<miString> newlines, vs, vvs, positions;
+      vs = lines[k].split(" ");
+      if (vs.size() > 1) {
+        loopvar = vs[1];
       }
-      bool make_multi=false;
-      int nx=1, ny=1, ns=0, nm=0;
-      int ix,iy;
+      bool make_multi = false;
+      int nx = 1, ny = 1, ns = 0, nm = 0;
+      int ix, iy;
       miString mulcom;
-      if (vs.size() > 2){
-	if (vs[2].upcase().contains("MULTIPLE.PLOTS=")){
-	  mulcom= vs[2];
-	  vvs= vs[2].split("=");
-	  if (vvs.size() > 1){
-	    vvs= vvs[1].split(",");
-	    if (vvs.size() > 1){
-	      ny= atoi(vvs[0].c_str());
-	      nx= atoi(vvs[1].c_str());
-	      make_multi= true;
-	      if (vvs.size() == 4){
-		ns= atoi(vvs[2].c_str());
-		nm= atoi(vvs[3].c_str());
-	      }
-	    }
-	  }
-	  if (vs.size() > 4){
-	    yvar= vs[3];
-	    xvar= vs[4];
-	  }
-	}
+      if (vs.size() > 2) {
+        if (vs[2].upcase().contains("MULTIPLE.PLOTS=")) {
+          mulcom = vs[2];
+          vvs = vs[2].split("=");
+          if (vvs.size() > 1) {
+            vvs = vvs[1].split(",");
+            if (vvs.size() > 1) {
+              ny = atoi(vvs[0].c_str());
+              nx = atoi(vvs[1].c_str());
+              make_multi = true;
+              if (vvs.size() == 4) {
+                ns = atoi(vvs[2].c_str());
+                nm = atoi(vvs[3].c_str());
+              }
+            }
+          }
+          if (vs.size() > 4) {
+            yvar = vs[3];
+            xvar = vs[4];
+          }
+        }
       }
-      for (j=k+1; j<linenum && lines[j].upcase()!="POSLOOP.END"; j++)
-	newlines.push_back(lines[j]);
-      if (j == linenum){
-	cerr << "  ERROR - POSLOOP without proper ending in line:"
-	     << k << endl;
-	exit(1);
+      for (j = k + 1; j < linenum && lines[j].upcase() != "POSLOOP.END"; j++)
+        newlines.push_back(lines[j]);
+      if (j == linenum) {
+        cerr << "  ERROR - POSLOOP without proper ending in line:" << k << endl;
+        exit(1);
       }
-      int numpos= data.getNumPositions();
-      int ii=0;
+      int numpos = data.getNumPositions();
+      int ii = 0;
       miString pos;
       int id, prio;
       float lat, lng;
-      while (data.getPosition(-1,ii,pos,id,lat,lng,prio)){
-	positions.push_back(pos);
+      while (data.getPosition(-1, ii, pos, id, lat, lng, prio)) {
+        positions.push_back(pos);
       }
-      numpos= positions.size();
+      numpos = positions.size();
       vector<miString> looplines;
-      int m= newlines.size();
-      ix=-1; iy=0;
-      if (make_multi) looplines.push_back(mulcom);
+      int m = newlines.size();
+      ix = -1;
+      iy = 0;
+      if (make_multi)
+        looplines.push_back(mulcom);
 
-      for (int ii=0; ii<numpos; ii++){
-	if (make_multi){
-	  ix++;
-	  if (ix >= nx){
-	    ix= 0;
-	    iy++;
-	    if (iy >= ny){
-	      ix= 0;
-	      iy= 0;
-	      looplines.push_back("MULTIPLE.PLOTS=OFF");
-	      looplines.push_back(mulcom);
-	    }
-	  }
-	}
-	for (int jj=0; jj< m; jj++){
-	  miString tmp= newlines[jj];
-	  tmp.replace(loopvar, positions[ii]);
-	  tmp.replace(xvar, miString(ix));
-	  tmp.replace(yvar, miString(iy));
-	  looplines.push_back(tmp);
-	}
+      for (int ii = 0; ii < numpos; ii++) {
+        if (make_multi) {
+          ix++;
+          if (ix >= nx) {
+            ix = 0;
+            iy++;
+            if (iy >= ny) {
+              ix = 0;
+              iy = 0;
+              looplines.push_back("MULTIPLE.PLOTS=OFF");
+              looplines.push_back(mulcom);
+            }
+          }
+        }
+        for (int jj = 0; jj < m; jj++) {
+          miString tmp = newlines[jj];
+          tmp.replace(loopvar, positions[ii]);
+          tmp.replace(xvar, miString(ix));
+          tmp.replace(yvar, miString(iy));
+          looplines.push_back(tmp);
+        }
       }
-      if (make_multi) looplines.push_back("MULTIPLE.PLOTS=OFF");
+      if (make_multi)
+        looplines.push_back("MULTIPLE.PLOTS=OFF");
 
-      lines.erase(lines.begin()+k, lines.begin()+j+1);
-      lines.insert(lines.begin()+k, looplines.begin(), looplines.end());
-      linenum= lines.size();
+      lines.erase(lines.begin() + k, lines.begin() + j + 1);
+      lines.insert(lines.begin() + k, looplines.begin(), looplines.end());
+      linenum = lines.size();
       k--;
-      
+
       continue;
 
-    } else if (lines[k].upcase()=="PRINT_DOCUMENT") {
-      if (raster){
-	cerr << " ERROR printing raster-images" << endl;
-	continue;
+    } else if (lines[k].upcase() == "PRINT_DOCUMENT") {
+      if (raster) {
+        cerr << " ERROR printing raster-images" << endl;
+        continue;
       }
-      if (!priop.printer.exists()){
-	cerr << " ERROR printing document:" << priop.fname
-	     << "  Printer not defined!" << endl;
-	continue;
+      if (!priop.printer.exists()) {
+        cerr << " ERROR printing document:" << priop.fname
+            << "  Printer not defined!" << endl;
+        continue;
       }
       // first stop postscript-generation
       endHardcopy();
-      multiple_newpage= true;
-    
-      miString command= printman.printCommand();
-      priop.numcopies= 1;
-    
-      printman.expandCommand(command,priop);
-    
-      if (verbose) cout << "- Issuing print command:" << command << endl;
+      multiple_newpage = true;
+
+      miString command = printman.printCommand();
+      priop.numcopies = 1;
+
+      printman.expandCommand(command, priop);
+
+      if (verbose)
+        cout << "- Issuing print command:" << command << endl;
       system(command.c_str());
-    
+
       continue;
     }
-  
+
     // all other options on the form KEY=VALUE
-  
-    vs= lines[k].split("=");
-    nv= vs.size();
-    if (nv<2) {
-      cerr << "ERROR unknown command:" << lines[k]
-	   << " Linenumber:" << linenumbers[k] << endl;
+
+    vs = lines[k].split("=");
+    nv = vs.size();
+    if (nv < 2) {
+      cerr << "ERROR unknown command:" << lines[k] << " Linenumber:"
+          << linenumbers[k] << endl;
       return 1;
     }
-    miString key= vs[0].downcase();
+    miString key = vs[0].downcase();
     //     miString value= vs[1];
-    int ieq=lines[k].find_first_of("=");
-    miString value= lines[k].substr(ieq+1, lines[k].length()-ieq-1);
+    int ieq = lines[k].find_first_of("=");
+    miString value = lines[k].substr(ieq + 1, lines[k].length() - ieq - 1);
     key.trim();
     value.trim();
-  
-    if (key=="setupfile"){
-      if (setupread){
-	cerr << "WARNING setupfile overrided by command line option. Linenumber:"
-	     << linenumbers[k] << endl;
+
+    if (key == "setupfile") {
+      if (setupread) {
+        cerr
+            << "WARNING setupfile overrided by command line option. Linenumber:"
+            << linenumbers[k] << endl;
       } else {
-	setupfile= value;
-	setupread= readSetup(setupfile, site, session, data);
-	if (!setupread){
-	  cerr << "ERROR no setup information ... exiting: "
-	       << endl;
-	  return 99;
-	}
+        setupfile = value;
+        setupread = readSetup(setupfile, site, session, data);
+        if (!setupread) {
+          cerr << "ERROR no setup information ... exiting: " << endl;
+          return 99;
+        }
       }
-      
-    } else if (key=="buffersize"){
-      vvs= value.split("x");
-      if (vvs.size()<2){
-	cerr << "ERROR buffersize should be WxH:" << lines[k]
-	     << " Linenumber:" << linenumbers[k]<< endl;
-	return 1;
+
+    } else if (key == "buffersize") {
+      vvs = value.split("x");
+      if (vvs.size() < 2) {
+        cerr << "ERROR buffersize should be WxH:" << lines[k] << " Linenumber:"
+            << linenumbers[k] << endl;
+        return 1;
       }
-      xsize= atoi(vvs[0].cStr());
-      ysize= atoi(vvs[1].cStr());
-    
+      xsize = atoi(vvs[0].cStr());
+      ysize = atoi(vvs[1].cStr());
+
       // first stop ongoing postscript sessions
       endHardcopy();
-    
-      // delete old pixmaps
-      if (buffermade){
-	if (pix) glXDestroyGLXPixmap(dpy,pix);
-	if (pixmap) XFreePixmap(dpy,pixmap);
-      }
-    
-      //cout << "- Creating X pixmap.." << endl;
-      pixmap = XCreatePixmap(dpy, RootWindow(dpy, pdvi->screen),
-			     xsize, ysize,
-			     pdvi->depth);
-      if (!pixmap){
-	cerr << "ERROR could not create X pixmap" << endl;
-	return 1;
-      }
-    
-      //cout << "- Creating GLX pixmap.." << endl;
-      pix = glXCreateGLXPixmap(dpy,pdvi,pixmap);
-      if (!pix){
-	cerr << "ERROR could not create GLX pixmap" << endl;
-	return 1;
-      }
-      
-      glXMakeCurrent(dpy, pix, cx);
-      glShadeModel( GL_FLAT );
 
-      glOrtho(globalWindow.x1, globalWindow.x2,
-	      globalWindow.y1, globalWindow.y2,
-	      -1,1);
-      glViewport(0,0,xsize,ysize);
-      
+      // delete old pixmaps
+      if (buffermade) {
+        if (pix)
+          glXDestroyGLXPixmap(dpy, pix);
+        if (pixmap)
+          XFreePixmap(dpy, pixmap);
+      }
+
+      //cout << "- Creating X pixmap.." << endl;
+      pixmap = XCreatePixmap(dpy, RootWindow(dpy, pdvi->screen), xsize, ysize,
+          pdvi->depth);
+      if (!pixmap) {
+        cerr << "ERROR could not create X pixmap" << endl;
+        return 1;
+      }
+
+      //cout << "- Creating GLX pixmap.." << endl;
+      pix = glXCreateGLXPixmap(dpy, pdvi, pixmap);
+      if (!pix) {
+        cerr << "ERROR could not create GLX pixmap" << endl;
+        return 1;
+      }
+
+      glXMakeCurrent(dpy, pix, cx);
+      glShadeModel(GL_FLAT);
+
+      glOrtho(globalWindow.x1, globalWindow.x2, globalWindow.y1,
+          globalWindow.y2, -1, 1);
+      glViewport(0, 0, xsize, ysize);
+
       // for multiple plots
-      priop.viewport_x0=0;
-      priop.viewport_y0=0;
-      priop.viewport_width=xsize;
-      priop.viewport_height=ysize;
-    
-      buffermade= true;
-    
-    } else if (key=="papersize"){
-      vvvs= value.split(","); // could contain both pagesize and papersize
-      for (int l=0; l<vvvs.size(); l++){
-	if (vvvs[l].contains("x")){
-	  vvs= vvvs[l].split("x");
-	  if (vvs.size()<2){
-	    cerr << "ERROR papersize should be WxH or WxH,PAPERTYPE or PAPERTYPE:"
-		 << lines[k]
-		 << " Linenumber:" << linenumbers[k] << endl;
-	    return 1;
-	  }
-	  priop.papersize.hsize= atoi(vvs[0].cStr());
-	  priop.papersize.vsize= atoi(vvs[1].cStr());
-	  priop.usecustomsize= true;
-	} else {
-	  priop.pagesize= printman.getPage(vvvs[l]);
-	}
+      priop.viewport_x0 = 0;
+      priop.viewport_y0 = 0;
+      priop.viewport_width = xsize;
+      priop.viewport_height = ysize;
+
+      buffermade = true;
+
+    } else if (key == "papersize") {
+      vvvs = value.split(","); // could contain both pagesize and papersize
+      for (int l = 0; l < vvvs.size(); l++) {
+        if (vvvs[l].contains("x")) {
+          vvs = vvvs[l].split("x");
+          if (vvs.size() < 2) {
+            cerr
+                << "ERROR papersize should be WxH or WxH,PAPERTYPE or PAPERTYPE:"
+                << lines[k] << " Linenumber:" << linenumbers[k] << endl;
+            return 1;
+          }
+          priop.papersize.hsize = atoi(vvs[0].cStr());
+          priop.papersize.vsize = atoi(vvs[1].cStr());
+          priop.usecustomsize = true;
+        } else {
+          priop.pagesize = printman.getPage(vvvs[l]);
+        }
       }
-    
-    } else if (key=="filename"){
-      if (!value.exists()){
-	cerr << "ERROR illegal filename in:" 
-	     << lines[k]
-	     << " Linenumber:" << linenumbers[k] << endl;
-	return 1; 
+
+    } else if (key == "filename") {
+      if (!value.exists()) {
+        cerr << "ERROR illegal filename in:" << lines[k] << " Linenumber:"
+            << linenumbers[k] << endl;
+        return 1;
       } else {
-	//value.replace("/","_");
-	value.replace(" ","_");
-	priop.fname= value;
+        //value.replace("/","_");
+        value.replace(" ", "_");
+        priop.fname = value;
       }
-    
-    } else if (key=="toprinter"){
-      toprinter= (value.downcase()=="yes");
-    
-    } else if (key=="printer"){
-      priop.printer= value;
-    
-    } else if (key=="output"){
-      value= value.downcase();
-      if (value=="postscript"){
-	raster= false;
-	priop.doEPS= false;
-      } else if (value=="eps"){
-	raster= false;
-	priop.doEPS= true;
-      } else if (value=="rgb" || value=="raster"){
-	raster= true;
-	raster_type= image_rgb;
-      } else if (value=="png"){
-	raster= true;
-	raster_type= image_png;
+
+    } else if (key == "toprinter") {
+      toprinter = (value.downcase() == "yes");
+
+    } else if (key == "printer") {
+      priop.printer = value;
+
+    } else if (key == "output") {
+      value = value.downcase();
+      if (value == "postscript") {
+        raster = false;
+        priop.doEPS = false;
+      } else if (value == "eps") {
+        raster = false;
+        priop.doEPS = true;
+      } else if (value == "rgb" || value == "raster") {
+        raster = true;
+        raster_type = image_rgb;
+      } else if (value == "png") {
+        raster = true;
+        raster_type = image_png;
       } else {
-	cerr << "ERROR unknown output-format:" << lines[k]
-	     << " Linenumber:" << linenumbers[k] << endl;
-	return 1;
+        cerr << "ERROR unknown output-format:" << lines[k] << " Linenumber:"
+            << linenumbers[k] << endl;
+        return 1;
       }
-      if (raster && multiple_plots){
-	cerr << "ERROR. multiple plots and raster-output can not be used together: "
-	     << lines[k] << " Linenumber:" << linenumbers[k] << endl;
-	return 1;
+      if (raster && multiple_plots) {
+        cerr
+            << "ERROR. multiple plots and raster-output can not be used together: "
+            << lines[k] << " Linenumber:" << linenumbers[k] << endl;
+        return 1;
       }
-      if (raster){
-	// first stop ongoing postscript sessions
-	endHardcopy();
+      if (raster) {
+        // first stop ongoing postscript sessions
+        endHardcopy();
       }
-    
-    } else if (key=="colour"){
-      if (value.downcase()=="greyscale")
-	priop.colop= d_print::greyscale;
+
+    } else if (key == "colour") {
+      if (value.downcase() == "greyscale")
+        priop.colop = d_print::greyscale;
       else
-	priop.colop= d_print::incolour;
-    
-    } else if (key=="drawbackground"){
-      priop.drawbackground= (value.downcase()=="yes");
-    
-    } else if (key=="diagramtype"){
-      diagramtype= value;
-    
-    } else if (key=="model"){
-      modelname= value;
-    
-    } else if (key=="run"){
+        priop.colop = d_print::incolour;
+
+    } else if (key == "drawbackground") {
+      priop.drawbackground = (value.downcase() == "yes");
+
+    } else if (key == "diagramtype") {
+      diagramtype = value;
+
+    } else if (key == "model") {
+      modelname = value;
+
+    } else if (key == "run") {
       if (value.upcase() == "UNDEF")
-	modelrun= R_UNDEF;
+        modelrun = R_UNDEF;
       else
-	modelrun= atoi(value.c_str());
-    
-    } else if (key=="position"){
-      posname= newposname= value;
-      newposname.replace("%","");
-    
-    } else if (key=="position_name"){
-      newposname= value;
-    
-    } else if (key=="orientation"){
-      value= value.downcase();
-      if (value=="landscape")
-	priop.orientation= d_print::ori_landscape;
-      else if (value=="portrait")
-	priop.orientation= d_print::ori_portrait;
-      else  priop.orientation= d_print::ori_automatic;
-      
-    } else if (key=="multiple.plots"){
-      if (raster){
-	cerr << "ERROR. multiple plots and raster-output can not be used together: "
-	     << lines[k] << " Linenumber:" << linenumbers[k] << endl;
-	return 1;
+        modelrun = atoi(value.c_str());
+
+    } else if (key == "position") {
+      posname = newposname = value;
+      newposname.replace("%", "");
+
+    } else if (key == "position_name") {
+      newposname = value;
+
+    } else if (key == "orientation") {
+      value = value.downcase();
+      if (value == "landscape")
+        priop.orientation = d_print::ori_landscape;
+      else if (value == "portrait")
+        priop.orientation = d_print::ori_portrait;
+      else
+        priop.orientation = d_print::ori_automatic;
+
+    } else if (key == "multiple.plots") {
+      if (raster) {
+        cerr
+            << "ERROR. multiple plots and raster-output can not be used together: "
+            << lines[k] << " Linenumber:" << linenumbers[k] << endl;
+        return 1;
       }
-      if (value.downcase() == "off"){
-	multiple_newpage= false;
-	multiple_plots= false;
-	glViewport(0,0,xsize,ysize);
-      
+      if (value.downcase() == "off") {
+        multiple_newpage = false;
+        multiple_plots = false;
+        glViewport(0, 0, xsize, ysize);
+
       } else {
-	vector<miString> v1= value.split(",");
-	if (v1.size() < 2){
-	  cerr << "WARNING. Illegal values to multiple.plots:" << lines[k]
-	       << " Linenumber:" << linenumbers[k] << endl;
-	  multiple_plots= false;
-	  return 1;
-	}
-	numrows= atoi(v1[0].cStr());
-	numcols= atoi(v1[1].cStr());
-	if (numrows<1 || numcols<1){
-	  cerr << "WARNING. Illegal values to multiple.plots:" << lines[k]
-	       << " Linenumber:" << linenumbers[k] << endl;
-	  multiple_plots= false;
-	  return 1;
-	}
-	float fmargin =0.0;
-	float fspacing=0.0;
-	if (v1.size() > 2){
-	  fspacing= atof(v1[2].cStr());
-	  if (fspacing >= 100 || fspacing < 0){
-	    cerr << "WARNING. Illegal value for spacing:" << lines[k]
-		 << " Linenumber:" << linenumbers[k] << endl;
-	    fspacing= 0;
-	  }
-	}
-	if (v1.size() > 3){
-	  fmargin= atof(v1[3].cStr());
-	  if (fmargin >= 100 || fmargin < 0){
-	    cerr << "WARNING. Illegal value for margin:" << lines[k]
-		 << " Linenumber:" << linenumbers[k] << endl;
-	    fmargin= 0;
-	  }
-	}
-	margin  = int(xsize*fmargin/100.0);
-	spacing = int(xsize*fspacing/100.0);
-	deltax= (xsize - 2*margin - (numcols-1)*spacing)/numcols;
-	deltay= (ysize - 2*margin - (numrows-1)*spacing)/numrows;
-	multiple_plots=   true;
-	multiple_newpage= true;
-	plotcol= plotrow= 0;
-	if (verbose) cout << "Starting multiple_plot, rows:" << numrows
-			  << " , columns: " << numcols << endl;
+        vector<miString> v1 = value.split(",");
+        if (v1.size() < 2) {
+          cerr << "WARNING. Illegal values to multiple.plots:" << lines[k]
+              << " Linenumber:" << linenumbers[k] << endl;
+          multiple_plots = false;
+          return 1;
+        }
+        numrows = atoi(v1[0].cStr());
+        numcols = atoi(v1[1].cStr());
+        if (numrows < 1 || numcols < 1) {
+          cerr << "WARNING. Illegal values to multiple.plots:" << lines[k]
+              << " Linenumber:" << linenumbers[k] << endl;
+          multiple_plots = false;
+          return 1;
+        }
+        float fmargin = 0.0;
+        float fspacing = 0.0;
+        if (v1.size() > 2) {
+          fspacing = atof(v1[2].cStr());
+          if (fspacing >= 100 || fspacing < 0) {
+            cerr << "WARNING. Illegal value for spacing:" << lines[k]
+                << " Linenumber:" << linenumbers[k] << endl;
+            fspacing = 0;
+          }
+        }
+        if (v1.size() > 3) {
+          fmargin = atof(v1[3].cStr());
+          if (fmargin >= 100 || fmargin < 0) {
+            cerr << "WARNING. Illegal value for margin:" << lines[k]
+                << " Linenumber:" << linenumbers[k] << endl;
+            fmargin = 0;
+          }
+        }
+        margin = int(xsize * fmargin / 100.0);
+        spacing = int(xsize * fspacing / 100.0);
+        deltax = (xsize - 2 * margin - (numcols - 1) * spacing) / numcols;
+        deltay = (ysize - 2 * margin - (numrows - 1) * spacing) / numrows;
+        multiple_plots = true;
+        multiple_newpage = true;
+        plotcol = plotrow = 0;
+        if (verbose)
+          cout << "Starting multiple_plot, rows:" << numrows << " , columns: "
+              << numcols << endl;
       }
-    
-    } else if (key=="plotcell"){
-      if (!multiple_plots){
-	cerr << "ERROR. multiple plots not initialised:" << lines[k]
-	     << " Linenumber:" << linenumbers[k] << endl;
-	return 1;
+
+    } else if (key == "plotcell") {
+      if (!multiple_plots) {
+        cerr << "ERROR. multiple plots not initialised:" << lines[k]
+            << " Linenumber:" << linenumbers[k] << endl;
+        return 1;
       } else {
-	vector<miString> v1= value.split(",");
-	if (v1.size() != 2){
-	  cerr << "WARNING. Illegal values to plotcell:" << lines[k]
-	       << " Linenumber:" << linenumbers[k] << endl;
-	  return 1;
-	}
-	plotrow= atoi(v1[0].cStr());
-	plotcol= atoi(v1[1].cStr());
-	if (plotrow<0 || plotrow>=numrows ||
-	    plotcol<0 || plotcol>=numcols){
-	  cerr << "WARNING. Illegal values to plotcell:" << lines[k]
-	       << " Linenumber:" << linenumbers[k] << endl;
-	  return 1;
-	}
-	// row 0 should be on top of page
-	plotrow= (numrows - 1 - plotrow);
+        vector<miString> v1 = value.split(",");
+        if (v1.size() != 2) {
+          cerr << "WARNING. Illegal values to plotcell:" << lines[k]
+              << " Linenumber:" << linenumbers[k] << endl;
+          return 1;
+        }
+        plotrow = atoi(v1[0].cStr());
+        plotcol = atoi(v1[1].cStr());
+        if (plotrow < 0 || plotrow >= numrows || plotcol < 0 || plotcol
+            >= numcols) {
+          cerr << "WARNING. Illegal values to plotcell:" << lines[k]
+              << " Linenumber:" << linenumbers[k] << endl;
+          return 1;
+        }
+        // row 0 should be on top of page
+        plotrow = (numrows - 1 - plotrow);
       }
 
     } else {
-      cerr << "WARNING. Unknown command:" << lines[k]
-	   << " Linenumber:" << linenumbers[k] << endl;
+      cerr << "WARNING. Unknown command:" << lines[k] << " Linenumber:"
+          << linenumbers[k] << endl;
     }
   }
-  
+
   // finish off postscript-sessions
   endHardcopy();
-  
+
   // clean up structures
-  if (pix) glXDestroyGLXPixmap(dpy,pix);
-  if (pixmap) XFreePixmap(dpy,pixmap);
-  
+  if (pix)
+    glXDestroyGLXPixmap(dpy, pix);
+  if (pixmap)
+    XFreePixmap(dpy, pixmap);
+
   return 0;
-};
+}
+;
