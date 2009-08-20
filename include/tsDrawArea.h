@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -53,13 +53,13 @@
 #include <diPrintOptions.h>
 
 
-using namespace std; 
+using namespace std;
 
 class tsDrawArea {
 private:
   tsRequest     * request;
   tsSetup         setup;
-  DatafileColl  * data; 
+  DatafileColl  * data;
   SessionManager* session;
 
   ptDiagram     * diagram;
@@ -67,8 +67,10 @@ private:
   ptStyle         diaStyle;
   printOptions    printoptions;
 
-  int   width;
-  int   height;
+  int width;
+  int height;
+  float glwidth;
+  float glheight;
   float pixwidth;
   float pixheight;
   bool  Initialised;
@@ -88,9 +90,9 @@ private:
 
 public:
   tsDrawArea( tsRequest* tsr, DatafileColl* tsd, SessionManager* ses);
-  
+
   void prepare();
- 
+
   void setViewport(int w, int h,float,float);
 
   void startHardcopy(const printOptions&,
