@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -37,9 +37,9 @@ const float gl_height = 1000.0;
 
 qtsShow::qtsShow(QWidget* parent, const QGLFormat fmt,
 		 tsRequest* tsr,
-		 DatafileColl* tsd, 
-		 SessionManager* ses) 
-  : QGLWidget(fmt,parent), drawArea(tsr,tsd,ses), plotw(1), ploth(1)
+		 DatafileColl* tsd,
+		 SessionManager* ses)
+  : QGLWidget(fmt,parent), drawArea(tsr,tsd,ses), plotw(1), ploth(1), initialised(false)
 {
 }
 
@@ -52,17 +52,25 @@ void qtsShow::paintGL()
     paintw= plotw;
     painth= ploth;
   }
-  
-  drawArea.plot(); 
+
+  drawArea.prepare();
+  drawArea.plot();
+  swapBuffers();
+
 }
 
 //  Set up the OpenGL rendering state
 void qtsShow::initializeGL()
 {
   glClearColor( 1.0,1.0,1.0,1.0 ); // Let OpenGL clear to white
+  glShadeModel( GL_FLAT );
+
+  setAutoBufferSwap(false);
+  glDrawBuffer(GL_BACK);
+
   glLoadIdentity();
   glOrtho(0,gl_width,0,gl_height,-1,1);
-  glShadeModel( GL_FLAT );
+  initialised = true;
 }
 
 
@@ -78,13 +86,14 @@ void qtsShow::resizeGL( int w, int h )
   if ( plotw!=0 && ploth!=0 ){
     pw = gl_width/float(plotw);
     ph = gl_height/float(ploth);
-  }  
-  
+  }
+
   drawArea.setViewport(w,h,pw,ph);
 }
 
 void qtsShow::refresh()
-{ 
+{
+  if (!initialised) return;
   makeCurrent(); // set current OpenGL context
   drawArea.prepare();
   updateGL();
