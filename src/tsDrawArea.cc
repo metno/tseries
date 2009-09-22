@@ -158,7 +158,7 @@ bool tsDrawArea::prepareData()
             station.setName(request->pos());
 
             //vector<ParId> parlist;
-            theData->fetchDataFromFile(datastream, station, modid, btime,
+            theData->fetchDataFromFile(datastream, station, modid, M_UNDEF, btime,
                 etime, inlist, &first, &last, outlist, true, &error);
             datafound = ((error != DF_STATION_NOT_FOUND) && (error
                 != DD_NO_PARAMETERS_FOUND));
@@ -240,7 +240,7 @@ bool tsDrawArea::prepareDiagram()
   int i;
   int minsymb = setup.wsymbols.minCustom(), maxsymb =
       setup.wsymbols.maxCustom();
-  while (pe = diagram->findElement(SYMBOL, pe)) {
+  while ((pe = diagram->findElement(SYMBOL, pe)) != 0) {
     sev.push_back((SymbolElement*) pe);
     pe = pe->next;
   }
@@ -285,7 +285,7 @@ void tsDrawArea::useTimemarks()
   for (; itr != timemarks.end(); itr++) {
     PlotElement* pe = 0;
     TimemarkerElement* ptm;
-    if (pe = diagram->findElement(itr->first, pe)) {
+    if ((pe = diagram->findElement(itr->first, pe)) != 0) {
       ptm = (TimemarkerElement*) pe;
       mark[0] = itr->second;
       ptm->setTimes(mark);
