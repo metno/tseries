@@ -34,16 +34,16 @@ LFLAG=--libs
 endif
 
 LINKS = \
-	`pkg-config $(LFLAG) putools`    \
-	`pkg-config $(LFLAG) puctools`   \
-	`pkg-config $(LFLAG) tsdata`     \
+	`pkg-config $(LFLAG) puTools`    \
+	`pkg-config $(LFLAG) puCtools`   \
+	`pkg-config $(LFLAG) tsData`     \
 	`pkg-config $(LFLAG) pets2`      \
-	`pkg-config $(LFLAG) pudatatypes`\
+	`pkg-config $(LFLAG) puDatatypes`\
 	`pkg-config $(LFLAG) parameter`  \
-	`pkg-config $(LFLAG) pumet`      \
-	`pkg-config $(LFLAG) qutilities` \
+	`pkg-config $(LFLAG) puMet`      \
+	`pkg-config $(LFLAG) qUtilities` \
 	`pkg-config $(LFLAG) glp`        \
-	`pkg-config $(LFLAG) gltext`     \
+	`pkg-config $(LFLAG) glText`     \
 	-L$(QTDIR)/lib $(QT_LIBS) \
 	$(GLLIBDIR) -lGL -lGLU \
 	-L$(HDF4DIR)/lib -ldf -ljpeg -lz -lm $(XLIBDIR) -lXext -lXmu -lXt -lX11  $(XTRALIBS)
@@ -52,6 +52,7 @@ BLINKS = \
 	-L$(LOCALDIR)/$(LIBDIR) -lpets2 \
 	-ltsData -lpuMet -lglText -lglp -lpuTools \
 	-lpuDatatypes -lparameter -lpuCtools \
+	-L$(QTDIR)/lib $(QT_LIBS) \
 	$(GLLIBDIR) -lGL -lGLU -lpthread -lpng -ljpeg \
 	-L$(HDF4DIR)/lib -ldf -lz -lm \
 	$(XLIBDIR) -lXext -lXmu -lXt -lX11 -lSM -lICE -lXxf86vm -lm  $(XTRALIBS)
