@@ -27,31 +27,21 @@ INCLUDE= -I$(INCDIR) -I$(LOCALINC) \
 	 $(XINCLUDE)
 
 ifdef STATIC
-LFLAG=--static
+LFLAG=--libs  --static
 else
-LFLAG=--libs
+LFLAG=--libs 
 
 endif
 
 LINKS = \
-	`pkg-config $(LFLAG) puTools`    \
-	`pkg-config $(LFLAG) puCtools`   \
-	`pkg-config $(LFLAG) tsData`     \
-	`pkg-config $(LFLAG) pets2`      \
-	`pkg-config $(LFLAG) puDatatypes`\
-	`pkg-config $(LFLAG) parameter`  \
-	`pkg-config $(LFLAG) puMet`      \
-	`pkg-config $(LFLAG) qUtilities` \
-	`pkg-config $(LFLAG) glp`        \
-	`pkg-config $(LFLAG) glText`     \
+	`pkg-config $(LFLAG) puTools puCtools tsData pets2 puDatatypes parameter puMet qUtilities glp glText` \
 	-L$(QTDIR)/lib $(QT_LIBS) \
 	$(GLLIBDIR) -lGL -lGLU \
 	-L$(HDF4DIR)/lib -ldf -ljpeg -lz -lm $(XLIBDIR) -lXext -lXmu -lXt -lX11  $(XTRALIBS)
 
 BLINKS = \
 	-L$(LOCALDIR)/$(LIBDIR) -lpets2 \
-	-ltsData -lpuMet -lglText -lglp -lpuTools \
-	-lpuDatatypes -lparameter -lpuCtools \
+	`pkg-config $(LFLAG) puTools puCtools tsData pets2 puDatatypes parameter puMet qUtilities glp glText` \
 	-L$(QTDIR)/lib $(QT_LIBS) \
 	$(GLLIBDIR) -lGL -lGLU -lpthread -lpng -ljpeg \
 	-L$(HDF4DIR)/lib -ldf -lz -lm \
