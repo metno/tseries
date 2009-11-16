@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -38,7 +38,7 @@
 bool qStr2miStr(const QString& i, miString& o)
 {
   o="";
-  
+
   if(i.isEmpty())
     return false;
   o=i.latin1();
@@ -49,7 +49,7 @@ qtsWork::qtsWork(QWidget* parent)
   : QWidget(parent) , activeRefresh(true)
 {
   filterOn = false;
-  
+
   QGLFormat fmt;
   fmt.setOverlay(false);
   fmt.setDoubleBuffer(true);
@@ -63,15 +63,15 @@ qtsWork::qtsWork(QWidget* parent)
 
   sidebar->setMinimumWidth(170);
   sidebar->setMaximumWidth(255);
- 
-  
+
+
   connect( sidebar, SIGNAL( minmaxProg(int,int)),
 	   this,    SLOT(setProgintervall(int,int)));
 
 
   hlayout->addWidget(show,3);
   hlayout->addWidget(sidebar,1);
- 
+
   hlayout->activate();
 
   connect(sidebar,SIGNAL(changestyle(const QString&)),
@@ -84,7 +84,7 @@ qtsWork::qtsWork(QWidget* parent)
 	  this,SLOT(changeStation(const QString&)));
   connect(sidebar,SIGNAL(filterToggled(bool)),
 	  this,SLOT(filterToggled(bool)));
-  
+
 
   Initialise(); // the none gui stuff...
 }
@@ -93,7 +93,7 @@ qtsWork::qtsWork(QWidget* parent)
 void qtsWork::Initialise()
 {
   session.readSessions(setup.files.defs);
-  
+
   data.setVerbose(false);
 
   for (int i=0; i<setup.streams.size(); i++) {
@@ -108,10 +108,10 @@ void qtsWork::Initialise()
 		     setup.streams[i].data[j].contents); // models/runs
     }
   }
-  
+
   //data.openStreams();
   //getStationList();
-  
+
   myTarget.command       = qmstrings::positions;
   myTarget.description   = TARGETS_TSERIES+";name:lat:lon:image";
 
@@ -130,7 +130,7 @@ miMessage qtsWork::getStationList()
   m.commondesc  = "dataset:image:icon:annotation:normal:selected";
   m.common      =  DATASET_TSERIES +f+ request.model() + ":"
     + IMG_STD_TSERIES + ":" + IMG_ICON_TSERIES +":"+annotation + ":";
-  m.description = "name:lat:lon"; 
+  m.description = "name:lat:lon";
   m.data = myStations;
   return m;
 }
@@ -141,7 +141,7 @@ set<miString> qtsWork::fullPosList()
   ExtStation **es = new ExtStation*;
 
   int posc = 0;
-  while (data.getPosition(-1,posc,es)) 
+  while (data.getPosition(-1,posc,es))
     slist.insert( (*es)->station.Name() );
   delete es;
 
@@ -152,18 +152,18 @@ void qtsWork::makeStationList(bool forced)
 {
   //cerr << "qtsWork::makeStationList" << endl;
 
-  if(!request.model().exists()) 
+  if(!request.model().exists())
     restoreModelFromLog();
 
   if(!forced)
-    if( oldModel == request.model()) 
+    if( oldModel == request.model())
       return;
 
   oldModel = request.model();
 
   QStringList slist;
   myStations.clear();
-  
+
   myList = data.getPositions(request.model());
   map<miString,miString>::iterator itr = myList.begin();
   miString pos;
@@ -172,19 +172,19 @@ void qtsWork::makeStationList(bool forced)
 
   for (;itr!=myList.end();itr++) {
     pos = itr->first;
-    
+
     if(filterOn)
       if(!filter.empty())
 	if(!filter.count(pos))
 	  continue;
-    
+
     slist << pos.cStr();
-    myStations.push_back( pos  + ":" + itr->second );  
+    myStations.push_back( pos  + ":" + itr->second );
   }
-  
+
   sidebar->fillStations(slist);
-  
-  emit(refreshStations()); 
+
+  emit(refreshStations());
 }
 
 
@@ -195,33 +195,33 @@ bool qtsWork::makeStyleList()
   session.getStyleTypes(tmp);
 
   QString cstyle = sidebar->fillList(tmp,qtsSidebar::CMSTYLE);
-  
+
   miString st;
   qStr2miStr(cstyle,st);
   bool changed = request.setStyle(st);
-  
+
   return (  makeModelList(st) || changed );
 
 }
 
 bool qtsWork::makeModelList(const miString& st)
-{ 
+{
   vector<miString>    modname;
   bool changed = false;
 
   int choice =  session.getModels(st, modelMap, modname);
-  
-  if(choice < 0 ) 
+
+  if(choice < 0 )
     if(modname.size() > 1 )
       modname.erase(modname.begin()+1,modname.end());
-  
+
   QString qtmp = sidebar->fillList(modname,qtsSidebar::CMMODEL);
-  
+
   miString tmp;
   qStr2miStr(qtmp,tmp);
-  
+
   tmp = modelMap[tmp];
-  
+
   QApplication::setOverrideCursor( Qt::waitCursor );
   data.openStreams(tmp);
   QApplication::restoreOverrideCursor();
@@ -254,11 +254,11 @@ bool qtsWork::makeRunList(const miString& st,const miString& ru)
 	return request.setRun(atoi(ru.cStr()));
       }
 
-    
+
     sidebar->set(runList[0],qtsSidebar::CMRUN);
     return request.setRun(atoi(runList[0].cStr()));
   }
-  
+
   return false;
 }
 
@@ -293,7 +293,7 @@ void qtsWork::changeStation(const QString& qstr)
 void qtsWork::changeRun(const QString& qstr)
 {
   miString st;
-  if(qStr2miStr(qstr,st))     
+  if(qStr2miStr(qstr,st))
     changeRun(st);
 }
 
@@ -303,7 +303,7 @@ void qtsWork::changeRun(const QString& qstr)
 void qtsWork::changeStyle(const miString& st)
 {
   bool changed = request.setStyle(st);
- 
+
   if(makeModelList(st) || changed)
     refresh();
 }
@@ -315,20 +315,35 @@ void qtsWork::changeModel(const miString& st)
   data.openStreams(tmp);
   QApplication::restoreOverrideCursor();
   bool changed = request.setModel(tmp);
-  if(makeRunList(tmp) || changed)
+  if(makeRunList(tmp) || changed) {
     refresh();
+  }
 }
 
 void qtsWork::changeStation(const miString& st)
 {
-  if(request.setPos(st))
-    refresh();
-  else {
+  if(!request.setPos(st)) {
     miString ST = st.upcase();
-    if(request.setPos(ST))
-      refresh();
+    if(!request.setPos(ST))
+      return;
   }
+  refresh();
 }
+
+void qtsWork::checkPosition(miString name)
+{
+  if(name.empty()) return;
+  miPosition p=data.getPositionInfo(name);
+  if(p.Name()!=name ) return;
+
+  miCoordinates cor=p.Coordinates();
+
+
+  ostringstream ost;
+  ost <<  "<b>Lat:</b> " << cor.sLat()<< " <b>Lon:</b> " << cor.sLon() << " <b>Topo:</b> " << p.height();
+  sidebar->setStationInfo(ost.str().c_str());
+}
+
 
 void qtsWork::changeRun(const miString& st)
 {
@@ -349,6 +364,8 @@ void qtsWork::refresh()
     data.makeStationList();
     makeStationList();
   }
+
+  checkPosition(request.posname());
   QApplication::restoreOverrideCursor();
 }
 
@@ -358,34 +375,34 @@ void qtsWork::restoreLog()
   tsConfigure c;
   miString mo,po,st;
   int ru;
-  
+
   bool validR;
   if(!c.get("VALIDREQUEST",validR))
     return;
   if(!validR)
     return;
-      
- 
+
+
 
   c.get("REQUESTMODEL",mo);
   c.get("REQUESTPOS",po);
   c.get("REQUESTRUN",ru);
   c.get("REQUESTSTYLE",st);
- 
+
 
   activeRefresh = false;
 
- 
+
   sidebar->set(st,qtsSidebar::CMSTYLE);
   changeStyle(st);
-  
+
   map<miString,miString>::iterator itr = modelMap.begin();
   for(;itr!=modelMap.end();itr++)
     if(itr->second == mo) {
       sidebar->set(itr->first,qtsSidebar::CMMODEL);
       break;
     }
-  
+
   request.setModel(mo);
   QApplication::setOverrideCursor( Qt::waitCursor );
   data.openStreams(mo);
@@ -404,7 +421,7 @@ void qtsWork::restoreLog()
 void qtsWork::collectLog()
 {
   tsConfigure c;
-  
+
   c.set("REQUESTMODEL",request.model());
   c.set("REQUESTPOS",request.pos());
   c.set("REQUESTRUN",request.run());
@@ -430,21 +447,21 @@ miMessage qtsWork::target()
   if(qStr2miStr(sidebar->station(),po) ) {
     changeStation(po);
   }
-   
+
   if(myTarget.data.empty())
     myTarget.data.push_back(miString());
- 
-  t =  ".:" + myList[po] + ":" + IMG_FIN_TSERIES; 
-  
+
+  t =  ".:" + myList[po] + ":" + IMG_FIN_TSERIES;
+
   if(t != myTarget.data[0] )
     myTarget.data[0] = t;
-  
+
   return myTarget;
- 
+
 }
 
 void qtsWork::updateStreams()
-{ 
+{
   vector<int> idx;
 
   if (data.check(idx)){
@@ -452,18 +469,18 @@ void qtsWork::updateStreams()
     int size, dset, nindset;
 
     miString filename, descrip;
-  
+
     for (int i=0; i<idx.size();i++){
       data.getStreamInfo(idx[i], filename, descrip, size, dset, nindset);
-      	 
+
       cout << "Reopening stream: " << filename << " : " << descrip << endl;
-      	
+
       data.openStream(idx[i]);
     }
-    
+
     if (idx.size())
       data.makeStationList();
-      
+
   }
 }
 
@@ -478,23 +495,23 @@ set<miString> qtsWork::createFilter(bool orig)
 {
   tsSetup s;
   set<miString> fl;
-  
+
   miString fname =  s.files.baseFilter;
 
 
   if(!orig) {
     fname = s.files.filter;
     ifstream tst(fname.cStr());
-    
-    if(!tst) 
+
+    if(!tst)
       fname = s.files.baseFilter;
-    
+
     tst.close();
   }
 
 
   ifstream in(fname.cStr());
-  
+
   if(!in) {
     cerr << "NO filter " << endl;
     return fl;
@@ -508,9 +525,9 @@ set<miString> qtsWork::createFilter(bool orig)
     getline(in,token);
 
     token.trim();
-    if(token.substr(0,1) == "#") 
+    if(token.substr(0,1) == "#")
       continue;
-    if(token.exists())    
+    if(token.exists())
       fl.insert(token);
     }
   in.close();
@@ -523,11 +540,11 @@ void qtsWork::newFilter(const set<miString>& f)
   filter = f;
   if(filterOn)
     makeStationList(true);
-  
+
   tsSetup s;
-      
+
   ofstream of( s.files.filter.cStr());
-  
+
   if(!of) {
     cerr << "could not write filter to file " <<  s.files.filter << endl;
     return;

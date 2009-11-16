@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -39,9 +39,9 @@
 #include "ts_find.xpm"
 #include "ts_filter.xpm"
 
-qtsSidebar::qtsSidebar(QWidget* parent) 
+qtsSidebar::qtsSidebar(QWidget* parent)
   : QWidget(parent)
-{ 
+{
 
 
   vlayout = new Q3VBoxLayout(this, 10, 10, "listLayout");
@@ -57,9 +57,9 @@ qtsSidebar::qtsSidebar(QWidget* parent)
 
   connect(timecontrol,SIGNAL(minmaxProg(int,int)),
 	  this,       SIGNAL(minmaxProg(int,int)));
-	  
 
-  runl->setMaximumWidth(50); 
+
+  runl->setMaximumWidth(50);
 
   hlayout->addWidget(modell,3);
   hlayout->addWidget(runl);
@@ -84,7 +84,7 @@ qtsSidebar::qtsSidebar(QWidget* parent)
 			     s.server.command.cStr(),
 			     this);
   pluginB->useLabel(true);
-  
+
   targetB = new QPushButton(find_pix,"",this);
   targetB->setMaximumWidth(find_pix.width());
   QToolTip::add( targetB, tr("Show position (DIANA)") );
@@ -96,6 +96,14 @@ qtsSidebar::qtsSidebar(QWidget* parent)
 
   QToolTip::add( filterB, tr("Position filter") );
 
+  pos_label = new QLabel("<b>Position</b>");
+  pos_label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+  QFont thisfont=this->font();
+  thisfont.setPointSize(8);
+  pos_label->setFont(thisfont);
+
+
+  vlayout->addWidget(pos_label);
 
   blayout->addStretch(2);
   blayout->addWidget(filterB);
@@ -120,16 +128,16 @@ qtsSidebar::qtsSidebar(QWidget* parent)
 	  this,SIGNAL(changerun(const QString&)));
   connect(statl,SIGNAL(highlighted(const QString&)),
 	  this,SIGNAL(changestation(const QString&)));
-	 
- 
+
+
 }
 
 void qtsSidebar::searchStation(const QString& str )
 {
   Q3ListBoxItem * item = statl->findItem(str);
-  
+
   if(item)
-    statl->setCurrentItem(item);  
+    statl->setCurrentItem(item);
 }
 
 QString qtsSidebar::fillStations(const QStringList& qlist )
@@ -138,7 +146,7 @@ QString qtsSidebar::fillStations(const QStringList& qlist )
 
   statl->clear();
   statl->insertStringList(qlist);
-  
+
   if(!tmp.isEmpty())
     searchStation(tmp);
 
@@ -147,30 +155,30 @@ QString qtsSidebar::fillStations(const QStringList& qlist )
 QString qtsSidebar::station()
 {
   return statl->currentText();
-} 
+}
 
 
 QString qtsSidebar::fillList(const vector<miString>& slist, const lEntry c)
 {
   QStringList qlist;
   QComboBox * co =  modell;
-  
+
   if ( c == CMRUN   ) co = runl;
   if ( c == CMSTYLE ) co = stylel;
-  
+
   QString cur = co->currentText();
   miString tmp = (!cur.isEmpty() ? cur.latin1() : "");
   bool entryFound = false;
 
-  for(int i=0;i<slist.size();i++) { 
+  for(int i=0;i<slist.size();i++) {
     qlist << slist[i].cStr();
     if(slist[i] == tmp )
       entryFound = true;
   }
-  
+
   co->clear();
   co->insertStringList(qlist);
-  
+
   if(!cur.isEmpty())
     if(entryFound)
       co->setCurrentText(cur);
@@ -180,7 +188,7 @@ QString qtsSidebar::fillList(const vector<miString>& slist, const lEntry c)
 
 QString qtsSidebar::current(const lEntry c)
 {
- 
+
   if(c == CMSTYLE)
     return stylel->currentText();
   if(c == CMRUN)
@@ -209,7 +217,7 @@ void qtsSidebar::iterateModel(int add)
     i = 0;
   else if(i<0)
     i=max;
-  
+
   modell->setCurrentItem(i);
   emit(changemodel(modell->currentText()));
 }

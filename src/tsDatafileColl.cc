@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -140,7 +140,7 @@ bool DatafileColl::openStreams(const miString mod)
 	break;
       }
     }
-  }  
+  }
   return b;
 }
 
@@ -284,6 +284,7 @@ void DatafileColl::makeStationList()
 
   if (verbose) cout << "- Reading positions from streams.."<< endl;
   stations.clear();
+  pos_info.clear();
   for (i=0; i<datasetname.size(); i++) numStationsDS[i]=0;
 
   n= datastreams.size();
@@ -294,7 +295,6 @@ void DatafileColl::makeStationList()
 	while (datastreams[i].dataStream->getStationSeq(nums, st)) {
 	  // force upcase on all stations
 	  st.setName(st.Name().upcase());
-
 	  // Check if station already exists
 	  exists= findpos(st.Name(),posidx);
 	  if (posidx==ns) p= stations.end();
@@ -305,6 +305,7 @@ void DatafileColl::makeStationList()
 	    estat.station= st;
 	    estat.priority = 2;
 	    stations.insert(p,estat);
+	    pos_info[st.Name()]=st;
 	    p= stations.begin()+posidx;
 	    ns++;
 	  } else {
@@ -344,7 +345,7 @@ void DatafileColl::makeStationList()
 //   vector<int> area1,area2,area3,area4,area5;
 //   bool *taken= new bool[ns];
 //   for (j=0; j<ns; j++) taken[j]= false;
-  
+
 //   for (j=0; j<ns; j++){
 //     if (!taken[j]){
 
@@ -363,19 +364,19 @@ void DatafileColl::makeStationList()
 // 	  if ((latdiff<tolerance) && (lngdiff<tolerance) ) {
 // 	    area1.push_back(k);
 // 	    taken[k]= true;
-// 	  } 
+// 	  }
 // 	  else if ((latdiff<tolerance2) && (lngdiff<tolerance2) ) {
 // 	    area2.push_back(k);
 // 	    taken[k]= true;
-// 	  } 
+// 	  }
 // 	  else if ((latdiff<tolerance3) && (lngdiff<tolerance3) ) {
 // 	    area3.push_back(k);
 // 	    taken[k]= true;
-// 	  } 
+// 	  }
 // 	  else if ((latdiff<tolerance4) && (lngdiff<tolerance4) ) {
 // 	    area4.push_back(k);
 // 	    taken[k]= true;
-// 	  } 
+// 	  }
 // 	  else if ((latdiff<tolerance5) && (lngdiff<tolerance5) ) {
 // 	    area5.push_back(k);
 // 	    taken[k]= true;
@@ -434,7 +435,7 @@ bool DatafileColl::getStreamInfo(int idx,
     return true;
   } else return false;
 }
- 
+
 DataStream* DatafileColl::getDataStream(int idx)
 {
   if ((idx>=0) && (idx<datastreams.size())) {
@@ -457,10 +458,16 @@ int DatafileColl::getNumPositions(int dset)
     return numStationsDS[dset];
   else return 0;
 }
+miPosition DatafileColl::getPositionInfo(miString name)
+{
+  if(pos_info.count(name)) return pos_info[name];
+  miPosition empty;
+  return empty;
+}
 
 
 bool DatafileColl::getPosition(int dset, int &idx,
-			       miString& name, int &id, 
+			       miString& name, int &id,
 			       float& lat, float& lng,
 			       int &prio)
 {
@@ -489,12 +496,12 @@ bool DatafileColl::getPosition(int dset, int &idx, ExtStation** es)
   if ((idx <0) || (idx>=n)) return false;
 
   if (dset>=0){
-    if (dset>=datasetname.size()) 
+    if (dset>=datasetname.size())
       return false;
-    
-    while (!(stations[idx].d.isdata(dset)) && (idx<n)) 
+
+    while (!(stations[idx].d.isdata(dset)) && (idx<n))
       idx++;
-    if (idx>=n) 
+    if (idx>=n)
       return false;
   }
 
@@ -512,15 +519,15 @@ map<miString,miString> DatafileColl::getPositions(const miString mod)
   int i,j,n= datastreams.size();
 
   for (i=0; i<n; i++)
-    for (j=0; j<datastreams[i].numModels;j++) 
-      if ( mod == datastreams[i].modelList[j] ) 
+    for (j=0; j<datastreams[i].numModels;j++)
+      if ( mod == datastreams[i].modelList[j] )
 	ds.setdata(datastreams[i].dataSet);
 
   n= stations.size();
   for( i=0 ; i<n ; i++ ) {
     if (Union(ds,stations[i].d)){
-      result[stations[i].station.Name()] = 
-	miString(stations[i].station.lat()) + ":" + 
+      result[stations[i].station.Name()] =
+	miString(stations[i].station.lat()) + ":" +
 	miString(stations[i].station.lon());
     }
   }
@@ -529,10 +536,10 @@ map<miString,miString> DatafileColl::getPositions(const miString mod)
 
 
 // Get list of indices for files which contain data for a
-// specific model and run (returned in idx). 
+// specific model and run (returned in idx).
 // Returnvalue is number of files found
-int DatafileColl::findModel(const Model& mid, 
-			    const Run& rid, 
+int DatafileColl::findModel(const Model& mid,
+			    const Run& rid,
 			    int* idx, int max)
 {
   int numi=0;
@@ -551,7 +558,7 @@ int DatafileColl::findModel(const Model& mid,
   return numi;
 }
 
-vector<miString> DatafileColl::findRuns(const Model& mid) 
+vector<miString> DatafileColl::findRuns(const Model& mid)
 {
   Run rid;
   vector<miString> vrid;

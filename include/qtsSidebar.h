@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -49,9 +49,9 @@
 
 
 
-using namespace std; 
+using namespace std;
 
-class qtsSidebar : public QWidget 
+class qtsSidebar : public QWidget
 {
   Q_OBJECT
 public:
@@ -61,11 +61,12 @@ private:
   Q3VBoxLayout * vlayout;
   QLineEdit   * searchw;    // search widget (stations)
 
-  Q3ListBox    * statl;      // list of stations
+  Q3ListBox   * statl;      // list of stations
   QComboBox   * modell;     // list of models
   QComboBox   * stylel;     // list of styles (meteogram etc.)
   QComboBox   * runl;       // list of runs
- 
+  QLabel      * pos_label;  // position information
+
   TimeControl * timecontrol;
   ClientButton* pluginB;
   QPushButton*  targetB;
@@ -73,7 +74,7 @@ private:
 
 public slots:
   void searchStation(const QString&);
- 
+
   void iterateModel(int);
 
   void nextModel() {iterateModel( 1);}
@@ -89,10 +90,11 @@ public:
   QString current(const lEntry);
   QString station();
   void set(const miString& s,const lEntry c);
-   
+
   ClientButton* pluginButton() const {return pluginB;}
   QPushButton*  targetButton() const {return targetB;}
-  
+  void setStationInfo(QString s) { pos_label->setText(s); }
+
 
 signals:
   void changestyle(const QString&);

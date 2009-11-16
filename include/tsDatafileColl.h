@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -76,13 +76,13 @@ public:
     return f;
   }
 
-  bool empty() const { 
+  bool empty() const {
     for (int i=0; i<MAXDATASETS; i++)
       if (bits[i])
 	return false;
     return true;
   }
-  void clear(){ 
+  void clear(){
     for (int i=0; i<MAXDATASETS; i++)
       bits[i] = false;
   }
@@ -124,14 +124,15 @@ private:
   vector<DsInfo> datastreams;    // List of datafiles
   vector<ExtStation> stations;   // List of stations
   vector<miString> datasetname;  // name of dataset
+  map<miString,miPosition> pos_info; // all positions ordered by name....
   int numStationsDS[MAXDATASETS];// number of positions in each dataset
-  //vector<miString> priorStations;// names of prioritized stations 
+  //vector<miString> priorStations;// names of prioritized stations
   float tolerance;               // 10000*degrees
   dataset customerds;            // datasets with customerinfo
   ParameterDefinition parDef;
   bool verbose;
   bool streams_opened;
-  
+
   unsigned long _modtime(miString&); // get file modification time
   void _filestat(miString&, struct stat&); // get file stats
   bool _isafile(const miString&); // check if stream is a file
@@ -171,6 +172,8 @@ public:
   DataStream* getDataStream(int idx);
   // returns number of unique positions in dataset
   int getNumPositions(int dset =-1);
+  // returns the miPosition for the place by name;
+  miPosition getPositionInfo(miString name);
   // returns info about position idx in dset
   bool getPosition(int,int&,miString&,int&,
 		   float&,float&,int&);
@@ -184,7 +187,7 @@ public:
 
   void setVerbose(bool v){verbose= v;}
   bool has_opened_streams() {
-    bool b= streams_opened; 
+    bool b= streams_opened;
     streams_opened = false;
     return b;
   }
