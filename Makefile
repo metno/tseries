@@ -14,7 +14,7 @@ LANGDIR=lang
 LANGDEST=share/lang
 INCDIR=../include
 LOCALINC=$(LOCALDIR)/include
-VERSION=4.0.4
+VERSION=4.0.6
 
 LOCALINC=$(LOCALDIR)/include
 
