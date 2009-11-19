@@ -58,7 +58,7 @@ class SessionManager {
 private:
   ParameterDefinition pdef;
   struct modeldata{       // Menynavn og id til aktuelle modeller
-    miString modelname;
+    miutil::miString modelname;
     Model modelid;
   };
   vector<modeldata> models;
@@ -68,8 +68,8 @@ private:
     vector<ParId> params; // the parameters
   };
   struct styledata{
-    miString stylename;         // name of style
-    miString stylefile;         // name of stylefile
+    miutil::miString stylename;         // name of style
+    miutil::miString stylefile;         // name of stylefile
     ptStyle  style;             // pets-style
     bool modelchoice;           // whether there is a choice of models
     vector<int> modelidx;       // model indices for modelchoice
@@ -80,9 +80,9 @@ private:
 public:
 
   // get defined stylenames, return number of style
-  int getStyleTypes(vector<miString>& stylenam);
+  int getStyleTypes(vector<miutil::miString>& stylenam);
   // get a PETS style by name
-  ptStyle& getStyle(const miString);
+  ptStyle& getStyle(const miutil::miString);
   // get a PETS style by index
   ptStyle& getStyle(int idx);
   // make a sessionoption with given style,model and run
@@ -91,16 +91,16 @@ public:
 
 
   // get a list of available models for a given styleindex
-  int getModels(const miString& s, 
-		map<miString,Model>& modid,
-		vector<miString>& modname);
+  int getModels(const miutil::miString& s, 
+		map<miutil::miString,Model>& modid,
+		vector<miutil::miString>& modname);
   // get a list of available runs for style/model
   int getRuns(const int sidx, const int midx,
 	      vector<Run>& runid,
-	      vector<miString>& runname);
+	      vector<miutil::miString>& runname);
   
   // read diagram-sessions from file
-  void readSessions(const miString& fname,
+  void readSessions(const miutil::miString& fname,
 		    bool verbose = false);
   // for test-purposes
   void makeTestSessions();

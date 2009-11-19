@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -32,8 +32,8 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <q3textbrowser.h>
-#include <qmime.h> 
-#include <qapplication.h> 
+#include <qmime.h>
+#include <qapplication.h>
 
 #include <qtHelpDialog.h>
 //Added by qt3to4:
@@ -46,6 +46,7 @@
 #include <tb_right_arrow.xpm>
 #include <tb_left_arrow.xpm>
 
+using namespace miutil;
 
 HelpDialog::HelpDialog( QWidget* parent, const Info& hdi )
   : QDialog(parent), info(hdi), closebutton(0)
@@ -57,40 +58,40 @@ HelpDialog::HelpDialog( QWidget* parent, const Info& hdi )
 }
 
 
-void HelpDialog::ConstructorCernel( const miString& filepath, 
-				    const miString& source){  
+void HelpDialog::ConstructorCernel( const miString& filepath,
+				    const miString& source){
   setCaption(tr("Help"));
 
   m_font= qApp->font();
 
-  tb = new Q3TextBrowser( this ); 
-  
+  tb = new Q3TextBrowser( this );
+
   Q3MimeSourceFactory::defaultFactory()->addFilePath(filepath.c_str() );
- 
-  tb->setSource( source.c_str());  
-   
+
+  tb->setSource( source.c_str());
+
   pushbackward= new QPushButton( QPixmap(tb_left_arrow_xpm),
 				 tr("Backwards"), this );
   connect(pushbackward, SIGNAL( clicked()), tb, SLOT( backward()));
 
   pushforward= new QPushButton( QPixmap(tb_right_arrow_xpm),
 				tr("Forward"), this );
-  connect(pushforward, SIGNAL( clicked()), tb, SLOT( forward())); 
+  connect(pushforward, SIGNAL( clicked()), tb, SLOT( forward()));
 
   closebutton= new QPushButton( QPixmap(tb_close_xpm),
 				tr("Close"), this );
   connect( closebutton, SIGNAL( clicked()), this, SLOT( hideHelp()) );
 
-  hlayout = new Q3HBoxLayout( 5 );    
+  hlayout = new Q3HBoxLayout( 5 );
   hlayout->addWidget( pushbackward );
   hlayout->addWidget( pushforward );
   hlayout->addWidget( closebutton );
   hlayout->addStretch();
-  
+
   vlayout = new Q3VBoxLayout( this, 5, 5 );
   vlayout->addLayout( hlayout );
   vlayout->addWidget( tb );
-  
+
   resize( 800, 600 );
 }
 
@@ -124,7 +125,7 @@ void HelpDialog::showdoc(const int doc, const miString tag ){
     tb->scrollToAnchor( tag.cStr() );
   else
     tb->scrollToAnchor( info.src[doc].defaultlink.cStr() );
-    
+
   show();
 }
 

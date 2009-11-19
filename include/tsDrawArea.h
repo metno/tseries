@@ -79,7 +79,7 @@ private:
   bool  oco; // original
   bool  ico; // new colour
 
-  map<miString,miTime> timemarks;
+  map<miutil::miString,miTime> timemarks;
   void useTimemarks();
   bool prepareData();
   bool prepareDiagram();
@@ -101,8 +101,8 @@ public:
 
   void plot();
 
-  void setTimemark(miTime nt,miString name="");
-  void clearTimemarks(miString name="");
+  void setTimemark(miTime nt,miutil::miString name="");
+  void clearTimemarks(miutil::miString name="");
 
   void setProgintervall(int mi,int ma)
   {minProg=mi; maxProg=ma;}

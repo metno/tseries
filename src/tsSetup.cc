@@ -33,6 +33,8 @@
 #include <fstream>
 #include <puMet/symbolMaker.h>
 
+using namespace std;
+using namespace miutil;
 
 vector<tsSetup::dsStruct>  tsSetup::streams;
 tsSetup::fistruct          tsSetup::files;
@@ -198,7 +200,7 @@ bool tsSetup::read(const miString& f, miString s)
   files.filter = path.home + "/.tseries/tseries.filter";
 
   if(!readsetup(f))
-    if(!readsetup( path.home+"/.tseries/tseries.ctl")) 
+    if(!readsetup( path.home+"/.tseries/tseries.ctl"))
       if(!readsetup("/usr/local/etc/tseries/tseries.ctl")) {
 	cerr << "NO setup found!" << endl;
 	return false;

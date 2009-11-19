@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -56,7 +56,7 @@ namespace d_print {
     A4, B5, Letter, Legal, Executive,
     A0, A1, A2, A3, A5, A6, A7, A8, A9,
     B0, B1, B10, B2, B3, B4, B6, B7, B8, B9,
-    C5E, Comm10E, DLE, Folio, Ledger, Tabloid, NPageSize 
+    C5E, Comm10E, DLE, Folio, Ledger, Tabloid, NPageSize
   };
 
   struct PaperSize { // size of paper in mm (default A4)
@@ -71,8 +71,8 @@ namespace d_print {
 
 class printOptions {
 public:
-  miString fname;                   // name of output file
-  miString printer;                 // name of printer
+  miutil::miString fname;                   // name of output file
+  miutil::miString printer;                 // name of printer
   d_print::Orientation orientation; // paper-orientation
   d_print::ColourOption colop;      // use of colour
   d_print::PageSize pagesize;       // pagesize in standard notation
@@ -83,10 +83,10 @@ public:
   bool drawbackground;              // fill with background colour
   bool doEPS;                       // make encapsulated postscript
   int viewport_x0;                  // OpenGL viewport coordinates
-  int viewport_y0;                  // 
+  int viewport_y0;                  //
   int viewport_width;               //
   int viewport_height;              //
-    
+
   printOptions() :
     orientation(d_print::ori_automatic),
     colop(d_print::incolour),
@@ -100,30 +100,30 @@ public:
     viewport_width(0),viewport_height(0)
   {}
 };
-  
+
 class printerManager {
 private:
   struct printerExtra { // extra commands for postscript
-    map<miString,miString> keys;// keys for matching..
+    map<miutil::miString,miutil::miString> keys;// keys for matching..
     map<string,string> commands;// Extra output-commands
   };
   static vector<printerExtra> printers;
-  static map<miString,d_print::PageSize> pages;
+  static map<miutil::miString,d_print::PageSize> pages;
   static map<d_print::PageSize,d_print::PaperSize> pagesizes;
-  static miString pcommand; // printercommand
+  static miutil::miString pcommand; // printercommand
 public:
   printerManager();
-      
-  bool readPrinterInfo(const miString fname); // parse printer-info file
-  d_print::PageSize  getPage(const miString s); // page from string
+
+  bool readPrinterInfo(const miutil::miString fname); // parse printer-info file
+  d_print::PageSize  getPage(const miutil::miString s); // page from string
   d_print::PaperSize getSize(const d_print::PageSize ps);// size from page
   // check if special commands exist for this setup
   bool checkSpecial(const printOptions& po, map<string,string>& mc);
   // expand variables in print-command
-  bool expandCommand(miString& com, const printOptions& po);
+  bool expandCommand(miutil::miString& com, const printOptions& po);
 
-  void setPrintCommand(const miString pc){pcommand= pc; }
-  miString printCommand() const {return pcommand; }
+  void setPrintCommand(const miutil::miString pc){pcommand= pc; }
+  miutil::miString printCommand() const {return pcommand; }
 };
 
 #endif

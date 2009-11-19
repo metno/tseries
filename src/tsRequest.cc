@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,13 +23,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <tsRequest.h>
 
+using namespace miutil;
 
 bool tsRequest::setString(const miString& i, miString& o)
 {
@@ -47,9 +48,9 @@ bool tsRequest::setRun(int i)
 
 ostream& operator<<(ostream& out, const tsRequest& rhs){
 
-  out <<           rhs.sty_ 
-      << " : " <<  rhs.pos_ 
-      << " : " <<  rhs.mod_ 
+  out <<           rhs.sty_
+      << " : " <<  rhs.pos_
+      << " : " <<  rhs.mod_
       << " "   <<  rhs.run_;
  return out;
 };

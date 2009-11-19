@@ -39,6 +39,8 @@
 #include "ts_find.xpm"
 #include "ts_filter.xpm"
 
+using namespace miutil;
+
 qtsSidebar::qtsSidebar(QWidget* parent)
   : QWidget(parent)
 {

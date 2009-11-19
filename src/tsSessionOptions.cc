@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -32,7 +32,7 @@
 
 #define SO_MAX_MODELS 20
 
-
+using namespace miutil;
 
 const vector<ParId> emptyvec;
 const miString emptystr;
@@ -49,7 +49,7 @@ const miString& SessionOptions::getmodelname(const int idx)
   return (idxOk(idx) ? mdata[idx].modelname : emptystr );
 }
 
-const vector<ParId>& SessionOptions::paramVector(const int idx) 
+const vector<ParId>& SessionOptions::paramVector(const int idx)
 {
   return (idxOk(idx) ? mdata[idx].parameters : emptyvec );
 }
@@ -71,7 +71,7 @@ bool SessionOptions::addParam(const ParId parid, const int idx)
   if (idxOk(idx)) {
     mdata[idx].parameters.push_back(parid);
     return(true);
-  } 
+  }
   return(false);
 }
 
@@ -88,7 +88,7 @@ void SessionOptions::setTinterval(miTime& sta, miTime& sto)
     stop = sto;
   }
 }
- 
+
 
 
 

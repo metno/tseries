@@ -84,12 +84,12 @@ public slots:
 public:
   qtsSidebar(QWidget*);
 
-  QString fillList(const vector<miString>&, const lEntry);
+  QString fillList(const vector<miutil::miString>&, const lEntry);
   QString fillStations(const QStringList&);
 
   QString current(const lEntry);
   QString station();
-  void set(const miString& s,const lEntry c);
+  void set(const miutil::miString& s,const lEntry c);
 
   ClientButton* pluginButton() const {return pluginB;}
   QPushButton*  targetButton() const {return targetB;}

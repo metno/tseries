@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -33,7 +33,8 @@
 #include <map>
 #include <fstream>
 
-using namespace imageIO;
+
+using namespace miutil;
 
 
 bool imageIO::read_image(Image_data& img)
@@ -64,9 +65,9 @@ bool imageIO::read_png(Image_data& img){
   }
 
   png_structp png_ptr = png_create_read_struct
-    (PNG_LIBPNG_VER_STRING, 
+    (PNG_LIBPNG_VER_STRING,
      (png_voidp)0,//user_error_ptr,
-     0,//user_error_fn, 
+     0,//user_error_fn,
      0);//user_warning_fn);
   if (!png_ptr){
     cerr << "read_png ERROR creating png_struct" << endl;
@@ -103,14 +104,14 @@ bool imageIO::read_png(Image_data& img){
 
   png_init_io(png_ptr, fp);
 
-  
+
   // do the read
   const int png_transforms = 0;
   png_read_png(png_ptr, info_ptr, png_transforms, NULL);
-  
+
   png_uint_32 uwidth, uheight;
   int color_type;
-  int bit_depth; 
+  int bit_depth;
   int interlace_type;//=   PNG_INTERLACE_NONE;
   int compression_type;//= PNG_COMPRESSION_TYPE_DEFAULT;
   int filter_type;//=      PNG_FILTER_TYPE_DEFAULT;
@@ -144,7 +145,7 @@ bool imageIO::read_png(Image_data& img){
 	 << " ..exiting" << endl;
     return false;
   }
-    
+
   //   cerr << "image nchannels:" << img.nchannels << endl;
 
 
@@ -153,7 +154,7 @@ bool imageIO::read_png(Image_data& img){
 
   //png_read_image(png_ptr, row_pointers);
   //png_read_end(png_ptr, end_info);
-  
+
   // unpack image from row-based structure
   img.data= new unsigned char [img.width*img.height*img.nchannels];
   int bp=0;
@@ -184,13 +185,13 @@ bool imageIO::write_png(const Image_data& img){
   // create png struct (private)
   png_structp png_ptr = png_create_write_struct
     (PNG_LIBPNG_VER_STRING, (png_voidp)0, 0, 0);
-  
+
   if (!png_ptr){
     cerr << "write_png ERROR creating png_struct" << endl;
     fclose(fp);
     return false;
   }
-  
+
   // create info struct
   png_infop info_ptr = png_create_info_struct(png_ptr);
   if (!info_ptr) {
@@ -200,7 +201,7 @@ bool imageIO::write_png(const Image_data& img){
     fclose(fp);
     return false;
   }
-  
+
   if (setjmp(png_ptr->jmpbuf)) {
     png_destroy_write_struct(&png_ptr, &info_ptr);
     cerr << "write_png ERROR longjmp out of process" << endl;
@@ -227,14 +228,14 @@ bool imageIO::write_png(const Image_data& img){
   png_set_IHDR(png_ptr, info_ptr, img.width, img.height,
 	       bit_depth, color_type, interlace_type,
 	       compression_type, filter_type);
-  
+
   // write info to file
   png_write_info(png_ptr, info_ptr);
-  
+
 //   png_write_IHDR(png_ptr, width, height, bit_depth,
 // 		 color_type, compression_type, filter_type,
 // 		 interlace_type);
-  
+
 
   // pack image into row-based structure
   png_byte **row_pointers;
@@ -246,10 +247,10 @@ bool imageIO::write_png(const Image_data& img){
       row_pointers[i][j]= img.data[bp];
     }
   }
-  
+
   // write image to file
   png_write_image(png_ptr, row_pointers);
-  
+
   // write any trailing info-data
   png_write_end(png_ptr, info_ptr);
 
@@ -295,7 +296,7 @@ int hexToInt__(const miString& p){
   int l= p.length(), res=0, fact=1;
   for (int i=l-1; i>=0; i--,fact*=15)
     res += chartoint__(p[i])*fact;
-    
+
   return res;
 }
 
@@ -314,7 +315,7 @@ bool imageIO::imageFromXpmdata(const char** xd, Image_data& img){
   ysize= atoi(vs[1].cStr());
   ncols= atoi(vs[2].cStr());
   nchar= atoi(vs[3].cStr());
-  
+
   if (xsize < 1 || ysize < 1 || ncols < 1 || nchar < 1){
     cerr << "imageFromXpmdata ERROR Illegal numbers "
 	 << " xsize:" << xsize << " ysize:" << ysize
@@ -385,7 +386,7 @@ bool imageIO::imageFromXpmdata(const char** xd, Image_data& img){
 
 bool imageIO::read_xpm(Image_data& img){
   cerr << "--------- read_xpm: " << img.filename << endl;
-  
+
   ifstream file(img.filename.c_str());
 
   if (!file){
@@ -393,10 +394,10 @@ bool imageIO::read_xpm(Image_data& img){
 	 << img.filename << endl;
     return false;
   }
-  
+
   miString buf;
   vector<miString> vs, vs2;
-  
+
   while(getline(file,buf)){
     buf.trim();
     if (buf.length() == 0)
@@ -416,9 +417,9 @@ bool imageIO::read_xpm(Image_data& img){
     data[i]= strdup(vs[i].cStr());
     //     cerr << data[i] << endl;
   }
-  
+
   bool res=  imageFromXpmdata(const_cast<const char**>(data),img);
-  
+
   // OBS: free !!!!!!!!!!!!!!!!!!!!!!!!
 
   delete[] data;

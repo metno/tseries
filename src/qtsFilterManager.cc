@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -41,6 +41,9 @@
 #include "copy.xpm"
 #include "tb_refresh.xpm"
 
+using namespace std;
+using namespace miutil;
+
 qtsFilterManager::qtsFilterManager(const set<miString>& p,
 				   const set<miString>& f,
 				   const set<miString>& o,
@@ -51,14 +54,14 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
   original = createList(o);
 
   Q3VBoxLayout*  vlayout  = new Q3VBoxLayout(this, 10, 10, "vayout");
-  
 
-  Q3VBoxLayout*  bvlayout = new Q3VBoxLayout(5, "bvlayout"); 
+
+  Q3VBoxLayout*  bvlayout = new Q3VBoxLayout(5, "bvlayout");
   Q3HBoxLayout*  hlayout  = new Q3HBoxLayout(5, "hLayout");
   Q3HBoxLayout*  bhlayout = new Q3HBoxLayout(5, "bhLayout");
 
 
-  
+
   // Vertical Button Tab
 
   QPixmap copy_pix(copy_xpm);
@@ -69,7 +72,7 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
   copyB    = new QPushButton(copy_pix,"",this);
   removeB  = new QPushButton(del_pix,"",this);
   reloadB  = new QPushButton(reload_pix,"",this);
-   
+
   copyB->setMaximumWidth(copy_pix.width()+10);
   removeB->setMaximumWidth(del_pix.width()+10);
   reloadB->setMaximumWidth(reload_pix.width()+10);
@@ -90,7 +93,7 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
 
 
 
-  
+
   Q3Accel *a = new Q3Accel( this );
 
   a->connectItem( a->insertItem(Qt::Key_Delete),this, SLOT(remove()));
@@ -99,8 +102,8 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
 
   QPushButton * okB   = new QPushButton(tr("Ok"),this, "okb");
   QPushButton * quitB = new QPushButton(tr("Cancel"),this, "quitb");
-  
- 
+
+
   bhlayout->addWidget(okB);
   bhlayout->addWidget(quitB);
 
@@ -108,7 +111,7 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
   connect(okB,SIGNAL(clicked()),this,SLOT(accept()));
   connect(quitB,SIGNAL(clicked()),this,SLOT(reject()));
 
-  
+
   // Horizontal Layout -> list | buttons | list
 
 
@@ -133,7 +136,7 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
   filtered->setMinimumWidth(250);
   filtered->addItems(filt);
   filtered->setSelectionMode(QAbstractItemView::MultiSelection);
-  
+
 
   // LAYOUT MANAGING
 
@@ -181,7 +184,7 @@ void qtsFilterManager::reload()
 void qtsFilterManager::remove()
 {
   int last=0;
-    
+
   for(int i=0;i<filtered->count();i++) {
     QListWidgetItem * it = filtered->item(i);
     if(it->isSelected()) {
@@ -189,9 +192,9 @@ void qtsFilterManager::remove()
       delete it ;
       last=i;
       i--;
-    }   
+    }
   }
-        
+
   int max = filtered->count() -1;
 
   if(max >= 0) {
@@ -206,11 +209,11 @@ void qtsFilterManager::copy()
   QString txt = all->currentItem()->text();
   if(!txt.isEmpty()) {
     QList<QListWidgetItem *> q=filtered->findItems( txt,Qt::MatchExactly);
-    if(!q.isEmpty()) 
+    if(!q.isEmpty())
       return;
 
     filtered->addItem(txt);
-  }   
+  }
 }
 
 

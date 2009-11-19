@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,18 +23,18 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-// sessionManager 
+// sessionManager
 
 #include <tsSession.h>
 #include <fstream>
 
 using namespace std;
-
+using namespace miutil;
 
 static ptStyle emptysty;
 
@@ -63,7 +63,7 @@ ptStyle& SessionManager::getStyle(int idx){
   }
 }
 
-int SessionManager::getModels(const miString& stylename, 
+int SessionManager::getModels(const miString& stylename,
 			      map<miString,Model>& modid,
 			      vector<miString>& modname){
   int midx;
@@ -106,13 +106,13 @@ int SessionManager::getRuns(const int sidx, const int midx,
 			    vector<miString>& runname){
   runid.clear();
   runname.clear();
-  
+
   if (sidx==-1){
     runid.push_back(0);
     runid.push_back(6);
     runid.push_back(12);
     runid.push_back(18);
-    
+
     runname.push_back("00");
     runname.push_back("06");
     runname.push_back("12");
@@ -135,8 +135,8 @@ int SessionManager::getRuns(const int sidx, const int midx,
 
 
 bool SessionManager::getShowOption(SessionOptions& opt,
-				   int idx, 
-				   Model model, 
+				   int idx,
+				   Model model,
 				   Run run)
 {
   int i,j,midx;
@@ -189,7 +189,7 @@ bool SessionManager::getShowOption(SessionOptions& opt,
   Model mod = req->model();
   Run run = req->run();
 
-  for (int i=0; i< styles.size();i++) 
+  for (int i=0; i< styles.size();i++)
     if (stylename==styles[i].stylename)
       idx = i;
 
@@ -227,7 +227,7 @@ void SessionManager::readSessions(const miString& fname,
   // clean up styles and models
   styles.clear();
   models.clear();
-  
+
 //   buf.setMaxIstream(150);
 
   while (sfile.good()){
@@ -283,14 +283,14 @@ void SessionManager::readSessions(const miString& fname,
 	    sdata.fullparams.push_back(pdata);
 	  else
 	    cerr << "rgSessionManager::readSessions." <<
-	      " error in modelspecific list for diagram: " << 
+	      " error in modelspecific list for diagram: " <<
 	      sdata.stylename << endl;
 	}
       } else if (buf.contains("MODELS")){
 	// Starting global model definition
 	status= f_models;
       } else
-	cout << "rgSessionManager::readSessions: unknown command:" << 
+	cout << "rgSessionManager::readSessions: unknown command:" <<
 	  buf << endl;
       continue;
     }
@@ -340,8 +340,8 @@ void SessionManager::readSessions(const miString& fname,
 	}
       }
       if (i==n)
-	cerr << "ptStyle::readStyle. model: " << 
-	  argu << " for diagram: " << sdata.stylename << 
+	cerr << "ptStyle::readStyle. model: " <<
+	  argu << " for diagram: " << sdata.stylename <<
 	  " not found in global list" << endl;
       continue;
     }

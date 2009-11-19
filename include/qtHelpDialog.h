@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -53,35 +53,35 @@ class QLabel;
 class HelpDialog: public QDialog {
   Q_OBJECT
 public:
-  
+
   struct Info {
 
     struct Source {
-      miString source;
-      miString name;
-      miString defaultlink; 
+      miutil::miString source;
+      miutil::miString name;
+      miutil::miString defaultlink;
     };
-    miString path;
+    miutil::miString path;
     vector<Source> src;
   };
-  
+
   HelpDialog( QWidget* parent, const Info& hdi );
 
-  void addFilePath( const miString& filepath );
-  void setSource( const miString& source );
+  void addFilePath( const miutil::miString& filepath );
+  void setSource( const miutil::miString& source );
 
   void Print();
-  miString helpPath() const {return info.path;}
+  miutil::miString helpPath() const {return info.path;}
 
 public slots:
-  void showdoc(const int doc, const miString tag ="");
+  void showdoc(const int doc, const miutil::miString tag ="");
 
 private slots:
   void hideHelp();
-   
+
 private:
-  void ConstructorCernel(const miString& filepath, const miString& source);
-  
+  void ConstructorCernel(const miutil::miString& filepath, const miutil::miString& source);
+
   Q3TextBrowser* tb;
 
   Info info;
@@ -89,12 +89,12 @@ private:
   QPushButton* pushbackward;
   QPushButton* pushforward;
   QPushButton* closebutton;
-  QLabel* plabel; 
+  QLabel* plabel;
 
   Q3VBoxLayout* vlayout;
   Q3HBoxLayout* hlayout;
 
-  QFont m_font; 
+  QFont m_font;
 };
 
 

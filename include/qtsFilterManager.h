@@ -67,20 +67,20 @@ private:
 
   QStringList original;
 
-  QStringList createList(const set<miString>&);
+  QStringList createList(const set<miutil::miString>&);
 private slots: 
   void reload();
   void remove();
   void copy();
 
 public:
-  qtsFilterManager(const set<miString>&,
-		   const set<miString>&,
-		   const set<miString>&,
+  qtsFilterManager(const set<miutil::miString>&,
+		   const set<miutil::miString>&,
+		   const set<miutil::miString>&,
 		   QWidget* parent = 0);
 
   
-  set<miString> result();
+  set<miutil::miString> result();
 
 
 

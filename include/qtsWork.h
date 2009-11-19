@@ -54,13 +54,13 @@
 
 using namespace std;
 
-const miString DATASET_TSERIES= "T-series ";
-const miString TARGETS_TSERIES= "TARGETS_TSERIES";
-const miString IMG_STD_TSERIES= "IMG_STD_TSERIES";
-const miString IMG_FIN_TSERIES= "IMG_FIN_TSERIES";
-const miString IMG_ICON_TSERIES= "IMG_ICON_TSERIES";
-const miString NOMODEL_TSERIES= "NONE";
-const miString TS_MINE        = " -- ";
+const miutil::miString DATASET_TSERIES= "T-series ";
+const miutil::miString TARGETS_TSERIES= "TARGETS_TSERIES";
+const miutil::miString IMG_STD_TSERIES= "IMG_STD_TSERIES";
+const miutil::miString IMG_FIN_TSERIES= "IMG_FIN_TSERIES";
+const miutil::miString IMG_ICON_TSERIES= "IMG_ICON_TSERIES";
+const miutil::miString NOMODEL_TSERIES= "NONE";
+const miutil::miString TS_MINE        = " -- ";
 
 class qtsWork: public QWidget
 {
@@ -71,21 +71,21 @@ public:
   void collectLog();
   void restoreLog();
 
-  void changeStyle(const miString&);
-  void changeModel(const miString&);
-  void changeStation(const miString&);
-  void changeRun(const miString&);
+  void changeStyle(const miutil::miString&);
+  void changeModel(const miutil::miString&);
+  void changeStation(const miutil::miString&);
+  void changeRun(const miutil::miString&);
 
-  set<miString> Filter() const {return filter;}
-  set<miString> fullPosList();
-  set<miString> createFilter(bool orig=false);
+  set<miutil::miString> Filter() const {return filter;}
+  set<miutil::miString> fullPosList();
+  set<miutil::miString> createFilter(bool orig=false);
 
   miMessage getStationList();
-  miString  model() const {return request.model();}
-  miString  lastList() { return (filterOn ? TS_MINE : "" ) + request.model();}
+  miutil::miString  model() const {return request.model();}
+  miutil::miString  lastList() { return (filterOn ? TS_MINE : "" ) + request.model();}
 
   miMessage target();
-  miString  file(const miString typ) const { return request.file(typ);}
+  miutil::miString  file(const miString typ) const { return request.file(typ);}
   qtsShow*  Show() {return show;}
   qtsSidebar* sideBar() const {return sidebar;}
 
@@ -99,7 +99,7 @@ public slots:
   void changeRun(const QString&);
   void updateStreams();
   void filterToggled(bool);
-  void newFilter(const set<miString>&);
+  void newFilter(const set<miutil::miString>&);
 
 
 signals:
@@ -113,12 +113,12 @@ private:
   tsSetup        setup;
   tsRequest      request;
 
-  miString               oldModel;
-  map<miString,Model>    modelMap;
-  vector<miString>       myStations;
+  miutil::miString               oldModel;
+  map<miutil::miString,Model>    modelMap;
+  vector<miutil::miString>       myStations;
   miMessage              myTarget;
-  map<miString,miString> myList;
-  set<miString>          filter;
+  map<miutil::miString,miString> myList;
+  set<miutil::miString>          filter;
 
   bool activeRefresh;
   bool filterOn;
@@ -129,11 +129,11 @@ private:
   void refresh();
   void makeStationList(bool=false);
   bool makeStyleList();
-  bool makeModelList(const miString&);
-  bool makeRunList(const miString&);
-  bool makeRunList(const miString&,const miString&);
+  bool makeModelList(const miutil::miString&);
+  bool makeRunList(const miutil::miString&);
+  bool makeRunList(const miutil::miString&,const miString&);
   void restoreModelFromLog();
-  void checkPosition(miString st);
+  void checkPosition(miutil::miString st);
 
 public slots:
   void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh();}

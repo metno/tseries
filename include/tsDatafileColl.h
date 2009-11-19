@@ -101,10 +101,10 @@ struct ExtStation {
 
 
 struct  DsInfo {
-  miString streamname;    // name of stream (filename)
-  miString descript;      // a short description
+  miutil::miString streamname;    // name of stream (filename)
+  miutil::miString descript;      // a short description
   DataStream *dataStream; // the datastream
-  miString    sType;      // the streamtype
+  miutil::miString    sType;      // the streamtype
   int dataSet;            // dataset number to stream
   int numindset;          // number in dataset
   bool  streamOpen;       // true if stream open
@@ -114,48 +114,48 @@ struct  DsInfo {
   Model modelList[MAXMODELSINSTREAM];// model id
   Run   runList[MAXMODELSINSTREAM];  // run id
   int   idList[MAXMODELSINSTREAM];   // model production number
-  vector<miString> txtList[MAXMODELSINSTREAM]; // info texts
+  vector<miutil::miString> txtList[MAXMODELSINSTREAM]; // info texts
 };
 
 class DatafileColl
 {
 private:
-  miString collectName;          // file collection name
+  miutil::miString collectName;          // file collection name
   vector<DsInfo> datastreams;    // List of datafiles
   vector<ExtStation> stations;   // List of stations
-  vector<miString> datasetname;  // name of dataset
-  map<miString,miPosition> pos_info; // all positions ordered by name....
+  vector<miutil::miString> datasetname;  // name of dataset
+  map<miutil::miString,miPosition> pos_info; // all positions ordered by name....
   int numStationsDS[MAXDATASETS];// number of positions in each dataset
-  //vector<miString> priorStations;// names of prioritized stations
+  //vector<miutil::miString> priorStations;// names of prioritized stations
   float tolerance;               // 10000*degrees
   dataset customerds;            // datasets with customerinfo
   ParameterDefinition parDef;
   bool verbose;
   bool streams_opened;
 
-  unsigned long _modtime(miString&); // get file modification time
-  void _filestat(miString&, struct stat&); // get file stats
-  bool _isafile(const miString&); // check if stream is a file
+  unsigned long _modtime(miutil::miString&); // get file modification time
+  void _filestat(miutil::miString&, struct stat&); // get file stats
+  bool _isafile(const miutil::miString&); // check if stream is a file
 protected:
-  bool findpos(const miString& name, int& idx);
+  bool findpos(const miutil::miString& name, int& idx);
 
 public:
   DatafileColl();
   ~DatafileColl();
 
   // adds a new dataset
-  int  addDataset(miString);
+  int  addDataset(miutil::miString);
 //   // name of station with priority=1
-//   bool addPriorStation(const miString);
+//   bool addPriorStation(const miutil::miString);
 //   // check if name is prioritized
-//   bool isPriorStation(const miString);
+//   bool isPriorStation(const miutil::miString);
   // adds file to collection, return index
-  int  addStream(const miString,const miString,
-		 const miString,
+  int  addStream(const miutil::miString,const miString,
+		 const miutil::miString,
 		 const int, const int,
-		 const miString= "x,x,x,x");
+		 const miutil::miString= "x,x,x,x");
   // opens streams containing this model
-  bool openStreams(const miString mod);
+  bool openStreams(const miutil::miString mod);
   // opens one stream
   bool openStream(const int);
   // opens all streams in collection
@@ -167,23 +167,23 @@ public:
   // check if newer files on disk, return indexes
   bool check(vector<int>&);
   // returns name, desc, filesize, dataset and n_in_dataset for file
-  bool getStreamInfo(int,miString&,miString&,int&,int&,int&);
+  bool getStreamInfo(int,miutil::miString&,miString&,int&,int&,int&);
   // returns pointer to datastream object
   DataStream* getDataStream(int idx);
   // returns number of unique positions in dataset
   int getNumPositions(int dset =-1);
   // returns the miPosition for the place by name;
-  miPosition getPositionInfo(miString name);
+  miPosition getPositionInfo(miutil::miString name);
   // returns info about position idx in dset
-  bool getPosition(int,int&,miString&,int&,
+  bool getPosition(int,int&,miutil::miString&,int&,
 		   float&,float&,int&);
   // returns info about position idx in dset
   bool getPosition(int dset, int &idx, ExtStation** es);
-  map<miString,miString> getPositions(const miString mod);
+  map<miutil::miString,miString> getPositions(const miString mod);
   // get list of indices for files which contain data for a
   // specific model and run. Returns number of files found
   int findModel(const Model& mid, const Run& rid, int* idx, int max);
-  vector<miString> findRuns(const Model& mid);
+  vector<miutil::miString> findRuns(const Model& mid);
 
   void setVerbose(bool v){verbose= v;}
   bool has_opened_streams() {

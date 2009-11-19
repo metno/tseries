@@ -71,7 +71,7 @@ private:
   Q3PopupMenu * menu_help;
   Q3PopupMenu * menu_lang;
 
-  map<int,miString> langID;
+  map<int,miutil::miString> langID;
 
   // printerdefinitions
   printerManager pman;
@@ -86,9 +86,9 @@ private:
 
   miMessage target;
 
-  miString      lang;
-  miString      currentModel;  
-  set<miString> sendModels;
+  miutil::miString      lang;
+  miutil::miString      currentModel;  
+  set<miutil::miString> sendModels;
 
   void timerEvent(QTimerEvent*);
   int updateTimer;
@@ -115,14 +115,14 @@ private:
   
 
   void restoreLog();
-  void sendImage(const miString, const QImage&);
+  void sendImage(const miutil::miString, const QImage&);
   void initHelp();
   void setRemoteParameters();
-  void makeEPS(const miString&);
+  void makeEPS(const miutil::miString&);
   void setTimemark(miTime);
   void setDianaTimemark(miTime);
 
-  void disablePoslist(miString);
+  void disablePoslist(miutil::miString);
   void enableCurrentPoslist();
   void sendNewPoslist();
 protected:
@@ -159,9 +159,9 @@ private slots:
   void findLanguages();
 
 public:
-  qtsMain(miString l);
+  qtsMain(miutil::miString l);
 
-  void setLang(miString l) { lang=l; }
+  void setLang(miutil::miString l) { lang=l; }
 
 };
 

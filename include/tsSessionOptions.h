@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -48,13 +48,13 @@ class SessionOptions {
 private:
   struct modeldata{
     Model model;
-    miString modelname;
+    miutil::miString modelname;
     vector<ParId> parameters;
   };
 private:
   vector<modeldata> mdata;
-  miTime start, stop;  // timeline interval to use
-  miString dialogname; // dialog headline (Customer name etc)
+  miutil::miTime start, stop;  // timeline interval to use
+  miutil::miString dialogname; // dialog headline (Customer name etc)
   miPosition station;
 
   bool idxOk(const int idx) { return (idx>=0 && idx<mdata.size());}
@@ -64,28 +64,28 @@ public:
   void Erase()     { mdata.clear();       }
   int numModels()  { return mdata.size(); }
   Model getmodel(const int idx);
-  int addModel(const Model, const miString);
- 
+  int addModel(const Model, const miutil::miString);
+
   // return name of model
-  const miString& getmodelname(const int);
-  const vector<ParId>& paramVector(const int idx); 
-    
+  const miutil::miString& getmodelname(const int);
+  const vector<ParId>& paramVector(const int idx);
+
   // add a new parameter to a model
   bool addParam(const ParId parid, const int idx);
 
   // timeinterval
-  void getTinterval(miTime& sta, miTime& sto);
-  void setTinterval(miTime& sta, miTime& sto);
+  void getTinterval(miutil::miTime& sta, miutil::miTime& sto);
+  void setTinterval(miutil::miTime& sta, miutil::miTime& sto);
 
   // return dialogname
 
-  const miString& getdialogname() { return(dialogname); }
+  const miutil::miString& getdialogname() { return(dialogname); }
   const miPosition& getstation()  { return(station);    }
 
-  void setdialogname(const miString& n){ dialogname=n;}
+  void setdialogname(const miutil::miString& n){ dialogname=n;}
   void setstation(const miPosition& s) { station=s;   }
 
-  
+
 };
 
 #endif

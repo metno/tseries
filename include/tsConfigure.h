@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -38,53 +38,53 @@
 
 
 
-using namespace std; 
+using namespace std;
 
 class tsConfigure {
 
 public:
-	
-  bool read(const miString&);
 
-  bool get(const miString& key, miString& cont);
-  bool get(const miString& key, float& cont);
-  bool get(const miString& key, bool& cont);
-  bool get(const miString& key, int& cont);
+  bool read(const miutil::miString&);
 
-  void set(miString key, const miString token);
-  void set(miString key, const float token);
-  void set(miString key, const bool token);
-  void set(miString key, const int token);
-  
-  vector<miString> getCustoms();
-  vector<miString> getList(miString);
-  
-  bool save(miString);
+  bool get(const miutil::miString& key, miutil::miString& cont);
+  bool get(const miutil::miString& key, float& cont);
+  bool get(const miutil::miString& key, bool& cont);
+  bool get(const miutil::miString& key, int& cont);
+
+  void set(miutil::miString key, const miutil::miString token);
+  void set(miutil::miString key, const float token);
+  void set(miutil::miString key, const bool token);
+  void set(miutil::miString key, const int token);
+
+  vector<miutil::miString> getCustoms();
+  vector<miutil::miString> getList(miutil::miString);
+
+  bool save(miutil::miString);
 
 private:
 
   struct tsCustoms {
-    miString name;
-    vector<miString> list;
+    miutil::miString name;
+    vector<miutil::miString> list;
   };
 
-  static map<miString,miString> contents;
+  static map<miutil::miString,miutil::miString> contents;
   static vector<tsCustoms> custom;
 
 
   enum { PUBLIC,STYLE,LIST} sec;
-  
-  int its,itl;
-  
-  void fetchSection(miString);
-  void setSimpleToken(miString);
-  void stripComments(miString&);
 
-  bool splitToken(const miString&,miString&, miString&);
-  
-  void setToken(miString);
-  void setStyle(miString&, miString&);
-  void setList(miString);
+  int its,itl;
+
+  void fetchSection(miutil::miString);
+  void setSimpleToken(miutil::miString);
+  void stripComments(miutil::miString&);
+
+  bool splitToken(const miutil::miString&,miutil::miString&, miutil::miString&);
+
+  void setToken(miutil::miString);
+  void setStyle(miutil::miString&, miutil::miString&);
+  void setList(miutil::miString);
   void setDefaults();
 
 };

@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -39,7 +39,7 @@
 #include <set>
 
 
-using namespace std; 
+using namespace std;
 
 /// T-series setup read and storage
 /** All Tseries setup is read in this class
@@ -48,26 +48,26 @@ using namespace std;
  *  as input. All Parameters er stored in static structs.
  *  After generating a tsSetup with read() one can
  *  tsSetup setup
- *  miString x=setup.path.work
+ *  miutil::miString x=setup.path.work
  */
 
 
 class tsSetup {
 private:
   static bool   Initialised;
-  miString      site;
-  set<miString> actualSites;
-  
-  bool readsetup(miString filename);
+  miutil::miString      site;
+  set<miutil::miString> actualSites;
+
+  bool readsetup(miutil::miString filename);
 
 public:
   tsSetup();
-	
+
   /// Function to create a setup object
   /** Takes in a filename and optional a switch.
    *  switches er defined in the setup-file as\n
    *  [MYSWITCH]\n
-   *  and end with\n 
+   *  and end with\n
    *  [ANOTHERSWITCH] or \n[]\n
    *  everything inside the switch is invisible to
    *  anybody except those who are using the specific switch\n
@@ -76,80 +76,80 @@ public:
    *  By this, several people with different needs are able to
    *  share one setup-file without getting severe conflicts.
   */
-  bool read(const miString& filename,miString s="");
-  
+  bool read(const miutil::miString& filename, miutil::miString s="");
+
   // contents
-   
+
   /// Struct containing a single PETS datastream
   struct sStruct{
-    miString  name;
-    miString  descript;
-    miString  type;
-    miString  contents;
+    miutil::miString  name;
+    miutil::miString  descript;
+    miutil::miString  type;
+    miutil::miString  contents;
   };
 
   /// Struct containing datastreams
   struct dsStruct {
     int  InitialOpen;
-    miString collectionName;
-    miString preferredStyle;
+    miutil::miString collectionName;
+    miutil::miString preferredStyle;
     vector<sStruct> data;
   };
- 
+
   /// Struct containing filenames for tseries
   struct fistruct {
-    miString defs;
-    miString configure;
-    miString weatherSymbols;
-    miString std_image;
-    miString fin_image;
-    miString icon_image;
-    miString filter;
-    miString baseFilter;
+    miutil::miString defs;
+    miutil::miString configure;
+    miutil::miString weatherSymbols;
+    miutil::miString std_image;
+    miutil::miString fin_image;
+    miutil::miString icon_image;
+    miutil::miString filter;
+    miutil::miString baseFilter;
   };
 
-  /// Struct containing coserver-info 
+  /// Struct containing coserver-info
   struct svstruct {
-    miString name;
-    miString command;
-    miString client;
+    miutil::miString name;
+    miutil::miString command;
+    miutil::miString client;
   };
 
   /// Struct containing path-names
   struct ptstruct {
-    miString work;
-    miString images;
-    miString etc;
-    miString tmp;
-    miString saves;
-    miString doc;
-    miString home;
-    vector<miString> lang;
+    miutil::miString work;
+    miutil::miString images;
+    miutil::miString etc;
+    miutil::miString tmp;
+    miutil::miString saves;
+    miutil::miString doc;
+    miutil::miString home;
+    vector<miutil::miString> lang;
   };
 
-  /// Struct containing GUI-specific information 
+  /// Struct containing GUI-specific information
   struct gustruct {
     float origoLon;
     float origoLat;
-    miString style;
+    miutil::miString style;
   };
 
   /// Struct containing information about DIANA
   struct distruct {
-    miString name;
-    miString command;
-    miString workdir;
-    miString args;
+    miutil::miString name;
+    miutil::miString command;
+    miutil::miString workdir;
+    miutil::miString args;
   };
 
   /// Struct containing documentation path etc.
   struct dostruct {
-    miString mainSource;
-    miString mainName;
-    miString mainLink;
-    miString newsSource;
-    miString newsName;
-    miString newsLink;
+    miutil::miString mainSource;
+    miutil::miString mainName;
+    miutil::miString mainLink;
+    miutil::miString newsSource;
+    miutil::miString newsName;
+    miutil::miString newsLink;
   };
 
   static vector<dsStruct> streams; ///< Data streams
@@ -159,42 +159,42 @@ public:
   static gustruct gui;             ///< GUI info
   static distruct diana;           ///< DIANA information
   static dostruct doc;             ///< Documentation locations
-  static miString lang;            ///< Languages
+  static miutil::miString lang;            ///< Languages
 
   static symbolMaker wsymbols;
 
 private:
   enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC} sec;
   enum warning { wKEY, wTOKEN, wSECTION, wFILE };
-     
-  map<miString,miString> lookup;
-  miString fname;
+
+  map<miutil::miString,miutil::miString> lookup;
+  miutil::miString fname;
   int line;
   int idx,ids;
-  
-  void fetchSite(miString);
-  void fetchSection(miString);
-  void setSimpleToken(miString);
-  bool checkLookup(miString&);
-  bool checkEnvironment(miString&);
-  void stripComments(miString&);
 
-  miString inSection();
-  bool splitToken(const miString&,miString&, miString&);
-  void warn(miString&,warning);
-       
-  void setPublic(miString&, miString&);
-  void setFiles(miString&, miString&);
-  void setStreams(miString&, miString&);
-  void setServer(miString&, miString&);
-  void setGui(miString&, miString&);
-  void setPath(miString&, miString&);
-  void setDiana(miString&, miString&);
-  void setDoc(miString&, miString&);
+  void fetchSite(miutil::miString);
+  void fetchSection(miutil::miString);
+  void setSimpleToken(miutil::miString);
+  bool checkLookup(miutil::miString&);
+  bool checkEnvironment(miutil::miString&);
+  void stripComments(miutil::miString&);
 
-  void set(miString&, const miString&);
-  void set(int&,const miString&);
-  void set(float&, const miString&);
+  miutil::miString inSection();
+  bool splitToken(const miutil::miString&,miutil::miString&, miutil::miString&);
+  void warn(miutil::miString&,warning);
+
+  void setPublic(miutil::miString&, miutil::miString&);
+  void setFiles(miutil::miString&, miutil::miString&);
+  void setStreams(miutil::miString&, miutil::miString&);
+  void setServer(miutil::miString&, miutil::miString&);
+  void setGui(miutil::miString&, miutil::miString&);
+  void setPath(miutil::miString&, miutil::miString&);
+  void setDiana(miutil::miString&, miutil::miString&);
+  void setDoc(miutil::miString&, miutil::miString&);
+
+  void set(miutil::miString&, const miutil::miString&);
+  void set(int&,const miutil::miString&);
+  void set(float&, const miutil::miString&);
 
 };
 

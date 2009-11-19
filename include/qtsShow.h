@@ -61,8 +61,8 @@ public:
 
   void refresh();
   void hardcopy(const printOptions&);
-  void setTimemark(miTime,miString="");
-  void clearTimemarks(miString="");
+  void setTimemark(miTime,miutil::miString="");
+  void clearTimemarks(miutil::miString="");
   void setProgintervall(int mi,int ma) { drawArea.setProgintervall(mi,ma);}
 
 };
