@@ -34,7 +34,7 @@
 #include <pets2/ptSymbolElement.h>
 #include <pets2/ptTimemarkerElement.h>
 #include <pets2/ptFontManager.h>
-#include <glText/glTextX.h>
+//#include <glText/glTextX.h>
 #include <glText/glTextQtTexture.h>
 
 using namespace d_print;
