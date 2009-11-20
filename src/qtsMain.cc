@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -49,7 +49,7 @@
 const miString thisTM  = "MARKEDTIME";
 const miString dianaTM = "DIANATIME";
 
-qtsMain::qtsMain(miString l) : lang(l), Q3MainWindow(0) 
+qtsMain::qtsMain(miString l) : Q3MainWindow(0), lang(l)
 {
   makeMenuBar();
   dianaconnected = false;
@@ -60,22 +60,22 @@ qtsMain::qtsMain(miString l) : lang(l), Q3MainWindow(0)
   makeConnectButtons();
 
   printer = new QPrinter();
-  
+
   setIcon(QPixmap(tseries_xpm));
-  
+
   initHelp();
-  
+
   restoreLog();
-  setRemoteParameters();  
+  setRemoteParameters();
   makeAccelerators();
   setTimemark(miTime::nowTime());
 
-  // milliseconds 
+  // milliseconds
   int updatetimeout =  ( 1000 * 60 ) * 2;
-  
+
   updateTimer= startTimer(updatetimeout);
-  
-} 
+
+}
 
 
 void qtsMain::makeMenuBar()
@@ -90,7 +90,7 @@ void qtsMain::makeHelpMenu()
 {
   menu_help  = new Q3PopupMenu( this );
   menuBar()->insertItem( tr("Help"), menu_help);
-  
+
   menu_help->insertItem(tr("Manual"), this, SLOT(showHelp()),Qt::Key_F1);
   menu_help->insertItem( tr("About.."), this, SLOT(about()));
 }
@@ -100,7 +100,7 @@ void qtsMain::makeFileMenu()
 {
   menu_file = new Q3PopupMenu( this );
   menuBar()->insertItem( tr("File"), menu_file);
-  
+
   menu_file->insertItem( tr("Print"), this, SLOT(print()), Qt::CTRL+Qt::Key_P);
   menu_file->insertItem( tr("Save Image"),this,SLOT(raster()));
   menu_file->insertSeparator();
@@ -119,64 +119,64 @@ void qtsMain::makeSettingsMenu()
   menu_setting->insertSeparator();
   sOnQuit = menu_setting->insertItem( tr("Save at exit"), this, SLOT(setSaveOnQuit()));
   menu_setting->insertSeparator();
-  idsnormal = menu_setting->insertItem( tr("Show positions (DIANA)"), 
+  idsnormal = menu_setting->insertItem( tr("Show positions (DIANA)"),
 					this, SLOT(toggleNormalNames()));
-  idsselect = menu_setting->insertItem( tr("Show active position (DIANA)"), 
-					 this, SLOT(toggleSelectedNames())); 
-  
-  idsicon = menu_setting->insertItem( tr("Show icons (DIANA)"), 
-				      this, SLOT(toggleIcon())); 
-  
-  idsposition = menu_setting->insertItem( tr("Send positions (DIANA)"), 
-					  this, SLOT(togglePositions())); 
-  
+  idsselect = menu_setting->insertItem( tr("Show active position (DIANA)"),
+					 this, SLOT(toggleSelectedNames()));
+
+  idsicon = menu_setting->insertItem( tr("Show icons (DIANA)"),
+				      this, SLOT(toggleIcon()));
+
+  idsposition = menu_setting->insertItem( tr("Send positions (DIANA)"),
+					  this, SLOT(togglePositions()));
+
   menu_setting->insertSeparator();
-  
+
   idtmark =  menu_setting->insertItem( tr("Show timemark"), this, SLOT(toggleTimemark()));
-  
+
   menu_setting->insertSeparator();
   menu_setting->insertItem(tr("Font"),this,SLOT(chooseFont()));
   menu_setting->insertSeparator();
-  
+
   menu_lang= new Q3PopupMenu(this);
-  
-  
+
+
   findLanguages();
   menu_lang->setCheckable(true);
-  
+
   menu_setting->insertItem(tr("Languages"),menu_lang);
 
   bool soq;
 
-  sicon     = true; 
-  sposition = true; //no logging 
+  sicon     = true;
+  sposition = true; //no logging
   config.get("TIMEMARK",   tmark);
   config.get("SHOWNORMAL", snormal);
   config.get("SHOWSELECT", sselect);
   config.get("SHOWICON",   sicon);
   config.get("SAVEONQUIT", soq);
-   
+
   menu_setting->setItemChecked(sOnQuit,soq);
   menu_setting->setItemChecked(idsnormal,snormal);
   menu_setting->setItemChecked(idsselect,sselect);
   menu_setting->setItemChecked(idsicon,sicon);
   menu_setting->setItemChecked(idsposition,sposition);
   menu_setting->setItemChecked(idtmark,tmark);
-  
+
 }
 
 
 void qtsMain::makeConnectButtons()
 {
-  
+
   connect(work,SIGNAL(refreshStations()),this,SLOT(refreshDianaStations()));
-  
+
   pluginB = work->sideBar()->pluginButton();
   targetB = work->sideBar()->targetButton();
 
   connect(targetB,SIGNAL(pressed()),this,SLOT(sendTarget()));
   connect(targetB,SIGNAL(released()),this,SLOT(clearTarget()));
-  
+
   connect(pluginB, SIGNAL(receivedMessage(miMessage&)),
 	  SLOT(processLetter(miMessage&)));
   connect(pluginB, SIGNAL(addressListChanged()),
@@ -188,12 +188,12 @@ void qtsMain::makeConnectButtons()
 
 void qtsMain::makeAccelerators()
 {
-  
+
   Q3Accel *a = new Q3Accel( this );
-  a->connectItem( a->insertItem(Qt::Key_Up+Qt::CTRL), 
+  a->connectItem( a->insertItem(Qt::Key_Up+Qt::CTRL),
 		  work->sideBar(),
 		  SLOT(nextModel()) );
-  a->connectItem( a->insertItem(Qt::Key_Down+Qt::CTRL), 
+  a->connectItem( a->insertItem(Qt::Key_Down+Qt::CTRL),
 		  work->sideBar(),
 		  SLOT(prevModel()));
 
@@ -209,7 +209,7 @@ void qtsMain::quit()
 {
   bool soq;
   config.get("SAVEONQUIT",soq);
-  
+
   if(soq)
     writeLog();
   qApp->quit();
@@ -225,7 +225,7 @@ void qtsMain::raster()
   QString s = Q3FileDialog::getSaveFileName( fpath + fname.cStr(),
 					   "Pictures (*.png *.xpm *.bmp *.eps);;All (*.*)",
 					    this, "save file dialog",tr("Save Image") );
-    
+
   if (s.isNull())
     return;
 
@@ -233,11 +233,11 @@ void qtsMain::raster()
   fpath= finfo.dirPath(TRUE);
 
   fname  = s.latin1();
-  
-  int quality= -1; 
-  
+
+  int quality= -1;
+
   cerr << "Saving: " << fname << endl;
-  
+
   if (fname.contains(".xpm") || fname.contains(".XPM"))
     format= "XPM";
   else if (fname.contains(".bmp") || fname.contains(".BMP"))
@@ -246,8 +246,8 @@ void qtsMain::raster()
     makeEPS(fname);
     return;
   }
-  
-  QImage img= work->Show()->grabFrameBuffer(true); 
+
+  QImage img= work->Show()->grabFrameBuffer(true);
   img.save(fname.cStr(), format.cStr(), quality );
 }
 
@@ -261,14 +261,14 @@ void qtsMain::print()
 #else
   command= "lp -c -n{numcopies} -d {printer} {filename}";
 #endif
-  
+
   printOptions priop;
 
   miString fname = work->file("ps");
 
   QString ofn = printer->outputFileName();
-  
-  
+
+
   if(ofn.isNull()) {
     QFileInfo p(fname.cStr());
     printer->setOutputFileName(p.absFilePath());
@@ -277,22 +277,22 @@ void qtsMain::print()
     QFileInfo p(ofn);
     printer->setOutputFileName(p.dirPath(TRUE)+"/"+fname.cStr());
   }
-  
+
   printer->setOutputToFile(false);
-  
+
   if (printer->setup(this)){
-    
-    if (printer->outputToFile()) 
+
+    if (printer->outputToFile())
       priop.fname= printer->outputFileName().latin1();
-    else if (command.substr(0,4)=="lpr ") 
+    else if (command.substr(0,4)=="lpr ")
       priop.fname= miTime::nowTime().format("TS%d%H%M%S.ps");
     else
       priop.fname= fname;
-    
-    
+
+
     // fill printOption from qprinter-selections
     fillPrintOption(printer, priop);
-    
+
     // set printername
     if (!printer->outputToFile())
       priop.printer= printer->printerName().latin1();
@@ -300,20 +300,20 @@ void qtsMain::print()
     // start the postscript production
     QApplication::setOverrideCursor( Qt::waitCursor );
     work->Show()->hardcopy(priop);
-    
+
     // if output to printer: call appropriate command
     if (!printer->outputToFile()){
       priop.numcopies= printer->numCopies();
-      
+
       // expand command-variables
       pman.expandCommand(command, priop);
-      
+
       cerr<<"PRINT: "<< command << endl;
 
       system(command.c_str());
     }
     QApplication::restoreOverrideCursor();
-    
+
     // reset number of copies (saves a lot of paper)
     printer->setNumCopies(1);
   }
@@ -355,21 +355,21 @@ void qtsMain::about()
 void qtsMain::writeLog()
 {
   tsSetup setup;
-  
+
   config.set("SIZEX", this->width());
   config.set("SIZEY", this->height());
   config.set("POSX",this->x());
   config.set("POSY",this->y());
-  
+
   config.set("SHOWNORMAL",snormal);
   config.set("SHOWSELECT",sselect);
   config.set("SHOWICON",sicon);
   config.set("TIMEMARK",tmark);
   config.set("FONT",miString(qApp->font().toString().latin1()));
-  
+
   if(lang.exists())
     config.set("LANG",lang);
-  
+
 
 
   work->collectLog();
@@ -473,7 +473,7 @@ void qtsMain::setTimemark(miTime mark)
   }
 }
 
-// DIANA 
+// DIANA
 
 void qtsMain::setDianaTimemark(miTime mark)
 {
@@ -487,7 +487,7 @@ void qtsMain::setDianaTimemark(miTime mark)
 
 // send one image to diana (with name)
 void qtsMain::sendImage(const miString name, const QImage& image)
-{ 
+{
   if (!dianaconnected) return;
   if (image.isNull()) return;
 
@@ -508,7 +508,7 @@ void qtsMain::sendImage(const miString name, const QImage& image)
   }
   miString txt= ost.str();
   m.data.push_back(txt);
-  
+
   pluginB->sendMessage(m);
 }
 
@@ -523,14 +523,14 @@ void qtsMain::refreshDianaStations()
 
   miString prevModel = currentModel;
   currentModel = work->lastList();
-  
+
   if(!sendModels.count(currentModel) )
     sendNewPoslist();
 
   sendNamePolicy();
   enableCurrentPoslist();
   disablePoslist(prevModel);
-  
+
 }
 
 
@@ -538,7 +538,7 @@ void qtsMain::disablePoslist(miString prev)
 {
   if(prev == NOMODEL_TSERIES)
     return;
- 
+
   miMessage m;
   m.command= qmstrings::hidepositions;
   m.description= DATASET_TSERIES + prev;
@@ -556,32 +556,32 @@ void qtsMain::enableCurrentPoslist()
 void qtsMain::sendNewPoslist()
 {
   sendModels.insert(currentModel);
-  miMessage m  = work->getStationList(); 
- 
+  miMessage m  = work->getStationList();
+
   m.common+=( snormal ? "true" : "false");
   m.common+=( sselect ? ":true" : ":false");
 
-  pluginB->sendMessage(m);  
+  pluginB->sendMessage(m);
 }
 
 void qtsMain::sendTarget()
-{  
+{
   if(!dianaconnected)
     return;
-  
-  miMessage m,m2;
-  
-  m = work->target(); 
-  pluginB->sendMessage(m);  
 
-  
+  miMessage m,m2;
+
+  m = work->target();
+  pluginB->sendMessage(m);
+
+
   m2.command= qmstrings::showpositions;
   m2.description= TARGETS_TSERIES;
   pluginB->sendMessage(m2);
 }
 
 void qtsMain::clearTarget()
-{  
+{
   if(!dianaconnected)
     return;
 
@@ -595,28 +595,28 @@ void qtsMain::clearTarget()
 // called when client-list changes
 
 void qtsMain::processConnect()
-{  
+{
   tsSetup s;
-     
+
   if(pluginB->clientTypeExist(s.server.client)){
     dianaconnected= true;
 
     cout << ttc::color(ttc::Blue)
-	 << "< CONNECTING TO: " << s.server.client << " > " 
+	 << "< CONNECTING TO: " << s.server.client << " > "
 	 << ttc::reset << endl;
 
     QImage sImage(s.files.std_image.cStr());
     QImage fImage(s.files.fin_image.cStr());
     QImage iImage(s.files.icon_image.cStr());
-    
+
     sendImage(IMG_STD_TSERIES,sImage);
     sendImage(IMG_FIN_TSERIES,fImage);
     sendImage(IMG_ICON_TSERIES,iImage);
-    
+
     sendNamePolicy();
     refreshDianaStations();
   }
-  else 
+  else
     dianaconnected= false;
 
 
@@ -642,35 +642,35 @@ void qtsMain::setRemoteParameters()
 void qtsMain::sendNamePolicy()
 {
   if(!dianaconnected)
-    return;  
+    return;
 
   miMessage m;
   m.command = qmstrings::showpositionname;
   m.description="normal:selected:icon";
-  
+
   m.data.push_back( snormal ? "true" : "false");
   m.data[0]+= (sselect ? ":true" : ":false");
   m.data[0]+= (sicon ? ":true" : ":false");
   pluginB->sendMessage(m);
-  
+
 }
 
 
 // processes incoming miMessages
 
 void qtsMain::processLetter(miMessage& letter)
-{   
+{
   if(letter.command == qmstrings::removeclient) {
     tsSetup s;
     if( letter.common.contains(s.server.client.cStr()))
-      cleanConnection();  
+      cleanConnection();
   }
-  
+
   if (letter.command == qmstrings::selectposition ) {
     if ( letter.data.size())
       work->changeStation(letter.data[0]);
   }
-  else if(letter.command == qmstrings::timechanged ) 
+  else if(letter.command == qmstrings::timechanged )
     setDianaTimemark( miTime(letter.common ) );
 
 }
@@ -682,9 +682,9 @@ void qtsMain::showHelp()
 
 void qtsMain::initHelp()
 {
-  tsSetup s; 
+  tsSetup s;
 
-  
+
   miString helpfile = s.path.doc + "/" + lang + "_" + s.doc.mainSource;
   miString newsfile = s.path.doc + "/" + lang + "_" + s.doc.newsSource;
 
@@ -715,7 +715,7 @@ void qtsMain::initHelp()
   helpsource.name        = tr("News").latin1();
   helpsource.defaultlink = s.doc.newsLink;
   info.src.push_back(helpsource);
-  
+
   helpdialog= new HelpDialog(this, info);
   helpdialog->hide();
 
@@ -734,17 +734,17 @@ void qtsMain::timerEvent(QTimerEvent* e)
       setTimemark(miTime::nowTime());
     }
 
-  
+
 }
 
 
 void qtsMain::cleanConnection()
 {
   dianaconnected = false;
-  cout << ttc::color(ttc::Red) 
-       << "< DISCONNECTING >" 
+  cout << ttc::color(ttc::Red)
+       << "< DISCONNECTING >"
        << ttc::reset << endl;
-  
+
   setRemoteParameters();
   setDianaTimemark(miTime::nowTime());
 }
@@ -797,25 +797,25 @@ void qtsMain::findLanguages()
 {
   QDir d;
   tsSetup setup;
-  miString dname = ( setup.path.lang.empty() ? "./" : setup.path.lang[0]); 
+  miString dname = ( setup.path.lang.empty() ? "./" : setup.path.lang[0]);
 
   d.setPath(dname.cStr() );
   QStringList f=d.entryList("tseries_??.qm");
-  
-  
+
+
   for ( QStringList::Iterator it = f.begin(); it != f.end(); ++it ) {
     QString s = *it;
     s.replace("tseries_","");
     s.replace(".qm","");
-    
-    int  id = menu_lang->insertItem( s,this,SLOT(toggleLang(int))); 
+
+    int  id = menu_lang->insertItem( s,this,SLOT(toggleLang(int)));
 
     langID[id] = s.latin1();
 
     menu_lang->setItemChecked(id, (s.latin1() == lang)  );
-    
+
   }
-  
+
   int id = menu_lang->insertItem("en",this,SLOT(toggleLang( int)));
   menu_lang->setItemChecked(id, (!lang.exists() || lang=="en") );
   langID[id]="en";
@@ -830,7 +830,7 @@ void qtsMain::toggleLang(int id)
   for(;itr!=langID.end();itr++)
     menu_lang->setItemChecked(itr->first, ( itr->second == lang ) );
 
-    
+
 
   switch(QMessageBox::warning( this, tr("Language Changed"),
 			       tr("T-series must be restarted to reset the Language to: [%1] ")
@@ -838,7 +838,7 @@ void qtsMain::toggleLang(int id)
 			       tr("Ok"),
 			       tr("Quit T-series"),
 			       0,0,1) ) {
-  case 0:     
+  case 0:
     break;
   case 1:
     quit();

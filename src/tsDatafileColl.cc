@@ -92,7 +92,7 @@ int DatafileColl::addStream(const miString name,
 			    const miString sparid)
 {
   int n= datastreams.size();
-  if (dset<datasetname.size()) {
+  if (dset<(signed int)datasetname.size()) {
 
     DsInfo dsinfo;
     datastreams.push_back(dsinfo);
@@ -131,13 +131,13 @@ bool DatafileColl::openStreams(const miString mod)
 {
   if (verbose) cout << "- Open streams with model "<< mod << endl;
   bool b=false;
-  for (int i=0; i<datastreams.size(); i++) {
+  for (unsigned int i=0; i<datastreams.size(); i++) {
     if (datastreams[i].streamOpen)
       continue;
     for (int m=0; m<datastreams[i].numModels; m++){
       if ( datastreams[i].modelList[m] == mod ) {
-	b |= openStream(i);
-	break;
+        b |= openStream(i);
+        break;
       }
     }
   }
@@ -148,7 +148,7 @@ bool DatafileColl::openStream(const int idx)
 {
   ErrorFlag ef=OK;
 
-  if (idx<0 || idx>=datastreams.size()) return false;
+  if (idx<0 || idx>=(signed int)datastreams.size()) return false;
 
   datastreams[idx].numModels=0;
   delete datastreams[idx].dataStream;
@@ -203,12 +203,11 @@ bool DatafileColl::openStream(const int idx)
 
 bool DatafileColl::openStreams()
 {
-  int i;
   bool ok = true;
-  ErrorFlag ef=OK;
+  //ErrorFlag ef=OK;
 
   if (verbose) cout << "- Open streams.."<< endl;
-  for (i=0; i<datastreams.size(); i++) {
+  for (unsigned int i=0; i<datastreams.size(); i++) {
     openStream(i);
   }
   makeStationList();
@@ -219,8 +218,7 @@ bool DatafileColl::openStreams()
 
 void DatafileColl::closeStreams()
 {
-  int i;
-  for (i=0; i<datastreams.size(); i++) {
+  for (unsigned int i=0; i<datastreams.size(); i++) {
     if (datastreams[i].dataStream && datastreams[i].streamOpen) {
       datastreams[i].streamOpen = false;
       delete datastreams[i].dataStream;
@@ -230,7 +228,7 @@ void DatafileColl::closeStreams()
 
 bool DatafileColl::_isafile(const miString& name){
   FILE *fp;
-  if (fp=fopen(name.cStr(),"r")){
+  if ((fp=fopen(name.cStr(),"r"))){
     fclose(fp);
     return true;
   } else return false;
@@ -254,18 +252,17 @@ void DatafileColl::_filestat(miString& fname, struct stat& filestat)
 
 bool DatafileColl::check(vector<int>& idx)
 {
-  int i;
   unsigned long mtime;
   bool changed = false;
   idx.clear();
   if (datastreams.size() > 0) {
-    for (i=0; i<datastreams.size(); i++) {
+    for (unsigned int i=0; i<datastreams.size(); i++) {
       if ( !datastreams[i].streamOpen )
-	continue;
+        continue;
       mtime = _modtime(datastreams[i].streamname);
       if (mtime > datastreams[i].mtime) {
-	changed = true;
-	idx.push_back(i);
+        changed = true;
+        idx.push_back(i);
       }
     }
   }
@@ -276,142 +273,57 @@ bool DatafileColl::check(vector<int>& idx)
 
 void DatafileColl::makeStationList()
 {
-  int nums, i, j, k, n, posidx, ns=0, nsp;
-  float lat, lng;
+  int nums, posidx, ns = 0;
   bool exists;
   miPosition st;
   vector<ExtStation>::iterator p;
 
-  if (verbose) cout << "- Reading positions from streams.."<< endl;
+  if (verbose)
+    cout << "- Reading positions from streams.." << endl;
   stations.clear();
   pos_info.clear();
-  for (i=0; i<datasetname.size(); i++) numStationsDS[i]=0;
+  for (unsigned int i = 0; i < datasetname.size(); i++)
+    numStationsDS[i] = 0;
 
-  n= datastreams.size();
+  unsigned int n = datastreams.size();
   if (n > 0) {
-    for (i=0; i<n; i++) {
+    for (unsigned int i = 0; i < n; i++) {
       if (datastreams[i].dataStream && datastreams[i].streamOpen) {
-	nums = 0;
-	while (datastreams[i].dataStream->getStationSeq(nums, st)) {
-	  // force upcase on all stations
-	  st.setName(st.Name().upcase());
-	  // Check if station already exists
-	  exists= findpos(st.Name(),posidx);
-	  if (posidx==ns) p= stations.end();
-	  else  p= stations.begin()+posidx;
+        nums = 0;
+        while (datastreams[i].dataStream->getStationSeq(nums, st)) {
+          // force upcase on all stations
+          st.setName(st.Name().upcase());
+          // Check if station already exists
+          exists = findpos(st.Name(), posidx);
+          if (posidx == ns)
+            p = stations.end();
+          else
+            p = stations.begin() + posidx;
 
-	  if (!exists) {
-	    ExtStation estat;
-	    estat.station= st;
-	    estat.priority = 2;
-	    stations.insert(p,estat);
-	    pos_info[st.Name()]=st;
-	    p= stations.begin()+posidx;
-	    ns++;
-	  } else {
-	    // if incoming station has a valid dbkey...keep it
-	    if (st.DbKey()!=0 && p->station.DbKey()==0)
-	      p->station= st;
-	  }
-	  // update number of stations in each dataset
-	  if (!(p->d.setdata(datastreams[i].dataSet)))
-	    numStationsDS[datastreams[i].dataSet]++;
-	  nums++;
-	} // while getStationSeq
+          if (!exists) {
+            ExtStation estat;
+            estat.station = st;
+            estat.priority = 2;
+            stations.insert(p, estat);
+            pos_info[st.Name()] = st;
+            p = stations.begin() + posidx;
+            ns++;
+          } else {
+            // if incoming station has a valid dbkey...keep it
+            if (st.DbKey() != 0 && p->station.DbKey() == 0)
+              p->station = st;
+          }
+          // update number of stations in each dataset
+          if (!(p->d.setdata(datastreams[i].dataSet)))
+            numStationsDS[datastreams[i].dataSet]++;
+          nums++;
+        } // while getStationSeq
       } // if file open
     } // for numdatastreams
   } // if numdatastreams > 0
 
 
   return;
-
-  // Test for proximity and set priority
-
-//   ns=  stations.size();
-//   nsp= priorStations.size();
-//   for (i=0; i<nsp; i++){
-//     if (findpos(priorStations[i],posidx)){
-//       stations[posidx].priority = 0;
-//     }
-//   }
-
-//   // Set priority to the remaining stations based on proximity
-//   float lngdiff, latdiff;
-//   float tolerance2= 2*tolerance;
-//   float tolerance3= 3*tolerance;
-//   float tolerance4= 4*tolerance;
-//   float tolerance5= 5*tolerance;
-
-//   vector<int> area1,area2,area3,area4,area5;
-//   bool *taken= new bool[ns];
-//   for (j=0; j<ns; j++) taken[j]= false;
-
-//   for (j=0; j<ns; j++){
-//     if (!taken[j]){
-
-//       lat  = stations[j].station.lat();
-//       lng  = stations[j].station.lon();
-//       taken[j]=true;
-//       area1.clear();
-//       area2.clear();
-//       area3.clear();
-//       area4.clear();
-//       area5.clear();
-//       for (k=0; k<ns; k++){
-// 	if (!taken[k]){
-// 	  latdiff = fabs(10000*(lat-stations[k].station.lat()));
-// 	  lngdiff = fabs(10000*(lng-stations[k].station.lon()));
-// 	  if ((latdiff<tolerance) && (lngdiff<tolerance) ) {
-// 	    area1.push_back(k);
-// 	    taken[k]= true;
-// 	  }
-// 	  else if ((latdiff<tolerance2) && (lngdiff<tolerance2) ) {
-// 	    area2.push_back(k);
-// 	    taken[k]= true;
-// 	  }
-// 	  else if ((latdiff<tolerance3) && (lngdiff<tolerance3) ) {
-// 	    area3.push_back(k);
-// 	    taken[k]= true;
-// 	  }
-// 	  else if ((latdiff<tolerance4) && (lngdiff<tolerance4) ) {
-// 	    area4.push_back(k);
-// 	    taken[k]= true;
-// 	  }
-// 	  else if ((latdiff<tolerance5) && (lngdiff<tolerance5) ) {
-// 	    area5.push_back(k);
-// 	    taken[k]= true;
-// 	  }
-// 	}
-//       }
-//       int i1=area1.size();
-//       int i2=area2.size();
-//       int i3=area3.size();
-//       int i4=area4.size();
-//       int i5=area5.size();
-//       if (i1>2)
-// 	for (k=0; k<i1; k++)
-// 	  if (stations[area1[k]].priority>1)
-// 	    stations[area1[k]].priority = 7;
-//       if (i2>2)
-// 	for (k=0; k<i2; k++)
-// 	  if (stations[area2[k]].priority>1)
-// 	    stations[area2[k]].priority = 6;
-//       if (i3>2)
-// 	for (k=0; k<i3; k++)
-// 	  if (stations[area3[k]].priority>1)
-// 	    stations[area3[k]].priority = 5;
-//       if (i4>2)
-// 	for (k=0; k<i4; k++)
-// 	  if (stations[area4[k]].priority>1)
-// 	    stations[area4[k]].priority = 4;
-//       if (i5>2)
-// 	for (k=0; k<i5; k++)
-// 	  if (stations[area5[k]].priority>1)
-// 	    stations[area5[k]].priority = 3;
-//     }
-//   }
-
-//   delete[] taken;
 
 }
 
@@ -423,7 +335,7 @@ bool DatafileColl::getStreamInfo(int idx,
 				 int& nindset)
 {
   struct stat fstat;
-  if (idx>=0 && (idx<datastreams.size())) {
+  if (idx>=0 && (idx<(signed int)datastreams.size())) {
     name = datastreams[idx].streamname;
     desc = datastreams[idx].descript;
     dset = datastreams[idx].dataSet;
@@ -438,7 +350,7 @@ bool DatafileColl::getStreamInfo(int idx,
 
 DataStream* DatafileColl::getDataStream(int idx)
 {
-  if ((idx>=0) && (idx<datastreams.size())) {
+  if ((idx>=0) && (idx<(signed int)datastreams.size())) {
     bool b=true;
     if ( !datastreams[idx].dataStream || !datastreams[idx].streamOpen ){
       b = openStream(idx);
@@ -454,7 +366,7 @@ int DatafileColl::getNumPositions(int dset)
 {
   if (dset<0)
     return stations.size();
-  else if (dset<datasetname.size())
+  else if (dset<(signed int)datasetname.size())
     return numStationsDS[dset];
   else return 0;
 }
@@ -475,7 +387,7 @@ bool DatafileColl::getPosition(int dset, int &idx,
   if ((idx <0) || (idx>=n)) return false;
 
   if (dset>=0){
-    if (dset>=datasetname.size()) return false;
+    if (dset>=(signed int)datasetname.size()) return false;
     while (!(stations[idx].d.isdata(dset))
 	   && (idx<n)) idx++;
     if (!(stations[idx].d.isdata(dset))) return false;
@@ -496,7 +408,7 @@ bool DatafileColl::getPosition(int dset, int &idx, ExtStation** es)
   if ((idx <0) || (idx>=n)) return false;
 
   if (dset>=0){
-    if (dset>=datasetname.size())
+    if (dset>=(signed int)datasetname.size())
       return false;
 
     while (!(stations[idx].d.isdata(dset)) && (idx<n))

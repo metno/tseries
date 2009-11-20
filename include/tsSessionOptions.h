@@ -57,7 +57,7 @@ private:
   miutil::miString dialogname; // dialog headline (Customer name etc)
   miPosition station;
 
-  bool idxOk(const int idx) { return (idx>=0 && idx<mdata.size());}
+  bool idxOk(const int idx) { return (idx>=0 && idx<(signed int)mdata.size());}
 
 public:
 

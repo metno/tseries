@@ -41,22 +41,22 @@ static ptStyle emptysty;
 int SessionManager::getStyleTypes(vector<miString>& stylename)
 {
   if (styles.size()){
-    for (int i=0; i<styles.size();i++){
+    for (unsigned int i=0; i<styles.size();i++){
       stylename.push_back(styles[i].stylename);
     }
-    return styles.size();
+    return (signed int)styles.size();
   } else return 0;
 }
 
 ptStyle& SessionManager::getStyle(const miString name){
-  for (int i=0; i<styles.size();i++)
+  for (unsigned int i=0; i<styles.size();i++)
     if (name==styles[i].stylename)
       return getStyle(i);
   return getStyle(-1);
 }
 
 ptStyle& SessionManager::getStyle(int idx){
-  if (idx>=0 && idx <styles.size()){
+  if (idx>=0 && idx <(signed int)styles.size()){
     return styles[idx].style;
   } else {
     return emptysty;
@@ -68,22 +68,22 @@ int SessionManager::getModels(const miString& stylename,
 			      vector<miString>& modname){
   int midx;
   int idx = -1;
-  for (int i=0; i<styles.size();i++)
+  for (unsigned int i=0; i<styles.size();i++)
     if (stylename==styles[i].stylename)
       idx = i;
   modid.clear();
 
   // return models contained in given style
-  if (idx>=0 && idx <styles.size()){
+  if (idx>=0 && idx <(signed int)styles.size()){
     if (styles[idx].modelchoice){
-      for (int i=0; i<styles[idx].modelidx.size();i++){
+      for (int i=0; i<(signed int)styles[idx].modelidx.size();i++){
 	midx = styles[idx].modelidx[i];
 	modname.push_back(models[midx].modelname);
 	modid[models[midx].modelname] =  models[midx].modelid;
       }
       return modname.size();
     } else { // style does not permit modelchoices, but it still needs models!!
-      for (int i=0; i<styles[idx].fullparams.size();i++){
+      for (unsigned int i=0; i<styles[idx].fullparams.size();i++){
 	midx = styles[idx].fullparams[i].midx;
 	modname.push_back(models[midx].modelname);
 	modid[models[midx].modelname] =  models[midx].modelid;
@@ -91,7 +91,7 @@ int SessionManager::getModels(const miString& stylename,
       return -modname.size(); // return a negative number to indicate "no modelchoice"
     }
   } else if (idx==-1) { // return all models
-    for (int i=0; i<models.size();i++){
+    for (unsigned int i=0; i<models.size();i++){
       modname.push_back(models[i].modelname);
       modid[models[i].modelname] =  models[i].modelid;
     }
@@ -145,36 +145,36 @@ bool SessionManager::getShowOption(SessionOptions& opt,
   int moptidx=-1,temp;
   opt.Erase();
 
-  if (idx<0 || idx >=styles.size()) return false;
+  if (idx<0 || idx >=(signed int)styles.size()) return false;
 
   // first add full paramid's
-  for (i=0;i<styles[idx].fullparams.size();i++){
+  for (i=0;i<(signed int)styles[idx].fullparams.size();i++){
     midx = styles[idx].fullparams[i].midx;
     temp=opt.addModel(models[midx].modelid,
-		      models[midx].modelname);
+        models[midx].modelname);
     if (temp!=-1){ // addModel ok..
       if (models[midx].modelid == model)
-	moptidx = temp; // remember this index for later
-      for (j=0;j<styles[idx].fullparams[i].params.size();j++){
-	opt.addParam(styles[idx].fullparams[i].params[j],i);
+        moptidx = temp; // remember this index for later
+      for (j=0;j<(signed int)styles[idx].fullparams[i].params.size();j++){
+        opt.addParam(styles[idx].fullparams[i].params[j],i);
       }
     }
   }
   // then add modeldependent id's
   if (styles[idx].modelchoice){
-    for (i=0;i<styles[idx].modelidx.size();i++){
+    for (i=0;i<(signed int)styles[idx].modelidx.size();i++){
       midx = styles[idx].modelidx[i];
       mod = models[midx].modelid;
       if (model == mod){
-	if (moptidx<0) // check if already added
-	  moptidx=opt.addModel(mod,models[midx].modelname);
-	if (moptidx!=-1){
-	  for (j=0;j<styles[idx].params.size();j++){
-	    parid = styles[idx].params[j];
-	    parid.model = mod;
-	    opt.addParam(parid,moptidx);
-	  }
-	}
+        if (moptidx<0) // check if already added
+          moptidx=opt.addModel(mod,models[midx].modelname);
+        if (moptidx!=-1){
+          for (j=0;j<(signed int)styles[idx].params.size();j++){
+            parid = styles[idx].params[j];
+            parid.model = mod;
+            opt.addParam(parid,moptidx);
+          }
+        }
       }
     }
   }
@@ -189,7 +189,7 @@ bool SessionManager::getShowOption(SessionOptions& opt,
   Model mod = req->model();
   Run run = req->run();
 
-  for (int i=0; i< styles.size();i++)
+  for (unsigned int i=0; i< styles.size();i++)
     if (stylename==styles[i].stylename)
       idx = i;
 

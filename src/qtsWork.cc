@@ -96,10 +96,10 @@ void qtsWork::Initialise()
 
   data.setVerbose(false);
 
-  for (int i=0; i<setup.streams.size(); i++) {
+  for (unsigned int i=0; i<setup.streams.size(); i++) {
     data.addDataset(setup.streams[i].collectionName);
 
-    for (int j=0; j<setup.streams[i].data.size(); j++) {
+    for (unsigned int j=0; j<setup.streams[i].data.size(); j++) {
       data.addStream(setup.streams[i].data[j].name,      // streamname
 		     setup.streams[i].data[j].descript,  // description
 		     setup.streams[i].data[j].type,      // streamtype
@@ -248,7 +248,7 @@ bool qtsWork::makeRunList(const miString& st,const miString& ru)
 
   sidebar->fillList(runList,qtsSidebar::CMRUN);
   if(runList.size()) {
-    for(int i=0;i<runList.size();i++)
+    for(unsigned int i=0;i<runList.size();i++)
       if(ru == runList[i] ) {
 	sidebar->set(ru,qtsSidebar::CMRUN);
 	return request.setRun(atoi(ru.cStr()));
@@ -470,7 +470,7 @@ void qtsWork::updateStreams()
 
     miString filename, descrip;
 
-    for (int i=0; i<idx.size();i++){
+    for (unsigned int i=0; i<idx.size();i++){
       data.getStreamInfo(idx[i], filename, descrip, size, dset, nindset);
 
       cout << "Reopening stream: " << filename << " : " << descrip << endl;

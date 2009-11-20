@@ -110,11 +110,11 @@ int main(int argc, char **argv)
 
     // translation file for application strings
 
-    for(int i=0;i<setup.path.lang.size(); i++ )
+    for(unsigned int i=0;i<setup.path.lang.size(); i++ )
       if( qt.load( qtlang.cStr(),setup.path.lang[i].cStr()))
 	break;
 
-    for(int i=0;i<setup.path.lang.size(); i++ )
+    for(unsigned int i=0;i<setup.path.lang.size(); i++ )
       if( myapp.load( langfile.cStr(),setup.path.lang[i].cStr()))
 	break;
 

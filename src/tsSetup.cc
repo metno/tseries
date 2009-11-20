@@ -117,7 +117,7 @@ void tsSetup::fetchSite(miString token)
   if(tokens.size() < 1 )
      return;
 
-  for(int i=0;i<tokens.size();i++)
+  for(unsigned int i=0;i<tokens.size();i++)
     actualSites.insert(tokens[i]);
 }
 

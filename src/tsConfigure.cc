@@ -191,7 +191,7 @@ void tsConfigure::setList(miString token)
 
 vector<miString> tsConfigure::getList(miString search)
 {
-  for(int i=0; i< custom.size();i++)
+  for(unsigned int i=0; i< custom.size();i++)
     if(custom[i].name == search)
       return custom[i].list;
   vector<miString> empty;
@@ -201,7 +201,7 @@ vector<miString> tsConfigure::getList(miString search)
 vector<miString> tsConfigure::getCustoms()
 {
   vector<miString> names;
-  for(int i=0; i< custom.size();i++)
+  for(unsigned int i=0; i< custom.size();i++)
     names.push_back(custom[i].name);
   return names;
 }
@@ -261,10 +261,10 @@ bool tsConfigure::save(miString fname)
   for(;itr != contents.end();itr++)
     out << itr->first << "=" << itr->second << endl;
 
-  for( int i=0; i< custom.size(); i++) {
+  for( unsigned int i=0; i< custom.size(); i++) {
     out << "<LIST>" << endl
 	<< "name="  << custom[i].name << endl;
-    for(int j=0; j< custom[i].list.size(); j++ )
+    for(unsigned int j=0; j< custom[i].list.size(); j++ )
       out << custom[i].list[j] << endl;
 
   }

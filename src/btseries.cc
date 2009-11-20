@@ -28,16 +28,14 @@
  along with Tseries; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#include <QApplication>
+#include <QGLPixelBuffer>
+
 #include <fstream>
 #include <iostream>
 
-#include <X11/keysym.h>
-#include <X11/Intrinsic.h>
-#include <GL/glx.h>
-#include <GL/glu.h>
 #include <puTools/miString.h>
 #include <puTools/miTime.h>
-#include <diImageIO.h>
 #include <glob.h>
 
 #include <diPrintOptions.h>
@@ -87,7 +85,7 @@ struct keyvalue {
  */
 void cleanstr(miString& s)
 {
-  int p;
+  unsigned int p;
   if ((p = s.find("#")) != string::npos)
     s.erase(p);
 
@@ -117,11 +115,11 @@ vector<stringlist> lists;
  */
 void unpackloop(vector<miString>& orig, // original strings..
     vector<int>& origlines, // ..with corresponding line-numbers
-    int& index, // original string-counter to update
+    unsigned int& index, // original string-counter to update
     vector<miString>& part, // final strings from loop-unpacking..
     vector<int>& partlines) // ..with corresponding line-numbers
 {
-  int start = index;
+  unsigned int start = index;
 
   miString loops = orig[index];
   loops = loops.substr(4, loops.length() - 4);
@@ -137,7 +135,7 @@ void unpackloop(vector<miString>& orig, // original strings..
 
   miString keys = vs[0]; // key-part
   vector<miString> vkeys = keys.split('|');
-  int nkeys = vkeys.size();
+  unsigned int nkeys = vkeys.size();
 
   miString argu = vs[1]; // argument-part
   int nargu;
@@ -148,7 +146,7 @@ void unpackloop(vector<miString>& orig, // original strings..
   if (argu.length() > 1 && argu.substr(0, 1) == "@") {
     miString name = argu.substr(1, argu.length() - 1);
     // search for list..
-    int k;
+    unsigned int k;
     for (k = 0; k < lists.size(); k++) {
       if (lists[k].name == name)
         break;
@@ -201,9 +199,9 @@ void unpackloop(vector<miString>& orig, // original strings..
     if (orig[index] == "ENDLOOP" || orig[index] == "LOOP.END") { // reached end
       // we have the loop-contents
       for (int i = 0; i < nargu; i++) { // loop over arguments
-        for (int j = 0; j < tmppart.size(); j++) { // loop over lines
+        for (unsigned int j = 0; j < tmppart.size(); j++) { // loop over lines
           miString l = tmppart[j];
-          for (int k = 0; k < nkeys; k++) { // loop over keywords
+          for (unsigned int k = 0; k < nkeys; k++) { // loop over keywords
             // replace all variables
             l.replace(vkeys[k], arguments[i][k]);
           }
@@ -245,8 +243,7 @@ void unpackinput(vector<miString>& orig, // original setup
     vector<miString>& final, // final setup
     vector<int>& finallines) // final list of linenumbers
 {
-  int i;
-  for (i = 0; i < orig.size(); i++) {
+  for (unsigned int i = 0; i < orig.size(); i++) {
     if (orig[i].substr(0, 4) == "LOOP") {
       // found start of loop - unpack it
       unpackloop(orig, origlines, i, final, finallines);
@@ -294,10 +291,10 @@ bool readSetup(const miString& setupfile, const miString& site,
 
   session.readSessions(setup.files.defs, verbose);
 
-  for (int i = 0; i < setup.streams.size(); i++) {
+  for (unsigned int i = 0; i < setup.streams.size(); i++) {
     data.addDataset(setup.streams[i].collectionName);
 
-    for (int j = 0; j < setup.streams[i].data.size(); j++) {
+    for (unsigned int j = 0; j < setup.streams[i].data.size(); j++) {
       data.addStream(setup.streams[i].data[j].name, // streamname
           setup.streams[i].data[j].descript, // description
           setup.streams[i].data[j].type, // streamtype
@@ -329,7 +326,7 @@ void printUsage(bool showexample)
                 "* Available output-formats:                       *               \n"
                 "* - as PostScript (to file and printer)          *                \n"
                 "* - as EPS (Encapsulated PostScript)              *               \n"
-                "* - as RGB (raster-format, Irix)                  *               \n"
+                "* - as RASTER (format from filename suffix)       *               \n"
                 "* - as PNG (raster-format)                        *               \n"
                 "***************************************************               \n"
                 "                                                                  \n"
@@ -345,8 +342,10 @@ void printUsage(bool showexample)
                 "                                                                  \n"
                 "-v       : (verbose) for more job-output                          \n"
                 "                                                                  \n"
+/*
                 "-display : btseries needs access to X-server.                     \n"
                 "           HINT: for true batch, try Xvfb                         \n"
+*/
                 "                                                                  \n"
                 "-example : list example input-file and exit                       \n"
                 "                                                                  \n"
@@ -368,7 +367,7 @@ void printUsage(bool showexample)
             "                                                                  \n"
             "#- Optional: values for each option below are default-values      \n"
             "setupfile=tseries.ctl    # use a standard setup-file              \n"
-            "output=POSTSCRIPT        # POSTSCRIPT/EPS/RGB/PNG                 \n"
+            "output=POSTSCRIPT        # POSTSCRIPT/EPS/RASTER/PNG              \n"
             "colour=COLOUR            # GREYSCALE/COLOUR                       \n"
             "filename=tmp_tseries.ps  # output filename                        \n"
             "                                                                  \n"
@@ -520,16 +519,9 @@ void printUsage(bool showexample)
  */
 int main(int argc, char** argv)
 {
-  static int dblBuf[] = { GLX_DOUBLEBUFFER, GLX_RGBA, GLX_DEPTH_SIZE, 16,
-      GLX_RED_SIZE, 1, GLX_GREEN_SIZE, 1, GLX_BLUE_SIZE, 1, GLX_ALPHA_SIZE, 1,
-      GLX_STENCIL_SIZE, 1, None };
-  static int *snglBuf = &dblBuf[1];
+  QApplication a(argc,argv);
+  QGLPixelBuffer * qpbuffer;
 
-  Display* dpy;
-  XVisualInfo *pdvi; // X visual
-  GLXContext cx; // GL drawing context
-  Pixmap pixmap; // X pixmap
-  GLXPixmap pix; // GLX pixmap
   int xsize, ysize; // total pixmap size
   bool multiple_plots = false; // multiple plots per page
   int numcols, numrows; // for multiple plots
@@ -633,33 +625,17 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  dpy = XOpenDisplay(xhost.cStr());
-  if (!dpy) {
-    cerr << "ERROR could not open X-display:" << xhost << endl;
-    return 1;
-  }
-
-  // find an OpenGL-capable RGB visual with depth buffer
-  pdvi = glXChooseVisual(dpy, DefaultScreen(dpy), snglBuf);
-  if (!pdvi) {
-    cerr << "ERROR no RGB visual with depth buffer" << endl;
-    return 1;
-  }
-
-  //cout << "- Create glx rendering context.." << endl;
-  cx = glXCreateContext(dpy, pdvi,// display and visual
-      0, 0); // sharing and direct rendering
-  if (!cx) {
-    cerr << "ERROR could not create rendering context" << endl;
+  if (!QGLFormat::hasOpenGL() || !QGLPixelBuffer::hasOpenGLPbuffers()) {
+    cerr << "This system does not support OpenGL pbuffers." << endl;
     return 1;
   }
 
   bool toprinter = false;
   bool raster = false; // false means postscript
   enum image_type {
-    image_rgb = 0, image_png = 1
+    image_rgb, image_png, image_unknown
   };
-  int raster_type = image_rgb; // see enum image_type above
+  int raster_type = image_unknown; // see enum image_type above
 
   printerManager printman;
   printOptions priop;
@@ -812,40 +788,25 @@ int main(int argc, char** argv)
       drawarea->plot();
 
       if (raster) {
-        imageIO::Image_data img;
-        img.width = xsize;
-        img.height = ysize;
-        img.filename = priop.fname;
-        int npixels;
+        if (qpbuffer == 0){
+          cerr << " ERROR. when saving image - qpbuffer is NULL" << endl;
+        } else {
+          QImage image = qpbuffer->toImage();
 
-        npixels = img.width * img.height;
-        img.nchannels = 4;
-        img.data = new unsigned char[npixels * img.nchannels];
-
-        if (verbose)
-          cout << "- Preparing for raster output" << endl;
-        glFlush();
-        glReadPixels(0, 0, img.width, img.height, GL_RGBA, GL_UNSIGNED_BYTE,
-            img.data);
-
-        int result;
-
-        // save as PNG -----------------------------------------------
-        if (raster_type == image_png) {
-
-          if (verbose)
-            cout << "- Saving PNG-image to:" << img.filename;
-          if (verbose)
+          if (verbose){
+            cout << "- Saving image to:" << priop.fname;
             cout.flush();
+          }
 
-          result = imageIO::write_png(img);
+          bool result = image.save(priop.fname.c_str());
 
-          if (verbose)
+          if (verbose){
             cout << " .." << miString(result ? "Ok" : " **FAILED!**") << endl;
-          else if (!result)
-            cerr << " ERROR saving PNG-image to:" << img.filename << endl;
+          } else if (!result){
+            cerr << " ERROR, saving image to:" << priop.fname << endl;
+          }
         }
-        // -------------------------------------------------------------
+
 
       } else { // PostScript only
         if (toprinter) { // automatic print of each page
@@ -1034,29 +995,16 @@ int main(int argc, char** argv)
       endHardcopy();
 
       // delete old pixmaps
-      if (buffermade) {
-        if (pix)
-          glXDestroyGLXPixmap(dpy, pix);
-        if (pixmap)
-          XFreePixmap(dpy, pixmap);
+      if (buffermade && qpbuffer) {
+        delete qpbuffer;
       }
 
-      //cout << "- Creating X pixmap.." << endl;
-      pixmap = XCreatePixmap(dpy, RootWindow(dpy, pdvi->screen), xsize, ysize,
-          pdvi->depth);
-      if (!pixmap) {
-        cerr << "ERROR could not create X pixmap" << endl;
-        return 1;
-      }
+      QGLFormat format = QGLFormat::defaultFormat();
+      //TODO: any specific format specifications?
+      qpbuffer = new QGLPixelBuffer(xsize, ysize, format, 0);
 
-      //cout << "- Creating GLX pixmap.." << endl;
-      pix = glXCreateGLXPixmap(dpy, pdvi, pixmap);
-      if (!pix) {
-        cerr << "ERROR could not create GLX pixmap" << endl;
-        return 1;
-      }
+      qpbuffer->makeCurrent();
 
-      glXMakeCurrent(dpy, pix, cx);
       glShadeModel(GL_FLAT);
 
       glOrtho(globalWindow.x1, globalWindow.x2, globalWindow.y1,
@@ -1073,7 +1021,7 @@ int main(int argc, char** argv)
 
     } else if (key == "papersize") {
       vvvs = value.split(","); // could contain both pagesize and papersize
-      for (int l = 0; l < vvvs.size(); l++) {
+      for (unsigned int l = 0; l < vvvs.size(); l++) {
         if (vvvs[l].contains("x")) {
           vvs = vvvs[l].split("x");
           if (vvs.size() < 2) {
@@ -1115,12 +1063,15 @@ int main(int argc, char** argv)
       } else if (value == "eps") {
         raster = false;
         priop.doEPS = true;
-      } else if (value == "rgb" || value == "raster") {
+      } else if (value == "rgb") {
         raster = true;
         raster_type = image_rgb;
       } else if (value == "png") {
         raster = true;
         raster_type = image_png;
+      } else if (value == "raster") {
+        raster = true;
+        raster_type = image_unknown;
       } else {
         cerr << "ERROR unknown output-format:" << lines[k] << " Linenumber:"
             << linenumbers[k] << endl;
@@ -1266,11 +1217,9 @@ int main(int argc, char** argv)
   endHardcopy();
 
   // clean up structures
-  if (pix)
-    glXDestroyGLXPixmap(dpy, pix);
-  if (pixmap)
-    XFreePixmap(dpy, pixmap);
+  if (qpbuffer) {
+    delete qpbuffer;
+  }
 
   return 0;
 }
-;

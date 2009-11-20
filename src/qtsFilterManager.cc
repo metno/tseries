@@ -124,7 +124,7 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
   all->setMinimumWidth(250);
   all->addItems(posl);
 
-  Q3Accel *b = new Q3Accel( all );
+  //Q3Accel *b = new Q3Accel( all );
   a->connectItem( a->insertItem(Qt::Key_Space),this, SLOT(copy()));
 
 

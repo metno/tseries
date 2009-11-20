@@ -172,7 +172,7 @@ QString qtsSidebar::fillList(const vector<miString>& slist, const lEntry c)
   miString tmp = (!cur.isEmpty() ? cur.latin1() : "");
   bool entryFound = false;
 
-  for(int i=0;i<slist.size();i++) {
+  for(unsigned int i=0;i<slist.size();i++) {
     qlist << slist[i].cStr();
     if(slist[i] == tmp )
       entryFound = true;

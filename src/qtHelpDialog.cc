@@ -115,7 +115,7 @@ void HelpDialog::setSource( const miString& source ){
 
 
 void HelpDialog::showdoc(const int doc, const miString tag ){
-  if (info.src.size() <= doc) return;
+  if ((signed int)info.src.size() <= doc) return;
 
   setCaption(info.src[doc].name.cStr());
   setSource( info.src[doc].source );

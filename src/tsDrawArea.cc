@@ -42,9 +42,9 @@ using namespace d_print;
 tsDrawArea::tsDrawArea( tsRequest* tsr,
 			DatafileColl* tsd,
 			SessionManager* ses)
-  : request(tsr), data(tsd), session(ses), theData(0), diagram(0),
+  : request(tsr), data(tsd), session(ses), diagram(0), theData(0),
     width(1), height(1), pixwidth(1), pixheight(1),
-    hardcopy(false), hardcopystarted(false), Initialised(false)
+    Initialised(false), hardcopy(false), hardcopystarted(false)
 {
   minProg=0;
   maxProg=300;
@@ -120,7 +120,7 @@ bool tsDrawArea::prepareData()
   bool datafound;
   WeatherParameter wp;
   miTime btime, etime;
-  int currunidx = request->run();
+  //int currunidx = request->run();
 
   if (theData)
     delete theData;
@@ -166,12 +166,11 @@ bool tsDrawArea::prepareData()
               // Find any missing params
               ParId inpid;
               bool pidok;
-              int inp, outp;
               vector<ParId> missingwp;
-              for (inp = 0; inp < inlist.size(); inp++) {
+              for (unsigned int inp = 0; inp < inlist.size(); inp++) {
                 inpid = inlist[inp];
                 pidok = false;
-                for (outp = 0; outp < outlist.size(); outp++)
+                for (unsigned int outp = 0; outp < outlist.size(); outp++)
                   if (inpid == outlist[outp]) {
                     pidok = true;
                     break;
@@ -252,7 +251,7 @@ bool tsDrawArea::prepareDiagram()
       stmp = setup.path.images + tmpSymbol.picture();
       symbimages.push_back(stmp);
     }
-    for (i = 0; i < sev.size(); i++) {
+    for (i = 0; i < (signed int)sev.size(); i++) {
       sev[i]->setImages(minsymb, symbimages);
     }
   }

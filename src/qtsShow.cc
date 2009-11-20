@@ -39,7 +39,7 @@ qtsShow::qtsShow(QWidget* parent, const QGLFormat fmt,
 		 tsRequest* tsr,
 		 DatafileColl* tsd,
 		 SessionManager* ses)
-  : QGLWidget(fmt,parent), drawArea(tsr,tsd,ses), plotw(1), ploth(1), initialised(false)
+  : QGLWidget(fmt,parent), plotw(1), ploth(1), drawArea(tsr,tsd,ses), initialised(false)
 {
 }
 
