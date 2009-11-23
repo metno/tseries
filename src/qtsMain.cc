@@ -49,8 +49,10 @@
 const miString thisTM  = "MARKEDTIME";
 const miString dianaTM = "DIANATIME";
 
-qtsMain::qtsMain(miString l) : Q3MainWindow(0), lang(l)
+qtsMain::qtsMain(miString l) : lang(l), Q3MainWindow(0)
+
 {
+  latlond=false;
   makeMenuBar();
   dianaconnected = false;
 
@@ -58,6 +60,8 @@ qtsMain::qtsMain(miString l) : Q3MainWindow(0), lang(l)
   setCentralWidget(work);
 
   makeConnectButtons();
+
+  work->latlonInDecimalToggled(latlond);
 
   printer = new QPrinter();
 
@@ -76,6 +80,7 @@ qtsMain::qtsMain(miString l) : Q3MainWindow(0), lang(l)
   updateTimer= startTimer(updatetimeout);
 
 }
+
 
 
 void qtsMain::makeMenuBar()
@@ -132,6 +137,8 @@ void qtsMain::makeSettingsMenu()
 
   menu_setting->insertSeparator();
 
+  idtmark  = menu_setting->insertItem( tr("Show timemark"), this, SLOT(toggleTimemark()));
+  idLatLon = menu_setting->insertItem( tr("Lat/Lon in decimal"), this, SLOT(toggleLatLon()));
   idtmark =  menu_setting->insertItem( tr("Show timemark"), this, SLOT(toggleTimemark()));
 
   menu_setting->insertSeparator();
@@ -155,6 +162,7 @@ void qtsMain::makeSettingsMenu()
   config.get("SHOWSELECT", sselect);
   config.get("SHOWICON",   sicon);
   config.get("SAVEONQUIT", soq);
+  config.get("LATLONDEC",  latlond);
 
   menu_setting->setItemChecked(sOnQuit,soq);
   menu_setting->setItemChecked(idsnormal,snormal);
@@ -162,6 +170,8 @@ void qtsMain::makeSettingsMenu()
   menu_setting->setItemChecked(idsicon,sicon);
   menu_setting->setItemChecked(idsposition,sposition);
   menu_setting->setItemChecked(idtmark,tmark);
+  menu_setting->setItemChecked(idLatLon,latlond);
+
 
 }
 
@@ -365,6 +375,7 @@ void qtsMain::writeLog()
   config.set("SHOWSELECT",sselect);
   config.set("SHOWICON",sicon);
   config.set("TIMEMARK",tmark);
+  config.set("LATLONDEC",latlond);
   config.set("FONT",miString(qApp->font().toString().latin1()));
 
   if(lang.exists())
@@ -462,6 +473,16 @@ void qtsMain::toggleTimemark()
   menu_setting->setItemChecked(idtmark,tmark);
   setTimemark(miTime::nowTime());
 }
+
+void qtsMain::toggleLatLon()
+{
+  latlond = !latlond;
+  menu_setting->setItemChecked(idLatLon,latlond);
+  if(work)
+    work->latlonInDecimalToggled(latlond);
+}
+
+
 
 void qtsMain::setTimemark(miTime mark)
 {
@@ -574,7 +595,6 @@ void qtsMain::sendTarget()
   m = work->target();
   pluginB->sendMessage(m);
 
-
   m2.command= qmstrings::showpositions;
   m2.description= TARGETS_TSERIES;
   pluginB->sendMessage(m2);
@@ -683,7 +703,6 @@ void qtsMain::showHelp()
 void qtsMain::initHelp()
 {
   tsSetup s;
-
 
   miString helpfile = s.path.doc + "/" + lang + "_" + s.doc.mainSource;
   miString newsfile = s.path.doc + "/" + lang + "_" + s.doc.newsSource;
