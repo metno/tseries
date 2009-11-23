@@ -1,4 +1,5 @@
 <!DOCTYPE TS><TS>
+<defaultcodec></defaultcodec>
 <context>
     <name>HelpDialog</name>
     <message>
@@ -163,6 +164,10 @@ met.no 2002</translation>
     <message>
         <source>Quit T-series</source>
         <translation>Avslutt T-series</translation>
+    </message>
+    <message>
+        <source>Lat/Lon in decimal</source>
+        <translation>Lat/Lon i desimalgrader</translation>
     </message>
 </context>
 <context>

@@ -164,6 +164,10 @@ met.no 2002</translation>
         <source>Quit T-series</source>
         <translation>Avsluta T-series</translation>
     </message>
+    <message>
+        <source>Lat/Lon in decimal</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>qtsSidebar</name>

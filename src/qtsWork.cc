@@ -49,7 +49,7 @@ qtsWork::qtsWork(QWidget* parent)
   : QWidget(parent) , activeRefresh(true)
 {
   filterOn = false;
-
+  latlonInDecimal = false;
   QGLFormat fmt;
   fmt.setOverlay(false);
   fmt.setDoubleBuffer(true);
@@ -340,7 +340,12 @@ void qtsWork::checkPosition(miString name)
 
 
   ostringstream ost;
-  ost <<  "<b>Lat:</b> " << cor.sLat()<< " <b>Lon:</b> " << cor.sLon() << " <b>Topo:</b> " << p.height();
+
+  if(latlonInDecimal) {
+    ost <<  "<b>Lat:</b> " << cor.dLat()<< " <b>Lon:</b> " << cor.dLon() << " <b>Topo:</b> " << p.height();
+  } else {
+    ost <<  "<b>Lat:</b> " << cor.sLat()<< " <b>Lon:</b> " << cor.sLon() << " <b>Topo:</b> " << p.height();
+  }
   sidebar->setStationInfo(ost.str().c_str());
 }
 
@@ -489,6 +494,13 @@ void qtsWork::filterToggled(bool f)
   filterOn = f;
   makeStationList(true);
 }
+
+void qtsWork::latlonInDecimalToggled(bool f)
+{
+  latlonInDecimal = f;
+  checkPosition(request.posname());
+}
+
 
 
 set<miString> qtsWork::createFilter(bool orig)

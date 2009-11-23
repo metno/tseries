@@ -100,7 +100,7 @@ public slots:
   void updateStreams();
   void filterToggled(bool);
   void newFilter(const set<miutil::miString>&);
-
+  void latlonInDecimalToggled(bool);
 
 signals:
   void refreshStations();
@@ -122,6 +122,8 @@ private:
 
   bool activeRefresh;
   bool filterOn;
+  bool latlonInDecimal;
+
 
   Q3HBoxLayout* hlayout;
 

@@ -11,7 +11,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -58,16 +58,16 @@
 #include <set>
 
 
-using namespace std; 
+using namespace std;
 
 class qtsMain : public Q3MainWindow {
   Q_OBJECT
 private:
   qtsWork      * work;
   tsConfigure config;
-  
+
   Q3PopupMenu * menu_setting;
-  Q3PopupMenu * menu_file; 
+  Q3PopupMenu * menu_file;
   Q3PopupMenu * menu_help;
   Q3PopupMenu * menu_lang;
 
@@ -87,7 +87,7 @@ private:
   miMessage target;
 
   miutil::miString      lang;
-  miutil::miString      currentModel;  
+  miutil::miString      currentModel;
   set<miutil::miString> sendModels;
 
   void timerEvent(QTimerEvent*);
@@ -99,12 +99,15 @@ private:
   int  idsicon;
   int  idsposition;
   int  idtmark;
+  int  idLatLon;
+
 
   bool tmark;
   bool snormal;
   bool sselect;
   bool sicon;
   bool sposition;
+  bool latlond;
 
   void makeMenuBar();
   void makeFileMenu();
@@ -112,7 +115,7 @@ private:
   void makeConnectButtons();
   void makeSettingsMenu();
   void makeAccelerators();
-  
+
 
   void restoreLog();
   void sendImage(const miutil::miString, const QImage&);
@@ -128,7 +131,7 @@ private:
 protected:
  void closeEvent ( QCloseEvent * );
 
-private slots:  
+private slots:
   void quit();
   void print();
   void raster();
@@ -145,12 +148,13 @@ private slots:
   void togglePositions();
   void toggleTimemark();
   void toggleLang(int);
+  void toggleLatLon();
 
   void processLetter(miMessage&);
   void processConnect();
   void sendTarget();
   void clearTarget();
- 
+
   void showHelp();
   void cleanConnection();
 
