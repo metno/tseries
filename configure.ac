@@ -7,7 +7,7 @@ AC_PREREQ(2.59)
 #-----------------------------------------------------------------------------
 # Programs
 #-----------------------------------------------------------------------------
-AC_INIT(src/proverDaemon.cc)
+AC_INIT(src/tseries.cc)
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE(proverdaemon, 0.1.0)
