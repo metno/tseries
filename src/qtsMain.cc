@@ -1,3 +1,4 @@
+
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
@@ -35,13 +36,12 @@
 #include <QPixmap>
 #include <Q3PopupMenu>
 #include <QCloseEvent>
-#include <tsVersion.h>
+#include <config.h>
 
 #include <qfileinfo.h>
 #include <qfontdialog.h>
 #include <qUtilities/QLetterCommands.h>
 #include <puTools/ttycols.h>
-//#include <qdir.h>
 #include <qstringlist.h>
 
 #include "tseries.xpm"
@@ -356,9 +356,10 @@ void qtsMain::makeEPS(const miString& filename)
 
 void qtsMain::about()
 {
+
   QMessageBox::about( this, tr("About T-series"),
 		      tr("T-series: Times series viewer\nVersion: %1\n\nmet.no 2002")
-		      .arg(version_string.c_str()));
+		      .arg(VERSION));
 }
 
 

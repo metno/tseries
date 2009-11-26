@@ -43,7 +43,11 @@
 #include <tsConfigure.h>
 #include <tsDrawArea.h>
 
-#include <tsVersion.h>
+#include <config.h>
+
+
+const miString version_string=VERSION;
+
 
 using namespace std;
 
@@ -316,6 +320,7 @@ bool readSetup(const miString& setupfile, const miString& site,
 */
 void printUsage(bool showexample)
 {
+
   const miString
       help =
                 "***************************************************               \n"

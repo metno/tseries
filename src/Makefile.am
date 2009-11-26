@@ -1,17 +1,23 @@
+# Makefile to build tseries & btseries $Id$ 
+
 bin_PROGRAMS= tseries.bin btseries
 
+# sources --------------------------
 
-common_cc_sources= tsSession.cc    \
+common_cc_sources=          \
+	tsSession.cc        \
 	tsSessionOptions.cc \
 	tsDatafileColl.cc   \
 	tsSetup.cc          \
 	tsRequest.cc        \
 	tsDrawArea.cc       \
-	tsConfigure.cc 
+	tsConfigure.cc      \
 	diPrintOptions.cc 
 
+# headers ( for distribution )  -----
 
-common_header_sources= diImageIO.h \
+common_header_sources=      \
+	diImageIO.h         \
 	diPrintOptions.h    \
 	qtHelpDialog.h      \
 	qtPrintManager.h    \
@@ -29,8 +35,10 @@ common_header_sources= diImageIO.h \
 	tsSessionOptions.h  \
 	tsSetup.h
 
-# Qt sources
-qt_sources= qtsMain.cc     \
+# Qt sources ------------------------
+
+qt_sources=                \
+	qtsMain.cc         \
 	qtsWork.cc         \
 	qtsSidebar.cc      \
 	qtsShow.cc         \
@@ -41,13 +49,32 @@ qt_sources= qtsMain.cc     \
 
 # Generated Qt source code 
 moc_sources = $(qt_sources:.cc=.moc.cc)
-CLEANFILES += $(moc_sources)
 %.moc.cc: %.h
 	$(MOC4) -o $@ $<
 
 
-# images for distribution 
-img_sources= copy.xpm      \
+# Languages -------------------------
+
+language_sources= \
+	$(top_srcdir)/lang/tseries_de.ts \
+	$(top_srcdir)/lang/tseries_fr.ts \
+	$(top_srcdir)/lang/tseries_nn.ts \
+	$(top_srcdir)/lang/tseries_no.ts \
+	$(top_srcdir)/lang/tseries_se.ts
+
+languagedir= $(datarootdir)/tseries/lang
+
+nodist_language_DATA=$(language_sources:.ts=.qm)
+
+%.qm: %.ts  $(qt_sources)
+	$(LUPDATE4)  $(qt_sources) -ts $< ; \
+	$(LRELEASE4)  $<
+
+
+# images for distribution -----------
+
+img_sources=               \
+	copy.xpm           \
 	delete.xpm         \
 	filter.xpm         \
 	tb_close.xpm       \
@@ -61,35 +88,72 @@ img_sources= copy.xpm      \
 	ts_filter.xpm      \
 	ts_find.xpm
 
+# Flags -----------------------------
+
+common_cppflags=                \
+	$(PETS2_CPPFLAGS)       \
+	$(PUMET_CPPFLAGS)       \
+	$(GLTEXT_CPPFLAGS)      \
+	$(PUDATATYPES_CPPFLAGS) \
+	$(QUTILITIES_CPPFLAGS)  \
+	${HDF4_CPPFLAGS}        \
+	$(QT4_CPPFLAGS) 
+
+common_ldflags=                \
+	$(PETS2_LDFLAGS)       \
+	$(PUMET_LDFLAGS)       \
+	$(GLTEXT_LDFLAGS)      \
+	$(PUDATATYPES_LDFLAGS) \
+	$(QUTILITIES_LDFLAGS)  \
+	${HDF4_LDFLAGS}        \
+	$(QT4_LDFLAGS) 
+
+common_ldadd=               \
+	$(PETS2_LIBS)       \
+	$(PUMET_LIBS)       \
+	$(GLTEXT_LIBS)      \
+	$(PUDATATYPES_LIBS) \
+	$(QUTILITIES_LIBS)  \
+	${HDF4_LIBS}        \
+	$(QT4_LIBS) 
 
 
-btseries_SOURCES= btseries.cc diImageIO.cc \
+# building tseries ------------------
+
+tseries_bin_SOURCES=             \
+	tseries.cc               \
 	$(common_header_sources) \
-	$(common_cc_sources)
-
-
-tseries_bin_SOURCES= tseries.cc \
-	$(common_header_sources) \
-	$(common_cc_sources) \
-	$(qt_sources)        \
-	$(img_sources)
-
-
+	$(common_cc_sources)     \
+	$(qt_sources)            \
+	$(img_sources)           \
+	$(language_sources)
 
 nodist_tseries_bin_SOURCES = \
 	$(moc_sources)
 
-
-common_cppflags=
-
-common_ldflags=
-
-
 tseries_bin_CXXFLAGS= $(common_cppflags)
-btseries_CXXFLAGS=    $(common_cppflags)
+tseries_bin_LDFLAGS=  $(common_ldflags)
+tseries_bin_LDADD=    $(common_ldadd)
 
-tseries_bin_LDFLAGS= $(common_ldflags)
-btseries_LDFLAGS=    $(common_ldflags)
 
+# building btseries -----------------
+
+btseries_SOURCES=                \
+	btseries.cc              \
+	diImageIO.cc             \
+	$(common_header_sources) \
+	$(common_cc_sources)
+
+btseries_CXXFLAGS= $(common_cppflags)
+btseries_LDFLAGS=  $(common_ldflags)
+btseries_LDADD=    $(common_ldadd)
+
+
+# generated file must be cleaned afterwards...
+
+CLEANFILES = $(moc_sources) $(nodist_language_DATA)
+
+
+# Preserve timestamps under install --
 
 INSTALL = install -p

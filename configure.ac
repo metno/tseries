@@ -10,37 +10,53 @@ AC_PREREQ(2.59)
 AC_INIT(src/tseries.cc)
 AC_CONFIG_MACRO_DIR([m4])
 
-AM_INIT_AUTOMAKE(proverdaemon, 0.1.0)
+AM_INIT_AUTOMAKE(tseries, 3.1.0)
 AC_CONFIG_HEADER([config.h])
 
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_INSTALL
-AC_PROG_LIBTOOL
+AC_PROG_LN_S
+
+METNO_PROG_PKG_CONFIG
 
 #-----------------------------------------------------------------------------
 # Checks
 #-----------------------------------------------------------------------------
 
-# Checks for header files.
-AC_HEADER_STDC
-AC_CHECK_HEADERS([stdio.h stdlib.h sys/time.h])
-AC_CHECK_HEADERS([string vector sstream fstream])
+#
+# C++
+#
+AC_LANG_PUSH([C++])
 
-# Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
-AC_C_CONST
-AC_C_INLINE
-AC_TYPE_SIZE_T
+AC_CXX_HAVE_STD
+AC_CXX_HAVE_STL
 
-AX_LIB_MYSQL
+AC_LANG_POP([C++])
+ 
+#
+METNO_REQUIRE_HDF4
 
-METNO_REQUIRE_CXX_LIBRARY([BOOST_DATE_TIME], [boost_date_time])
-METNO_REQUIRE_CXX_LIBRARY([BOOST_PROGRAM_OPTIONS], [boost_program_options])
-METNO_REQUIRE_C_LIBRARY([LDAP], [ldap],[ldap.h])
+METNO_REQUIRE_PKG([PETS2], [pets2])
+METNO_REQUIRE_PKG([PUMET], [puMet])
+METNO_REQUIRE_PKG([GLTEXT], [glText])
+METNO_REQUIRE_PKG([PUDATATYPES], [puDatatypes])
+METNO_REQUIRE_PKG([QUTILITIES], [qUtilities])
 
-METNO_REQUIRE_QT4([ QtCore ])
+METNO_REQUIRE_QT4([ 
+	QtGui
+	QtCore 
+	QtOpenGL 
+	Qt3Support 
+	QtNetwork 
+])
 
-PKG_CHECK_MODULES([prover], [prover >= 0.1.0])
 
-AC_OUTPUT(Makefile src/Makefile)
+# Output
+
+AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([src/Makefile])
+AC_OUTPUT
+
+
+
