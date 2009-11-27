@@ -39,20 +39,16 @@ HDF 4.2
 #-------------------------------------------
 
 
-The included libraries needed for Tseries is located in metnolocal/src/libs (see documentation in the Diana directory for instructions on how to prepare and install these)
+The included libraries needed for Tseries:
+get metlibs from https://svn.met.no/metlibs/
+compile og install them in a proper place.
 
-1. make the necessary changes in the metnolocal/src/conf directory (see Diana)
-2. compile and install the libraries found in metnolocal/src/libs (see Diana)
-3. compile and install Tseries:
+export PACKAGE_CONFIG_PATH=where_you_installed_metlibs/lib/pkgconfig
 
-cd metnolocal/src/tseries  # go to the source base for Tseries
-make
-
-# If ok this far
-make languages
+./autogen.sh
+./configure
+make; 
 make install
-
-the Tseries package is now installed under metnolocal/tseries
 
 #-------------------------------------------
 # 3. Running Tseries

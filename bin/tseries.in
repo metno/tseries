@@ -1,6 +1,9 @@
 #!/bin/sh
 
-  
+prefix=@prefix@
+bindir=$prefix/bin
+etcdir=@sysconfdir@
+
 SUBNET=`/sbin/ifconfig eth0 | grep "inet addr" | cut -d. -f3`
 
 mkdir -p $HOME/.tseries
@@ -13,5 +16,16 @@ case $SUBNET in
     *)                        region="VTK" ;;
 esac
 
+if [  -n "@MYTEST@" ] ; then
 
-tseries.bin-TEST $@ -S $region -s /usr/local/etc/tseriesTEST/tseries.ctl -T Test
+$bindir/tseries.bin-TEST $@ -S $region -s $etcdir/tseriesTEST/tseries.ctl -T TEST
+
+else
+
+$bindir/tseries.bin $@ -S $region -s $etcdir/tseries/tseries.ctl
+
+fi
+
+
+
+

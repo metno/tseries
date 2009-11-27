@@ -50,7 +50,7 @@
 #include <qtHelpDialog.h>
 #include <qtsWork.h>
 #include <qtsFilterManager.h>
-#include <qtPrintManager.h>
+#include "qtPrintManager.h"
 #include <qtsTimeControl.h>
 
 #include <tsConfigure.h>
