@@ -1,6 +1,5 @@
 #!/bin/sh
 
-SUFFIX=@program_suffix@
 MYTEST=@MYTEST@
   
 SUBNET=`/sbin/ifconfig eth0 | grep "inet addr" | cut -d. -f3`
@@ -17,7 +16,7 @@ esac
 
 if [  -n "$MYTEST" ] ; then
 
-tseries.bin-$SUFFIX $@ -S $region -s @sysconfdir@/tseriesTEST/tseries.ctl -T $SUFFIX
+tseries.bin-TEST $@ -S $region -s @sysconfdir@/tseriesTEST/tseries.ctl -T TEST
 
 else
 
