@@ -1,7 +1,6 @@
 #!/bin/sh
 
 prefix=@prefix@
-MYTEST=@MYTEST@
 bindir=$prefix/bin
 etcdir=@sysconfdir@
 
@@ -17,13 +16,13 @@ case $SUBNET in
     *)                        region="VTK" ;;
 esac
 
-if [  -n "$MYTEST" ] ; then
+if [  -n "@MYTEST@" ] ; then
 
 $bindir/tseries.bin-TEST $@ -S $region -s $etcdir/tseriesTEST/tseries.ctl -T TEST
 
 else
 
-$bindir/tseries.bin $@ -S $region
+$bindir/tseries.bin $@ -S $region -s $etcdir/tseries/tseries.ctl
 
 fi
 
