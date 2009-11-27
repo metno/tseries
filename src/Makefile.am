@@ -62,9 +62,10 @@ language_sources= \
 	$(top_srcdir)/lang/tseries_no.ts \
 	$(top_srcdir)/lang/tseries_se.ts
 
+if !ENABLE_MYTEST
 languagedir= $(datarootdir)/tseries/lang
-
 nodist_language_DATA=$(language_sources:.ts=.qm)
+endif
 
 %.qm: %.ts  $(qt_sources)
 	$(LUPDATE4)  $(qt_sources) -ts $< ; \

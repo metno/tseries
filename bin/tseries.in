@@ -1,5 +1,7 @@
 #!/bin/sh
 
+SUFFIX=@program_suffix@
+MYTEST=@MYTEST@
   
 SUBNET=`/sbin/ifconfig eth0 | grep "inet addr" | cut -d. -f3`
 
@@ -9,10 +11,20 @@ case $SUBNET in
     20)                       region="FOU" ;;
     36|40)                    region="VV"  ;;
     48)                       region="VNN" ;;
-### 50)                       region="MA"  ;;
     16|18|24|26|56|90|104|50) region="VA"  ;;
     *)                        region="VTK" ;;
 esac
 
+if [  -n "$MYTEST" ] ; then
+
+tseries.bin-$SUFFIX $@ -S $region -s @sysconfdir@/tseriesTEST/tseries.ctl -T $SUFFIX
+
+else
 
 tseries.bin $@ -S $region
+
+fi
+
+
+
+

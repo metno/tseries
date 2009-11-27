@@ -6,3 +6,4 @@ dist_applications_DATA = \
 controlfiledir = $(sysconfdir)/tseriesTEST
 dist_controlfile_DATA= \
 	beta/tseries.ctl
+
