@@ -1,7 +1,10 @@
 #!/bin/sh
 
+prefix=@prefix@
 MYTEST=@MYTEST@
-  
+bindir=$prefix/bin
+etcdir=@sysconfdir@
+
 SUBNET=`/sbin/ifconfig eth0 | grep "inet addr" | cut -d. -f3`
 
 mkdir -p $HOME/.tseries
@@ -16,11 +19,11 @@ esac
 
 if [  -n "$MYTEST" ] ; then
 
-tseries.bin-TEST $@ -S $region -s @sysconfdir@/tseriesTEST/tseries.ctl -T TEST
+$bindir/tseries.bin-TEST $@ -S $region -s $etcdir/tseriesTEST/tseries.ctl -T TEST
 
 else
 
-tseries.bin $@ -S $region
+$bindir/tseries.bin $@ -S $region
 
 fi
 
