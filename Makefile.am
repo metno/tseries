@@ -11,15 +11,17 @@ dist_tseriesbin_SCRIPTS= \
 	 bin/tseries
 
 
-include mk/debian.mk
+if ENABLE_BETA
 
-
-
-if ENABLE_MYTEST
 include beta/beta.mk
+
 else
+
 include share/share.mk
 include etc/etc.mk
+
 endif
 
+
+include mk/debian.mk
 
