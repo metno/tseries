@@ -6,7 +6,7 @@ AC_PREREQ(2.59)
 AC_INIT([tseries], [4.1.0], [diana@met.no])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([foreign])
 
 AC_PROG_CC
 AC_PROG_CXX

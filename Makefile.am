@@ -1,4 +1,7 @@
-AUTOMAKE_OPTIONS=foreign
+# Makefile to build tseries & btseries 
+# $Id$ 
+#
+
 SUBDIRS=src
 
 

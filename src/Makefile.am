@@ -1,10 +1,12 @@
-# Makefile to build tseries & btseries $Id$ 
+# Makefile to build tseries & btseries 
+# $Id$ 
+#
 
 bin_PROGRAMS= tseries.bin btseries
 
 # sources --------------------------
 
-common_cc_sources=          \
+cc_sources=                 \
 	tsSession.cc        \
 	tsSessionOptions.cc \
 	tsDatafileColl.cc   \
@@ -14,26 +16,7 @@ common_cc_sources=          \
 	tsConfigure.cc      \
 	diPrintOptions.cc 
 
-# headers ( for distribution )  -----
 
-common_header_sources=      \
-	diImageIO.h         \
-	diPrintOptions.h    \
-	qtHelpDialog.h      \
-	qtPrintManager.h    \
-	qtsFilterManager.h  \
-	qtsMain.h           \
-	qtsShow.h           \
-	qtsSidebar.h        \
-	qtsTimeControl.h    \
-	qtsWork.h           \
-	tsConfigure.h       \
-	tsDatafileColl.h    \
-	tsDrawArea.h        \
-	tsRequest.h         \
-	tsSession.h         \
-	tsSessionOptions.h  \
-	tsSetup.h
 
 # Qt sources ------------------------
 
@@ -46,6 +29,15 @@ qt_sources=                \
 	qtHelpDialog.cc    \
 	qtsFilterManager.cc\
 	qtsTimeControl.cc
+
+# headers ( for distribution )  -----
+
+header_sources=             \
+	$(cc_sources:.cc=.h)\
+	$(qt_sources:.cc=.h)\
+	diImageIO.h         \
+	diPrintOptions.h
+
 
 # Generated Qt source code 
 moc_sources = $(qt_sources:.cc=.moc.cc)
@@ -121,12 +113,12 @@ common_ldadd=               \
 
 # building tseries ------------------
 
-tseries_bin_SOURCES=             \
-	tseries.cc               \
-	$(common_header_sources) \
-	$(common_cc_sources)     \
-	$(qt_sources)            \
-	$(img_sources)           \
+tseries_bin_SOURCES=        \
+	tseries.cc          \
+	$(header_sources)   \
+	$(cc_sources)       \
+	$(qt_sources)       \
+	$(img_sources)      \
 	$(language_sources)
 
 nodist_tseries_bin_SOURCES = \
@@ -139,11 +131,11 @@ tseries_bin_LDADD=    $(common_ldadd)
 
 # building btseries -----------------
 
-btseries_SOURCES=                \
-	btseries.cc              \
-	diImageIO.cc             \
-	$(common_header_sources) \
-	$(common_cc_sources)
+btseries_SOURCES=         \
+	btseries.cc       \
+	diImageIO.cc      \
+	$(header_sources) \
+	$(cc_sources)
 
 btseries_CXXFLAGS= $(common_cppflags)
 btseries_LDFLAGS=  $(common_ldflags)
