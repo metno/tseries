@@ -1,13 +1,8 @@
-#-----------------------------------------------------------------------------
-# Pre-Conf
-#-----------------------------------------------------------------------------
+# 
+# $Id$
+#
 
 AC_PREREQ(2.59)
-
-#-----------------------------------------------------------------------------
-# Programs
-#-----------------------------------------------------------------------------
-
 AC_INIT([tseries], [4.1.0], [diana@met.no])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -47,11 +42,11 @@ METNO_REQUIRE_PKG([PUDATATYPES], [puDatatypes])
 METNO_REQUIRE_PKG([QUTILITIES], [qUtilities])
 
 METNO_REQUIRE_QT4([ 
-	QtGui
-	QtCore 
-	QtOpenGL 
+	Gui
+	Core 
+	OpenGL 
 	Qt3Support 
-	QtNetwork 
+	Network 
 ])
 
 
