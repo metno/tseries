@@ -54,7 +54,7 @@ language_sources= \
 	$(top_srcdir)/lang/tseries_no.ts \
 	$(top_srcdir)/lang/tseries_se.ts
 
-if !ENABLE_BETA
+if !HAS_PROGRAM_SUFFIX
 languagedir= $(datarootdir)/tseries/lang
 nodist_language_DATA=$(language_sources:.ts=.qm)
 endif
