@@ -2,7 +2,7 @@
 Name=TseriesTEST	
 GenericName=TseriesTEST
 Comment=Tidsserie visning test version
-Exec=tseries-TEST
+Exec=tseries-test
 Icon=tseries
 BinaryPattern=
 Protocols=

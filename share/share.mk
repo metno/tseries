@@ -1,10 +1,5 @@
 # Makefile to distribute tseries-setup into /share/tseries 
 
-# the desktop icon in the gnome menues ---------
-
-applicationsdir        = $(datarootdir)/applications
-dist_applications_DATA = \
-	share/applications/metno-tseries.desktop
 
 
 mydocdir        = $(datarootdir)/doc/tseries

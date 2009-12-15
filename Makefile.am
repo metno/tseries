@@ -4,21 +4,21 @@
 
 SUBDIRS=src
 
-
-
-# tell automake where to find the m4 
 ACLOCAL_AMFLAGS= -I m4
 
+
 tseriesbindir= $(bindir)
-dist_tseriesbin_SCRIPTS= \
-	 bin/tseries
+dist_tseriesbin_SCRIPTS= bin/tseries
 
 
-if HAS_PROGRAM_SUFFIX
+etcdir        = $(sysconfdir)/${APP}
+dist_etc_DATA = etc/${APP}/tseries.ctl
 
-include beta/beta.mk
+applicationsdir        = $(datarootdir)/applications
+dist_applications_DATA = share/applications/metno-${APP}.desktop
 
-else
+
+if !HAS_PROGRAM_SUFFIX
 
 include share/share.mk
 include etc/etc.mk
