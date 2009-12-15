@@ -14,7 +14,7 @@ dist_tseriesbin_SCRIPTS= \
 	 bin/tseries
 
 
-if ENABLE_BETA
+if HAS_PROGRAM_SUFFIX
 
 include beta/beta.mk
 
