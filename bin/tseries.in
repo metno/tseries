@@ -16,15 +16,7 @@ case $SUBNET in
     *)                        region="VTK" ;;
 esac
 
-if [  -n "@BETA@" ] ; then
-
-$bindir/tseries.bin-TEST $@ -S $region -s $etcdir/tseriesTEST/tseries.ctl -T TEST
-
-else
-
-$bindir/tseries.bin $@ -S $region -s $etcdir/tseries/tseries.ctl
-
-fi
+$bindir/tseries.bin@PSUFFIX@ $@ -S $region -s $etcdir/tseries@PSUFFIX@/tseries.ctl -T "@APP@"
 
 
 
