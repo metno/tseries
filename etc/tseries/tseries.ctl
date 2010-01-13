@@ -137,12 +137,20 @@ DataDescription=HIRLAM.4km
 DataType=HDF
 Contents=x,x,HIRLAM.4km,0
 
+DataFile=$(Mdata)/hirlam4km06.hdf
+DataDescription=HIRLAM.4km
+DataType=HDF
+Contents=x,x,HIRLAM.4km,6
+
 DataFile=$(Mdata)/hirlam4km12.hdf
 DataDescription=HIRLAM.4km
 DataType=HDF
 Contents=x,x,HIRLAM.4km,12
 
-
+DataFile=$(Mdata)/hirlam4km18.hdf
+DataDescription=HIRLAM.4km
+DataType=HDF
+Contents=x,x,HIRLAM.4km,18
 
 
 
@@ -223,10 +231,21 @@ DataDescription=UM.4km
 DataType=HDF
 Contents=x,x,UM.4km,0
 
+DataFile=$(Mdata)/um4km06.hdf
+DataDescription=UM.4km
+DataType=HDF
+Contents=x,x,UM.4km,6
+
+
 DataFile=$(Mdata)/um4km12.hdf
 DataDescription=UM.4km
 DataType=HDF
 Contents=x,x,UM.4km,12
+
+DataFile=$(Mdata)/um4km18.hdf
+DataDescription=UM.4km
+DataType=HDF
+Contents=x,x,UM.4km,18
 
 
 [VA:VNN:VV:FOU]
