@@ -1,0 +1,176 @@
+# setup file for Tseries (time-series viewer)
+
+lang=en
+
+#----------------------
+# Define variables here
+#----------------------
+# Set top level directory here
+# Should point to directory directly above installed tseries
+#Topdir=/data/proj5/diana/linda/local
+Topdir=/data/proj5/diana/NYVIS_DEV/Ariunaa.Bertelsen/DIANA/local
+# main data directory
+Odata=/data/proj5/diana/NYVIS_DEV/Ariunaa.Bertelsen/DIANA/local/demodata
+
+
+
+# directories containing diagram data
+Mdata=$(Odata)/hirlam
+Sdata=$(Odata)/sea
+Wdata=$(Odata)/wave
+
+#--------------------
+# Various paths
+#--------------------
+<Path>
+Work=$(Topdir)/tseries-4.0.2
+
+Etc=$(Work)/etc/tseries
+Images=$(Work)/share/pixmaps
+Doc=$(Work)/share/doc
+Lang=$(Work)/lang:${QTDIR}/translations
+
+#--------------------
+# Configuration files etc.
+#--------------------
+<files>
+Defs=$(Etc)/tsDiagrams_export.def_ari
+Configure=$(Home)/.tseries.conf
+WeatherSymbols=$(Etc)/symbols.def
+stdImage=$(Images)/ts_station.xpm
+finImage=$(Images)/ts_find.xpm
+iconImage=$(Work)/tseries.png
+baseFilter=$(Etc)/tseries.filter
+
+#--------------------
+# Diana connection
+#--------------------
+<server>
+Client=Diana
+Name=tseries
+Command=$(Topdir)/coserver4-3.1.0/bin/coserver4
+
+#--------------------
+# User guide and news
+#--------------------
+<doc>
+mainsource=$(Work)/share/doc/tseries/index.html
+mainname=User guide
+mainlink=START
+newssource=$(Work)/share/doc/tseries/news.html
+newsname=News
+newslink=
+
+
+#--------------------
+# Data streams
+#--------------------
+<streams>
+
+# -------------------------------------------------
+
+CollectionName=HIRLAM20Meteograms
+PreferredDiagram=Meteogram       # which diagramtype to use
+InitialOpen=0
+
+DataFile=$(Mdata)/hirlam2000.hdf # path to file
+DataDescription=HIRLAM.20km     
+DataType=HDF                     # data stream type
+Contents=x,x,HIRLAM.20km,x       # what is stored in file
+# -------------------------------------------------
+
+CollectionName=HIRLAM20Meteograms
+PreferredDiagram=Meteogram       # which diagramtype to use
+InitialOpen=0
+
+DataFile=$(Mdata)/hirlam2000.hdf # path to file
+DataDescription=HIRLAM.30km     
+DataType=HDF                     # data stream type
+Contents=x,x,HIRLAM.30km,x       # what is stored in fil
+# -------------------------------------------------
+
+CollectionName=EPS-products
+PreferredDiagram=LAMEPS_T2M
+InitialOpen=0
+
+DataFile=$(Mdata)/lameps18.hdf
+DataDescription=LAMEPS-data
+DataType=HDF
+Contents=x,x,LAMEPS,18
+
+# -------------------------------------------------
+
+CollectionName=Seadiagrams
+PreferredDiagram=Seadiagram
+InitialOpen=1
+
+DataFile=$(Sdata)/ecom3d_20km_npl00.hdf
+DataDescription=ECOM3D_20km 00 UTC
+DataType=HDF
+Contents=x,x,ECOM3D_20km,0
+
+# -------------------------------------------------
+
+CollectionName=Wavediagrams
+PreferredDiagram=Wavediagram
+InitialOpen=1
+
+DataFile=$(Wdata)/wam_npl00.hdf
+DataDescription=WAM00
+DataType=HDF
+Contents=x,x,WAM,0
+
+# -------------------------------------------------
+
+CollectionName=t2mq
+PreferredDiagram=Boxplot-Temperature2m
+InitialOpen=0
+
+DataFile=$(Odata)/hirlam/t2m_lqr.txt
+DataDescription=T2mQ
+DataType=ASCII
+Contents=x,x,t2m,x
+
+# -------------------------------------------------
+
+CollectionName=HIRLAM11Meteograms
+PreferredDiagram=G-Meteogram       # which diagramtype to use
+InitialOpen=0
+
+DataFile=$(Etc)/HirlamE11.grib     # path to grib setup file
+DataDescription=HIRLAM.E11km     
+DataType=GRIB                    # data stream type
+Contents=x,x,HIRLAM.E11km,x       # what is stored in file
+
+# -------------------------------------------------
+
+CollectionName=HIRLAM22Meteograms
+PreferredDiagram=G-Meteogram       # which diagramtype to use
+InitialOpen=0
+
+DataFile=$(Etc)/HirlamC22.grib     # path to grib setup file
+DataDescription=HIRLAM.C22km     
+DataType=GRIB                    # data stream type
+Contents=x,x,HIRLAM.C22km,x       # what is stored in file
+
+# -------------------------------------------------
+
+CollectionName=HIRLAM05Meteograms
+PreferredDiagram=G-Meteogram       # which diagramtype to use
+InitialOpen=0
+
+DataFile=$(Etc)/HirlamG05.grib     # path to grib setup file
+DataDescription=HIRLAM.G05km     
+DataType=GRIB                    # data stream type
+Contents=x,x,HIRLAM.G05km,x       # what is stored in file
+
+# -------------------------------------------------
+
+CollectionName=PMP_P
+PreferredDiagram=G-Meteogram       # which diagramtype to use
+InitialOpen=0
+
+DataFile=$(Etc)/PMP_P.grib     # path to grib setup file
+DataDescription=PMP_P     
+DataType=GRIB                    # data stream type
+Contents=x,x,PMP_P,x       # what is stored in file

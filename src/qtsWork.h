@@ -128,7 +128,7 @@ private:
   Q3HBoxLayout* hlayout;
 
   void Initialise();
-  void refresh();
+  void refresh(bool readData = false);
   void makeStationList(bool=false);
   bool makeStyleList();
   bool makeModelList(const miutil::miString&);

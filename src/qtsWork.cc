@@ -316,7 +316,7 @@ void qtsWork::changeModel(const miString& st)
   QApplication::restoreOverrideCursor();
   bool changed = request.setModel(tmp);
   if(makeRunList(tmp) || changed) {
-    refresh();
+    refresh(true);
   }
 }
 
@@ -327,7 +327,7 @@ void qtsWork::changeStation(const miString& st)
     if(!request.setPos(ST))
       return;
   }
-  refresh();
+  refresh(true);
 }
 
 void qtsWork::checkPosition(miString name)
@@ -353,18 +353,18 @@ void qtsWork::checkPosition(miString name)
 void qtsWork::changeRun(const miString& st)
 {
   if(request.setRun(atoi(st.cStr())))
-    refresh();
+    refresh(true);
 }
 
-void qtsWork::refresh()
+void qtsWork::refresh(bool readData)
 {
   //cerr << "qtsWork::refresh, request=" << request << endl;
   QApplication::setOverrideCursor( Qt::waitCursor );
   if (activeRefresh){
-    show->refresh();
+    show->refresh(readData);
   }
   // check if any streams recently opened
-  if ( data.has_opened_streams() ){
+  if (data.has_opened_streams() && readData){
     //cerr << "qtsWork::refresh - remaking station list" << endl;
     data.makeStationList();
     makeStationList();

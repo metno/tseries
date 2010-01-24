@@ -52,6 +52,10 @@ const miString dianaTM = "DIANATIME";
 qtsMain::qtsMain(miString l) : lang(l), Q3MainWindow(0)
 
 {
+// Added to avoid unnessecary updates when connected to diana
+  // and diana is in automatic update mode
+  currentTime = miTime::nowTime();
+
   latlond=false;
   makeMenuBar();
   dianaconnected = false;
@@ -72,7 +76,7 @@ qtsMain::qtsMain(miString l) : lang(l), Q3MainWindow(0)
   restoreLog();
   setRemoteParameters();
   makeAccelerators();
-  setTimemark(miTime::nowTime());
+  setTimemark(currentTime);
 
   // milliseconds
   int updatetimeout =  ( 1000 * 60 ) * 2;
@@ -681,6 +685,22 @@ void qtsMain::sendNamePolicy()
 
 void qtsMain::processLetter(miMessage& letter)
 {
+#ifdef DEBUG
+  cerr <<"Command: "<<letter.command<<"  ";
+  cerr <<endl;
+  cerr <<" Description: "<<letter.description<<"  ";
+  cerr <<endl;
+  cerr <<" commonDesc: "<<letter.commondesc<<"  ";
+  cerr <<endl;
+  cerr <<" Common: "<<letter.common<<"  ";
+  cerr <<endl;
+  for (int i=0;i<letter.data.size();i++)
+    if (letter.data[i].length()<80)
+      cerr <<" data["<<i<<"]:"<<letter.data[i]<<endl;;
+  cerr <<" From: "<<letter.from<<endl;
+  cerr <<"To: "<<letter.to<<endl;
+  
+#endif
   if(letter.command == qmstrings::removeclient) {
     tsSetup s;
     if( letter.common.contains(s.server.client.cStr()))
@@ -691,8 +711,15 @@ void qtsMain::processLetter(miMessage& letter)
     if ( letter.data.size())
       work->changeStation(letter.data[0]);
   }
-  else if(letter.command == qmstrings::timechanged )
-    setDianaTimemark( miTime(letter.common ) );
+  else if(letter.command == qmstrings::timechanged ) {
+    // Added to avoid invalid updates from diana when diana
+    // is in automatic update mode
+    miTime timeFromDiana = miTime(letter.common );
+    if (timeFromDiana != currentTime) {
+      currentTime = timeFromDiana;
+      setDianaTimemark( currentTime );
+    }
+  }
 
 }
 

@@ -30,7 +30,7 @@ AC_CXX_HAVE_STD
 AC_CXX_HAVE_STL
 
 AC_LANG_POP([C++])
- 
+
 #
 
 METNO_REQUIRE_HDF4
@@ -41,23 +41,33 @@ METNO_REQUIRE_PKG([GLTEXT], [glText])
 METNO_REQUIRE_PKG([PUDATATYPES], [puDatatypes])
 METNO_REQUIRE_PKG([QUTILITIES], [qUtilities])
 
-METNO_REQUIRE_QT4([ 
+
+METNO_ENABLE([gribfile],[GRIBFILE], [enable support for Grib file],[no])
+METNO_ENABLE_CONDITIONAL([GRIBFILE], [GRIBFILE])
+
+METNO_ENABLE([smhi],[smhi],[use smhi setup files],[no])
+METNO_ENABLE_CONDITIONAL([SMHI],[smhi])
+
+
+METNO_REQUIRE_QT4([
 	Gui
-	Core 
-	OpenGL 
-	Qt3Support 
-	Network 
+	Core
+	OpenGL
+	Qt3Support
+	Network
 ])
 
 
 # Output
 
 # creating bin/tseries from bin/tseries.in - substituting from configure
-AC_CONFIG_FILES([bin/tseries])
 
+AC_CONFIG_FILES([
+	bin/tseries
+	Makefile
+	src/Makefile
+])
 
-AC_CONFIG_FILES([Makefile])
-AC_CONFIG_FILES([src/Makefile])
 AC_OUTPUT
 
 

@@ -52,7 +52,7 @@ tsDrawArea::tsDrawArea( tsRequest* tsr,
 }
 
 
-void tsDrawArea::prepare()
+void tsDrawArea::prepare(bool readData)
 {
   if (!Initialised) {
     //cout << "Preparing FONTS, display:" << FM.display_name() << endl;
@@ -76,13 +76,22 @@ void tsDrawArea::prepare()
 
     Initialised = true;
   }
-
-  if (!prepareData()) {
-    cerr << "tsDrawArea Warning: prepareData failed" << endl;
-    return;
+  if (readData) {
+    if (!prepareData()) {
+      cerr << "tsDrawArea Warning: prepareData failed" << endl;
+      return;
+    }
+  }
+  else {
+    if (!theData) {
+      if (!prepareData()) {
+	cerr << "tsDrawArea Warning: prepareData failed" << endl;
+	return;
+      }
+    }
   }
   if (!prepareDiagram()) {
-    cerr << "tsDrawArea Warning:  prepareDiagram failed" << endl;
+	  cerr << "tsDrawArea Warning:  prepareDiagram failed" << endl;
   }
 }
 

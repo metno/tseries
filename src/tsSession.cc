@@ -196,6 +196,32 @@ bool SessionManager::getShowOption(SessionOptions& opt,
   return getShowOption(opt,idx,mod,run);
 }
 
+bool SessionManager::checkEnvironment(miString& t)
+{
+  if(!t.contains("${"))
+    return false;
+  
+  int start,stop;
+  
+  start = t.find("${",0) + 2;
+  stop  = t.find("}",start);
+  
+  if(stop < start ) {
+    cerr << "Missing end }" << endl;
+    return false;
+  }
+  
+  miString s = t.substr(start, stop-start);
+  miString r = miString("${") + s + "}";
+  
+  s = s.upcase();
+  
+  miString n = getenv(s.cStr());
+  
+  t.replace(r,n);
+  return true;
+}
+
 void SessionManager::readSessions(const miString& fname,
 				  bool verbose){
   const int f_models= 1;
@@ -234,6 +260,7 @@ void SessionManager::readSessions(const miString& fname,
 //     sfile >> buf;
     getline(sfile,buf);
     buf.trim();
+    checkEnvironment(buf);
     // discard empty lines and comments
     if (!buf.length() || buf[0]=='#') continue;
     // check for commands (keyword in brackets)

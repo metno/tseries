@@ -89,7 +89,7 @@ struct keyvalue {
  */
 void cleanstr(miString& s)
 {
-  unsigned int p;
+  std::string::size_type p;
   if ((p = s.find("#")) != string::npos)
     s.erase(p);
 

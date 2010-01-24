@@ -59,6 +59,11 @@ languagedir= $(datarootdir)/tseries/lang
 nodist_language_DATA=$(language_sources:.ts=.qm)
 endif
 
+common_cppflags =
+if ENABLE_GRIBFILE
+common_cppflags += -DGRIBSTREAM
+endif
+
 %.qm: %.ts  $(qt_sources)
 	$(LUPDATE4)  $(qt_sources) -ts $< ; \
 	$(LRELEASE4)  $<
@@ -83,7 +88,7 @@ img_sources=               \
 
 # Flags -----------------------------
 
-common_cppflags=                \
+common_cppflags +=              \
 	$(PETS2_CPPFLAGS)       \
 	$(PUMET_CPPFLAGS)       \
 	$(GLTEXT_CPPFLAGS)      \

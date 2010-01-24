@@ -1,0 +1,186 @@
+# this file is used by symbolMaker.cc to build weathersymbols
+# j.schulze /july 98
+# there are two entrances for each symbol. one for the normal
+# light time and the other for the dark time... 
+# example :
+# -------------------
+# < STRING : NAME OF THE TARGET CLASS >
+#
+# < INT: CUSTOMER NUMBER >  < STRING: NAME LIGHT >
+# < INT: CUSTOMER NUMBER >  < STRING: NAME DARK  >
+#	
+# -----------------------
+# the symbol library starts here......
+
+
+FOGSTATUS = false     
+VISIBILITY = true
+PICTURES = true
+
+{
+SUN
+1	@{fine}
+	sun.rgba
+16	@{fine}
+	dark.rgba
+9
+}
+
+{     
+LIGHTCLOUD
+2	@{fine}
+	lightCloud.rgba
+17	@{fine}
+	darkPartlyCloud.rgba
+9
+}
+
+{
+PARTLYCLOUD
+3	@{dry}
+	partlyCloud.rgba
+17	@{dry}
+	darkPartlyCloud.rgba
+9
+}
+
+{
+CLOUD
+4	@{cloudy}
+	cloud.rgba
+4	@{cloudy}
+	cloud.rgba
+8
+}	
+
+{
+LIGHTRAINSUN
+5	@{showers}	
+	lightRainSun.rgba
+18	@{showers}	
+	rainDark.rgba
+7
+}
+
+
+{
+LIGHTRAINTHUNDERSUN
+6      @{lightrainthundersun}
+       lightRainThunderSun.rgba
+6      @{lightrainthundersun}
+       lightRainThunderSun.rgba
+5
+}
+
+	
+{    
+SLEETSUN
+7 	@{sleetshowers}	
+	sleetSun.rgba
+7	@{sleetshowers}	
+	sleetSun.rgba
+4
+}
+
+{
+SNOWSUN
+8	@{snowshowers}
+	snowSun.rgba
+19	@{snowshowers}
+	snowDark.rgba
+4
+}
+
+{
+LIGHTRAIN
+9	@{drizzly}
+	lightRain.rgba
+9	@{drizzly}
+	lightRain.rgba
+3
+}
+
+
+	
+{
+RAIN
+10	@{rain}
+	rain.rgba
+10	@{rain}
+	rain.rgba
+6
+}
+
+
+{
+RAINTHUNDER
+11     @{rainthunder}
+       RainThunder.rgba
+11     @{rainthunder}
+       RainThunder.rgba
+3
+}
+
+
+{
+SLEET
+12	@{sleet}
+	sleet.rgba
+12	@{sleet}
+	sleet.rgba
+3
+}
+
+
+{
+SNOW
+13	@{snow}
+	snow.rgba
+13	@{snow}
+	snow.rgba
+3
+}
+
+
+
+{
+SNOWTHUNDER
+14      @{snowthunder}
+	SnowThunder.rgba
+14      @{snowthunder}
+        SnowThunder.rgba
+3
+}
+
+{
+FOG
+15	@{fog}
+	fog.rgba
+15	@{fog}
+	fog.rgba
+1
+}
+
+
+{
+ERROR
+0  error
+   circle_mixed.rgba
+0  error
+   circle_mixed.rgba
+0
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

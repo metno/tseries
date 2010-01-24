@@ -1,0 +1,91 @@
+# setup file for Tseries (time-series viewer)
+
+lang=en
+
+#----------------------
+# Define variables here
+#----------------------
+# Set top level directory here
+# Should point to directory directly above installed tseries
+#Topdir=/data/proj5/diana/linda/local
+Topdir=/data/proj5/diana/NYVIS_DEV/Ariunaa.Bertelsen/DIANA/local
+# main data directory
+Odata=/data/proj/diana/LINDA/DIANA/metnolocal/demodata
+
+
+# directories containing diagram data
+Mdata=$(Odata)/hirlam
+Sdata=$(Odata)/sea
+Wdata=$(Odata)/wave
+
+#--------------------
+# Various paths
+#--------------------
+<Path>
+Work=$(Topdir)/tseries-4.0.2
+
+Etc=$(Work)/etc/tseries
+Images=$(Work)/share/pixmaps
+Doc=$(Work)/share/doc
+Lang=$(Work)/lang:${QTDIR}/translations
+
+#--------------------
+# Configuration files etc.
+#--------------------
+<files>
+Defs=$(Etc)/tsDiagrams_export.def
+Configure=$(Home)/.tseries.conf
+WeatherSymbols=$(Etc)/symbols.def
+stdImage=$(Images)/ts_station.xpm
+finImage=$(Images)/ts_find.xpm
+iconImage=$(Work)/tseries.png
+baseFilter=$(Etc)/tseries.filter
+
+#--------------------
+# Diana connection
+#--------------------
+<server>
+Client=Diana
+Name=tseries
+Command=$(Topdir)/bin/coserver
+
+#--------------------
+# User guide and news
+#--------------------
+<doc>
+mainsource=index.html
+mainname=User guide
+mainlink=START
+newssource=news.html
+newsname=News
+newslink=
+
+
+#--------------------
+# Data streams
+#--------------------
+<streams>
+
+# -------------------------------------------------
+
+CollectionName=HIRLAM20Meteograms
+PreferredDiagram=Meteogram       # which diagramtype to use
+InitialOpen=0
+
+DataFile=$(Mdata)/hirlam2000.hdf # path to file
+DataDescription=HIRLAM.20km     
+DataType=HDF                     # data stream type
+Contents=x,x,HIRLAM.20km,x       # what is stored in file
+ParamFile=x                      # parameter file (not existed) 
+
+# -------------------------------------------------
+
+CollectionName=HIRLAM11Meteograms
+PreferredDiagram=G-Meteogram       # which diagramtype to use
+InitialOpen=0
+
+DataFile=$(Topdir)/stationslista_090224_sverige.fixed   # path to file
+DataDescription=HIRLAM.11km     
+DataType=GRIB                    # data stream type
+Contents=x,x,HIRLAM.11km,x       # what is stored in file
+ParamFile=$(Topdir)/hirlam_11.param  # parameter file for hirlam 11 

@@ -31,6 +31,9 @@
 #include <tsDatafileColl.h>
 #include <tsData/ptHDFFile.h>
 #include <tsData/ptAsciiStream.h>
+#ifdef GRIBSTREAM
+#include <tsData/ptGribStream.h>
+#endif
 #include <set>
 
 
@@ -165,6 +168,12 @@ bool DatafileColl::openStream(const int idx)
     datastreams[idx].dataStream =
       new AsciiStream(datastreams[idx].streamname);
   }
+#ifdef GRIBSTREAM
+  else if (datastreams[idx].sType == "GRIB") {
+    datastreams[idx].dataStream =
+      new GribStream(datastreams[idx].streamname);
+  }
+#endif
 
   if (datastreams[idx].sType != "CUSTOMER"){
     datastreams[idx].mtime = _modtime(datastreams[idx].streamname);

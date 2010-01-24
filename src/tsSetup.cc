@@ -151,15 +151,15 @@ void tsSetup::fetchSection(miString token)
 
 
 
-void tsSetup::set(int& to, const miString& from)
+void tsSetup::setup(int& to, const miString& from)
 {
   to = atoi(from.cStr());
 }
-void tsSetup::set(float& to, const miString& from)
+void tsSetup::setup(float& to, const miString& from)
 {
   to = atof(from.cStr());
 }
-void tsSetup::set(miString& to, const miString& from)
+void tsSetup::setup(miString& to, const miString& from)
 {
   to = from;
 }
@@ -366,26 +366,26 @@ void tsSetup::setSimpleToken(miString token)
 void tsSetup::setPublic(miString& key, miString& content)
 {
   if(key == "LANG")
-    set(lang,content);
+    setup(lang,content);
 
 }
 
 void tsSetup::setFiles(miString& key, miString& content)
 {
   if(key == "DEFS" )
-    set(files.defs,content);
+    setup(files.defs,content);
   else if(key == "CONFIGURE")
-    set(files.configure,content);
+    setup(files.configure,content);
   else if(key == "WEATHERSYMBOLS")
-     set(files.weatherSymbols,content);
+     setup(files.weatherSymbols,content);
   else if(key == "STDIMAGE")
-     set(files.std_image,content);
+     setup(files.std_image,content);
   else if(key == "FINIMAGE")
-     set(files.fin_image,content);
+     setup(files.fin_image,content);
   else if(key == "ICONIMAGE")
-     set(files.icon_image,content);
+     setup(files.icon_image,content);
   else if(key == "BASEFILTER")
-     set(files.baseFilter,content);
+     setup(files.baseFilter,content);
   else
     warn(key,wKEY);
 }
@@ -400,24 +400,24 @@ void tsSetup::setStreams(miString& key, miString& content)
     idx=streams.size()-1;
     ids=0;
 
-    set(streams[idx].collectionName,content);
+    setup(streams[idx].collectionName,content);
     return;
   }
 
   if(streams.empty()) return;
 
   if (key == "INITIALOPEN") {
-    set(streams[idx].InitialOpen,content);
+    setup(streams[idx].InitialOpen,content);
     return;
   }
   else if (key == "PREFERREDDIAGRAM") {
-    set(streams[idx].preferredStyle,content);
+    setup(streams[idx].preferredStyle,content);
     return;
   }
   else if (key == "DATAFILE" ) {
     streams[idx].data.push_back(sStruct());
     ids=streams[idx].data.size()-1;
-    set(streams[idx].data[ids].name,content);
+    setup(streams[idx].data[ids].name,content);
     return;
   }
 
@@ -425,11 +425,11 @@ void tsSetup::setStreams(miString& key, miString& content)
     return;
 
   if(key == "DATADESCRIPTION" )
-     set(streams[idx].data[ids].descript,content);
+     setup(streams[idx].data[ids].descript,content);
   else if(key == "DATATYPE" )
-    set(streams[idx].data[ids].type,content);
+    setup(streams[idx].data[ids].type,content);
   else if(key == "CONTENTS")
-    set(streams[idx].data[ids].contents,content);
+    setup(streams[idx].data[ids].contents,content);
   else
     warn(key,wKEY);
 
@@ -441,11 +441,11 @@ void tsSetup::setStreams(miString& key, miString& content)
 void tsSetup::setServer(miString& key, miString& content)
 {
   if(key == "CLIENT" )
-    set(server.client,content);
+    setup(server.client,content);
   else if (key == "COMMAND" )
-    set(server.command,content);
+    setup(server.command,content);
   else if (key == "NAME" )
-    set(server.name,content);
+    setup(server.name,content);
   else
     warn(key,wKEY);
 
@@ -454,11 +454,11 @@ void tsSetup::setServer(miString& key, miString& content)
 void tsSetup::setGui(miString& key, miString& content)
 {
   if(key == "ORIGOLON")
-    set(gui.origoLon,content);
+    setup(gui.origoLon,content);
   else if (key == "ORIGOLAT")
-    set(gui.origoLat,content);
+    setup(gui.origoLat,content);
   else if (key == "STYLE")
-    set(gui.style,content);
+    setup(gui.style,content);
   else
     warn(key,wKEY);
 }
@@ -467,17 +467,17 @@ void tsSetup::setGui(miString& key, miString& content)
 void tsSetup::setPath(miString& key, miString& content)
 {
   if(key == "WORK" )
-     set(path.work,content);
+     setup(path.work,content);
   else if(key == "IMAGES" )
-    set(path.images,content);
+    setup(path.images,content);
   else if(key == "ETC" )
-    set(path.etc,content);
+    setup(path.etc,content);
   else if(key == "TMP" )
-    set(path.tmp,content);
+    setup(path.tmp,content);
   else if(key == "SAVES")
-    set(path.saves,content);
+    setup(path.saves,content);
   else if(key == "DOC")
-    set(path.doc,content);
+    setup(path.doc,content);
   else if(key == "LANG")
     path.lang = content.split(":");
   else
@@ -487,13 +487,13 @@ void tsSetup::setPath(miString& key, miString& content)
 void tsSetup::setDiana(miString& key, miString& content)
 {
   if(key == "NAME" )
-    set(diana.name,content);
+    setup(diana.name,content);
   else if (key == "COMMAND" )
-    set(diana.command,content);
+    setup(diana.command,content);
   else if (key == "WORKDIR" )
-    set(diana.workdir,content);
+    setup(diana.workdir,content);
   else if (key == "ARGS" )
-    set(diana.args,content);
+    setup(diana.args,content);
   else
     warn(key,wKEY);
 }
@@ -502,17 +502,17 @@ void tsSetup::setDiana(miString& key, miString& content)
 void tsSetup::setDoc(miString& key, miString& content)
 {
   if(key == "MAINSOURCE" )
-    set(doc.mainSource,content);
+    setup(doc.mainSource,content);
   else if (key == "MAINNAME" )
-    set(doc.mainName,content);
+    setup(doc.mainName,content);
   else if (key == "MAINLINK" )
-    set(doc.mainLink,content);
+    setup(doc.mainLink,content);
   else if (key == "NEWSSOURCE" )
-    set(doc.newsSource,content);
+    setup(doc.newsSource,content);
   else if (key == "NEWSNAME" )
-    set(doc.newsName,content);
+    setup(doc.newsName,content);
   else if (key == "NEWSLINK" )
-    set(doc.newsLink,content);
+    setup(doc.newsLink,content);
   else
     warn(key,wKEY);
 }

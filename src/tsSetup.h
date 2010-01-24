@@ -192,9 +192,9 @@ private:
   void setDiana(miutil::miString&, miutil::miString&);
   void setDoc(miutil::miString&, miutil::miString&);
 
-  void set(miutil::miString&, const miutil::miString&);
-  void set(int&,const miutil::miString&);
-  void set(float&, const miutil::miString&);
+  void setup(miutil::miString&, const miutil::miString&);
+  void setup(int&,const miutil::miString&);
+  void setup(float&, const miutil::miString&);
 
 };
 

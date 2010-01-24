@@ -1,0 +1,93 @@
+# setup file for Tseries (time-series viewer)
+
+lang=en
+
+#----------------------
+# Define variables here
+#----------------------
+# Set top level directory here
+# Should point to directory directly above installed tseries
+#Topdir=/data/proj5/diana/linda/local
+Topdir=/data/proj5/diana/NYVIS_DEV/Ariunaa.Bertelsen/DIANA/local
+# main data directory
+Odata=/data/proj/diana/LINDA/DIANA/metnolocal/demodata
+
+
+# directories containing diagram data
+Mdata=$(Odata)/hirlam
+Sdata=$(Odata)/sea
+Wdata=$(Odata)/wave
+
+#--------------------
+# Various paths
+#--------------------
+<Path>
+Work=$(Topdir)/tseries-4.0.2
+
+Etc=$(Work)/etc/tseries
+Images=$(Work)/share/pixmaps
+Doc=$(Work)/share/doc
+Lang=$(Work)/lang:${QTDIR}/translations
+
+#--------------------
+# Configuration files etc.
+#--------------------
+<files>
+Defs=$(Etc)/tsDiagrams_export.def
+Configure=$(Home)/.tseries.conf
+WeatherSymbols=$(Etc)/symbols.def
+stdImage=$(Images)/ts_station.xpm
+finImage=$(Images)/ts_find.xpm
+iconImage=$(Work)/tseries.png
+baseFilter=$(Etc)/tseries.filter
+
+#--------------------
+# Diana connection
+#--------------------
+<server>
+Client=Diana
+Name=tseries
+Command=$(Topdir)/coserver4-3.1.0/bin/coserver4
+
+#--------------------
+# User guide and news
+#--------------------
+<doc>
+mainsource=index.html
+mainname=User guide
+mainlink=START
+newssource=news.html
+newsname=News
+newslink=
+
+
+#--------------------
+# Data streams
+#--------------------
+<streams>
+
+# -------------------------------------------------
+
+CollectionName=HIRLAM11Meteograms
+PreferredDiagram=G-Meteogram       # which diagramtype to use
+InitialOpen=0
+
+DataFile=$(Etc)/HirlamE11.grib     # path to grib setup file
+DataDescription=HIRLAM.E11km     
+DataType=GRIB                    # data stream type
+Contents=x,x,HIRLAM.E11km,x       # what is stored in file
+
+# -------------------------------------------------
+
+CollectionName=HIRLAM22Meteograms
+PreferredDiagram=G-Meteogram       # which diagramtype to use
+InitialOpen=0
+
+DataFile=$(Etc)/HirlamC22.grib     # path to grib setup file
+DataDescription=HIRLAM.C22km     
+DataType=GRIB                    # data stream type
+Contents=x,x,HIRLAM.C22km,x       # what is stored in file
+
+# -------------------------------------------------
+
+

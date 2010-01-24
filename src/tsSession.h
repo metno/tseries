@@ -77,6 +77,8 @@ private:
     vector<pardata> fullparams; // full id with model
   };
   vector<styledata> styles;
+
+  bool checkEnvironment(miutil::miString& t);
 public:
 
   // get defined stylenames, return number of style

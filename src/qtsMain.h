@@ -88,6 +88,7 @@ private:
 
   miutil::miString      lang;
   miutil::miString      currentModel;
+  miutil::miTime        currentTime;
   set<miutil::miString> sendModels;
 
   void timerEvent(QTimerEvent*);

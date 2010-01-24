@@ -91,7 +91,7 @@ private:
 public:
   tsDrawArea( tsRequest* tsr, DatafileColl* tsd, SessionManager* ses);
 
-  void prepare();
+  void prepare(bool readData = true);
 
   void setViewport(int w, int h,float,float);
 

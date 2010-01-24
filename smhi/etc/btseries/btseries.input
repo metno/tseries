@@ -1,0 +1,181 @@
+#--------------------------------------------------------------   
+# inputfile for btseries                                            
+# - '#' marks start of comment.                                   
+# - you may split long lines by adding '\' at the end.           
+#--------------------------------------------------------------   
+                                                                  
+#- Mandatory:                                                     
+setupfile=tseries.ctl    # use a standard setup-file              
+#buffersize=1696x1200     # plotbuffer (WIDTHxHEIGHT)              
+buffersize=1200x1696     # plotbuffer (WIDTHxHEIGHT)              
+#buffersize=800x600     # plotbuffer (WIDTHxHEIGHT)              
+                         # For output=RASTER: size of plot.       
+                         # For output=POSTSCRIPT: size of buffer  
+                         #  affects output-quality.      
+                                                                  
+#- Optional: values for each option below are default-values      
+output=POSTSCRIPT        # POSTSCRIPT/EPS/RGB/PNG                 
+#output=PNG        # POSTSCRIPT/EPS/RGB/PNG                 
+colour=COLOUR            # GREYSCALE/COLOUR                       
+filename=tmp_tseries.ps    # output filename                        
+                                                                  
+# the following options for output=POSTSCRIPT or EPS only         
+toprinter=NO             # send output to printer (postscript) 
+                         # obsolete command! use PRINT_DOCUMENT instead
+printer=fou3             # name of printer        (postscript)    
+                         # (see PRINT_DOCUMENT command below)     
+papersize=297x420,A4     # size of paper in mm,   (postscript)    
+                         # papertype (A4 etc) or both.            
+drawbackground=NO        # plot background colour (postscript)    
+#orientation=LANDSCAPE    # PORTRAIT/LANDSCAPE     (postscript)    
+orientation=PORTRAIT    # PORTRAIT/LANDSCAPE     (postscript)    
+                         # (default here is really 'automatic'    
+                         # which sets orientation according to    
+                         # width/height-ratio of buffersize)      
+                                                                  
+#--------------------------------------------------------------   
+# Product-examples:                                               
+# Products are made by one or more PLOT-sections seen below,      
+# inbetween two PLOT-sections you may change any of the options   
+# described above.                                                
+# The data-time will be set from the TIME="isotime-string"      
+# commandline parameter.                                          
+#--------------------------------------------------------------   
+
+filename=bt1.ps
+
+LIST.stations 
+ASKER        |Asker        | 0 | 0
+DRAMMEN      |Drammen      | 0 | 1
+GEILO        |Geilo        | 0 | 2
+GENEVE       |Geneve       | 0 | 3
+GAUSTATOPPEN |Gaustatopppen| 1 | 0
+GULLFAKS     |Gullfaks     | 1 | 1
+HANKØ        |Hankø        | 1 | 2
+HERAKLION    |Heraklion    | 1 | 3
+LIST.END
+
+model=HIRLAM.20km
+run=6
+diagramtype=Meteogram
+
+MULTIPLE.PLOTS=4,2
+
+LOOP [POS] | [POSNAME] | [COL] | [ROW] = @stations
+POSITION=[POS]
+POSITION_NAME=[POSNAME]
+PLOTCELL=[ROW],[COL]
+PLOT
+LOOP.END                                                     
+
+MULTIPLE.PLOTS=OFF
+
+# ====================================
+
+#filename=bt2.ps
+
+LIST.stations2 
+BERGEN       | 0 | 0 | HIRLAM.20km | 06 | Meteogram
+OSLO         | 0 | 1 | HIRLAM.20km | 06 | Meteogram m/snø
+BODØ         | 0 | 2 | EPS         | 12 | EPS_T2M
+KRISTIANSAND | 0 | 3 | EPS         | 12 | EPS_RR24
+STAVANGER    | 1 | 0 | EPS         | 12 | EPS_Z500
+STAD         | 1 | 1 | ECOM3D_20km | 00 | Havdiagram
+STAD         | 1 | 2 | WAM         | 12 | Bølgediagram
+LONDON       | 1 | 3 | ECMWF_U     | 12 | EPS_RR24/T2M
+LIST.END
+
+#run=12
+
+MULTIPLE.PLOTS=4,2,3,2
+
+LOOP [POS] | [COL] | [ROW] | [MODEL] | [RUN] | [DTYPE] = @stations2
+POSITION=[POS]
+PLOTCELL=[ROW],[COL]
+model=[MODEL]
+diagramtype=[DTYPE]
+run=[RUN]
+PLOT
+LOOP.END                                                     
+
+MULTIPLE.PLOTS=OFF
+
+# ================
+
+RUN=UNDEF
+DIAGRAMTYPE=Meteogram
+MODEL=HIRLAM.20km
+FILENAME=big.ps
+
+POSLOOP [POS]
+#MULTIPLE.PLOTS=4,2,3,2
+POSITION=[POS]
+PLOT
+POSLOOP.END
+
+#--------------------------------------------------------------   
+# ADDITIONAL:                                                     
+#--------------------------------------------------------------   
+#- You can add LOOPS with one or more variables:                  
+#  LOOP [X]|[Y] = X_value1 | Y_value1 , X_value2 | Y_value2       
+#   <any other input lines, all "[X]" and "[Y]" will be       
+#   replaced by the values after '=' for each iteration>          
+#  LOOP.END                                                       
+#  The example shows a loop with two variables ([X] and [Y],      
+#  separated by '|') and two iterations (separated with ',')      
+#  Loops kan be nested                                            
+#--------------------------------------------------------------   
+#- Make a LIST for use in loops:                                  
+#  LIST.stations           # A new list with name=stations        
+#  OSLO                    # May contain any strings..            
+#  KIRKENES                #                                      
+#  LIST.END                # Marks End of list                    
+#                                                                 
+#  To use in a loop:                                              
+#  LOOP [VAR]=@stations    # The key here is the '@' with the   
+#                          # list-name.                           
+#  LOOP.END                # This will loop over all list-entries 
+#                                                                 
+#  NOTES:                                                         
+#  - To make a list with multiple variables, convenient for       
+#    multiple-variable loops, just add '|'s in the list-strings.
+#    Example:                                                     
+#    LIST.name             # new list                             
+#    OSLO | blue           # two variables for each entry         
+#    KIRKENES | red        #                                      
+#    LIST.END                                                     
+#                                                                 
+#    LOOP [POS] | [COL] = @name # Loop using two variables in list
+#    LOOP.END                                                     
+#  - Lists must be defined OUTSIDE all loop statements            
+#--------------------------------------------------------------   
+#- "key=value" pairs given on the commandline controls variables
+#  in the inputfile: Any "$key" found in the text will be       
+#  substituted by "value".                                      
+#--------------------------------------------------------------   
+#* PostScript output * 
+#- Send current postscript-file to printer (immediate command):   
+#  PRINT_DOCUMENT                         
+#
+#- MULTIPLE PLOTS PER PAGE                  
+#  You can put several plots in one postscript page by using the 'multiple.plots'
+#  and 'plotcell' commands. Start with describing the layout you want:
+# 
+#  MULTIPLE.PLOTS=<rows>,<columns> # set the number of rows and columns
+# 
+#  In the same command, you can specify the spacing between plots and 
+#  the page-margin (given as percent of page width/height [0-100]): 
+#  MULTIPLE.PLOTS=<rows>,<columns>,<spacing>,<margin> 
+#  
+#  Then, for each separate plot use the plotcell command to place plot on page:
+#  PLOTCELL=<row>,<column>         # the row and column, starting with 0
+#  
+#  Finally, end the page with: 
+#  MULTIPLE.PLOTS=OFF 
+#  
+#- To produce multi-page postscript files: Just make several plots 
+#  to the same filename (can be combined with MULTIPLE.PLOTS). 
+#  
+#- Use of alpha-channel blending is not supported in postscript 
+#--------------------------------------------------------------   
+

@@ -59,7 +59,7 @@ public:
   qtsShow(QWidget*, const QGLFormat fmt,
 	  tsRequest*,DatafileColl*, SessionManager*);
 
-  void refresh();
+  void refresh(bool readData = false);
   void hardcopy(const printOptions&);
   void setTimemark(miTime,miutil::miString="");
   void clearTimemarks(miutil::miString="");

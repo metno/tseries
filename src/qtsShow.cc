@@ -53,7 +53,7 @@ void qtsShow::paintGL()
     painth= ploth;
   }
 
-  drawArea.prepare();
+  drawArea.prepare(false);
   drawArea.plot();
   swapBuffers();
 
@@ -91,11 +91,11 @@ void qtsShow::resizeGL( int w, int h )
   drawArea.setViewport(w,h,pw,ph);
 }
 
-void qtsShow::refresh()
+void qtsShow::refresh(bool readData)
 {
   if (!initialised) return;
   makeCurrent(); // set current OpenGL context
-  drawArea.prepare();
+  drawArea.prepare(readData);
   updateGL();
 }
 
@@ -113,13 +113,13 @@ void qtsShow::hardcopy(const printOptions& p)
 void qtsShow::setTimemark(miTime tim, miString nam)
 {
   drawArea.setTimemark(tim,nam);
-  refresh();
+  refresh(false);
 }
 
 void qtsShow::clearTimemarks(miString nam)
 {
   drawArea.clearTimemarks(nam);
-  refresh();
+  refresh(false);
 }
 
 
