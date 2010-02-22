@@ -1,3 +1,9 @@
+tseries (4.1.0-ubuntu2) hardy; urgency=low
+
+  * Full Qt4 transformation - disabled Qt3 support
+
+ -- Juergen Schulze <j.schulze@met.no>  Mon, 22 Feb 2010 13:43:04 +0100
+
 tseries (4.1.0-ubuntu1) stable; urgency=low
 
   * Initial release

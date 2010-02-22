@@ -31,21 +31,20 @@
 #ifndef _qtsWork_h
 #define _qtsWork_h
 
-#include <fstream>
 
-#include <qlayout.h>
-#include <qwidget.h>
-#include <qlabel.h>
-#include <Q3HBoxLayout>
 
-#include <qtsSidebar.h>
-#include <qtsShow.h>
-//Added by qt3to4:
+#include <QLayout>
+#include <QWidget>
+#include <QLabel>
+#include <QHBoxLayout>
 
-#include <tsSession.h>
-#include <tsDatafileColl.h>
-#include <tsSetup.h>
-#include <tsRequest.h>
+#include "qtsSidebar.h"
+#include "qtsShow.h"
+
+#include "tsSession.h"
+#include "tsDatafileColl.h"
+#include "tsSetup.h"
+#include "tsRequest.h"
 
 #include <puTools/miString.h>
 #include <qUtilities/miMessage.h>
@@ -125,7 +124,7 @@ private:
   bool latlonInDecimal;
 
 
-  Q3HBoxLayout* hlayout;
+  QHBoxLayout* hlayout;
 
   void Initialise();
   void refresh(bool readData = false);

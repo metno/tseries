@@ -33,7 +33,7 @@
 
 
 
-#include <qprinter.h>
+#include <QPrinter>
 #include <diPrintOptions.h>
 
 using namespace std; 

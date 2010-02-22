@@ -28,18 +28,24 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-#include <qtsMain.h>
-#include <qapplication.h>
+
 #include <fstream>
+
 #include <tsSetup.h>
 #include <tsConfigure.h>
+#include <qtsMain.h>
+
 #include <puTools/miCommandLine.h>
-#include <qtranslator.h>
 #include <puTools/miTime.h>
+#include <puTools/miString.h>
+
+
+
+#include <QTranslator>
+#include <QApplication>
 
 using namespace std;
-
-
+using namespace miutil;
 
 int main(int argc, char **argv)
 {
@@ -124,8 +130,8 @@ int main(int argc, char **argv)
 
 
   qtsMain *main = new qtsMain(lang);
-  a.setMainWidget(main);
-  main->setCaption( title.cStr() );
+
+  main->setWindowTitle(title.cStr());
   main->show();
   return a.exec();
 }

@@ -30,13 +30,12 @@
 */
 #include <qtsFilterManager.h>
 
-#include <qtooltip.h>
-#include <q3accel.h>
+#include <QToolTip>
+#include <QPixmap>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QShortcut>
 
-#include <qpixmap.h>
-//Added by qt3to4:
-#include <Q3HBoxLayout>
-#include <Q3VBoxLayout>
 #include "delete.xpm"
 #include "copy.xpm"
 #include "tb_refresh.xpm"
@@ -48,17 +47,19 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
 				   const set<miString>& f,
 				   const set<miString>& o,
 				   QWidget* parent)
-  : QDialog( parent, "Filter manager", true )
+  : QDialog( parent)
 {
+  setModal(true);
 
   original = createList(o);
 
-  Q3VBoxLayout*  vlayout  = new Q3VBoxLayout(this, 10, 10, "vayout");
+
+  vlayout  = new QVBoxLayout(this);
 
 
-  Q3VBoxLayout*  bvlayout = new Q3VBoxLayout(5, "bvlayout");
-  Q3HBoxLayout*  hlayout  = new Q3HBoxLayout(5, "hLayout");
-  Q3HBoxLayout*  bhlayout = new Q3HBoxLayout(5, "bhLayout");
+  QVBoxLayout*  bvlayout = new QVBoxLayout();
+  QHBoxLayout*  hlayout  = new QHBoxLayout();
+  QHBoxLayout*  bhlayout = new QHBoxLayout();
 
 
 
@@ -74,12 +75,15 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
   reloadB  = new QPushButton(reload_pix,"",this);
 
   copyB->setMaximumWidth(copy_pix.width()+10);
-  removeB->setMaximumWidth(del_pix.width()+10);
-  reloadB->setMaximumWidth(reload_pix.width()+10);
+  copyB->setToolTip(tr("Copy to filter") );
 
-  QToolTip::add( copyB,   tr("Copy to filter") );
-  QToolTip::add( removeB, tr("Delete from filter" ) );
-  QToolTip::add( reloadB, tr("Reset filter" ) );
+  removeB->setMaximumWidth(del_pix.width()+10);
+  removeB->setToolTip(tr("Delete from filter" ) );
+
+  reloadB->setMaximumWidth(reload_pix.width()+10);
+  reloadB->setToolTip(tr("Reset filter" ) );
+
+
 
   bvlayout->addStretch(2);
   bvlayout->addWidget(copyB);
@@ -94,14 +98,14 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
 
 
 
-  Q3Accel *a = new Q3Accel( this );
+  QShortcut * a = new QShortcut(Qt::Key_Delete, this );
 
-  a->connectItem( a->insertItem(Qt::Key_Delete),this, SLOT(remove()));
+  connect( a, SIGNAL(activated()),this, SLOT(remove()));
 
   // Horizontal Button Tab
 
-  QPushButton * okB   = new QPushButton(tr("Ok"),this, "okb");
-  QPushButton * quitB = new QPushButton(tr("Cancel"),this, "quitb");
+  QPushButton * okB   = new QPushButton(tr("Ok"),this);
+  QPushButton * quitB = new QPushButton(tr("Cancel"),this);
 
 
   bhlayout->addWidget(okB);
@@ -124,9 +128,8 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
   all->setMinimumWidth(250);
   all->addItems(posl);
 
-  //Q3Accel *b = new Q3Accel( all );
-  a->connectItem( a->insertItem(Qt::Key_Space),this, SLOT(copy()));
-
+  QShortcut *b = new QShortcut(Qt::Key_Space, this);
+  connect(b,SIGNAL(activated()),this, SLOT( copy() ) );
 
   // FILTERED LIST
   QStringList filt = createList(f);
@@ -166,7 +169,7 @@ set<miString> qtsFilterManager::result()
   set<miString> res;
   if(filtered->count()) {
     for(int i=0; i < filtered->count();i++) {
-      miString a = filtered->item(i)->text().latin1();
+      miString a = filtered->item(i)->text().toStdString();
       res.insert(a);
     }
   }

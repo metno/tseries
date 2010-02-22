@@ -32,14 +32,14 @@
 #define _qtstimeControl_h
 
 #include <QSlider>
-#include <Q3Frame>
-#include <Q3GridLayout>
+#include <QFrame>
+#include <QGridLayout>
 #include <QLabel>
-
+#include <QLayout>
 
 using namespace std;
 
-class TimeControl : public Q3Frame {
+class TimeControl : public QFrame {
   Q_OBJECT
 private:
   QSlider* startSlider;

@@ -30,47 +30,76 @@
 */
 #ifndef _qtsMain_h
 #define _qtsMain_h
-#include <qtextstream.h>
-#include <qprinter.h>
-#include <q3mainwindow.h>
-#include <q3popupmenu.h>
-#include <qmessagebox.h>
-#include <qmenubar.h>
-#include <q3filedialog.h>
-#include <qimage.h>
-#include <q3accel.h>
+
+#include <QTextStream>
+#include <QPrinter>
+#include <QMainWindow>
+#include <QMenu>
+#include <QMenuBar>
+#include <QAction>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QImage>
 #include <QTimerEvent>
 #include <QCloseEvent>
-#include <qapplication.h>
+#include <QApplication>
+#include <QActionGroup>
+#include <QShortcut>
 
 #include <qUtilities/ClientButton.h>
 #include <qUtilities/miMessage.h>
+#include <qUtilities/qtHelpDialog.h>
 
-
-#include <qtHelpDialog.h>
-#include <qtsWork.h>
-#include <qtsFilterManager.h>
+#include "qtsWork.h"
+#include "qtsFilterManager.h"
 #include "qtPrintManager.h"
-#include <qtsTimeControl.h>
+#include "qtsTimeControl.h"
 
-#include <tsConfigure.h>
+#include "tsConfigure.h"
+
 #include <map>
 #include <set>
 
 
 using namespace std;
 
-class qtsMain : public Q3MainWindow {
+class qtsMain : public QMainWindow {
   Q_OBJECT
 private:
-  qtsWork      * work;
+  qtsWork   * work;
   tsConfigure config;
 
-  Q3PopupMenu * menu_setting;
-  Q3PopupMenu * menu_file;
-  Q3PopupMenu * menu_help;
-  Q3PopupMenu * menu_lang;
+  // Menues
+  QMenu   * menu_help;
+  QAction * showHelpAct;
+  QAction * aboutAct;
 
+  QMenu   * menu_file;
+  QAction * printAct;
+  QAction * rasterAct;
+  QAction * filterAct;
+  QAction * quitAct;
+
+  QMenu   * menu_setting;
+  QAction * readLogAct;
+  QAction * writeLogAct;
+  QAction * sOnQuitAct;
+  QAction * normalAct;
+  QAction * selectAct;
+  QAction * iconAct;
+  QAction * positionAct;
+  QAction * tmarkAct;
+  QAction * latlonAct;
+  QAction * fontAct;
+
+  QMenu        * menu_lang;
+  QActionGroup * languageGroup;
+
+  QShortcut * nextModelSc;
+  QShortcut * prevModelSc;
+
+
+  // languages
   map<int,miutil::miString> langID;
 
   // printerdefinitions
@@ -94,15 +123,6 @@ private:
   void timerEvent(QTimerEvent*);
   int updateTimer;
 
-  int  sOnQuit;
-  int  idsnormal;
-  int  idsselect;
-  int  idsicon;
-  int  idsposition;
-  int  idtmark;
-  int  idLatLon;
-
-
   bool tmark;
   bool snormal;
   bool sselect;
@@ -115,7 +135,7 @@ private:
   void makeHelpMenu();
   void makeConnectButtons();
   void makeSettingsMenu();
-  void makeAccelerators();
+  void makeShortcuts();
 
 
   void restoreLog();
@@ -139,17 +159,17 @@ private slots:
   void about();
   void writeLog();
   void readLog();
-  void setSaveOnQuit();
+  void setSaveOnQuit(bool);
   void refreshDianaStations();
   void sendNamePolicy();
 
-  void toggleNormalNames();
-  void toggleSelectedNames();
-  void toggleIcon();
-  void togglePositions();
-  void toggleTimemark();
-  void toggleLang(int);
-  void toggleLatLon();
+  void toggleNormalNames(bool);
+  void toggleSelectedNames(bool);
+  void toggleIcon(bool);
+  void togglePositions(bool);
+  void toggleTimemark(bool);
+  void toggleLang(QAction*);
+  void toggleLatLon(bool);
 
   void processLetter(miMessage&);
   void processConnect();

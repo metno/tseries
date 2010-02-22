@@ -26,7 +26,6 @@ qt_sources=                \
 	qtsSidebar.cc      \
 	qtsShow.cc         \
 	qtPrintManager.cc  \
-	qtHelpDialog.cc    \
 	qtsFilterManager.cc\
 	qtsTimeControl.cc
 

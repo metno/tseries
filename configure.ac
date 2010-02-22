@@ -42,7 +42,7 @@ METNO_REQUIRE_PKG([PUDATATYPES], [puDatatypes])
 METNO_REQUIRE_PKG([QUTILITIES], [qUtilities])
 
 
-METNO_ENABLE([gribfile],[GRIBFILE], [enable support for Grib file],[no])
+METNO_ENABLE([gribfile],[GRIBFILE], [enable Gribfile support],[no])
 METNO_ENABLE_CONDITIONAL([GRIBFILE], [GRIBFILE])
 
 METNO_ENABLE([smhi],[smhi],[use smhi setup files],[no])
@@ -53,7 +53,6 @@ METNO_REQUIRE_QT4([
 	Gui
 	Core
 	OpenGL
-	Qt3Support
 	Network
 ])
 

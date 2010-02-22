@@ -31,25 +31,29 @@
 */
 #include <iostream>
 #include <qtsMain.h>
-//Added by qt3to4:
+
 #include <QTimerEvent>
 #include <QPixmap>
-#include <Q3PopupMenu>
 #include <QCloseEvent>
-#include <config.h>
+#include <QFileInfo>
+#include <QFontDialog>
+#include <QPrintDialog>
+#include <QStringList>
 
-#include <qfileinfo.h>
-#include <qfontdialog.h>
+
+#include "config.h"
+
 #include <qUtilities/QLetterCommands.h>
 #include <puTools/ttycols.h>
-#include <qstringlist.h>
 
 #include "tseries.xpm"
+
+
 
 const miString thisTM  = "MARKEDTIME";
 const miString dianaTM = "DIANATIME";
 
-qtsMain::qtsMain(miString l) : lang(l), Q3MainWindow(0)
+qtsMain::qtsMain(miString l) : lang(l), QMainWindow()
 
 {
 // Added to avoid unnessecary updates when connected to diana
@@ -67,15 +71,15 @@ qtsMain::qtsMain(miString l) : lang(l), Q3MainWindow(0)
 
   work->latlonInDecimalToggled(latlond);
 
-  printer = new QPrinter();
+ printer = new QPrinter( QPrinter::HighResolution );
 
-  setIcon(QPixmap(tseries_xpm));
+  setWindowIcon(QPixmap(tseries_xpm));
 
   initHelp();
 
   restoreLog();
   setRemoteParameters();
-  makeAccelerators();
+  makeShortcuts();
   setTimemark(currentTime);
 
   // milliseconds
@@ -97,85 +101,146 @@ void qtsMain::makeMenuBar()
 
 void qtsMain::makeHelpMenu()
 {
-  menu_help  = new Q3PopupMenu( this );
-  menuBar()->insertItem( tr("Help"), menu_help);
+  menu_help = menuBar()->addMenu(tr("Help"));
 
-  menu_help->insertItem(tr("Manual"), this, SLOT(showHelp()),Qt::Key_F1);
-  menu_help->insertItem( tr("About.."), this, SLOT(about()));
+  showHelpAct = new QAction(tr("Manual"), this);
+  showHelpAct->setShortcut(tr("F1"));
+  showHelpAct->setStatusTip(tr("Show manual"));
+  connect(showHelpAct, SIGNAL(triggered()), this, SLOT( showHelp() ));
+  menu_help->addAction(showHelpAct);
+
+
+  aboutAct = new QAction(tr("About"), this);
+  connect(aboutAct,    SIGNAL(triggered()), this, SLOT( about()    ));
+  menu_help->addAction(aboutAct);
+
 }
 
 
 void qtsMain::makeFileMenu()
 {
-  menu_file = new Q3PopupMenu( this );
-  menuBar()->insertItem( tr("File"), menu_file);
+  menu_file = menuBar()->addMenu(tr("File"));
 
-  menu_file->insertItem( tr("Print"), this, SLOT(print()), Qt::CTRL+Qt::Key_P);
-  menu_file->insertItem( tr("Save Image"),this,SLOT(raster()));
-  menu_file->insertSeparator();
-  menu_file->insertItem( tr("Change filter"),this,SLOT(manageFilter()));
-  menu_file->insertSeparator();
-  menu_file->insertItem( tr("Quit"), this, SLOT(quit()), Qt::CTRL+Qt::Key_Q);
+  printAct  = new QAction(tr("Print"), this);
+  printAct->setShortcut(tr("Ctrl+P"));
+  printAct->setStatusTip(tr("Print diagram"));
+  connect(printAct,  SIGNAL(triggered()), this, SLOT( print() ));
+  menu_file->addAction( printAct );
+
+  rasterAct = new QAction(tr("Save Image"), this);
+  connect(rasterAct, SIGNAL(triggered()), this, SLOT( raster() ));
+  menu_file->addAction( rasterAct);
+
+  filterAct = new QAction(tr("Change filter"), this);
+  connect(filterAct, SIGNAL(triggered()), this, SLOT( manageFilter() ));
+  menu_file->addAction( filterAct);
+
+  // -------------------
+
+  menu_file->addSeparator();
+
+  quitAct   = new QAction(tr("quit"), this);
+  quitAct->setShortcut(tr("Ctrl+Q"));
+  quitAct->setStatusTip(tr("Quit program"));
+  connect(quitAct,   SIGNAL(triggered()), this, SLOT( quit() ));
+  menu_file->addAction( quitAct  );
+
 }
 
 
 void qtsMain::makeSettingsMenu()
 {
-  menu_setting  = new Q3PopupMenu( this );
-  menuBar()->insertItem( tr("Preferences"), menu_setting);
-  menu_setting->insertItem( tr("Reset Preferences"), this, SLOT(readLog()));
-  menu_setting->insertItem( tr("Save Preferences"), this, SLOT(writeLog()));
-  menu_setting->insertSeparator();
-  sOnQuit = menu_setting->insertItem( tr("Save at exit"), this, SLOT(setSaveOnQuit()));
-  menu_setting->insertSeparator();
-  idsnormal = menu_setting->insertItem( tr("Show positions (DIANA)"),
-					this, SLOT(toggleNormalNames()));
-  idsselect = menu_setting->insertItem( tr("Show active position (DIANA)"),
-					 this, SLOT(toggleSelectedNames()));
+  menu_setting = menuBar()->addMenu( tr("Preferences"));
 
-  idsicon = menu_setting->insertItem( tr("Show icons (DIANA)"),
-				      this, SLOT(toggleIcon()));
+  // -------------------
 
-  idsposition = menu_setting->insertItem( tr("Send positions (DIANA)"),
-					  this, SLOT(togglePositions()));
+  readLogAct  = new QAction(tr("Reset Preferences"), this);
+  connect(readLogAct,  SIGNAL(triggered()), this, SLOT( readLog()  ));
+  menu_setting->addAction( readLogAct );
 
-  menu_setting->insertSeparator();
+  writeLogAct = new QAction(tr("Save Preferences"),  this);
+  connect(writeLogAct, SIGNAL(triggered()), this, SLOT( writeLog() ));
+  menu_setting->addAction( writeLogAct);
 
-  idtmark  = menu_setting->insertItem( tr("Show timemark"), this, SLOT(toggleTimemark()));
-  idLatLon = menu_setting->insertItem( tr("Lat/Lon in decimal"), this, SLOT(toggleLatLon()));
-  idtmark =  menu_setting->insertItem( tr("Show timemark"), this, SLOT(toggleTimemark()));
+  menu_setting->addSeparator();
 
-  menu_setting->insertSeparator();
-  menu_setting->insertItem(tr("Font"),this,SLOT(chooseFont()));
-  menu_setting->insertSeparator();
+  // --------------------
 
-  menu_lang= new Q3PopupMenu(this);
+  sOnQuitAct = new QAction(tr("Save at exit"), this);
+  sOnQuitAct->setCheckable(true);
 
+  bool isOn;
+  config.get("SAVEONQUIT", isOn);
+  sOnQuitAct->setChecked(  isOn);
+  connect(sOnQuitAct,  SIGNAL(toggled(bool)), this, SLOT( setSaveOnQuit(bool)  ));
+  menu_setting->addAction( sOnQuitAct);
+  menu_setting->addSeparator();
 
-  findLanguages();
-  menu_lang->setCheckable(true);
+  // ---------------------
 
-  menu_setting->insertItem(tr("Languages"),menu_lang);
-
-  bool soq;
-
-  sicon     = true;
-  sposition = true; //no logging
-  config.get("TIMEMARK",   tmark);
   config.get("SHOWNORMAL", snormal);
+  normalAct   = new QAction( tr("Show positions (DIANA)"), this);
+  normalAct->setCheckable(true);
+  normalAct->setChecked(snormal);
+  connect(normalAct, SIGNAL(toggled(bool)), this, SLOT(toggleNormalNames(bool)));
+  menu_setting->addAction( normalAct);
+
   config.get("SHOWSELECT", sselect);
+  selectAct   = new QAction( tr("Show active position (DIANA)"), this);
+  selectAct->setCheckable(true);
+  selectAct->setChecked(sselect);
+  connect(selectAct, SIGNAL(toggled(bool)), this, SLOT(toggleSelectedNames(bool)));
+  menu_setting->addAction( selectAct);
+
+
   config.get("SHOWICON",   sicon);
-  config.get("SAVEONQUIT", soq);
+  iconAct     = new QAction( tr("Show icons (DIANA)"), this);
+  iconAct->setCheckable(true);
+  iconAct->setChecked(sicon);
+  connect(iconAct,  SIGNAL(toggled(bool)), this, SLOT(toggleIcon(bool)));
+  menu_setting->addAction( iconAct);
+
+  sposition = true; //no logging
+  positionAct = new QAction( tr("Send positions (DIANA)"), this);
+  positionAct->setCheckable(true);
+  positionAct->setChecked(sposition);
+  connect(positionAct,  SIGNAL(toggled(bool)), this, SLOT(togglePositions(bool)));
+  menu_setting->addAction( positionAct);
+
+
+  menu_setting->addSeparator();
+
+
+  // ------------------------
+
+  config.get("TIMEMARK",   tmark);
+  tmarkAct = new QAction( tr("Show timemark"), this);
+  tmarkAct->setCheckable(true);
+  tmarkAct->setChecked(tmark);
+  connect(tmarkAct,  SIGNAL(toggled(bool)), this, SLOT(toggleTimemark(bool)));
+  menu_setting->addAction(tmarkAct);
+
+
   config.get("LATLONDEC",  latlond);
+  latlonAct =  new QAction(tr("Lat/Lon in decimal"), this);
+  latlonAct->setCheckable(true);
+  latlonAct->setChecked(latlond);
+  connect(latlonAct,  SIGNAL(toggled(bool)), this, SLOT(toggleLatLon(bool)));
+  menu_setting->addAction(latlonAct);
 
-  menu_setting->setItemChecked(sOnQuit,soq);
-  menu_setting->setItemChecked(idsnormal,snormal);
-  menu_setting->setItemChecked(idsselect,sselect);
-  menu_setting->setItemChecked(idsicon,sicon);
-  menu_setting->setItemChecked(idsposition,sposition);
-  menu_setting->setItemChecked(idtmark,tmark);
-  menu_setting->setItemChecked(idLatLon,latlond);
+  menu_setting->addSeparator();
 
+  // ------------------------
+
+  fontAct =  new QAction(tr("Font"), this);
+  connect(fontAct,  SIGNAL(triggered()),this, SLOT(chooseFont()));
+  menu_setting->addAction(fontAct);
+  menu_setting->addSeparator();
+
+  // ------------------------
+
+  menu_lang = menu_setting->addMenu(tr("Languages"));
+  findLanguages();
 
 }
 
@@ -191,25 +256,20 @@ void qtsMain::makeConnectButtons()
   connect(targetB,SIGNAL(pressed()),this,SLOT(sendTarget()));
   connect(targetB,SIGNAL(released()),this,SLOT(clearTarget()));
 
-  connect(pluginB, SIGNAL(receivedMessage(miMessage&)),
-	  SLOT(processLetter(miMessage&)));
-  connect(pluginB, SIGNAL(addressListChanged()),
-	  SLOT(processConnect()));
-  connect(pluginB, SIGNAL(connectionClosed()),
-	  SLOT(cleanConnection()));
+  connect(pluginB, SIGNAL(receivedMessage(miMessage&)), SLOT(processLetter(miMessage&)));
+  connect(pluginB, SIGNAL(addressListChanged()),        SLOT(processConnect()));
+  connect(pluginB, SIGNAL(connectionClosed()),          SLOT(cleanConnection()));
 }
 
 
-void qtsMain::makeAccelerators()
+void qtsMain::makeShortcuts()
 {
 
-  Q3Accel *a = new Q3Accel( this );
-  a->connectItem( a->insertItem(Qt::Key_Up+Qt::CTRL),
-		  work->sideBar(),
-		  SLOT(nextModel()) );
-  a->connectItem( a->insertItem(Qt::Key_Down+Qt::CTRL),
-		  work->sideBar(),
-		  SLOT(prevModel()));
+  nextModelSc =  new QShortcut(tr("Ctrl+Up"), this);
+  connect(nextModelSc,  SIGNAL(activated()), work->sideBar(), SLOT(nextModel()));
+
+  prevModelSc = new QShortcut(tr("Ctrl+Down"), this);
+  connect(prevModelSc,  SIGNAL(activated()), work->sideBar(), SLOT(prevModel()));
 
 }
 
@@ -232,21 +292,21 @@ void qtsMain::quit()
 void qtsMain::raster()
 {
   miString format = "PNG";
-  miString fname  = "/" + work->file("png");
+  miString fname  = "./" + work->file("png");
 
-  static QString fpath = ".";
+  QString fpath = fname.cStr();
+  QString fcaption="save file dialog";
+  QString fpattern="Pictures (*.png *.xpm *.bmp *.eps);;All (*.*)";
 
-  QString s = Q3FileDialog::getSaveFileName( fpath + fname.cStr(),
-					   "Pictures (*.png *.xpm *.bmp *.eps);;All (*.*)",
-					    this, "save file dialog",tr("Save Image") );
+  QString  s = QFileDialog::getSaveFileName (this,fcaption,fpath  ,fpattern);
 
   if (s.isNull())
     return;
 
   QFileInfo finfo(s);
-  fpath= finfo.dirPath(TRUE);
+  fpath= finfo.absolutePath();
 
-  fname  = s.latin1();
+  fname  = s.toStdString();
 
   int quality= -1;
 
@@ -266,77 +326,149 @@ void qtsMain::raster()
 }
 
 
+
 void qtsMain::print()
 {
-  miString command ;
+  miString command;
 
 #ifdef linux
-  command= "lpr -h -r -{hash}{numcopies} -P {printer} {filename}";
+  command = "lpr -h -r -{hash}{numcopies} -P {printer} {filename}";
 #else
   command= "lp -c -n{numcopies} -d {printer} {filename}";
 #endif
 
   printOptions priop;
 
-  miString fname = work->file("ps");
+  miString fname = "qed_temp.ps";//work->file("ps");
 
   QString ofn = printer->outputFileName();
 
-
-  if(ofn.isNull()) {
+  if (ofn.isNull()) {
     QFileInfo p(fname.cStr());
-    printer->setOutputFileName(p.absFilePath());
-  }
-  else {
+    printer->setOutputFileName(p.absoluteFilePath());
+  } else {
     QFileInfo p(ofn);
-    printer->setOutputFileName(p.dirPath(TRUE)+"/"+fname.cStr());
+    printer->setOutputFileName(p.path() + "/" + fname.cStr());
   }
 
-  printer->setOutputToFile(false);
+  //printer->setOutputFileName("");
+  //printer->setOutputToFile(false);
 
-  if (printer->setup(this)){
+  QPrintDialog *dialog = new QPrintDialog(printer, this);
+  dialog->setWindowTitle(tr("Print Diagram"));
+  if (dialog->exec() != QDialog::Accepted)
+    return;
 
-    if (printer->outputToFile())
-      priop.fname= printer->outputFileName().latin1();
-    else if (command.substr(0,4)=="lpr ")
-      priop.fname= miTime::nowTime().format("TS%d%H%M%S.ps");
-    else
-      priop.fname= fname;
+  if (!printer->outputFileName().isEmpty())
+    priop.fname = printer->outputFileName().toStdString();
+  else if (command.substr(0, 4) == "lpr ")
+    priop.fname = miTime::nowTime().format("TS%d%H%M%S.ps");
+  else
+    priop.fname = fname;
 
+  // fill printOption from qprinter-selections
+  fillPrintOption(printer, priop);
 
-    // fill printOption from qprinter-selections
-    fillPrintOption(printer, priop);
+  // set printername
+  if (printer->outputFileName().isEmpty())
+    priop.printer = printer->printerName().toStdString();
 
-    // set printername
-    if (!printer->outputToFile())
-      priop.printer= printer->printerName().latin1();
+  // start the postscript production
+  QApplication::setOverrideCursor(Qt::WaitCursor);
+  work->Show()->hardcopy(priop);
 
-    // start the postscript production
-    QApplication::setOverrideCursor( Qt::waitCursor );
-    work->Show()->hardcopy(priop);
+  // if output to printer: call appropriate command
+  if (printer->outputFileName().isEmpty()) {
+    priop.numcopies = printer->numCopies();
 
-    // if output to printer: call appropriate command
-    if (!printer->outputToFile()){
-      priop.numcopies= printer->numCopies();
+    // expand command-variables
+    pman.expandCommand(command, priop);
 
-      // expand command-variables
-      pman.expandCommand(command, priop);
+    cerr << "PRINT: " << command << endl;
 
-      cerr<<"PRINT: "<< command << endl;
-
-      system(command.c_str());
-    }
-    QApplication::restoreOverrideCursor();
-
-    // reset number of copies (saves a lot of paper)
-    printer->setNumCopies(1);
+    system(command.c_str());
   }
+  QApplication::restoreOverrideCursor();
+
+  // reset number of copies (saves a lot of paper)
+  printer->setNumCopies(1);
 }
+
+
+//
+//
+//void qtsMain::print()
+//{
+//  miString command ;
+//
+//#ifdef linux
+//  command= "lpr -h -r -{hash}{numcopies} -P {printer} {filename}";
+//#else
+//  command= "lp -c -n{numcopies} -d {printer} {filename}";
+//#endif
+//
+//  printOptions priop;
+//
+//  miString fname = work->file("ps");
+//
+//  QString ofn = printer->outputFileName();
+//
+//
+//  if(ofn.isNull()) {
+//    QFileInfo p(fname.cStr());
+//    printer->setOutputFileName(p.absolutePath());
+//  }
+//  else {
+//    QFileInfo p(ofn);
+//    printer->setOutputFileName(p.absolutePath()+"/"+fname.cStr());
+//  }
+//
+// // printer->setOutputToFile(false);
+//
+// // if (printer->setup(this)){
+//
+//    if (!printer->outputFileName().isNull())
+//      priop.fname= printer->outputFileName().toStdString();
+//    else if (command.substr(0,4)=="lpr ")
+//      priop.fname= miTime::nowTime().format("TS%d%H%M%S.ps");
+//    else
+//      priop.fname= fname;
+//
+//
+//
+//    // fill printOption from qprinter-selections
+//    fillPrintOption(printer, priop);
+//
+//    // set printername
+//    if (printer->outputFileName().isNull())
+//      priop.printer= printer->printerName().toStdString();
+//
+//    // start the postscript production
+//    QApplication::setOverrideCursor( Qt::WaitCursor );
+//    work->Show()->hardcopy(priop);
+//
+//    // if output to printer: call appropriate command
+//    if (printer->outputFileName().isNull()){
+//      priop.numcopies= printer->numCopies();
+//
+//      // expand command-variables
+//      pman.expandCommand(command, priop);
+//
+//      cerr<<"PRINT: "<< command << endl;
+//
+//      system(command.c_str());
+// //   }
+//    QApplication::restoreOverrideCursor();
+//
+//    // reset number of copies (saves a lot of paper)
+//    printer->setNumCopies(1);
+//  }
+//}
 
 
 void qtsMain::makeEPS(const miString& filename)
 {
-  QApplication::setOverrideCursor( Qt::waitCursor );
+  QApplication::setOverrideCursor( Qt::WaitCursor );
   printOptions priop;
   priop.fname= filename;
   priop.colop= d_print::incolour;
@@ -381,7 +513,7 @@ void qtsMain::writeLog()
   config.set("SHOWICON",sicon);
   config.set("TIMEMARK",tmark);
   config.set("LATLONDEC",latlond);
-  config.set("FONT",miString(qApp->font().toString().latin1()));
+  config.set("FONT",miString(qApp->font().toString().toStdString()));
 
   if(lang.exists())
     config.set("LANG",lang);
@@ -409,7 +541,7 @@ void qtsMain::restoreLog()
   if(config.get("FONT",f)) {
     QFont font;
     if (font.fromString(f.cStr()))
-      qApp->setFont(font, true);
+      qApp->setFont(font);
   }
 
   work->restoreLog();
@@ -423,44 +555,38 @@ void qtsMain::readLog()
   restoreLog();
 }
 
-void qtsMain::setSaveOnQuit()
+void qtsMain::setSaveOnQuit(bool)
 {
   bool soq;
   config.get("SAVEONQUIT",soq);
   config.set("SAVEONQUIT",!soq);
-
-  menu_setting->setItemChecked(sOnQuit,!soq);
 }
 
 
 
 
 
-void qtsMain::toggleNormalNames()
+void qtsMain::toggleNormalNames(bool isOn)
 {
-  snormal = !snormal;
-  menu_setting->setItemChecked(idsnormal,snormal);
+  snormal = isOn;
   sendNamePolicy();
 }
 
-void qtsMain::toggleSelectedNames()
+void qtsMain::toggleSelectedNames(bool isOn)
 {
-  sselect = !sselect;
-  menu_setting->setItemChecked(idsselect,sselect);
+  sselect = isOn;
   sendNamePolicy();
 }
 
-void qtsMain::toggleIcon()
+void qtsMain::toggleIcon(bool isOn)
 {
-  sicon = !sicon;
-  menu_setting->setItemChecked(idsicon,sicon);
+  sicon = isOn;
   sendNamePolicy();
 }
 
-void qtsMain::togglePositions()
+void qtsMain::togglePositions(bool isOn)
 {
-  sposition = !sposition;
-  menu_setting->setItemChecked(idsposition,sposition);
+  sposition = isOn;
   if(sposition)
     refreshDianaStations();
   miMessage m;
@@ -472,17 +598,15 @@ void qtsMain::togglePositions()
   pluginB->sendMessage(m);
 }
 
-void qtsMain::toggleTimemark()
+void qtsMain::toggleTimemark(bool isOn)
 {
-  tmark = !tmark;
-  menu_setting->setItemChecked(idtmark,tmark);
+  tmark = isOn;
   setTimemark(miTime::nowTime());
 }
 
-void qtsMain::toggleLatLon()
+void qtsMain::toggleLatLon(bool isOn)
 {
-  latlond = !latlond;
-  menu_setting->setItemChecked(idLatLon,latlond);
+  latlond = isOn;
   if(work)
     work->latlonInDecimalToggled(latlond);
 }
@@ -652,9 +776,9 @@ void qtsMain::processConnect()
 void qtsMain::setRemoteParameters()
 {
   targetB->setEnabled(dianaconnected);
-  menu_setting->setItemEnabled(idsnormal, dianaconnected);
-  menu_setting->setItemEnabled(idsselect, dianaconnected);
-  menu_setting->setItemEnabled(idsicon, dianaconnected);
+  normalAct->setEnabled(dianaconnected);
+  selectAct->setEnabled(dianaconnected);
+  iconAct->setEnabled(dianaconnected);
 
   if(!dianaconnected) {
     currentModel = NOMODEL_TSERIES;
@@ -755,11 +879,11 @@ void qtsMain::initHelp()
   HelpDialog::Info::Source helpsource;
   info.path              = s.path.doc;
   helpsource.source      = helpfile;
-  helpsource.name        = tr("Manual").latin1();
+  helpsource.name        = tr("Manual").toStdString();
   helpsource.defaultlink = s.doc.mainLink;
   info.src.push_back(helpsource);
   helpsource.source      = newsfile;
-  helpsource.name        = tr("News").latin1();
+  helpsource.name        = tr("News").toStdString();
   helpsource.defaultlink = s.doc.newsLink;
   info.src.push_back(helpsource);
 
@@ -833,61 +957,53 @@ void qtsMain::chooseFont()
   QFont font = QFontDialog::getFont( &ok,qApp->font(),this );
   if ( ok ) {
     // font is set to the font the user selected
-    qApp->setFont(font, true);
+    qApp->setFont(font);
   } else {
     // the user cancelled the dialog; font is set to the initial
     // value: do nothing
   }
 }
 
+
 void qtsMain::findLanguages()
 {
   QDir d;
+
   tsSetup setup;
-  miString dname = ( setup.path.lang.empty() ? "./" : setup.path.lang[0]);
+  miString dlang = (setup.path.lang.empty() ? "./" : setup.path.lang[0]);
 
-  d.setPath(dname.cStr() );
-  QStringList f=d.entryList("tseries_??.qm");
+  d.setPath(dlang.cStr());
+  QStringList f = d.entryList(QStringList("tseries_??.qm"));
 
+  languageGroup = new QActionGroup(this);
+  connect(languageGroup, SIGNAL( triggered(QAction*) ), this, SLOT( toggleLang(QAction*) ));
 
-  for ( QStringList::Iterator it = f.begin(); it != f.end(); ++it ) {
+  for (QStringList::Iterator it = f.begin(); it != f.end(); ++it) {
     QString s = *it;
-    s.replace("tseries_","");
-    s.replace(".qm","");
+    s.replace("proContra_", "");
+    s.replace(".qm", "");
 
-    int  id = menu_lang->insertItem( s,this,SLOT(toggleLang(int)));
-
-    langID[id] = s.latin1();
-
-    menu_lang->setItemChecked(id, (s.latin1() == lang)  );
-
+    QAction * action = new QAction(s, languageGroup);
+    action->setCheckable(true);
+    action->setChecked(s.toStdString() == lang);
+    languageGroup->addAction(action);
+    menu_lang->addAction(action);
   }
 
-  int id = menu_lang->insertItem("en",this,SLOT(toggleLang( int)));
-  menu_lang->setItemChecked(id, (!lang.exists() || lang=="en") );
-  langID[id]="en";
-
+  QAction * action = new QAction("en", languageGroup);
+  action->setCheckable(true);
+  action->setChecked(!lang.exists() || lang == "en");
+  languageGroup->addAction(action);
+  menu_lang->addAction(action);
 }
 
 
-void qtsMain::toggleLang(int id)
+void qtsMain::toggleLang(QAction* action)
 {
-  lang=langID[id];
-  map<int,miString>::iterator itr=langID.begin();
-  for(;itr!=langID.end();itr++)
-    menu_lang->setItemChecked(itr->first, ( itr->second == lang ) );
+  lang = action->text().toStdString();
 
+  QMessageBox::information(this, tr("Language Changed"), tr(
+      "tseries must be restarted to reset the language to: [%1] ") .arg(
+          lang.cStr()));
 
-
-  switch(QMessageBox::warning( this, tr("Language Changed"),
-			       tr("T-series must be restarted to reset the Language to: [%1] ")
-			       .arg(lang.cStr()),
-			       tr("Ok"),
-			       tr("Quit T-series"),
-			       0,0,1) ) {
-  case 0:
-    break;
-  case 1:
-    quit();
-  }
 }

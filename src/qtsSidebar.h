@@ -31,14 +31,14 @@
 #ifndef _qtsSidebar_h
 #define _qtsSidebar_h
 
-#include <qlayout.h>
-#include <q3listbox.h>
-#include <qlineedit.h>
-#include <qwidget.h>
-#include <qstringlist.h>
-#include <qcombobox.h>
-#include <Q3VBoxLayout>
-#include <qpushbutton.h>
+#include <QLayout>
+#include <QListWidget>
+#include <QLineEdit>
+#include <QWidget>
+#include <QStringList>
+#include <QComboBox>
+#include <QVBoxLayout>
+#include <QPushButton>
 
 #include <qtsTimeControl.h>
 
@@ -58,10 +58,10 @@ public:
   enum lEntry { CMMODEL, CMSTYLE,CMRUN };
 
 private:
-  Q3VBoxLayout * vlayout;
+  QVBoxLayout * vlayout;
   QLineEdit   * searchw;    // search widget (stations)
 
-  Q3ListBox   * statl;      // list of stations
+  QListWidget * statl;      // list of stations
   QComboBox   * modell;     // list of models
   QComboBox   * stylel;     // list of styles (meteogram etc.)
   QComboBox   * runl;       // list of runs
@@ -79,7 +79,7 @@ public slots:
 
   void nextModel() {iterateModel( 1);}
   void prevModel() {iterateModel(-1);}
-
+  void currentStationChanged ( QListWidgetItem * current, QListWidgetItem * previous );
 
 public:
   qtsSidebar(QWidget*);

@@ -3,7 +3,6 @@
 
   $Id$
 
-  Copyright (C) 2006 met.no
 
   Contact information:
   Norwegian Meteorological Institute
@@ -29,15 +28,16 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <qtsSidebar.h>
-//Added by qt3to4:
+
 #include <QPixmap>
-#include <Q3HBoxLayout>
-#include <Q3VBoxLayout>
-#include <iostream>
-#include <qtooltip.h>
-#include <tsSetup.h>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+
+#include "tsSetup.h"
 #include "ts_find.xpm"
 #include "ts_filter.xpm"
+
+#include <iostream>
 
 using namespace miutil;
 
@@ -46,15 +46,15 @@ qtsSidebar::qtsSidebar(QWidget* parent)
 {
 
 
-  vlayout = new Q3VBoxLayout(this, 10, 10, "listLayout");
-  Q3HBoxLayout * hlayout =  new Q3HBoxLayout(0, "hLayout");;
-  Q3HBoxLayout * blayout =  new Q3HBoxLayout(0, "bLayout");;
+  vlayout = new QVBoxLayout(this);
+  QHBoxLayout * hlayout =  new QHBoxLayout();
+  QHBoxLayout * blayout =  new QHBoxLayout();
 
-  modell  = new QComboBox(this,"modellist");
-  runl    = new QComboBox(this,"runlist");
-  stylel  = new QComboBox(this,"stylelist");
-  statl   = new Q3ListBox(this,"stationList");
-  searchw = new QLineEdit(this,"searchEdit");
+  modell  = new QComboBox(this);
+  runl    = new QComboBox(this);
+  stylel  = new QComboBox(this);
+  statl   = new QListWidget(this);
+  searchw = new QLineEdit(this);
   timecontrol= new TimeControl(this);
 
   connect(timecontrol,SIGNAL(minmaxProg(int,int)),
@@ -89,14 +89,13 @@ qtsSidebar::qtsSidebar(QWidget* parent)
 
   targetB = new QPushButton(find_pix,"",this);
   targetB->setMaximumWidth(find_pix.width());
-  QToolTip::add( targetB, tr("Show position (DIANA)") );
+  targetB->setToolTip(tr("Show position (DIANA)") );
 
 
   filterB = new QPushButton(filter_pix,"",this);
   filterB->setMaximumWidth(filter_pix.width());
-  filterB->setToggleButton(true);
-
-  QToolTip::add( filterB, tr("Position filter") );
+  filterB->setCheckable(true);
+  filterB->setToolTip(  tr("Position filter") );
 
   pos_label = new QLabel("<b>Position</b>");
   pos_label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
@@ -115,48 +114,62 @@ qtsSidebar::qtsSidebar(QWidget* parent)
 
   vlayout->addLayout(blayout);
 
-  connect(filterB,SIGNAL(toggled(bool)),this,
-	  SIGNAL(filterToggled(bool)));
+  connect(filterB,SIGNAL(toggled(bool)),              this, SIGNAL(filterToggled(bool)));
+  connect(searchw,SIGNAL(textChanged(const QString&)),this, SLOT(searchStation(const QString&)));
+  connect(stylel,SIGNAL(activated(const QString&)),   this, SIGNAL(changestyle(const QString&)));
+  connect(modell,SIGNAL(activated(const QString&)),   this, SIGNAL(changemodel(const QString&)));
+  connect(runl,SIGNAL(activated(const QString&)),     this, SIGNAL(changerun(const QString&)));
 
-  connect(searchw,SIGNAL(textChanged(const QString&)),
-	  this, SLOT(searchStation(const QString&)));
 
-  connect(stylel,SIGNAL(activated(const QString&)),
-	  this,SIGNAL(changestyle(const QString&)));
-  connect(modell,SIGNAL(activated(const QString&)),
-	  this,SIGNAL(changemodel(const QString&)));
-
-  connect(runl,SIGNAL(activated(const QString&)),
-	  this,SIGNAL(changerun(const QString&)));
-  connect(statl,SIGNAL(highlighted(const QString&)),
-	  this,SIGNAL(changestation(const QString&)));
+  connect(statl,SIGNAL(currentItemChanged (    QListWidgetItem *, QListWidgetItem *)),
+	  this, SLOT  (currentStationChanged(  QListWidgetItem *, QListWidgetItem *)));
 
 
 }
 
+
+
+
+void qtsSidebar::currentStationChanged ( QListWidgetItem * current, QListWidgetItem * previous )
+{
+  if(current) {
+    QString st = current->text();
+    emit changestation(st);
+
+  }
+
+}
+
+
+
+
 void qtsSidebar::searchStation(const QString& str )
 {
-  Q3ListBoxItem * item = statl->findItem(str);
-
-  if(item)
-    statl->setCurrentItem(item);
+  QList<QListWidgetItem *>  items = statl->findItems (str, Qt::MatchStartsWith );
+  if(!items.empty())
+    statl->setCurrentItem(items.first());
 }
 
 QString qtsSidebar::fillStations(const QStringList& qlist )
 {
-  QString tmp = statl->currentText();
-
+  QString tmp;
+  if(statl->count()) {
+    if(statl->currentItem())
+      tmp = statl->currentItem()->text();
+  }
   statl->clear();
-  statl->insertStringList(qlist);
-
+  statl->addItems(qlist);
   if(!tmp.isEmpty())
     searchStation(tmp);
-
-  return statl->currentText();
+  QListWidgetItem* item=statl->currentItem();
+  if(item)
+    return item->text();
+  return "";
 }
+
 QString qtsSidebar::station()
 {
-  return statl->currentText();
+  return statl->currentItem()->text();
 }
 
 
@@ -169,21 +182,19 @@ QString qtsSidebar::fillList(const vector<miString>& slist, const lEntry c)
   if ( c == CMSTYLE ) co = stylel;
 
   QString cur = co->currentText();
-  miString tmp = (!cur.isEmpty() ? cur.latin1() : "");
-  bool entryFound = false;
+  miString tmp = (!cur.isEmpty() ? cur.toStdString() : "");
 
-  for(unsigned int i=0;i<slist.size();i++) {
+  for(unsigned int i=0;i<slist.size();i++)
     qlist << slist[i].cStr();
-    if(slist[i] == tmp )
-      entryFound = true;
-  }
 
   co->clear();
-  co->insertStringList(qlist);
+  co->addItems(qlist);
 
-  if(!cur.isEmpty())
-    if(entryFound)
-      co->setCurrentText(cur);
+  if(!cur.isEmpty()) {
+    int idx = co->findText(cur);
+    if( idx >= 0)
+      co->setCurrentIndex(idx);
+  }
 
   return co->currentText();
 }
@@ -199,20 +210,28 @@ QString qtsSidebar::current(const lEntry c)
 }
 
 
-void qtsSidebar::set(const miString& s,const lEntry c)
+void qtsSidebar::set(const miString& cur,const lEntry c)
 {
-  if(c == CMSTYLE)
-    stylel->setCurrentText(s.cStr());
-  else if(c == CMRUN)
-    runl->setCurrentText(s.cStr());
-  else if(c == CMMODEL)
-    modell->setCurrentText(s.cStr());
+  int idx;
+  if(c == CMSTYLE) {
+    idx = stylel->findText(cur.cStr());
+    if( idx >= 0)
+      stylel->setCurrentIndex(idx);
+  } else if(c == CMRUN) {
+    idx = runl->findText(cur.cStr());
+    if( idx >= 0)
+      runl->setCurrentIndex(idx);
+  } else if(c == CMMODEL) {
+    idx = modell->findText(cur.cStr());
+    if( idx >= 0)
+      modell->setCurrentIndex(idx);
+  }
 }
 
 
 void qtsSidebar::iterateModel(int add)
 {
-  int i   = modell->currentItem() + add;
+  int i   = modell->currentIndex() + add;
   int max = modell->count() - 1 ;
 
   if(i>max)
@@ -220,7 +239,7 @@ void qtsSidebar::iterateModel(int add)
   else if(i<0)
     i=max;
 
-  modell->setCurrentItem(i);
+  modell->setCurrentIndex(i);
   emit(changemodel(modell->currentText()));
 }
 

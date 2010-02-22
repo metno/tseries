@@ -28,12 +28,14 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-#include <qtsWork.h>
-//Added by qt3to4:
-#include <Q3HBoxLayout>
-#include <tsConfigure.h>
+#include "qtsWork.h"
+#include "tsConfigure.h"
+
 #include <qUtilities/QLetterCommands.h>
-#include <qapplication.h>
+#include <QApplication>
+
+#include <fstream>
+
 
 bool qStr2miStr(const QString& i, miString& o)
 {
@@ -41,7 +43,7 @@ bool qStr2miStr(const QString& i, miString& o)
 
   if(i.isEmpty())
     return false;
-  o=i.latin1();
+  o=i.toStdString();
   return true;
 }
 
@@ -55,7 +57,7 @@ qtsWork::qtsWork(QWidget* parent)
   fmt.setDoubleBuffer(true);
   fmt.setDirectRendering(false);
 
-  hlayout  = new Q3HBoxLayout(this, 1, 1, "worklayout");
+  hlayout  = new QHBoxLayout(this);
   oldModel = NOMODEL_TSERIES;
 
   sidebar = new qtsSidebar(this);
@@ -182,6 +184,7 @@ void qtsWork::makeStationList(bool forced)
     myStations.push_back( pos  + ":" + itr->second );
   }
 
+  cerr << "found " << slist.size() << " stations";
   sidebar->fillStations(slist);
 
   emit(refreshStations());
@@ -222,7 +225,7 @@ bool qtsWork::makeModelList(const miString& st)
 
   tmp = modelMap[tmp];
 
-  QApplication::setOverrideCursor( Qt::waitCursor );
+  QApplication::setOverrideCursor( Qt::WaitCursor );
   data.openStreams(tmp);
   QApplication::restoreOverrideCursor();
 
@@ -311,7 +314,7 @@ void qtsWork::changeStyle(const miString& st)
 void qtsWork::changeModel(const miString& st)
 {
   miString tmp = modelMap[st];
-  QApplication::setOverrideCursor( Qt::waitCursor );
+  QApplication::setOverrideCursor( Qt::WaitCursor );
   data.openStreams(tmp);
   QApplication::restoreOverrideCursor();
   bool changed = request.setModel(tmp);
@@ -359,7 +362,7 @@ void qtsWork::changeRun(const miString& st)
 void qtsWork::refresh(bool readData)
 {
   //cerr << "qtsWork::refresh, request=" << request << endl;
-  QApplication::setOverrideCursor( Qt::waitCursor );
+  QApplication::setOverrideCursor( Qt::WaitCursor );
   if (activeRefresh){
     show->refresh(readData);
   }
@@ -409,7 +412,7 @@ void qtsWork::restoreLog()
     }
 
   request.setModel(mo);
-  QApplication::setOverrideCursor( Qt::waitCursor );
+  QApplication::setOverrideCursor( Qt::WaitCursor );
   data.openStreams(mo);
   QApplication::restoreOverrideCursor();
 

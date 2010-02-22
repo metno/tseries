@@ -33,14 +33,13 @@
 
 
 
-#include <qdialog.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
+#include <QDialog>
+#include <QPushButton>
+#include <QLabel>
 #include <QListWidget>
-#include <qstringlist.h>
-#include <qlayout.h>
-//Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QStringList>
+#include <QLayout>
+#include <QVBoxLayout>
 
 #include <puTools/miString.h>
 
@@ -56,14 +55,14 @@ class qtsFilterManager : public QDialog
   Q_OBJECT
   
 private:
-  Q3VBoxLayout*   vlayout;
+  QVBoxLayout* vlayout;
 
-  QPushButton*   removeB;
-  QPushButton*   copyB;
-  QPushButton*   reloadB;
+  QPushButton* removeB;
+  QPushButton* copyB;
+  QPushButton* reloadB;
 
-  QListWidget  *  all;
-  QListWidget  *  filtered;
+  QListWidget* all;
+  QListWidget* filtered;
 
   QStringList original;
 
@@ -78,11 +77,8 @@ public:
 		   const set<miutil::miString>&,
 		   const set<miutil::miString>&,
 		   QWidget* parent = 0);
-
   
   set<miutil::miString> result();
-
-
 
 };
 
