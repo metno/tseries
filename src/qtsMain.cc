@@ -395,77 +395,6 @@ void qtsMain::print()
 }
 
 
-//
-//
-//void qtsMain::print()
-//{
-//  miString command ;
-//
-//#ifdef linux
-//  command= "lpr -h -r -{hash}{numcopies} -P {printer} {filename}";
-//#else
-//  command= "lp -c -n{numcopies} -d {printer} {filename}";
-//#endif
-//
-//  printOptions priop;
-//
-//  miString fname = work->file("ps");
-//
-//  QString ofn = printer->outputFileName();
-//
-//
-//  if(ofn.isNull()) {
-//    QFileInfo p(fname.cStr());
-//    printer->setOutputFileName(p.absolutePath());
-//  }
-//  else {
-//    QFileInfo p(ofn);
-//    printer->setOutputFileName(p.absolutePath()+"/"+fname.cStr());
-//  }
-//
-// // printer->setOutputToFile(false);
-//
-// // if (printer->setup(this)){
-//
-//    if (!printer->outputFileName().isNull())
-//      priop.fname= printer->outputFileName().toStdString();
-//    else if (command.substr(0,4)=="lpr ")
-//      priop.fname= miTime::nowTime().format("TS%d%H%M%S.ps");
-//    else
-//      priop.fname= fname;
-//
-//
-//
-//    // fill printOption from qprinter-selections
-//    fillPrintOption(printer, priop);
-//
-//    // set printername
-//    if (printer->outputFileName().isNull())
-//      priop.printer= printer->printerName().toStdString();
-//
-//    // start the postscript production
-//    QApplication::setOverrideCursor( Qt::WaitCursor );
-//    work->Show()->hardcopy(priop);
-//
-//    // if output to printer: call appropriate command
-//    if (printer->outputFileName().isNull()){
-//      priop.numcopies= printer->numCopies();
-//
-//      // expand command-variables
-//      pman.expandCommand(command, priop);
-//
-//      cerr<<"PRINT: "<< command << endl;
-//
-//      system(command.c_str());
-// //   }
-//    QApplication::restoreOverrideCursor();
-//
-//    // reset number of copies (saves a lot of paper)
-//    printer->setNumCopies(1);
-//  }
-//}
-
-
 void qtsMain::makeEPS(const miString& filename)
 {
   QApplication::setOverrideCursor( Qt::WaitCursor );
@@ -980,7 +909,7 @@ void qtsMain::findLanguages()
 
   for (QStringList::Iterator it = f.begin(); it != f.end(); ++it) {
     QString s = *it;
-    s.replace("proContra_", "");
+    s.replace("tseries_", "");
     s.replace(".qm", "");
 
     QAction * action = new QAction(s, languageGroup);

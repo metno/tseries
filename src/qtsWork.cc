@@ -152,7 +152,6 @@ set<miString> qtsWork::fullPosList()
 
 void qtsWork::makeStationList(bool forced)
 {
-  //cerr << "qtsWork::makeStationList" << endl;
 
   if(!request.model().exists())
     restoreModelFromLog();
@@ -166,11 +165,11 @@ void qtsWork::makeStationList(bool forced)
   QStringList slist;
   myStations.clear();
 
+
+
   myList = data.getPositions(request.model());
   map<miString,miString>::iterator itr = myList.begin();
   miString pos;
-
-//   cerr << "model:" << request.model() << " myList.size:" << myList.size() << endl;
 
   for (;itr!=myList.end();itr++) {
     pos = itr->first;
@@ -308,7 +307,7 @@ void qtsWork::changeStyle(const miString& st)
   bool changed = request.setStyle(st);
 
   if(makeModelList(st) || changed)
-    refresh();
+    refresh(true);
 }
 
 void qtsWork::changeModel(const miString& st)

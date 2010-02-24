@@ -72,7 +72,7 @@
         <translation>Hjelp</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="882"/>
+        <location filename="../src/qtsMain.cc" line="811"/>
         <source>Manual</source>
         <translation>Brukerveiledning</translation>
     </message>
@@ -157,7 +157,7 @@
         <translation>Velg Font</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="496"/>
+        <location filename="../src/qtsMain.cc" line="425"/>
         <source>About T-series</source>
         <translation>Om T-series</translation>
     </message>
@@ -178,7 +178,7 @@ met.no 2002-2005</translation>
         <translation>Vis valgt stedsnavn (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="498"/>
+        <location filename="../src/qtsMain.cc" line="427"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -194,7 +194,7 @@ met.no 2002</translation>
         <translation type="unfinished">Språk</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1005"/>
+        <location filename="../src/qtsMain.cc" line="934"/>
         <source>Language Changed</source>
         <translation>Språk endret</translation>
     </message>
@@ -204,7 +204,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series må startes på nytt for å sette språk til: [%1]</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="886"/>
+        <location filename="../src/qtsMain.cc" line="815"/>
         <source>News</source>
         <translation>Nyheter</translation>
     </message>
@@ -264,7 +264,7 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1006"/>
+        <location filename="../src/qtsMain.cc" line="935"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>

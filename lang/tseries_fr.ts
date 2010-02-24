@@ -72,7 +72,7 @@
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="882"/>
+        <location filename="../src/qtsMain.cc" line="811"/>
         <source>Manual</source>
         <translation>Manuel</translation>
     </message>
@@ -162,12 +162,12 @@
         <translation type="unfinished">Langues</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="496"/>
+        <location filename="../src/qtsMain.cc" line="425"/>
         <source>About T-series</source>
         <translation> A propos T-series</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="498"/>
+        <location filename="../src/qtsMain.cc" line="427"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -178,7 +178,7 @@ Version: %1
 met.no 2002</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1005"/>
+        <location filename="../src/qtsMain.cc" line="934"/>
         <source>Language Changed</source>
         <translation>Langue changée</translation>
     </message>
@@ -188,7 +188,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series doit etre redémarré pour réactualiser la langue en: [%1]</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="886"/>
+        <location filename="../src/qtsMain.cc" line="815"/>
         <source>News</source>
         <translation>Modifications</translation>
     </message>
@@ -248,7 +248,7 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1006"/>
+        <location filename="../src/qtsMain.cc" line="935"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>
