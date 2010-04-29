@@ -19,7 +19,7 @@ Etc=$(Work)/etc/tseries
 
 Images=$(Work)/share/pixmaps/tseries/
 Doc=$(Work)/share/doc/tseries
-Lang=$(Work)/share/lang
+Lang=$(Work)/share/tseries/lang
 
 #------------------
 
@@ -410,6 +410,17 @@ DataFile=$(Edata)/ecwam_npl_12.hdf
 DataDescription=ECMWF_WAM
 DataType=HDF
 Contents=x,x,ECMWF_WAM,12
+
+DataFile=$(Edata)/ecwam_quba_00.hdf
+DataDescription=ECMWF_WAM
+DataType=HDF
+Contents=x,x,ECMWF_WAM,0
+
+DataFile=$(Edata)/ecwam_quba_12.hdf
+DataDescription=ECMWF_WAM
+DataType=HDF
+Contents=x,x,ECMWF_WAM,12
+
 []
 
 # -------------------------------------------------
