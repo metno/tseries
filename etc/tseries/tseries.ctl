@@ -401,12 +401,12 @@ DataDescription=WAMEC
 DataType=HDF
 Contents=x,x,WAM_EC,12
 
-DataFile=$(Edata)/ecwam_npl_00.hdf
+DataFile=$(Edata)/ecwam_quba_00.hdf
 DataDescription=ECMWF_WAM
 DataType=HDF
 Contents=x,x,ECMWF_WAM,0
 
-DataFile=$(Edata)/ecwam_npl_12.hdf
+DataFile=$(Edata)/ecwam_quba_12.hdf
 DataDescription=ECMWF_WAM
 DataType=HDF
 Contents=x,x,ECMWF_WAM,12
@@ -520,3 +520,24 @@ DataType=HDF
 Contents=x,x,t2m,x
 
 []
+
+<wdb>
+host=proffdb.met.no
+user=proffread
+busymovie=$(Images)/busy.gif
+readtime=1500
+
+<wdbParameter>
+TT=air temperature:-273.15
+UU=wind velocity (u vector)
+MSLP=mean sea level pressure:/100
+VV=wind velocity (v vector)
+RH=relative humidity
+CM=medium cloud cover:*100
+CH=high cloud cover:*100
+CC=total cloud cover:*100
+CL=low cloud cover:*100               
+RR=total precipitation distance:*1000
+
+<WDBVECTORFUNCTIONS>
+UU,VV
