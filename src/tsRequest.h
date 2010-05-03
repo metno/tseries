@@ -32,39 +32,68 @@
 #define _tsRequest_h
 
 #include <puTools/miString.h>
-
+#include <puTools/miTime.h>
 
 using namespace std;
 
 class tsRequest {
+public:
+  typedef enum Streamtype {HDFSTREAM, WDBSTREAM};
+
 private:
   miutil::miString mod_;
-  int      run_;
+  int              run_;
   miutil::miString pos_;
   miutil::miString sty_;
 
   miutil::miString posname_;
 
+  double            wdbLat;
+  double            wdbLon;
+  miutil::miTime    wdbRun;
+  miutil::miString  wdbStyle;
+  miutil::miString  wdbModel;
+  unsigned long     wdbReadTime;
+  Streamtype        streamtype;
+
+
+
   bool setString(const miutil::miString&, miutil::miString&);
 
 public:
-  tsRequest() : run_(-1) {}
+  tsRequest() : run_(-1), wdbReadTime(0), streamtype(tsRequest::HDFSTREAM) {}
 
-  bool setModel(const miutil::miString& i) { return setString(i,mod_); }
-  bool setPos(  const miutil::miString& i)
-  { posname_= i; return setString(i,pos_); }
-  bool setPos(const miutil::miString& n1,const miutil::miString& n2)
-  { posname_= n2; return setString(n1,pos_); }
+  bool setModel(const miutil::miString& i) {              return setString(i,mod_); }
+  bool setPos(  const miutil::miString& i) { posname_= i; return setString(i,pos_); }
+  bool setPos(  const miutil::miString& n1, const miutil::miString& n2) { posname_= n2; return setString(n1,pos_); }
   bool setStyle(const miutil::miString& i) { return setString(i,sty_); }
+  void setType(tsRequest::Streamtype s);
   bool setRun(int);
 
+  bool setWdbPos(double lon,double lat);
+  bool setWdbRun(miutil::miTime nrun);
+  bool setWdbModel(miutil::miString nmod) { return setString(nmod,wdbModel);  }
+  bool setWdbStyle(miutil::miString nsty) { return setString(nsty,wdbStyle);  }
+  void setWdbReadTime(unsigned long t)    { wdbReadTime =t; }
 
-  miutil::miString model()  const { return mod_;}
-  int      run()    const { return run_;}
-  miutil::miString pos()    const { return pos_;}
-  miutil::miString style()  const { return sty_;}
+  bool restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miTime run);
+
+  double           getWdbLat()      const { return wdbLat;      }
+  double           getWdbLon()      const { return wdbLon;      }
+  miutil::miTime   getWdbRun()      const { return wdbRun;      }
+  miutil::miString getWdbModel()    const { return wdbModel;    }
+  miutil::miString getWdbStyle()    const { return wdbStyle;    }
+  unsigned int     getWdbReadTime() const { return wdbReadTime; }
+
+
+  miutil::miString model()     const { return mod_;}
+  miutil::miString style()     const { return sty_;}
+  int              run()       const { return run_;}
+  miutil::miString pos()       const { return pos_;}
+  miutil::miString posname()   const { return posname_;}
+  tsRequest::Streamtype type() const { return streamtype;}
   miutil::miString file(const miutil::miString type) const;
-  miutil::miString posname()const { return posname_;}
+
 
   friend ostream& operator<<(ostream&, const tsRequest&);
 

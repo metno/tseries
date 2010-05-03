@@ -35,7 +35,9 @@
 #include <QApplication>
 
 #include <fstream>
-
+#include <set>
+#include <string>
+#include "WdbCacheThread.h"
 
 bool qStr2miStr(const QString& i, miString& o)
 {
@@ -50,7 +52,8 @@ bool qStr2miStr(const QString& i, miString& o)
 qtsWork::qtsWork(QWidget* parent)
   : QWidget(parent) , activeRefresh(true)
 {
-  filterOn = false;
+  selectionType   = SELECT_BY_STATION;
+  filterOn        = false;
   latlonInDecimal = false;
   QGLFormat fmt;
   fmt.setOverlay(false);
@@ -62,6 +65,9 @@ qtsWork::qtsWork(QWidget* parent)
 
   sidebar = new qtsSidebar(this);
   show    = new qtsShow(this,fmt,&request,&data,&session);
+
+
+  connect (show,SIGNAL(refreshFinished()),this,SLOT(refreshFinished()));
 
   sidebar->setMinimumWidth(170);
   sidebar->setMaximumWidth(255);
@@ -89,12 +95,33 @@ qtsWork::qtsWork(QWidget* parent)
 
 
   Initialise(); // the none gui stuff...
+
+
+
+  // WDB signals
+
+  connect(sidebar,SIGNAL(changeWdbModel(const QString&)),  this,SLOT(changeWdbModel(const QString&)));
+
+
+  connect(sidebar,SIGNAL(changetype(const tsRequest::Streamtype)), this,SLOT(changeType(const tsRequest::Streamtype)));
+  connect(sidebar,SIGNAL(changeWdbStyle(const QString&)), this,SLOT(changeWdbStyle(const QString&)));
+  connect(sidebar,SIGNAL(changeWdbRun(const QString&)),   this,SLOT(changeWdbRun(const QString&)));
+  connect(sidebar,SIGNAL(changeCoordinates(float, float)),this,SLOT(changeCoordinates(float,float)));
+  connect(sidebar,SIGNAL(requestWdbCacheQuery()),this,SLOT(requestWdbCacheQuery()));
+
+
+  has_wdb_stream = data.has_wdb_stream();
+  sidebar->enableWdb(has_wdb_stream);
+  makeWdbModels();
+
 }
 
 
 void qtsWork::Initialise()
 {
   session.readSessions(setup.files.defs);
+
+  maxWDBreadTime = setup.wdb.readtime;
 
   data.setVerbose(false);
 
@@ -183,7 +210,7 @@ void qtsWork::makeStationList(bool forced)
     myStations.push_back( pos  + ":" + itr->second );
   }
 
-  cerr << "found " << slist.size() << " stations";
+
   sidebar->fillStations(slist);
 
   emit(refreshStations());
@@ -196,7 +223,7 @@ bool qtsWork::makeStyleList()
 
   session.getStyleTypes(tmp);
 
-  QString cstyle = sidebar->fillList(tmp,qtsSidebar::CMSTYLE);
+  QString cstyle = sidebar->fillList(tmp,StationTab::CMSTYLE);
 
   miString st;
   qStr2miStr(cstyle,st);
@@ -217,7 +244,7 @@ bool qtsWork::makeModelList(const miString& st)
     if(modname.size() > 1 )
       modname.erase(modname.begin()+1,modname.end());
 
-  QString qtmp = sidebar->fillList(modname,qtsSidebar::CMMODEL);
+  QString qtmp = sidebar->fillList(modname,StationTab::CMMODEL);
 
   miString tmp;
   qStr2miStr(qtmp,tmp);
@@ -237,7 +264,7 @@ bool qtsWork::makeRunList(const miString& st)
   vector <miString> runList;
   runList = data.findRuns(st);
 
-  QString qtmp = sidebar->fillList(runList,qtsSidebar::CMRUN);
+  QString qtmp = sidebar->fillList(runList,StationTab::CMRUN);
   miString tmp;
   qStr2miStr(qtmp,tmp);
   return request.setRun(atoi(tmp.cStr()));
@@ -248,16 +275,16 @@ bool qtsWork::makeRunList(const miString& st,const miString& ru)
   vector <miString> runList;
   runList = data.findRuns(st);
 
-  sidebar->fillList(runList,qtsSidebar::CMRUN);
+  sidebar->fillList(runList,StationTab::CMRUN);
   if(runList.size()) {
     for(unsigned int i=0;i<runList.size();i++)
       if(ru == runList[i] ) {
-	sidebar->set(ru,qtsSidebar::CMRUN);
+	sidebar->set(ru,StationTab::CMRUN);
 	return request.setRun(atoi(ru.cStr()));
       }
 
 
-    sidebar->set(runList[0],qtsSidebar::CMRUN);
+    sidebar->set(runList[0],StationTab::CMRUN);
     return request.setRun(atoi(runList[0].cStr()));
   }
 
@@ -285,8 +312,21 @@ void qtsWork::changeModel(const QString& qstr)
   makeStationList();
 }
 
+void qtsWork::changePositions(const miString& pos)
+{
+  if(selectionType != SELECT_BY_COORDINATES) return;
+
+  vector<miString> vcoor = pos.split(":");
+  if(vcoor.size() < 2) return;
+  float lat = atof(vcoor[0].cStr());
+  float lon = atof(vcoor[1].cStr());
+
+  sidebar->setCoordinates(lon,lat);
+}
+
 void qtsWork::changeStation(const QString& qstr)
 {
+  if(selectionType!=SELECT_BY_STATION) return;
   miString st;
   if(qStr2miStr(qstr,st))
     changeStation(st);
@@ -324,6 +364,7 @@ void qtsWork::changeModel(const miString& st)
 
 void qtsWork::changeStation(const miString& st)
 {
+  if(selectionType!=SELECT_BY_STATION) return;
   if(!request.setPos(st)) {
     miString ST = st.upcase();
     if(!request.setPos(ST))
@@ -344,9 +385,9 @@ void qtsWork::checkPosition(miString name)
   ostringstream ost;
 
   if(latlonInDecimal) {
-    ost <<  "<b>Lat:</b> " << cor.dLat()<< " <b>Lon:</b> " << cor.dLon() << " <b>Topo:</b> " << p.height();
+    ost <<  "<b>Lat:</b> " << cor.dLat()<< " <b>Lon:</b> " << cor.dLon();
   } else {
-    ost <<  "<b>Lat:</b> " << cor.sLat()<< " <b>Lon:</b> " << cor.sLon() << " <b>Topo:</b> " << p.height();
+    ost <<  "<b>Lat:</b> " << cor.sLat()<< " <b>Lon:</b> " << cor.sLon();
   }
   sidebar->setStationInfo(ost.str().c_str());
 }
@@ -360,19 +401,24 @@ void qtsWork::changeRun(const miString& st)
 
 void qtsWork::refresh(bool readData)
 {
-  //cerr << "qtsWork::refresh, request=" << request << endl;
   QApplication::setOverrideCursor( Qt::WaitCursor );
   if (activeRefresh){
     show->refresh(readData);
   }
-  // check if any streams recently opened
-  if (data.has_opened_streams() && readData){
-    //cerr << "qtsWork::refresh - remaking station list" << endl;
-    data.makeStationList();
-    makeStationList();
+
+
+  if(request.type() == tsRequest::HDFSTREAM) {
+
+    // check if any streams recently opened
+    if (data.has_opened_streams() && readData){
+      //cerr << "qtsWork::refresh - remaking station list" << endl;
+      data.makeStationList();
+      makeStationList();
+    }
+
+    checkPosition(request.posname());
   }
 
-  checkPosition(request.posname());
   QApplication::restoreOverrideCursor();
 }
 
@@ -400,13 +446,13 @@ void qtsWork::restoreLog()
   activeRefresh = false;
 
 
-  sidebar->set(st,qtsSidebar::CMSTYLE);
+  sidebar->set(st,StationTab::CMSTYLE);
   changeStyle(st);
 
   map<miString,miString>::iterator itr = modelMap.begin();
   for(;itr!=modelMap.end();itr++)
     if(itr->second == mo) {
-      sidebar->set(itr->first,qtsSidebar::CMMODEL);
+      sidebar->set(itr->first,StationTab::CMMODEL);
       break;
     }
 
@@ -417,11 +463,25 @@ void qtsWork::restoreLog()
 
   makeRunList(mo,miString(ru));
 
-  sidebar->searchStation(po.cStr());
   changeStation(po);
 
   activeRefresh = true;
   refresh();
+
+
+
+  float lat,lon;
+  miString run;
+
+  c.get("WDBMODEL",mo);
+  c.get("WDBSTYLE",st);
+  c.get("WDBLAT",lat);
+  c.get("WDBLON",lon);
+  c.get("WDBRUN",run);
+
+  request.restoreWdbFromLog(mo,st,lat,lon,miTime(run));
+  sidebar->restoreWdbFromLog(mo,st,lat,lon,run);
+
 }
 
 
@@ -429,11 +489,22 @@ void qtsWork::collectLog()
 {
   tsConfigure c;
 
+
+
   c.set("REQUESTMODEL",request.model());
   c.set("REQUESTPOS",request.pos());
   c.set("REQUESTRUN",request.run());
   c.set("REQUESTSTYLE",request.style());
   c.set("VALIDREQUEST",true);
+
+  request.setType(tsRequest::WDBSTREAM);
+  c.set("WDBMODEL",request.getWdbModel());
+  c.set("WDBSTYLE",request.getWdbStyle());
+  c.set("WDBLAT",float(request.getWdbLat()) );
+  c.set("WDBLON",float(request.getWdbLon()) );
+  c.set("WDBRUN",request.getWdbRun().isoTime());
+
+
 }
 
 
@@ -449,16 +520,19 @@ void qtsWork::restoreModelFromLog()
 
 miMessage qtsWork::target()
 {
-  miString t,po;
-
-  if(qStr2miStr(sidebar->station(),po) ) {
-    changeStation(po);
-  }
+  miString t,po,co;
 
   if(myTarget.data.empty())
     myTarget.data.push_back(miString());
 
-  t =  ".:" + myList[po] + ":" + IMG_FIN_TSERIES;
+  if(selectionType==SELECT_BY_STATION) {
+    po=request.posname();
+    changeStation(po);
+    co=myList[po];
+  } else
+    co = sidebar->coordinateString();
+
+  t =  ".:" + co + ":" + IMG_FIN_TSERIES;
 
   if(t != myTarget.data[0] )
     myTarget.data[0] = t;
@@ -574,5 +648,115 @@ void qtsWork::newFilter(const set<miString>& f)
   of.close();
 }
 
+
+/// WDB --------------------------------------------
+//
+void qtsWork::makeWdbModels()
+{
+  if(!has_wdb_stream) return;
+
+  QStringList newmodels;
+  set<string> providers = data.getWdbProviders();
+  set<string>::iterator itr = providers.begin();
+  for(;itr!=providers.end();itr++)
+    newmodels << itr->c_str();
+  sidebar->setWdbModels(newmodels);
+}
+
+
+
+void qtsWork::changeWdbModel(const QString& newmodel)
+{
+  if(!has_wdb_stream) return;
+
+  set<miTime> wdbtimes = data.getWdbReferenceTimes(newmodel.toStdString());
+  QStringList newruns;
+
+  set<miTime>::reverse_iterator itr = wdbtimes.rbegin();
+  for(;itr!=wdbtimes.rend();itr++)
+    newruns << itr->isoTime().cStr();
+  sidebar->setWdbRuns(newruns);
+
+
+  pets::WdbStream::BoundaryBox bb = data.getWdbGeometry();
+  sidebar->setWdbGeometry(bb.minLon,bb.maxLon,bb.minLat,bb.maxLat);
+  if(request.setWdbModel(newmodel.toStdString()))
+    refresh(true);
+}
+
+void qtsWork::changeWdbRun(const QString& nrun)
+{
+  if(!has_wdb_stream) return;
+
+  miTime newrun= miTime(nrun.toStdString());
+
+  if(request.setWdbRun(newrun))
+    refresh(true);
+}
+
+
+void qtsWork::changeWdbStyle(const QString& nsty)
+{
+  if(!has_wdb_stream) return;
+
+  if(request.setWdbStyle(nsty.toStdString()))
+    refresh(true);
+}
+
+void qtsWork::changeType(const tsRequest::Streamtype s)
+{
+  if(s==tsRequest::WDBSTREAM)
+    selectionType=SELECT_BY_COORDINATES;
+  else
+    selectionType=SELECT_BY_STATION;
+
+  request.setType(s);
+  refresh(true);
+
+  emit selectionTypeChanged();
+
+}
+
+void qtsWork::changeCoordinates(float lon, float lat)
+{
+
+  if(!has_wdb_stream) return;
+
+  if(request.setWdbPos(lon,lat))
+    refresh(true);
+   emit coordinatesChanged();
+
+}
+
+void qtsWork::refreshFinished()
+{
+  if(selectionType==SELECT_BY_COORDINATES ) {
+    bool enableCacheButton =  (request.getWdbReadTime() > maxWDBreadTime );
+    sidebar->enableCacheButton(enableCacheButton,false,request.getWdbReadTime());
+  }
+
+}
+void qtsWork::requestWdbCacheQuery()
+{
+  if(!has_wdb_stream) return;
+
+  vector<string> parameters=data.getWdbParameterNames();
+  string  model  = request.getWdbModel();
+  string  run    = request.getWdbRun().isoTime();
+  string  height = "NULL";
+  tsSetup setup;
+  string  host   = setup.wdb.host;
+  string  usr    = setup.wdb.user;
+
+  WdbCacheThread *cachethread = new WdbCacheThread(host,usr);
+  cachethread->setParameters(model,run,height,parameters);
+  connect(cachethread,SIGNAL(finished()),this,SLOT(cacheRequestDone()));
+  cachethread->start();
+}
+
+void   qtsWork::cacheRequestDone()
+{
+  sidebar->enableBusyLabel(false);
+}
 
 

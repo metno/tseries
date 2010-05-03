@@ -78,6 +78,9 @@ public:
   */
   bool read(const miutil::miString& filename, miutil::miString s="");
 
+  // override with section:key=token
+  void overrideToken(miutil::miString token);
+
   // contents
 
   /// Struct containing a single PETS datastream
@@ -95,6 +98,16 @@ public:
     miutil::miString preferredStyle;
     vector<sStruct> data;
   };
+
+  struct wdbstruct {
+    miutil::miString    host;
+    miutil::miString    user;
+    miutil::miString    busyMovie;
+    unsigned long       readtime;            /// time to enable cache button (ms)
+    vector<std::string> vectorFunctions;     ///< run vector transformations on these
+    map<std::string,std::string> parameters; ///< translate parameters from wdb
+  };
+
 
   /// Struct containing filenames for tseries
   struct fistruct {
@@ -153,6 +166,8 @@ public:
   };
 
   static vector<dsStruct> streams; ///< Data streams
+
+  static wdbstruct wdb;            ///< wdb information
   static fistruct files;           ///< All filenames
   static svstruct server;          ///< Server information
   static ptstruct path;            ///< General path info
@@ -164,7 +179,7 @@ public:
   static symbolMaker wsymbols;
 
 private:
-  enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC} sec;
+  enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,WDB,WDBPARAMETER,WDBVECTORFUNCTIONS} sec;
   enum warning { wKEY, wTOKEN, wSECTION, wFILE };
 
   map<miutil::miString,miutil::miString> lookup;
@@ -191,6 +206,9 @@ private:
   void setPath(miutil::miString&, miutil::miString&);
   void setDiana(miutil::miString&, miutil::miString&);
   void setDoc(miutil::miString&, miutil::miString&);
+  void setWdb(miutil::miString&, miutil::miString&);
+  void setWdbParameter(miutil::miString&, miutil::miString&);
+
 
   void setup(miutil::miString&, const miutil::miString&);
   void setup(int&,const miutil::miString&);

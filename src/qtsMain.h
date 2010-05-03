@@ -135,8 +135,6 @@ private:
   void makeHelpMenu();
   void makeConnectButtons();
   void makeSettingsMenu();
-  void makeShortcuts();
-
 
   void restoreLog();
   void sendImage(const miutil::miString, const QImage&);
@@ -182,6 +180,9 @@ private slots:
   void manageFilter();
   void chooseFont();
   void findLanguages();
+
+  void selectionTypeChanged();
+  void coordinatesChanged();
 
 public:
   qtsMain(miutil::miString l);

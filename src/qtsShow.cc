@@ -97,6 +97,7 @@ void qtsShow::refresh(bool readData)
   makeCurrent(); // set current OpenGL context
   drawArea.prepare(readData);
   updateGL();
+  emit refreshFinished();
 }
 
 

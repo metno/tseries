@@ -79,8 +79,13 @@ qtsMain::qtsMain(miString l) : lang(l), QMainWindow()
 
   restoreLog();
   setRemoteParameters();
-  makeShortcuts();
   setTimemark(currentTime);
+
+
+  connect(work, SIGNAL(selectionTypeChanged()), this, SLOT(selectionTypeChanged()) );
+  connect(work, SIGNAL(coordinatesChanged())  , this, SLOT(coordinatesChanged())   );
+
+
 
   // milliseconds
   int updatetimeout =  ( 1000 * 60 ) * 2;
@@ -262,16 +267,6 @@ void qtsMain::makeConnectButtons()
 }
 
 
-void qtsMain::makeShortcuts()
-{
-
-  nextModelSc =  new QShortcut(tr("Ctrl+Up"), this);
-  connect(nextModelSc,  SIGNAL(activated()), work->sideBar(), SLOT(nextModel()));
-
-  prevModelSc = new QShortcut(tr("Ctrl+Down"), this);
-  connect(prevModelSc,  SIGNAL(activated()), work->sideBar(), SLOT(prevModel()));
-
-}
 
 void qtsMain::closeEvent ( QCloseEvent * e)
 {
@@ -515,7 +510,11 @@ void qtsMain::toggleIcon(bool isOn)
 
 void qtsMain::togglePositions(bool isOn)
 {
+
   sposition = isOn;
+  if(!dianaconnected)
+    return;
+
   if(sposition)
     refreshDianaStations();
   miMessage m;
@@ -617,6 +616,7 @@ void qtsMain::disablePoslist(miString prev)
 {
   if(prev == NOMODEL_TSERIES)
     return;
+  if(!dianaconnected ) return;
 
   miMessage m;
   m.command= qmstrings::hidepositions;
@@ -626,6 +626,7 @@ void qtsMain::disablePoslist(miString prev)
 
 void qtsMain::enableCurrentPoslist()
 {
+  if(!dianaconnected ) return;
   miMessage m;
   m.command= qmstrings::showpositions;
   m.description= DATASET_TSERIES + currentModel;
@@ -635,6 +636,7 @@ void qtsMain::enableCurrentPoslist()
 void qtsMain::sendNewPoslist()
 {
   sendModels.insert(currentModel);
+  if(!dianaconnected ) return;
   miMessage m  = work->getStationList();
 
   m.common+=( snormal ? "true" : "false");
@@ -692,7 +694,9 @@ void qtsMain::processConnect()
     sendImage(IMG_ICON_TSERIES,iImage);
 
     sendNamePolicy();
+    selectionTypeChanged();
     refreshDianaStations();
+
   }
   else
     dianaconnected= false;
@@ -759,6 +763,10 @@ void qtsMain::processLetter(miMessage& letter)
     if( letter.common.contains(s.server.client.cStr()))
       cleanConnection();
   }
+
+  if(letter.command== qmstrings::positions)
+    if (letter.data.size())
+      work->changePositions(letter.data[0]);
 
   if (letter.command == qmstrings::selectposition ) {
     if ( letter.data.size())
@@ -936,3 +944,25 @@ void qtsMain::toggleLang(QAction* action)
           lang.cStr()));
 
 }
+
+void  qtsMain::selectionTypeChanged()
+{
+  if(work->getSelectionType() == qtsWork::SELECT_BY_COORDINATES) {
+    togglePositions(false);
+    sendTarget();
+  }
+  else {
+    togglePositions(true);
+    clearTarget();
+  }
+}
+
+void  qtsMain::coordinatesChanged()
+{
+  sendTarget();
+}
+
+
+
+
+

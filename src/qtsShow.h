@@ -64,7 +64,8 @@ public:
   void setTimemark(miTime,miutil::miString="");
   void clearTimemarks(miutil::miString="");
   void setProgintervall(int mi,int ma) { drawArea.setProgintervall(mi,ma);}
-
+signals:
+  void refreshFinished();
 };
 
 #endif

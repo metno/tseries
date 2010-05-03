@@ -77,13 +77,14 @@ private:
   bool  hardcopy;
   bool  hardcopystarted;
   bool  oco; // original
-  bool  ico; // new colour
+  bool  ico; // new color
 
   map<miutil::miString,miTime> timemarks;
   void useTimemarks();
   bool prepareData();
   bool prepareDiagram();
 
+  bool prepareWdbData();
 
   int  maxProg;
   int  minProg;

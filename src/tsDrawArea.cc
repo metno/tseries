@@ -114,6 +114,9 @@ void tsDrawArea::setViewport(int w, int h, float pw, float ph)
 
 bool tsDrawArea::prepareData()
 {
+  if(request->type()==tsRequest::WDBSTREAM)
+    return prepareWdbData();
+
   SessionOptions options;
 
   if (!session->getShowOption(options, request))
@@ -203,6 +206,9 @@ bool tsDrawArea::prepareData()
 
 bool tsDrawArea::prepareDiagram()
 {
+//  if(request->type()==tsRequest::WDBSTREAM)
+//    cout << " prepareWdbDiagram " << endl;
+
   if (!theData) {
     cerr << "tsDrawArea::prepareDiagram(): !theData" << endl;
     return (false);
@@ -384,6 +390,76 @@ void tsDrawArea::endHardcopy()
     diagram->toggleColour(oco);
 
   hardcopy = false;
+}
+
+
+///////////// WDB
+
+bool tsDrawArea::prepareWdbData()
+{
+
+  SessionOptions options;
+  vector<ParId>  inlist, outlist;
+  // the style (for plot)
+  diaStyle       = session->getStyle(request->getWdbStyle());
+
+  // the style index - needed to find parameters according to our model which
+  // is probably unknown in tsDiagrams
+  int styleIndex = session->getStyleIndex(request->getWdbStyle());
+  miString mod   = request->getWdbModel();
+
+  //  Run=0; run is not used in the function at all!
+  bool retryGetShowOptions = false;
+
+  if(!session->getShowOption(options,styleIndex,mod,0))  retryGetShowOptions = true;
+  if(!options.numModels()                             )  retryGetShowOptions = true;
+
+
+  if(retryGetShowOptions) {
+    mod="WDB";
+    if(!session->getShowOption(options,styleIndex,mod,0)) {
+      cerr << "secondary getShowOption failed with generic model WDB as well..." << endl;
+      return false;
+    }
+  }
+
+  if(!options.numModels()) {
+     cerr << "empty model list in options in the retry" << endl;
+     return false;
+   }
+
+  if (theData)
+    delete theData;
+
+  // fetch data
+  theData = new ptDiagramData(setup.wsymbols);
+
+
+  unsigned long readtime;
+
+  // this is only usable for single model prints - check out several models later (get it working first)
+  for (int i = 0; i < options.numModels(); i++) {
+    inlist = options.paramVector(i);
+
+    theData->fetchDataFromWDB(data->getWdbStream(),
+        request->getWdbLat(),
+        request->getWdbLon(),
+        request->getWdbModel(),
+        request->getWdbRun(),
+        inlist, outlist,
+        readtime);
+  }
+
+  request->setWdbReadTime(readtime);
+
+
+  // Find any missing params
+
+
+  if(outlist.size())
+    theData->makeParameters(outlist, true);
+
+  return true;
 }
 
 

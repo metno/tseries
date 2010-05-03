@@ -37,6 +37,8 @@ using namespace std;
 using namespace miutil;
 
 vector<tsSetup::dsStruct>  tsSetup::streams;
+
+tsSetup::wdbstruct         tsSetup::wdb;
 tsSetup::fistruct          tsSetup::files;
 tsSetup::svstruct          tsSetup::server;
 tsSetup::ptstruct          tsSetup::path;
@@ -54,6 +56,7 @@ tsSetup::tsSetup() : sec(PUBLIC) , line(0)
     // giving standard values...
     idx=0;
     ids=0;
+    wdb.readtime=2000;
   }
 }
 
@@ -78,8 +81,17 @@ miString tsSetup::inSection()
     return ", in <diana>";
   case DOC:
     return ", in <doc>";
+
+  case WDB:
+    return ", in <wdb>";
+  case WDBPARAMETER:
+    return  ", in <wdbparameter>";
+  case WDBVECTORFUNCTIONS:
+    return  ", in <wdbVectorFunctions>";
   }
   return ",in <unknown>";
+
+
 };
 
 void tsSetup::warn(miString& k, warning w)
@@ -142,14 +154,16 @@ void tsSetup::fetchSection(miString token)
     sec = DIANA;
   else if( token.contains("DOC"))
     sec = DOC;
+  else if( token.contains("WDBPARAMETER"))
+    sec = WDBPARAMETER;
+  else if ( token.contains("WDBVECTORFUNCTIONS"))
+    sec = WDBVECTORFUNCTIONS;
+  else if( token.contains("WDB"))
+    sec = WDB;
   else
     warn(token,wSECTION);
 
 }
-
-
-
-
 
 void tsSetup::setup(int& to, const miString& from)
 {
@@ -318,6 +332,11 @@ void tsSetup::setSimpleToken(miString token)
     if(!actualSites.count(site))
       return;
 
+  if(sec==WDBVECTORFUNCTIONS) {
+    wdb.vectorFunctions.push_back(token);
+    return;
+  }
+
   miString content,key;
   if(!splitToken(token,key,content))
     return;
@@ -354,6 +373,12 @@ void tsSetup::setSimpleToken(miString token)
     break;
   case PATH:
     setPath(key,content);
+    break;
+  case WDB:
+    setWdb(key,content);
+    break;
+  case WDBPARAMETER:
+    setWdbParameter(key,content);
     break;
   }
 }
@@ -435,6 +460,27 @@ void tsSetup::setStreams(miString& key, miString& content)
 
 }
 
+void tsSetup::setWdbParameter(miString& key, miString& content)
+{
+   wdb.parameters[key] = content;
+}
+
+
+void tsSetup::setWdb(miString& key, miString& content)
+{
+  if(key == "HOST" )
+     setup(wdb.host,content);
+   else if(key == "USER")
+     setup(wdb.user,content);
+   else if(key=="READTIME") {
+     int rtime;
+     setup(rtime,content);
+     wdb.readtime=rtime;
+   } else if(key == "BUSYMOVIE") {
+    setup(wdb.busyMovie,content);
+   }else
+     warn(key,wKEY);
+}
 
 
 
@@ -516,3 +562,25 @@ void tsSetup::setDoc(miString& key, miString& content)
   else
     warn(key,wKEY);
 }
+
+void tsSetup::overrideToken(miutil::miString line )
+{
+  vector<miString> vl=line.split(":");
+  if(vl.size() < 2 ) {
+    cerr << "Override token failed with " << line << " no section found! Usage [section:key=token]" << endl;
+    return;
+  }
+  miString section= vl[0];
+  miString token  = vl[1];
+
+  cout << "fetching section: -------- " << section << endl;
+
+  fetchSection(section);
+
+  cout << " set simple token: -------- " << token << endl;
+
+  setSimpleToken(token);
+}
+
+
+

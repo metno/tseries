@@ -14,7 +14,7 @@ cc_sources=                 \
 	tsRequest.cc        \
 	tsDrawArea.cc       \
 	tsConfigure.cc      \
-	diPrintOptions.cc 
+	diPrintOptions.cc   
 
 
 
@@ -27,7 +27,11 @@ qt_sources=                \
 	qtsShow.cc         \
 	qtPrintManager.cc  \
 	qtsFilterManager.cc\
-	qtsTimeControl.cc
+	qtsTimeControl.cc  \
+	StationTab.cc      \
+	CoordinateTab.cc   \
+	WdbCacheThread.cc  \
+	CoordinateManager.cc
 
 # headers ( for distribution )  -----
 

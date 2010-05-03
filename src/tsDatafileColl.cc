@@ -31,6 +31,10 @@
 #include <tsDatafileColl.h>
 #include <tsData/ptHDFFile.h>
 #include <tsData/ptAsciiStream.h>
+
+
+#include "tsSetup.h"
+
 #ifdef GRIBSTREAM
 #include <tsData/ptGribStream.h>
 #endif
@@ -52,12 +56,14 @@ bool Union(const dataset& d1, const dataset& d2, dataset& result){
   return !result.empty();
 }
 
-DatafileColl::DatafileColl()
-  : tolerance(1000.0), verbose(false), streams_opened(false) {
+DatafileColl::DatafileColl()  : tolerance(1000.0), verbose(false), streams_opened(false), wdbStream(NULL)
+{
+  openWdbStream();
 }
 
 DatafileColl::~DatafileColl(){
   closeStreams();
+  closeWdbStream();
 }
 
 int DatafileColl::addDataset(miString name){
@@ -70,22 +76,6 @@ int DatafileColl::addDataset(miString name){
   return -1;
 }
 
-
-// bool DatafileColl::addPriorStation(const miString name)
-// {
-//   priorStations.push_back(name);
-//   return true;
-// }
-
-// bool DatafileColl::isPriorStation(const miString n)
-// {
-//   miString name= n.upcase();
-//   int j= priorStations.size();
-//   for (int i=0; i<j; i++)
-//     if (name == priorStations[i].upcase())
-//       return true;
-//   return false;
-// }
 
 int DatafileColl::addStream(const miString name,
 			    const miString desc,
@@ -146,6 +136,7 @@ bool DatafileColl::openStreams(const miString mod)
   }
   return b;
 }
+
 
 bool DatafileColl::openStream(const int idx)
 {
@@ -523,3 +514,85 @@ bool DatafileColl::findpos(const miString& name, int& idx)
   idx= max+1;
   return false;
 }
+
+
+
+/////// WDB ------------------------------------------
+
+
+void DatafileColl::openWdbStream()
+{
+  try {
+
+    tsSetup setup;
+
+    wdbStream = new pets::WdbStream(setup.wdb.host,setup.wdb.parameters,setup.wdb.vectorFunctions,setup.wdb.user);
+
+    set<string> providers = wdbStream->getDataProviders();
+    wdbStreamIsOpen       = !providers.empty();
+
+  } catch(exception& e) {
+    cerr << " Exception caught while trying to open WdbStream " << e.what() << endl;
+  }
+}
+
+void DatafileColl::closeWdbStream()
+{
+  try {
+  delete wdbStream;
+  } catch(exception& e) {
+    cerr << " Exception caught while trying to delete WdbStream " << e.what() << endl;
+  }
+  wdbStream=NULL;
+
+}
+
+set<string> DatafileColl::getWdbProviders()
+{
+  set<string> providers;
+  try {
+    providers = wdbStream->getDataProviders();
+  } catch (exception& e) {
+    cerr << "Exception in getWdbProviders(): " << e.what() << endl;
+  }
+  return providers;
+}
+
+set<miTime> DatafileColl::getWdbReferenceTimes(string provider)
+{
+  set<miTime> referenceTimes;
+  try {
+
+    wdbStream->setCurrentProvider(provider);
+    referenceTimes = wdbStream->getReferenceTimes();
+
+  } catch(exception& e) {
+    cerr << "Exception in getWdbReferenceTimes(): " << e.what() << endl;
+  }
+  return referenceTimes;
+}
+
+
+
+pets::WdbStream::BoundaryBox DatafileColl::getWdbGeometry()
+{
+  pets::WdbStream::BoundaryBox  boundaries;
+    try {
+
+      boundaries = wdbStream->getGeometry();
+    } catch(exception& e) {
+      cerr << "Exception in getGeometry(): " << e.what() << endl;
+    }
+
+    return boundaries;
+}
+
+
+
+
+
+
+
+
+
+

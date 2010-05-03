@@ -48,12 +48,21 @@ int SessionManager::getStyleTypes(vector<miString>& stylename)
   } else return 0;
 }
 
-ptStyle& SessionManager::getStyle(const miString name){
+ptStyle& SessionManager::getStyle(const miString name)
+{
+  return getStyle( getStyleIndex(name) );
+}
+
+
+int SessionManager::getStyleIndex(const miString name)
+{
   for (unsigned int i=0; i<styles.size();i++)
     if (name==styles[i].stylename)
-      return getStyle(i);
-  return getStyle(-1);
+      return i;
+  return -1;
 }
+
+
 
 ptStyle& SessionManager::getStyle(int idx){
   if (idx>=0 && idx <(signed int)styles.size()){
@@ -150,8 +159,8 @@ bool SessionManager::getShowOption(SessionOptions& opt,
   // first add full paramid's
   for (i=0;i<(signed int)styles[idx].fullparams.size();i++){
     midx = styles[idx].fullparams[i].midx;
-    temp=opt.addModel(models[midx].modelid,
-        models[midx].modelname);
+    temp = opt.addModel(models[midx].modelid, models[midx].modelname);
+
     if (temp!=-1){ // addModel ok..
       if (models[midx].modelid == model)
         moptidx = temp; // remember this index for later
@@ -160,11 +169,12 @@ bool SessionManager::getShowOption(SessionOptions& opt,
       }
     }
   }
+
   // then add modeldependent id's
   if (styles[idx].modelchoice){
     for (i=0;i<(signed int)styles[idx].modelidx.size();i++){
       midx = styles[idx].modelidx[i];
-      mod = models[midx].modelid;
+      mod  = models[midx].modelid;
       if (model == mod){
         if (moptidx<0) // check if already added
           moptidx=opt.addModel(mod,models[midx].modelname);

@@ -64,6 +64,47 @@ const miutil::miString TS_MINE        = " -- ";
 class qtsWork: public QWidget
 {
   Q_OBJECT
+
+public:
+  enum SelectionType{SELECT_BY_STATION,SELECT_BY_COORDINATES};
+
+private:
+  qtsSidebar*    sidebar;
+  qtsShow*       show;
+  SessionManager session;
+  DatafileColl   data;
+  tsSetup        setup;
+  tsRequest      request;
+  SelectionType  selectionType;
+  unsigned int   maxWDBreadTime;
+  miutil::miString               oldModel;
+  map<miutil::miString,Model>    modelMap;
+  vector<miutil::miString>       myStations;
+  miMessage              myTarget;
+  map<miutil::miString,miString> myList;
+  set<miutil::miString>          filter;
+
+  bool activeRefresh;
+  bool filterOn;
+  bool latlonInDecimal;
+  bool has_wdb_stream;
+
+
+  QHBoxLayout* hlayout;
+
+  void Initialise();
+  void refresh(bool readData = false);
+  void makeStationList(bool  = false);
+  bool makeStyleList();
+  bool makeModelList(const miutil::miString&);
+  bool makeRunList(const miutil::miString&);
+  bool makeRunList(const miutil::miString&,const miString&);
+  void restoreModelFromLog();
+  void checkPosition(miutil::miString st);
+
+  // WDB ------
+  void makeWdbModels();
+
 public:
   qtsWork(QWidget*);
 
@@ -88,6 +129,8 @@ public:
   qtsShow*  Show() {return show;}
   qtsSidebar* sideBar() const {return sidebar;}
 
+  void changePositions(const miString&);
+  SelectionType getSelectionType() const {return selectionType;};
 
 
 public slots:
@@ -100,44 +143,22 @@ public slots:
   void filterToggled(bool);
   void newFilter(const set<miutil::miString>&);
   void latlonInDecimalToggled(bool);
+  void refreshFinished();
+  void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh();}
+
+  // WDB
+  void changeWdbModel(const QString&);
+  void changeType(const tsRequest::Streamtype);
+  void changeWdbStyle(const QString&);
+  void changeWdbRun(const QString&);
+  void changeCoordinates(float lon, float lat);
+  void requestWdbCacheQuery();
+  void cacheRequestDone();
 
 signals:
   void refreshStations();
-
-private:
-  qtsSidebar*    sidebar;
-  qtsShow*       show;
-  SessionManager session;
-  DatafileColl   data;
-  tsSetup        setup;
-  tsRequest      request;
-
-  miutil::miString               oldModel;
-  map<miutil::miString,Model>    modelMap;
-  vector<miutil::miString>       myStations;
-  miMessage              myTarget;
-  map<miutil::miString,miString> myList;
-  set<miutil::miString>          filter;
-
-  bool activeRefresh;
-  bool filterOn;
-  bool latlonInDecimal;
-
-
-  QHBoxLayout* hlayout;
-
-  void Initialise();
-  void refresh(bool readData = false);
-  void makeStationList(bool=false);
-  bool makeStyleList();
-  bool makeModelList(const miutil::miString&);
-  bool makeRunList(const miutil::miString&);
-  bool makeRunList(const miutil::miString&,const miString&);
-  void restoreModelFromLog();
-  void checkPosition(miutil::miString st);
-
-public slots:
-  void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh();}
+  void selectionTypeChanged();
+  void coordinatesChanged();
 
 
 };

@@ -116,7 +116,7 @@ PARAM=CC,x,x,x
 # Standard meteogram
 [DIAGRAM]
 NAME=Batch_Meteogram_ec
-STYLEFILE=/metno/local/tseries/style/style.meteogram_batch
+STYLEFILE=  /usr/local/share/tseries/style/style.meteogram_batch
 
 [LEGALMODELS]
 MODEL=HIRLAM.12km

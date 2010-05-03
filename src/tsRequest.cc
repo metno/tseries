@@ -28,7 +28,7 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-#include <tsRequest.h>
+#include "tsRequest.h"
 
 using namespace miutil;
 
@@ -81,5 +81,43 @@ miString tsRequest::file(const miString type) const
   rst +="."+type;
   return rst;
 }
+
+/// WDB
+bool tsRequest::setWdbPos(double lon,double lat)
+{
+    if( (fabs(lon-wdbLon) < 0.00001 ) && (fabs(lat-wdbLat) < 0.00001 )) return false;
+    wdbLat=lat;
+    wdbLon=lon;
+    return true;
+}
+
+bool tsRequest::setWdbRun(miutil::miTime nrun)
+{
+  if(nrun == wdbRun) return false;
+  wdbRun = nrun;
+  return true;
+}
+
+
+void tsRequest::setType(tsRequest::Streamtype s)
+{
+  streamtype=s;
+}
+
+
+
+bool tsRequest::restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miTime run)
+{
+  setWdbPos(lon,lat);
+  setWdbRun(run);
+  setWdbModel(mod);
+  setWdbStyle(sty);
+}
+
+
+
+
+
+
 
 

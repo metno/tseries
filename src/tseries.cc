@@ -56,7 +56,9 @@ int main(int argc, char **argv)
   o.push_back(miCommandLine::option( 'S',"site"     , 1 ));
   o.push_back(miCommandLine::option( 'l',"lang"     , 1 ));
   o.push_back(miCommandLine::option( 'T',"title"    , 1 ));
-
+  o.push_back(miCommandLine::option( 'd',"define"   , 1 ));
+  o.push_back(miCommandLine::option( 'H',"host"     , 1 ));
+  o.push_back(miCommandLine::option( 'u',"user"     , 1 ));
 
   miCommandLine cl(o,argc, argv);
 
@@ -70,18 +72,23 @@ int main(int argc, char **argv)
   miString    lang;
 
   if(cl.hasFlag('h')){
-    cerr << "Usage: " << argv[0] << " [-s setupfile] [ -S site ] -l [lang] " << endl;
+    cerr << "Usage: "
+         << argv[0]
+         << "  -s setupfile "  << endl
+         << "  -S site      "  << endl
+         << "  -l lang      "  << endl
+         << "  -T title     "  << endl
+         << "  -H wdbhost   "  << endl
+         << "  -u wdbuser   "  << endl
+         << "  -d section1:key1=token1 section2:key2=token2 "
+         << endl << endl;
     exit (0);
   }
 
-  if(cl.hasFlag('S'))
-    site =  cl.arg('S')[0];
+  if(cl.hasFlag('S')) site         = cl.arg('S')[0];
+  if(cl.hasFlag('s')) setupfile    = cl.arg('s')[0];
+  if(cl.hasFlag('T')) title += " " + cl.arg('T')[0];
 
-  if(cl.hasFlag('s'))
-    setupfile= cl.arg('s')[0];
-
-  if(cl.hasFlag('T'))
-      title+=" " +  cl.arg('T')[0];
 
   if(!setup.read(setupfile,site))
     exit(0);
@@ -90,17 +97,24 @@ int main(int argc, char **argv)
     lang=setup.lang;
 
   config.read(setup.files.configure);
-
   config.get("LANG",lang);
 
-  if(cl.hasFlag('l'))
-    lang=cl.arg('l')[0];
+  if(cl.hasFlag('d')) {
+    vector<miString> overridetokens=cl.arg('d');
+    for(int i=0; i<overridetokens.size();i++)
+      setup.overrideToken(overridetokens[i]);
+  }
+
+  if(cl.hasFlag('H')) setup.overrideToken("WDB:host="+cl.arg('H')[0]);
+  if(cl.hasFlag('u')) setup.overrideToken("WDB:user="+cl.arg('u')[0]);
+
+
+  if(cl.hasFlag('l')) lang=cl.arg('l')[0];
 
 
   QApplication a( argc, argv );
-  QTranslator myapp( 0 );
-  QTranslator qt( 0 );
-
+  QTranslator  myapp( 0 );
+  QTranslator  qt( 0 );
 
   miTime defTime;
   defTime.setDefaultLanguage(lang);
@@ -126,6 +140,7 @@ int main(int argc, char **argv)
 
     a.installTranslator( &qt    );
     a.installTranslator( &myapp );
+
   }
 
 
@@ -133,5 +148,6 @@ int main(int argc, char **argv)
 
   main->setWindowTitle(title.cStr());
   main->show();
+
   return a.exec();
 }

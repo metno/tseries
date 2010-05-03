@@ -32,22 +32,24 @@
 #define _qtsSidebar_h
 
 #include <QLayout>
-#include <QListWidget>
-#include <QLineEdit>
 #include <QWidget>
 #include <QStringList>
-#include <QComboBox>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QTabWidget>
+#include <QLabel>
+#include <QMovie>
+#include <QPixmap>
 
-#include <qtsTimeControl.h>
+#include "qtsTimeControl.h"
+#include "tsRequest.h"
+
+#include "StationTab.h"
+#include "CoordinateTab.h"
 
 #include <vector>
 #include <puTools/miString.h>
 #include <qUtilities/ClientButton.h>
-
-
-
 
 using namespace std;
 
@@ -55,46 +57,59 @@ class qtsSidebar : public QWidget
 {
   Q_OBJECT
 public:
-  enum lEntry { CMMODEL, CMSTYLE,CMRUN };
+
 
 private:
-  QVBoxLayout * vlayout;
-  QLineEdit   * searchw;    // search widget (stations)
 
-  QListWidget * statl;      // list of stations
-  QComboBox   * modell;     // list of models
-  QComboBox   * stylel;     // list of styles (meteogram etc.)
-  QComboBox   * runl;       // list of runs
-  QLabel      * pos_label;  // position information
+  QTabWidget  *  tabs;
+  TimeControl *  timecontrol;
+  ClientButton*  pluginB;
+  QPushButton*   targetB;
+  QPushButton*   filterB;
+  QPushButton *  cacheQueryButton;
+  QLabel*        connectStatus;
+  QMovie*        busyLabel;
+  StationTab*    stationtab;
+  CoordinateTab* wdbtab;
+  int wdbIdx, stationIdx;
 
-  TimeControl * timecontrol;
-  ClientButton* pluginB;
-  QPushButton*  targetB;
-  QPushButton*  filterB;
+
+
+
+private slots:
+  void tabChanged(int);
+  void chacheQueryActivated();
 
 public slots:
   void searchStation(const QString&);
 
-  void iterateModel(int);
-
-  void nextModel() {iterateModel( 1);}
-  void prevModel() {iterateModel(-1);}
   void currentStationChanged ( QListWidgetItem * current, QListWidgetItem * previous );
-
 public:
   qtsSidebar(QWidget*);
 
-  QString fillList(const vector<miutil::miString>&, const lEntry);
-  QString fillStations(const QStringList&);
+  QString fillList(const vector<miutil::miString>& v, const StationTab::lEntry l);
+  QString fillStations(const QStringList& s) { return stationtab->fillStations(s);}
 
-  QString current(const lEntry);
-  QString station();
-  void set(const miutil::miString& s,const lEntry c);
+  QString current(const StationTab::lEntry l) { return stationtab->current(l);}
+  QString station()               { return stationtab->station(); }
+  void set(const miutil::miString& s,const  StationTab::lEntry c) {stationtab->set(s,c);}
 
   ClientButton* pluginButton() const {return pluginB;}
   QPushButton*  targetButton() const {return targetB;}
-  void setStationInfo(QString s) { pos_label->setText(s); }
+  void setStationInfo(QString s) { stationtab->setStationInfo(s); }
+  miutil::miString coordinateString() const { return wdbtab->coordinateString(); }
 
+  // WDB ------
+
+  void enableWdb(bool);
+  void setWdbModels(const QStringList& newModels){ wdbtab->setModels(newModels);    }
+  void setWdbRuns(const QStringList& newRuns)    { wdbtab->setRuns(newRuns);        }
+  void setCoordinates(float lon, float lat)      { wdbtab->setCoordinates(lon, lat);}
+
+  void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat) {wdbtab->setWdbGeometry(minLon, maxLon, minLat, maxLat);}
+  bool restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miString run);
+  void enableBusyLabel(bool enable);
+  void enableCacheButton(bool enable, bool force, unsigned long querytime);
 
 signals:
   void changestyle(const QString&);
@@ -103,6 +118,16 @@ signals:
   void changestation(const QString&);
   void filterToggled(bool);
   void minmaxProg(int,int);
+
+    // WDB ---------
+  void changeWdbStyle(const QString& );
+  void changeWdbModel(const QString& );
+  void changeWdbRun(  const QString& );
+  void changeWdbLevel(const QString& );
+  void changeCoordinates(float lon, float lat);
+  void changetype(const tsRequest::Streamtype);
+  void requestWdbCacheQuery();
+
 };
 
 #endif

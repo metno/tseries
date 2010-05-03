@@ -33,12 +33,14 @@
 
 #include <vector>
 #include <map>
+#include <set>
 #include <sys/stat.h>
 
 #include <puTools/miString.h>
 
 #include <tsData/ptDataStream.h>
 #include <tsData/ptParameterDefinition.h>
+#include <tsData/WdbStream.h>
 
 #define MAXDATASETS 50
 #define MAXMODELSINSTREAM 100
@@ -121,7 +123,8 @@ class DatafileColl
 {
 private:
   miutil::miString collectName;          // file collection name
-  vector<DsInfo> datastreams;    // List of datafiles
+  vector<DsInfo>   datastreams;    // List of datafiles
+  pets::WdbStream*       wdbStream;      // the wdb data stream
   vector<ExtStation> stations;   // List of stations
   vector<miutil::miString> datasetname;  // name of dataset
   map<miutil::miString,miPosition> pos_info; // all positions ordered by name....
@@ -136,6 +139,13 @@ private:
   unsigned long _modtime(miutil::miString&); // get file modification time
   void _filestat(miutil::miString&, struct stat&); // get file stats
   bool _isafile(const miutil::miString&); // check if stream is a file
+
+  void openWdbStream();
+  void closeWdbStream();
+
+
+  bool wdbStreamIsOpen;
+
 protected:
   bool findpos(const miutil::miString& name, int& idx);
 
@@ -191,6 +201,15 @@ public:
     streams_opened = false;
     return b;
   }
+
+  // wdb --------------------
+  bool has_wdb_stream() const { return wdbStreamIsOpen;}
+  set<string> getWdbProviders();
+  set<miTime> getWdbReferenceTimes(string provider);
+  vector<string> getWdbParameterNames() const { return wdbStream->getWdbParameterNames(); }
+  pets::WdbStream::BoundaryBox getWdbGeometry();
+  pets::WdbStream*  getWdbStream() { return wdbStream;}
+
 };
 
 #endif

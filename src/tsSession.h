@@ -87,6 +87,9 @@ public:
   ptStyle& getStyle(const miutil::miString);
   // get a PETS style by index
   ptStyle& getStyle(int idx);
+  // get the PETS style index - WDBadd
+  int getStyleIndex(const miutil::miString name);
+
   // make a sessionoption with given style,model and run
   bool getShowOption(SessionOptions&, int, Model, Run);
   bool getShowOption(SessionOptions&,const tsRequest *);
