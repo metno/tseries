@@ -44,7 +44,9 @@
 #include <QDial>
 #include <QLabel>
 #include <QPushButton>
-
+#include <QTreeView>
+#include <QStandardItemModel>
+#include "WdbBookmarkTools.h"
 #include "CoordinateManager.h"
 #include <puTools/miString.h>
 #include <vector>
@@ -56,20 +58,15 @@ private:
   QComboBox   * modell;     // list of models
   QComboBox   * stylel;     // list of styles (meteogram etc.)
   QComboBox   * runl;       // list of runs
-  QComboBox   * bookmarkl;  // list of bookmarks
 
-  QDial       * level;
-  QLabel      * levelLabel;
-
-  QPushButton * addBookmarkButton;
-  QPushButton * recordPosButton;
+  QTreeView   * bookmarks;
   QPushButton * cacheQueryButton;
 
   CoordinateManager * latitude;
   CoordinateManager * longitude;
   bool                activeCacheRequest;
-
-
+  WdbBookmarkFiles    bookmarkfiles;
+  QStandardItemModel* model;
 public:
   CoordinateTab(QWidget*);
 
@@ -82,16 +79,14 @@ public:
 
 
 private slots:
-  void levelChanged(int newlevel);
+
   void coordinatesChanged();
   void changeModel(const QString&);
   void changeRun(const QString&);
-
+  void bookmarkClicked(QModelIndex idx);
 
 
 public slots:
-  void setLevel(int newlevel);
-  void setLevelRange(int min, int max);
   void setCoordinates(float lon, float lat);
   void setModel(QString model);
   void setStyle(QString style);
@@ -108,7 +103,6 @@ public slots:
     void changestyle(const QString&);
     void changemodel(const QString&);
     void changerun(const QString&);
-    void changeLevel(int);
     void changeCoordinates(float lon, float lat);
 
 };

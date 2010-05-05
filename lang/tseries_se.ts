@@ -3,8 +3,8 @@
 <context>
     <name>CoordinateTab</name>
     <message>
-        <location filename="../src/CoordinateTab.cc" line="153"/>
-        <source>Level: %1</source>
+        <location filename="../src/CoordinateTab.cc" line="82"/>
+        <source>Bookmarks</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

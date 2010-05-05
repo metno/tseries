@@ -37,24 +37,32 @@
 #include "CoordinateTab.h"
 #include <iostream>
 #include <QPixmap>
+#include "tsSetup.h"
 
-#include "list-add.xpm"
+
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
+
+
+
+//#include "list-add.xpm"
 
 using namespace std;
 
 CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
 {
-  QPixmap list_add_pix(list_add_xpm);
+  //QPixmap list_add_pix(list_add_xpm);
 
 
   activeCacheRequest=false;
   modell    = new QComboBox(this);
   runl      = new QComboBox(this);
   stylel    = new QComboBox(this);
-  bookmarkl = new QComboBox(this);
+//  bookmarkl = new QComboBox(this);
 
-  addBookmarkButton =  new QPushButton(list_add_pix,"",this);
-  addBookmarkButton->setMaximumWidth(list_add_pix.width());
+//  addBookmarkButton =  new QPushButton(list_add_pix,"",this);
+// addBookmarkButton->setMaximumWidth(list_add_pix.width());
 
   connect(stylel,SIGNAL(activated(const QString&)),    this, SIGNAL(changestyle(const QString&)));
   connect(modell,SIGNAL(activated(const QString&)),    this, SLOT(changeModel(const QString&)));
@@ -70,21 +78,18 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   connect(longitude,SIGNAL(coordinatesChanged()),this,SLOT(coordinatesChanged()));
   connect(latitude,SIGNAL(coordinatesChanged()),this,SLOT(coordinatesChanged()));
 
+  QStringList head;
+  head << tr("Bookmarks");
 
+  bookmarks = new QTreeView(this);
+  model     = new QStandardItemModel();
+  model->setHorizontalHeaderLabels ( head );
+  tsSetup setup;
 
-  levelLabel= new QLabel(this);
-  levelLabel->setAlignment(Qt::AlignHCenter);
-
-  level = new QDial(this);
-  level->setNotchesVisible(true);
-  level->setRange(-40,40);
-  level->setValue(0);
-  levelChanged(0);
-
-
-  connect(level,SIGNAL(valueChanged(int)),this,SLOT(levelChanged(int)));
-
-
+  bookmarkfiles.setModel(model);
+  bookmarkfiles.read(setup.files.bookmarks);
+  bookmarks->setModel(model);
+  connect(bookmarks, SIGNAL(clicked(QModelIndex)), this, SLOT(bookmarkClicked(QModelIndex)));
 
   // layout -------------------------------
 
@@ -94,18 +99,11 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   QVBoxLayout * latVlayout  = new QVBoxLayout();  // Ver - lat label and slider
   QHBoxLayout * lonHlayout  = new QHBoxLayout();  // Hor - lon label and slider
   QHBoxLayout * editHlayout = new QHBoxLayout();  // Hor - lat/lon edit fields and labels
-  QVBoxLayout * lvlVlayout  = new QVBoxLayout();  // Ver - lvl dial and label
-  QHBoxLayout * bookHlayout = new QHBoxLayout();  // Hor - bookmark combo and add button
 
   vlayout->addWidget(stylel);
   vlayout->addWidget(modell);
   vlayout->addWidget(runl);
 
-
-  bookHlayout->addWidget(bookmarkl,10);
-  bookHlayout->addWidget(addBookmarkButton);
-
-  vlayout->addLayout(bookHlayout);
 
   latVlayout->addWidget(latitude->slider);
   latVlayout->addWidget(latitude->sliderLabel);
@@ -113,10 +111,8 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
 
   latHlayout->addLayout(latVlayout);
 
-  lvlVlayout->addWidget(level,3);
-  lvlVlayout->addWidget(levelLabel);
 
-  latHlayout->addLayout(lvlVlayout,3);
+  latHlayout->addWidget(bookmarks,3);
 
   lonHlayout->addWidget(longitude->sliderLabel);
   lonHlayout->addWidget(longitude->slider);
@@ -137,25 +133,6 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
 
 }
 
-
-void CoordinateTab::setLevel(int newlevel)
-{
-  level->setValue(newlevel);
-}
-
-void CoordinateTab::setLevelRange(int min, int max)
-{
-  level->setRange(min,max);
-}
-
-void CoordinateTab::levelChanged(int newlevel)
-{
-  QString lvl = tr("Level: %1").arg(newlevel);
-
-  levelLabel->setText(lvl );
-  emit changeLevel(newlevel);
-
-}
 
 void CoordinateTab::setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat)
 {
@@ -293,4 +270,28 @@ void CoordinateTab::changeRun(const QString& s)
   activeCacheRequest=false;
   emit changerun(s);
 }
+
+
+
+void CoordinateTab::bookmarkClicked(QModelIndex idx)
+{
+  QStandardItem* item=model->itemFromIndex(idx);
+  if(!item) return;
+  QVariant var =item->data();
+  QString  coor=var.toString();
+
+  string s=coor.toStdString();
+  vector<string> c;
+  boost::split(c,s, boost::algorithm::is_any_of(":") );
+  if(c.size() < 2) return;
+
+  float lat= atof(c[0].c_str());
+  float lon= atof(c[1].c_str());
+
+  setCoordinates(lon,lat);
+}
+
+
+
+
 

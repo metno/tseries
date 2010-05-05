@@ -212,6 +212,7 @@ bool tsSetup::read(const miString& f, miString s)
   lookup["HOME"] = path.home;
 
   files.filter = path.home + "/.tseries/tseries.filter";
+  files.bookmarks=path.home + "/.tseries/bookmarks.def";
 
   if(!readsetup(f))
     if(!readsetup( path.home+"/.tseries/tseries.ctl"))
@@ -411,6 +412,8 @@ void tsSetup::setFiles(miString& key, miString& content)
      setup(files.icon_image,content);
   else if(key == "BASEFILTER")
      setup(files.baseFilter,content);
+  else if(key == "BOOKMARKS")
+       setup(files.bookmarks,content);
   else
     warn(key,wKEY);
 }

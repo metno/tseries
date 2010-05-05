@@ -31,7 +31,8 @@ qt_sources=                \
 	StationTab.cc      \
 	CoordinateTab.cc   \
 	WdbCacheThread.cc  \
-	CoordinateManager.cc
+	CoordinateManager.cc \
+	WdbBookmarkTools.cc  
 
 # headers ( for distribution )  -----
 

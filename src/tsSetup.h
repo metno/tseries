@@ -54,7 +54,7 @@ using namespace std;
 
 class tsSetup {
 private:
-  static bool   Initialised;
+  static bool           Initialised;
   miutil::miString      site;
   set<miutil::miString> actualSites;
 
@@ -119,6 +119,7 @@ public:
     miutil::miString icon_image;
     miutil::miString filter;
     miutil::miString baseFilter;
+    miutil::miString bookmarks;
   };
 
   /// Struct containing coserver-info
