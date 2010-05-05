@@ -55,7 +55,7 @@ private:
   miutil::miString  wdbModel;
   unsigned long     wdbReadTime;
   Streamtype        streamtype;
-
+  miutil::miString  wdbstationname;
 
 
   bool setString(const miutil::miString&, miutil::miString&);
@@ -75,6 +75,8 @@ public:
   bool setWdbModel(miutil::miString nmod) { return setString(nmod,wdbModel);  }
   bool setWdbStyle(miutil::miString nsty) { return setString(nsty,wdbStyle);  }
   void setWdbReadTime(unsigned long t)    { wdbReadTime =t; }
+  void setWdbStationName(miutil::miString nname) { wdbstationname=nname;}
+
 
   bool restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miTime run);
 
@@ -84,7 +86,7 @@ public:
   miutil::miString getWdbModel()    const { return wdbModel;    }
   miutil::miString getWdbStyle()    const { return wdbStyle;    }
   unsigned int     getWdbReadTime() const { return wdbReadTime; }
-
+  miutil::miString getWdbStationName()const { return wdbstationname;}
 
   miutil::miString model()     const { return mod_;}
   miutil::miString style()     const { return sty_;}

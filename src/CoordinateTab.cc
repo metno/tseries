@@ -86,11 +86,18 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   model->setHorizontalHeaderLabels ( head );
   tsSetup setup;
 
-  bookmarkfiles.setModel(model);
-  bookmarkfiles.read(setup.files.bookmarks);
+  bookmarkTools.setModel(model);
+  bookmarkTools.read(setup.files.bookmarks,true);
+  bookmarkTools.read(setup.files.commonBookmarks,false);
+  bookmarkTools.addFolder("MINE",true);
+  bookmarkTools.addFolder("RECORD",false);
   bookmarks->setModel(model);
-  connect(bookmarks, SIGNAL(clicked(QModelIndex)), this, SLOT(bookmarkClicked(QModelIndex)));
 
+  bookmarks->setDragDropMode(QAbstractItemView::InternalMove);
+
+
+  connect(bookmarks, SIGNAL(activated(QModelIndex)), this, SLOT(bookmarkClicked(QModelIndex)));
+  connect(bookmarks, SIGNAL(clicked(QModelIndex)), this, SLOT(bookmarkClicked(QModelIndex)));
   // layout -------------------------------
 
 
@@ -140,11 +147,17 @@ void CoordinateTab::setWdbGeometry(int minLon, int maxLon, int minLat, int maxLa
   latitude->setRange(  minLat, maxLat );
 }
 
-void CoordinateTab::setCoordinates(float lon, float lat)
+void CoordinateTab::setCoordinates(float lon, float lat, QString name)
 {
   longitude->setValue(lon);
   latitude->setValue(lat);
-  coordinatesChanged();
+
+  if(name.isEmpty())
+    coordinatesChanged();
+  else {
+    emit changeCoordinates(lon,lat,name);
+  }
+
 }
 
 void CoordinateTab::setLatRange(int min, int max)
@@ -161,7 +174,8 @@ void CoordinateTab::coordinatesChanged()
 {
   float lat=latitude->getValue();
   float lon=longitude->getValue();
-  emit changeCoordinates(lon,lat);
+  bookmarkTools.addRecord(lon,lat);
+  emit changeCoordinates(lon,lat,"");
 
 }
 
@@ -171,8 +185,6 @@ miutil::miString CoordinateTab::coordinateString()
   ost <<  latitude->getValue() << ":" << longitude->getValue();
   return ost.str();
 }
-
-
 
 
 void CoordinateTab::setStyles(const QStringList& qlist)
@@ -221,8 +233,12 @@ void CoordinateTab::setRun(const QString nrun)
   emit changerun(newrun);
 }
 
+void CoordinateTab::writeBookmarks()
+{
+  tsSetup setup;
+  bookmarkTools.write(setup.files.bookmarks);
 
-
+}
 
 void CoordinateTab::setModels(const QStringList& newmodels)
 {
@@ -279,6 +295,7 @@ void CoordinateTab::bookmarkClicked(QModelIndex idx)
   if(!item) return;
   QVariant var =item->data();
   QString  coor=var.toString();
+  QString  name=item->text();
 
   string s=coor.toStdString();
   vector<string> c;
@@ -288,7 +305,7 @@ void CoordinateTab::bookmarkClicked(QModelIndex idx)
   float lat= atof(c[0].c_str());
   float lon= atof(c[1].c_str());
 
-  setCoordinates(lon,lat);
+  setCoordinates(lon,lat,name);
 }
 
 

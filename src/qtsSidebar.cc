@@ -68,7 +68,8 @@ qtsSidebar::qtsSidebar(QWidget* parent)
   connect(wdbtab,SIGNAL(changerun(   const QString&)), this, SIGNAL(changeWdbRun(  const QString& )));
   connect(wdbtab,SIGNAL(changelevel( const QString&)), this, SIGNAL(changeWdbLevel(const QString& )));
   connect(wdbtab,SIGNAL(changelevel( const QString&)), this, SIGNAL(changeWdbLevel(const QString& )));
-  connect(wdbtab,SIGNAL(changeCoordinates(float, float)), this, SIGNAL(changeCoordinates(float,float)));
+  connect(wdbtab,SIGNAL(changeCoordinates(float, float,QString)), this,
+      SIGNAL(changeCoordinates(float,float,QString)));
 
 
 

@@ -120,6 +120,7 @@ public:
     miutil::miString filter;
     miutil::miString baseFilter;
     miutil::miString bookmarks;
+    miutil::miString commonBookmarks;
   };
 
   /// Struct containing coserver-info

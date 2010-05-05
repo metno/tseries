@@ -65,7 +65,7 @@ private:
   CoordinateManager * latitude;
   CoordinateManager * longitude;
   bool                activeCacheRequest;
-  WdbBookmarkFiles    bookmarkfiles;
+  WdbBookmarkTools    bookmarkTools;
   QStandardItemModel* model;
 public:
   CoordinateTab(QWidget*);
@@ -76,7 +76,7 @@ public:
   miutil::miString coordinateString();
   void setActiveCacheRequest(bool b) { activeCacheRequest=b;}
   bool getActiveCacheRequest() const { return activeCacheRequest;}
-
+  void writeBookmarks();
 
 private slots:
 
@@ -87,7 +87,7 @@ private slots:
 
 
 public slots:
-  void setCoordinates(float lon, float lat);
+  void setCoordinates(float lon, float lat, QString name="");
   void setModel(QString model);
   void setStyle(QString style);
   void setRun(QString run);
@@ -103,7 +103,7 @@ public slots:
     void changestyle(const QString&);
     void changemodel(const QString&);
     void changerun(const QString&);
-    void changeCoordinates(float lon, float lat);
+    void changeCoordinates(float lon, float lat,QString name);
 
 };
 

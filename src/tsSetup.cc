@@ -412,6 +412,8 @@ void tsSetup::setFiles(miString& key, miString& content)
      setup(files.icon_image,content);
   else if(key == "BASEFILTER")
      setup(files.baseFilter,content);
+  else if(key == "COMMONBOOKMARKS")
+    setup(files.commonBookmarks,content);
   else if(key == "BOOKMARKS")
        setup(files.bookmarks,content);
   else

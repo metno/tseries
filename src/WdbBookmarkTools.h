@@ -36,36 +36,26 @@
 #include <QStandardItem>
 #include <QString>
 #include <QIcon>
+#include <set>
 
 
-class WdbBookmarkItem : public QStandardItem {
+class WdbBookmarkTools {
 private:
-  bool    isLocal;
-
-public:
-  WdbBookmarkItem() : isLocal(false) {}
-  WdbBookmarkItem( const QString & text ):  QStandardItem(text) , isLocal(false) {}
-  WdbBookmarkItem( const QIcon & icon, const QString & text ):  QStandardItem(icon,text), isLocal(false) {}
-  std::string  toFile();
-  void         setLocal()          { isLocal = true; }
-  bool         writeToFile() const { return isLocal; }
-};
-
-
-
-class WdbBookmarkFiles {
-private:
-  QStandardItemModel* model;
+  std::set<std::string> saves;
+  QStandardItemModel*   model;
   std::map<std::string,QModelIndex> folders;
   QIcon directoryIcon;
-  QIcon bookmarkIcon;
   QIcon recordIcon;
-public:
-  WdbBookmarkFiles();
-  void setModel(QStandardItemModel* m) {model=m;}
-  bool read(std::string file);
-  void addLine(std::string line);
+  int record;
 
+public:
+  WdbBookmarkTools();
+  void setModel(QStandardItemModel* m) {model=m;}
+  bool read(     std::string file, bool addToSave);
+  void write(    std::string file );
+  void addLine(  std::string line, bool addToSave);
+  void addFolder(std::string name, bool addToSave);
+  void addRecord(float lon,float lat);
 };
 
 #endif

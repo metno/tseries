@@ -106,7 +106,7 @@ qtsWork::qtsWork(QWidget* parent)
   connect(sidebar,SIGNAL(changetype(const tsRequest::Streamtype)), this,SLOT(changeType(const tsRequest::Streamtype)));
   connect(sidebar,SIGNAL(changeWdbStyle(const QString&)), this,SLOT(changeWdbStyle(const QString&)));
   connect(sidebar,SIGNAL(changeWdbRun(const QString&)),   this,SLOT(changeWdbRun(const QString&)));
-  connect(sidebar,SIGNAL(changeCoordinates(float, float)),this,SLOT(changeCoordinates(float,float)));
+  connect(sidebar,SIGNAL(changeCoordinates(float, float,QString)),this,SLOT(changeCoordinates(float,float,QString)));
   connect(sidebar,SIGNAL(requestWdbCacheQuery()),this,SLOT(requestWdbCacheQuery()));
 
 
@@ -504,6 +504,8 @@ void qtsWork::collectLog()
   c.set("WDBLON",float(request.getWdbLon()) );
   c.set("WDBRUN",request.getWdbRun().isoTime());
 
+  sidebar->writeBookmarks();
+
 
 }
 
@@ -717,11 +719,12 @@ void qtsWork::changeType(const tsRequest::Streamtype s)
 
 }
 
-void qtsWork::changeCoordinates(float lon, float lat)
+void qtsWork::changeCoordinates(float lon, float lat,QString name)
 {
 
   if(!has_wdb_stream) return;
 
+  request.setWdbStationName(name.toStdString());
   if(request.setWdbPos(lon,lat))
     refresh(true);
    emit coordinatesChanged();

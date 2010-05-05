@@ -99,6 +99,8 @@ public:
   void setStationInfo(QString s) { stationtab->setStationInfo(s); }
   miutil::miString coordinateString() const { return wdbtab->coordinateString(); }
 
+  void writeBookmarks() { wdbtab->writeBookmarks();}
+
   // WDB ------
 
   void enableWdb(bool);
@@ -124,7 +126,7 @@ signals:
   void changeWdbModel(const QString& );
   void changeWdbRun(  const QString& );
   void changeWdbLevel(const QString& );
-  void changeCoordinates(float lon, float lat);
+  void changeCoordinates(float lon, float lat,QString name);
   void changetype(const tsRequest::Streamtype);
   void requestWdbCacheQuery();
 

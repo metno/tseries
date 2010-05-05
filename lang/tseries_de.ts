@@ -288,22 +288,22 @@ met.no 2002</translation>
 <context>
     <name>qtsSidebar</name>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="102"/>
+        <location filename="../src/qtsSidebar.cc" line="103"/>
         <source>Show position (DIANA)</source>
         <translation type="unfinished">Position anzeigen (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="108"/>
+        <location filename="../src/qtsSidebar.cc" line="109"/>
         <source>Position filter</source>
         <translation type="unfinished">Ortsfilter</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="75"/>
+        <location filename="../src/qtsSidebar.cc" line="76"/>
         <source>Stations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="76"/>
+        <location filename="../src/qtsSidebar.cc" line="77"/>
         <source>Wdb</source>
         <translation type="unfinished"></translation>
     </message>

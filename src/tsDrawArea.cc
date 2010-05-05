@@ -447,7 +447,7 @@ bool tsDrawArea::prepareWdbData()
         request->getWdbModel(),
         request->getWdbRun(),
         inlist, outlist,
-        readtime);
+        readtime,request->getWdbStationName());
   }
 
   request->setWdbReadTime(readtime);

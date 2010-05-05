@@ -5,7 +5,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/trim.hpp>
-
+#include "boost/date_time/posix_time/posix_time.hpp"
 #include "directory.xpm"
 #include "media-record.xpm"
 
@@ -14,33 +14,15 @@
 
 using namespace std; 
 
-
-
-std::string  WdbBookmarkItem::toFile()
+WdbBookmarkTools::WdbBookmarkTools()
 {
-  string res;
- 
-  if(isLocal) {
-    res= text().toStdString();
-    QStandardItem *item=this;
-    while(item->parent()) {
-    
-      res=item->text().toStdString() + res;
-      item=item->parent();
-    }
-  }
-  return res;
-}
-
-
-WdbBookmarkFiles::WdbBookmarkFiles()
-{
+  record=0;
   folders.clear();
   directoryIcon.addPixmap(QPixmap(directory_xpm));
   recordIcon.addPixmap(QPixmap(media_record_xpm));
 }
 
-bool WdbBookmarkFiles::read(std::string filename) 
+bool WdbBookmarkTools::read(std::string filename,bool addToSave)
 {
   ifstream in(filename.c_str());
   if(!in ) {
@@ -55,15 +37,14 @@ bool WdbBookmarkFiles::read(std::string filename)
       int k=line.length() -  c;
       line.erase(c,k);
     }
-    cout << " adding line " << line << endl;
     boost::algorithm::trim(line);
     if(!line.empty())
-      addLine(line);
+      addLine(line,addToSave);
   }
   return true;
 }
 
-void WdbBookmarkFiles::addLine(string line)
+void WdbBookmarkTools::addLine(string line,bool markToSave)
 {
   vector<string> words;
   boost::split( words, line, boost::algorithm::is_any_of("|") );
@@ -75,6 +56,7 @@ void WdbBookmarkFiles::addLine(string line)
   boost::split( words,token, boost::algorithm::is_any_of(".") );
 
   QStandardItem *parentItem = model->invisibleRootItem();
+
   int size = words.size();
   int last = size-1;
 
@@ -82,10 +64,8 @@ void WdbBookmarkFiles::addLine(string line)
   for (int col = 0; col < size; ++col) {
     // this is the item
     if(col==last) {
-      cerr << "found item " << words[col] << endl;
       int r=parentItem->rowCount();
-      WdbBookmarkItem *childItem  = new WdbBookmarkItem(words[col].c_str());
-      //childItem->setIcon(bookmarkIcon);
+      QStandardItem *childItem  = new QStandardItem(words[col].c_str());
       childItem->setData(data.c_str());
       parentItem->insertRow(r,childItem);
 
@@ -95,18 +75,80 @@ void WdbBookmarkFiles::addLine(string line)
 	parentItem = model->itemFromIndex ( folders[folder] );
 
       } else {
-        WdbBookmarkItem *childItem = new WdbBookmarkItem(words[col].c_str());
-	cout << "new folder " << words[col] << endl;
-        if(folder=="RECORD") {
-	  childItem->setIcon(recordIcon);
-	} else
-	  childItem->setIcon(directoryIcon);
+        QStandardItem *childItem = new QStandardItem(words[col].c_str());
+        childItem->setIcon(directoryIcon);
 	parentItem->appendRow(childItem);
 	parentItem      = childItem;
 	folders[folder] = childItem->index();
+	if(markToSave)
+	    saves.insert(folder);
       }
     }
   }  
   
 }
+
+void WdbBookmarkTools::addFolder(string folder,bool markToSave)
+{
+  QStandardItem *parentItem = model->invisibleRootItem();
+
+  if(folders.count(folder))
+    return;
+
+  QStandardItem *childItem = new QStandardItem(folder.c_str());
+  if(folder=="RECORD") {
+    childItem->setIcon(recordIcon);
+  } else
+    childItem->setIcon(directoryIcon);
+
+  parentItem->appendRow(childItem);
+  folders[folder] = childItem->index();
+  if(markToSave)
+    saves.insert(folder);
+
+}
+
+
+void WdbBookmarkTools::write(string filename)
+{
+  ofstream out(filename.c_str());
+  if(!out) {
+    cerr << "Unable to write stationlist to " << filename << endl;
+    return;
+  }
+  set<string>::iterator itr=saves.begin();
+  for(;itr!=saves.end();itr++) {
+    QList<QStandardItem*> ilist = model->findItems (itr->c_str());
+
+    if(ilist.empty()) continue;
+
+    QStandardItem* item = ilist.at(0);
+
+    string dirname=item->text().toStdString();
+    if(!item->hasChildren()) continue;
+    for(int i=0;i<item->rowCount();i++) {
+      QStandardItem* child = item->child(i);
+      QVariant var         = child->data();
+      QString  coor        = var.toString();
+      QString  name        = child->text();
+
+      if(name.isEmpty() || coor.isEmpty()) continue;
+      out << dirname << "." << name.toStdString() << "|" << coor.toStdString() << endl;
+    }
+  }
+
+}
+
+
+void WdbBookmarkTools::addRecord(float lon,float lat)
+{
+  ostringstream ost;
+
+  ost << "RECORD." << ++record << "|" << lat << ":" << lon;
+  addLine(ost.str(),false);
+
+}
+
+
+
 

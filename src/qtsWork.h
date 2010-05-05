@@ -151,7 +151,7 @@ public slots:
   void changeType(const tsRequest::Streamtype);
   void changeWdbStyle(const QString&);
   void changeWdbRun(const QString&);
-  void changeCoordinates(float lon, float lat);
+  void changeCoordinates(float lon, float lat, QString name);
   void requestWdbCacheQuery();
   void cacheRequestDone();
 
