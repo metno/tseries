@@ -7,7 +7,6 @@
 #include <boost/algorithm/string/trim.hpp>
 
 #include "directory.xpm"
-#include "bookmark.xpm"
 #include "media-record.xpm"
 
 #include <QStringList>
@@ -38,7 +37,6 @@ WdbBookmarkFiles::WdbBookmarkFiles()
 {
   folders.clear();
   directoryIcon.addPixmap(QPixmap(directory_xpm));
-  bookmarkIcon.addPixmap(QPixmap(bookmark_xpm));
   recordIcon.addPixmap(QPixmap(media_record_xpm));
 }
 
