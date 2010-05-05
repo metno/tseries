@@ -78,7 +78,12 @@ void WdbBookmarkTools::addLine(string line,bool markToSave)
 
       } else {
         QStandardItem *childItem = new QStandardItem(words[col].c_str());
-        childItem->setIcon(directoryIcon);
+
+        if(markToSave)
+          childItem->setIcon(directoryIcon);
+        else
+          childItem->setIcon(metnoIcon);
+
 	parentItem->appendRow(childItem);
 	parentItem      = childItem;
 	folders[folder] = childItem->index();
