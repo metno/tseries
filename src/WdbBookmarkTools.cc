@@ -8,6 +8,7 @@
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "directory.xpm"
 #include "media-record.xpm"
+#include "metno.xpm"
 
 #include <QStringList>
 
@@ -20,6 +21,7 @@ WdbBookmarkTools::WdbBookmarkTools()
   folders.clear();
   directoryIcon.addPixmap(QPixmap(directory_xpm));
   recordIcon.addPixmap(QPixmap(media_record_xpm));
+  metnoIcon.addPixmap(QPixmap(metno_xpm));
 }
 
 bool WdbBookmarkTools::read(std::string filename,bool addToSave)
@@ -98,9 +100,13 @@ void WdbBookmarkTools::addFolder(string folder,bool markToSave)
   QStandardItem *childItem = new QStandardItem(folder.c_str());
   if(folder=="RECORD") {
     childItem->setIcon(recordIcon);
-  } else
-    childItem->setIcon(directoryIcon);
+  } else {
 
+    if(markToSave)
+      childItem->setIcon(directoryIcon);
+    else
+      childItem->setIcon(metnoIcon);
+  }
   parentItem->appendRow(childItem);
   folders[folder] = childItem->index();
   if(markToSave)

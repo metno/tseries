@@ -46,6 +46,7 @@ private:
   std::map<std::string,QModelIndex> folders;
   QIcon directoryIcon;
   QIcon recordIcon;
+  QIcon metnoIcon;
   int record;
 
 public:
