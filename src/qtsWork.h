@@ -89,9 +89,6 @@ private:
   bool latlonInDecimal;
   bool has_wdb_stream;
 
-
-  QHBoxLayout* hlayout;
-
   void Initialise();
   void refresh(bool readData = false);
   void makeStationList(bool  = false);

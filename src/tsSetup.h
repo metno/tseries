@@ -106,6 +106,7 @@ public:
     unsigned long       readtime;            /// time to enable cache button (ms)
     vector<std::string> vectorFunctions;     ///< run vector transformations on these
     map<std::string,std::string> parameters; ///< translate parameters from wdb
+    int                 maxRecord;           ///< size of record ringbuffer;
   };
 
 

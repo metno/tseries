@@ -86,15 +86,16 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   model->setHorizontalHeaderLabels ( head );
   tsSetup setup;
 
+  bookmarkTools.setMaxRecords(setup.wdb.maxRecord);
   bookmarkTools.setModel(model);
-  bookmarkTools.read(setup.files.bookmarks,true);
-  bookmarkTools.read(setup.files.commonBookmarks,false);
-  bookmarkTools.addFolder("MINE",true);
-  bookmarkTools.addFolder("RECORD",false);
+  bookmarkTools.addFolder("TRASH",true);
+  bookmarkTools.read(setup.files.bookmarks,false);
+  bookmarkTools.read(setup.files.commonBookmarks,true);
+  bookmarkTools.addFolder("RECORD",true);
   bookmarks->setModel(model);
 
   bookmarks->setDragDropMode(QAbstractItemView::InternalMove);
-
+  bookmarks->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
   connect(bookmarks, SIGNAL(activated(QModelIndex)), this, SLOT(bookmarkClicked(QModelIndex)));
   connect(bookmarks, SIGNAL(clicked(QModelIndex)), this, SLOT(bookmarkClicked(QModelIndex)));
@@ -308,6 +309,10 @@ void CoordinateTab::bookmarkClicked(QModelIndex idx)
   setCoordinates(lon,lat,name);
 }
 
+void CoordinateTab::addBookmarkFolder()
+{
+  bookmarkTools.addFolder("NEW",false);
+}
 
 
 

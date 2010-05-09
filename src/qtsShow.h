@@ -56,7 +56,7 @@ protected:
 
 
 public:
-  qtsShow(QWidget*, const QGLFormat fmt,
+  qtsShow(const QGLFormat fmt,
 	  tsRequest*,DatafileColl*, SessionManager*);
 
   void refresh(bool readData = false);

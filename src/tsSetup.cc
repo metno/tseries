@@ -57,6 +57,7 @@ tsSetup::tsSetup() : sec(PUBLIC) , line(0)
     idx=0;
     ids=0;
     wdb.readtime=2000;
+    wdb.maxRecord=20;
   }
 }
 
@@ -482,7 +483,9 @@ void tsSetup::setWdb(miString& key, miString& content)
      setup(rtime,content);
      wdb.readtime=rtime;
    } else if(key == "BUSYMOVIE") {
-    setup(wdb.busyMovie,content);
+     setup(wdb.busyMovie,content);
+   }else if (key == "MAXRECORD") {
+     setup(wdb.maxRecord,content);
    }else
      warn(key,wKEY);
 }

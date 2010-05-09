@@ -78,6 +78,7 @@ public:
   bool getActiveCacheRequest() const { return activeCacheRequest;}
   void writeBookmarks();
 
+
 private slots:
 
   void coordinatesChanged();
@@ -98,6 +99,7 @@ public slots:
 
   void setModels(const QStringList& newmodels);
   void setRuns(const QStringList& newmodels);
+  void addBookmarkFolder();
 
   signals:
     void changestyle(const QString&);

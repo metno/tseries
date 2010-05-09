@@ -67,6 +67,7 @@ private:
   QPushButton*   targetB;
   QPushButton*   filterB;
   QPushButton *  cacheQueryButton;
+  QPushButton *  addBookmarkButton;
   QLabel*        connectStatus;
   QMovie*        busyLabel;
   StationTab*    stationtab;
@@ -85,7 +86,7 @@ public slots:
 
   void currentStationChanged ( QListWidgetItem * current, QListWidgetItem * previous );
 public:
-  qtsSidebar(QWidget*);
+  qtsSidebar();
 
   QString fillList(const vector<miutil::miString>& v, const StationTab::lEntry l);
   QString fillStations(const QStringList& s) { return stationtab->fillStations(s);}

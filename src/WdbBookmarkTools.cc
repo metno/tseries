@@ -9,6 +9,7 @@
 #include "directory.xpm"
 #include "media-record.xpm"
 #include "metno.xpm"
+#include "trashcan.xpm"
 
 #include <QStringList>
 
@@ -17,14 +18,18 @@ using namespace std;
 
 WdbBookmarkTools::WdbBookmarkTools()
 {
+  maxRecords=30;
   record=0;
   folders.clear();
   directoryIcon.addPixmap(QPixmap(directory_xpm));
   recordIcon.addPixmap(QPixmap(media_record_xpm));
   metnoIcon.addPixmap(QPixmap(metno_xpm));
+  trashIcon.addPixmap(QPixmap(trashcan_xpm));
+
+
 }
 
-bool WdbBookmarkTools::read(std::string filename,bool addToSave)
+bool WdbBookmarkTools::read(std::string filename,bool ignoreFromSave)
 {
   ifstream in(filename.c_str());
   if(!in ) {
@@ -41,12 +46,12 @@ bool WdbBookmarkTools::read(std::string filename,bool addToSave)
     }
     boost::algorithm::trim(line);
     if(!line.empty())
-      addLine(line,addToSave);
+      addLine(line,ignoreFromSave);
   }
   return true;
 }
 
-void WdbBookmarkTools::addLine(string line,bool markToSave)
+void WdbBookmarkTools::addLine(string line,bool ignoreFromSave, bool reverse)
 {
   vector<string> words;
   boost::split( words, line, boost::algorithm::is_any_of("|") );
@@ -66,9 +71,10 @@ void WdbBookmarkTools::addLine(string line,bool markToSave)
   for (int col = 0; col < size; ++col) {
     // this is the item
     if(col==last) {
-      int r=parentItem->rowCount();
+      int r=(reverse ? 0 : parentItem->rowCount());
       QStandardItem *childItem  = new QStandardItem(words[col].c_str());
       childItem->setData(data.c_str());
+      childItem->setDropEnabled(false);
       parentItem->insertRow(r,childItem);
 
     } else {
@@ -77,46 +83,60 @@ void WdbBookmarkTools::addLine(string line,bool markToSave)
 	parentItem = model->itemFromIndex ( folders[folder] );
 
       } else {
-        QStandardItem *childItem = new QStandardItem(words[col].c_str());
+        QStandardItem *childItem = createFolder(words[col],ignoreFromSave);
 
-        if(markToSave)
-          childItem->setIcon(directoryIcon);
-        else
-          childItem->setIcon(metnoIcon);
-
-	parentItem->appendRow(childItem);
-	parentItem      = childItem;
-	folders[folder] = childItem->index();
-	if(markToSave)
-	    saves.insert(folder);
+        parentItem->appendRow(childItem);
+        parentItem      = childItem;
+        folders[folder] = childItem->index();
+        if(ignoreFromSave){
+          ignores.insert(folder);
+        }
       }
     }
-  }  
-  
+  }
 }
 
-void WdbBookmarkTools::addFolder(string folder,bool markToSave)
+QStandardItem * WdbBookmarkTools::createFolder(string folder,bool ignoreFromSave)
 {
-  QStandardItem *parentItem = model->invisibleRootItem();
+  QStandardItem *childItem = new QStandardItem(folder.c_str());
 
+  if(folder=="RECORD") {
+     childItem->setIcon(recordIcon);
+   } else if ( folder =="TRASH") {
+       childItem->setIcon(trashIcon);
+   } else {
+
+     if(ignoreFromSave)
+       childItem->setIcon(metnoIcon);
+     else
+       childItem->setIcon(directoryIcon);
+   }
+
+  if(ignoreFromSave){
+    childItem->setEditable(false);
+  }
+  childItem->setDragEnabled(false);
+
+
+  return childItem;
+}
+
+
+
+void WdbBookmarkTools::addFolder(string folder,bool ignoreFromSave)
+{
   if(folders.count(folder))
     return;
 
-  QStandardItem *childItem = new QStandardItem(folder.c_str());
-  if(folder=="RECORD") {
-    childItem->setIcon(recordIcon);
-  } else {
+  QStandardItem *parentItem = model->invisibleRootItem();
+  QStandardItem *childItem  = createFolder(folder,ignoreFromSave);
 
-    if(markToSave)
-      childItem->setIcon(directoryIcon);
-    else
-      childItem->setIcon(metnoIcon);
-  }
   parentItem->appendRow(childItem);
   folders[folder] = childItem->index();
-  if(markToSave)
-    saves.insert(folder);
 
+  if(ignoreFromSave) {
+    ignores.insert(folder);
+  }
 }
 
 
@@ -127,16 +147,17 @@ void WdbBookmarkTools::write(string filename)
     cerr << "Unable to write stationlist to " << filename << endl;
     return;
   }
-  set<string>::iterator itr=saves.begin();
-  for(;itr!=saves.end();itr++) {
-    QList<QStandardItem*> ilist = model->findItems (itr->c_str());
 
-    if(ilist.empty()) continue;
 
-    QStandardItem* item = ilist.at(0);
+  QStandardItem *parentItem = model->invisibleRootItem();
+  if(!parentItem->hasChildren()) return;
 
-    string dirname=item->text().toStdString();
+  for(int i=0;i<parentItem->rowCount();i++) {
+    QStandardItem* item = parentItem->child(i);
     if(!item->hasChildren()) continue;
+    string dirname= item->text().toStdString();
+    if(ignores.count(dirname)) continue;
+
     for(int i=0;i<item->rowCount();i++) {
       QStandardItem* child = item->child(i);
       QVariant var         = child->data();
@@ -154,12 +175,24 @@ void WdbBookmarkTools::write(string filename)
 void WdbBookmarkTools::addRecord(float lon,float lat)
 {
   ostringstream ost;
-
   ost << "RECORD." << ++record << "|" << lat << ":" << lon;
-  addLine(ost.str(),false);
-
+  addLine(ost.str(),false,true);
+  cutRecord();
 }
 
 
+void WdbBookmarkTools::cutRecord()
+{
+  if(!folders.count("RECORD")      ) return;
+
+  QStandardItem* item = model->itemFromIndex (folders ["RECORD"]);
+
+  if(!item                          ) return;
+  if(!item->hasChildren()           ) return;
+  if( item->rowCount() < maxRecords ) return;
+
+  item->setRowCount(maxRecords);
+
+}
 
 

@@ -37,13 +37,14 @@
 #include "ts_find.xpm"
 #include "ts_filter.xpm"
 #include "view-refresh.xpm"
+#include "list-add.xpm"
 
 #include <iostream>
 
 using namespace miutil;
 
-qtsSidebar::qtsSidebar(QWidget* parent)
-  : QWidget(parent)
+qtsSidebar::qtsSidebar()
+  : QWidget()
 {
 
 
@@ -92,6 +93,7 @@ qtsSidebar::qtsSidebar(QWidget* parent)
   QPixmap find_pix(ts_find_xpm);
   QPixmap filter_pix(ts_filter_xpm);
   QPixmap refresh_pix(view_refresh_xpm);
+  QPixmap add_pix(list_add_xpm);
 
   pluginB = new ClientButton(s.server.name.cStr(),
 			     s.server.command.cStr(),
@@ -109,6 +111,8 @@ qtsSidebar::qtsSidebar(QWidget* parent)
   filterB->setToolTip(  tr("Position filter") );
 
 
+  addBookmarkButton =  new QPushButton(add_pix, "",this);
+  connect(addBookmarkButton,SIGNAL(clicked()),wdbtab, SLOT(addBookmarkFolder()));
   cacheQueryButton  =  new QPushButton(refresh_pix, "",this);
   connect(cacheQueryButton,SIGNAL(clicked()),    this, SLOT(chacheQueryActivated()));
 
@@ -130,6 +134,7 @@ qtsSidebar::qtsSidebar(QWidget* parent)
   busyLabel     = new QMovie(s.wdb.busyMovie.cStr());
 
   QHBoxLayout * blayout = new QHBoxLayout();
+  blayout->addWidget(addBookmarkButton);
   blayout->addWidget(cacheQueryButton);
   blayout->addWidget(connectStatus);
   blayout->addStretch(2);
@@ -138,6 +143,7 @@ qtsSidebar::qtsSidebar(QWidget* parent)
   blayout->addWidget(pluginB);
   vlayout->addLayout(blayout);
 
+  addBookmarkButton->hide();
   cacheQueryButton->hide();
 }
 
@@ -177,9 +183,11 @@ void qtsSidebar::tabChanged(int idx)
 {
 
   if(idx==wdbIdx){
+    addBookmarkButton->show();
     cacheQueryButton->show();
     emit changetype(tsRequest::WDBSTREAM);
   } else if (idx==stationIdx) {
+    addBookmarkButton->hide();
     cacheQueryButton->hide();
     emit changetype(tsRequest::HDFSTREAM);
   }

@@ -35,11 +35,11 @@
 const float gl_width =  1500.0;
 const float gl_height = 1000.0;
 
-qtsShow::qtsShow(QWidget* parent, const QGLFormat fmt,
+qtsShow::qtsShow(const QGLFormat fmt,
 		 tsRequest* tsr,
 		 DatafileColl* tsd,
 		 SessionManager* ses)
-  : QGLWidget(fmt,parent), plotw(1), ploth(1), drawArea(tsr,tsd,ses), initialised(false)
+  : QGLWidget(fmt), plotw(1), ploth(1), drawArea(tsr,tsd,ses), initialised(false)
 {
 }
 

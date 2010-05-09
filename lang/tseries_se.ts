@@ -269,22 +269,22 @@ met.no 2002</translation>
 <context>
     <name>qtsSidebar</name>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="103"/>
+        <location filename="../src/qtsSidebar.cc" line="105"/>
         <source>Show position (DIANA)</source>
         <translation type="unfinished">Visa position i Diana</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="109"/>
+        <location filename="../src/qtsSidebar.cc" line="111"/>
         <source>Position filter</source>
         <translation type="unfinished">Positionsfilter</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="76"/>
+        <location filename="../src/qtsSidebar.cc" line="77"/>
         <source>Stations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="77"/>
+        <location filename="../src/qtsSidebar.cc" line="78"/>
         <source>Wdb</source>
         <translation type="unfinished"></translation>
     </message>

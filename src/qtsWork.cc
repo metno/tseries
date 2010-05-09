@@ -38,6 +38,8 @@
 #include <set>
 #include <string>
 #include "WdbCacheThread.h"
+#include <QSplitter>
+
 
 bool qStr2miStr(const QString& i, miString& o)
 {
@@ -60,27 +62,36 @@ qtsWork::qtsWork(QWidget* parent)
   fmt.setDoubleBuffer(true);
   fmt.setDirectRendering(false);
 
-  hlayout  = new QHBoxLayout(this);
+
+  QSplitter   * splitter = new QSplitter(this);
+  QHBoxLayout * hlayout  = new QHBoxLayout(this);
   oldModel = NOMODEL_TSERIES;
 
-  sidebar = new qtsSidebar(this);
-  show    = new qtsShow(this,fmt,&request,&data,&session);
+  sidebar = new qtsSidebar();
+  show    = new qtsShow(fmt,&request,&data,&session);
 
 
   connect (show,SIGNAL(refreshFinished()),this,SLOT(refreshFinished()));
 
-  sidebar->setMinimumWidth(170);
-  sidebar->setMaximumWidth(255);
+  //sidebar->setMinimumWidth(170);
+//  sidebar->setMaximumWidth(255);
 
 
   connect( sidebar, SIGNAL( minmaxProg(int,int)),
 	   this,    SLOT(setProgintervall(int,int)));
 
 
-  hlayout->addWidget(show,3);
-  hlayout->addWidget(sidebar,1);
+  splitter->addWidget(show);
 
-  hlayout->activate();
+  splitter->addWidget(sidebar);
+
+  splitter->setStretchFactor (0,3);
+  splitter->setStretchFactor (1,1);
+
+
+  hlayout->addWidget(splitter);
+
+
 
   connect(sidebar,SIGNAL(changestyle(const QString&)),
 	  this,SLOT(changeStyle(const QString&)));

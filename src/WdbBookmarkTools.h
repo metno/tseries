@@ -41,22 +41,28 @@
 
 class WdbBookmarkTools {
 private:
-  std::set<std::string> saves;
+  std::set<std::string> ignores;
   QStandardItemModel*   model;
   std::map<std::string,QModelIndex> folders;
   QIcon directoryIcon;
   QIcon recordIcon;
   QIcon metnoIcon;
+  QIcon trashIcon;
   int record;
+  int maxRecords;
 
 public:
   WdbBookmarkTools();
   void setModel(QStandardItemModel* m) {model=m;}
-  bool read(     std::string file, bool addToSave);
+  bool read(     std::string file, bool ignoreFromSave);
   void write(    std::string file );
-  void addLine(  std::string line, bool addToSave);
-  void addFolder(std::string name, bool addToSave);
+  void addLine(  std::string line, bool ignoreFromSave,bool reverse=false);
+  void addFolder(std::string name, bool ignoreFromSave);
   void addRecord(float lon,float lat);
+  void cutRecord();
+  void setMaxRecords(int m) { maxRecords=m;}
+
+  QStandardItem * createFolder(std::string folder,bool ignoreFromSave);
 };
 
 #endif
