@@ -70,7 +70,7 @@ void WdbBookmarkTools::addLine(string line,bool ignoreFromSave, bool reverse)
 
   for (int col = 0; col < size; ++col) {
     // this is the item
-    if(col==last) {
+    if(col == last) {
       int r=(reverse ? 0 : parentItem->rowCount());
       QStandardItem *childItem  = new QStandardItem(words[col].c_str());
       childItem->setData(data.c_str());
@@ -78,11 +78,13 @@ void WdbBookmarkTools::addLine(string line,bool ignoreFromSave, bool reverse)
       parentItem->insertRow(r,childItem);
 
     } else {
+      // old folder found - use it as the parent
       folder+=( col ? "." : "") + words[col];
       if(folders.count(folder)) {
 	parentItem = model->itemFromIndex ( folders[folder] );
 
       } else {
+        // create a new folder
         QStandardItem *childItem = createFolder(words[col],ignoreFromSave);
 
         parentItem->appendRow(childItem);
