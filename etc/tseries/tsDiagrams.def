@@ -12,7 +12,7 @@ EPS=EPS
 LAMEPS=LAMEPS
 HIRLAM_U=Hirlam ukorr.
 ECMWF_U=Ecmwf ukorr.
-PROFF.APPROVED=proff approved
+proff.approved= proff approved
 PROFF.RAW=proff raw
 PROFF.DEFAULT=proff default
 HIRLAM.12km=Hirlam 12km
@@ -26,6 +26,8 @@ UM1.exp=UM 1km exp
 rr24=rr24
 fx10-6h=fx10-6h
 t2m=t2m
+WDB=Wdb
+
 
 # Standard meteogram
 [DIAGRAM]
@@ -42,7 +44,7 @@ MODEL=UM.4km
 MODEL=UM4BX
 MODEL=UM.1km
 MODEL=UM1.exp
-
+MODEL=WDB
 
 [MODELINDEPENDENT]
 PARAM=UU,x,x,x
@@ -215,6 +217,7 @@ MODEL=UM.4km
 MODEL=UM4BX
 MODEL=SUBJ
 MODEL=UM.1km
+MODEL=WDB
 
 
 [MODELINDEPENDENT]
@@ -583,7 +586,7 @@ NAME=Proff Meteogrammer
 STYLEFILE=/usr/local/share/tseries/style/style.meteogram
 
 [LEGALMODELS]
-MODEL=PROFF.APPROVED
+MODEL=proff.approved
 MODEL=PROFF.RAW
 MODEL=PROFF.DEFAULT
 
@@ -605,34 +608,32 @@ PARAM=WVFD,x,x,x
 [DIAGRAM]
 NAME=Proff Kombinert
 STYLEFILE=/usr/local/share/tseries/style/style.proff_combi
+[LEGALMODELS]
+MODEL=WDB
 
 
-[MODELSPECIFIC]
-MODEL=PROFF.APPROVED
-PARAM=UU,x,x,x
-PARAM=VV,x,x,x
-PARAM=FF,x,x,x
-PARAM=DD,x,x,x
-PARAM=TT,x,x,x
-PARAM=MSLP,x,x,x
-PARAM=RR,x,x,x
-PARAM=CC,x,x,x
-PARAM=WW,x,x,x
-PARAM=WVFD,x,x,x
-[END]
-
-[MODELSPECIFIC]
-MODEL=PROFF.RAW
-PARAM=UU,x,x,x
-PARAM=VV,x,x,x
-PARAM=FF,x,x,x
-PARAM=DD,x,x,x
-PARAM=TT,x,x,x
-PARAM=MSLP,x,x,x
-PARAM=RR,x,x,x
-PARAM=CC,x,x,x
-PARAM=WW,x,x,x
-PARAM=WVFD,x,x,x
+[MODELINDEPENDENT]
+PARAM=UU,x,x,x,APP
+PARAM=VV,x,x,x,APP
+PARAM=FF,x,x,x,APP
+PARAM=DD,x,x,x,APP
+PARAM=TT,x,x,x,APP
+PARAM=MSLP,x,x,x,APP
+PARAM=RR,x,x,x,APP
+PARAM=CC,x,x,x,APP
+PARAM=WW,x,x,x,APP
+PARAM=WVFD,x,x,x,APP
+# RAW
+PARAM=UU,x,x,x,RAW
+PARAM=VV,x,x,x,RAW
+PARAM=FF,x,x,x,RAW
+PARAM=DD,x,x,x,RAW
+PARAM=TT,x,x,x,RAW
+PARAM=MSLP,x,x,x,RAW
+PARAM=RR,x,x,x,RAW
+PARAM=CC,x,x,x,RAW
+PARAM=WW,x,x,x,RAW
+PARAM=WVFD,x,x,x,RAW
 [END]
 
 
