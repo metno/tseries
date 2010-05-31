@@ -32,6 +32,8 @@ stdImage=$(Images)/ts_station.xpm
 finImage=$(Images)/ts_find.xpm
 iconImage=$(Work)/share/pixmaps/tseries.png
 baseFilter=$(Etc)/tseries.filter
+bookmarks=$(Home)/.tseries/bookmarks.def
+commonBookmarks=$(Home)/.tseries/tseries-bookmarks.common
 
 
 <server>
@@ -410,17 +412,6 @@ DataFile=$(Edata)/ecwam_quba_12.hdf
 DataDescription=ECMWF_WAM
 DataType=HDF
 Contents=x,x,ECMWF_WAM,12
-
-DataFile=$(Edata)/ecwam_quba_00.hdf
-DataDescription=ECMWF_WAM
-DataType=HDF
-Contents=x,x,ECMWF_WAM,0
-
-DataFile=$(Edata)/ecwam_quba_12.hdf
-DataDescription=ECMWF_WAM
-DataType=HDF
-Contents=x,x,ECMWF_WAM,12
-
 []
 
 # -------------------------------------------------
@@ -521,23 +512,41 @@ Contents=x,x,t2m,x
 
 []
 
+
 <wdb>
 host=proffdb.met.no
 user=proffread
 busymovie=$(Images)/busy.gif
 readtime=1500
+maxRecord=20
 
 <wdbParameter>
-TT=air temperature:-273.15
-UU=wind velocity (u vector)
-MSLP=mean sea level pressure:/100
-VV=wind velocity (v vector)
-RH=relative humidity
-CM=medium cloud cover:*100
-CH=high cloud cover:*100
-CC=total cloud cover:*100
-CL=low cloud cover:*100               
-RR=total precipitation distance:*1000
+
+MSLP,0,x,x,APP= mean sea level pressure       | 0   height above ground distance  :/100
+RR,0,x,x,APP=    total precipitation distance | 0   height above ground distance  :*1000
+TT,0,x,x,APP=    kalman air temperature       | 2   height above ground distance  :-273.15
+UU,0,x,x,APP=    wind velocity (u vector)     | 10  height above ground distance  :*1.94384
+VV,0,x,x,APP=    wind velocity (v vector)     | 10  height above ground distance  :*1.94384
+CC,0,x,x,APP=    total cloud cover            | 0   height above ground distance  :*100
+CL,0,x,x,APP=    low cloud cover              | 850 isobaric surface pressure     :*100
+CM,0,x,x,APP=    medium cloud cover           | 500 isobaric surface pressure     :*100
+CH,0,x,x,APP=    high cloud cover             | 300 isobaric surface pressure     :*100
+
+
+MSLP,0,x,x,RAW= mean sea level pressure (RAW)     | 0   height above ground distance  :/100
+RR,0,x,x,RAW=   total precipitation distance (RAW)| 0   height above ground distance  :*1000
+TT,0,x,x,RAW=   kalman air temperature (RAW)      | 2   height above ground distance  :-273.15
+UU,0,x,x,RAW=   wind velocity (u vector) (RAW)    | 10  height above ground distance  :*1.94384
+VV,0,x,x,RAW=   wind velocity (v vector) (RAW)    | 10  height above ground distance  :*1.94384
+CC,0,x,x,RAW=   total cloud cover (RAW)           | 0   height above ground distance  :*100
+CL,0,x,x,RAW=   low cloud cover (RAW)             | 850 isobaric surface pressure     :*100
+CM,0,x,x,RAW=   medium cloud cover (RAW)          | 500 isobaric surface pressure     :*100
+CH,0,x,x,RAW=   high cloud cover (RAW)            | 300 isobaric surface pressure     :*100
+
+
+
+
 
 <WDBVECTORFUNCTIONS>
-UU,VV
+UU,0,x,x,APP:VV,0,x,x,APP
+UU,0,x,x,RAW:VV,0,x,x,RAW
