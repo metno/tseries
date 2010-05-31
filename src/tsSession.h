@@ -94,6 +94,8 @@ public:
   bool getShowOption(SessionOptions&, int, Model, Run);
   bool getShowOption(SessionOptions&,const tsRequest *);
 
+  // wdb add
+  int getWdbStyles(std::vector<miutil::miString>& stylename);
 
   // get a list of available models for a given styleindex
   int getModels(const miutil::miString& s, 

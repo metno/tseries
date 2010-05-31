@@ -48,6 +48,32 @@ int SessionManager::getStyleTypes(vector<miString>& stylename)
   } else return 0;
 }
 
+
+int SessionManager::getWdbStyles(vector<miString>& stylename)
+{
+  int wdbidx=-1;
+  for(int i=0;i<models.size();i++)
+    if(models[i].modelid=="WDB") {
+      wdbidx=i;
+      break;
+    }
+
+  if (styles.size()){
+    for (unsigned int i=0; i<styles.size();i++){
+      for( int j=0; j<styles[i].modelidx.size(); j++ )
+        if( styles[i].modelidx[j] == wdbidx) {
+          stylename.push_back(styles[i].stylename);
+          break;
+        }
+    }
+    return (signed int)styles.size();
+  } else return 0;
+
+}
+
+
+
+
 ptStyle& SessionManager::getStyle(const miString name)
 {
   return getStyle( getStyleIndex(name) );

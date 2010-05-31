@@ -61,7 +61,7 @@ gridstyle=       DOTTED
 [NEW]
 type=        WIND_VECTOR
 order=       2
-parameter=   WVFD,x,PROFF.APPROVED,x
+parameter=   WVFD,x,x,x,APP
 text=        Wind
 color=       DARK_GREEN
 color2=      DARK_GREEN
@@ -73,7 +73,7 @@ centerVector=false
 [ADD]
 
 order=       1
-parameter=   WVFD,x,PROFF.RAW,x
+parameter=   WVFD,x,x,x,RAW
 color=       GREY50
 color2=      GREY50
 text=        raw
@@ -181,9 +181,8 @@ useTimes=3
 # RR -----------------------------------
 
 [NEW]
-model=           PROFF.APPROVED
 type=            HIST
-parameter=       RR,0,PROFF.APPROVED,x
+parameter=       RR,0,x,x,APP
 fillPattern=     DIAGLEFT
 label=           true
 unit=            TRUE
@@ -192,7 +191,7 @@ font=            SUBSCRIPT
 histogramstart=  0
 histogramstop=   7
 [ADD]
-parameter=       RR,0,PROFF.RAW,x
+parameter=       RR,0,x,x,RAW
 color=           GREY50
 fillpattern=     FILLED 
 histogramstart=  7
@@ -226,7 +225,7 @@ patternInColour= TRUE
 [NEW]
 type=            LINE
 yaid=            0
-parameter=       TT,0,PROFF.APPROVED,x
+parameter=       TT,0,x,x,APP
 color=           RED
 text=            T2m [°C]
 lineWidth=       2
@@ -235,7 +234,7 @@ patternInColour= TRUE
 order=           2           
 [ADD]
 
-model=           PROFF.RAW
+parameter=       TT,0,x,x,RAW
 color=           GREY50
 order=           1
 label=           FALSE
@@ -267,7 +266,7 @@ patternInColour= TRUE
 [NEW]
 type=            LINE
 yaid=            1
-parameter=       MSLP,x,PROFF.APPROVED,x
+parameter=       MSLP,x,x,x,APP
 color=           BLUE
 text=            MSLP [hPa]
 lineWidth=       2
@@ -277,7 +276,7 @@ order=           2
 [ADD]
 
 order=           1
-model=           PROFF.RAW
+parameter=       MSLP,x,x,x,RAW
 color=           GREY50
 label=           FALSE
 text=            raw
@@ -296,13 +295,13 @@ mother=DIAGRAM
 [NEW]
 type=       CLOUD
 order=      17
-parameter=  CC,x,PROFF.APPROVED,x
+parameter=  CC,x,x,x,APP
 intSpacing= ZERO
 height=     17
 color=      BLACK
 [ADD]
 
-model=      PROFF.RAW
+parameter=  CC,x,x,x,RAW
 color=      GREY50
 height=     10
 [ADD]
@@ -313,7 +312,7 @@ height=     10
 type=       SYMBOL
 order=      23
 enabled=    TRUE
-parameter=  WW,x,PROFF.APPROVED,x
+parameter=  WW,x,x,x,APP
 intSpacing= 0
 height=     70
 [ADD]

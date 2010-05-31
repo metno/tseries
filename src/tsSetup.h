@@ -198,7 +198,7 @@ private:
   void stripComments(miutil::miString&);
 
   miutil::miString inSection();
-  bool splitToken(const miutil::miString&,miutil::miString&, miutil::miString&);
+  bool splitToken(const miutil::miString&,miutil::miString&, miutil::miString&,bool upper=true);
   void warn(miutil::miString&,warning);
 
   void setPublic(miutil::miString&, miutil::miString&);

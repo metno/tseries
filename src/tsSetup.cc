@@ -179,7 +179,7 @@ void tsSetup::setup(miString& to, const miString& from)
   to = from;
 }
 
-bool tsSetup::splitToken(const miString& token,miString& key,miString& content)
+bool tsSetup::splitToken(const miString& token,miString& key,miString& content, bool upper)
 {
   content ="";
   if(!token.contains("="))
@@ -187,7 +187,7 @@ bool tsSetup::splitToken(const miString& token,miString& key,miString& content)
 
   vector<miString> vtmp = token.split('=');
 
-  key = vtmp[0].upcase();
+  key = ( upper ? vtmp[0].upcase() : vtmp[0] );
 
   if(vtmp.size() ==2)
     content = vtmp[1];
@@ -339,8 +339,10 @@ void tsSetup::setSimpleToken(miString token)
     return;
   }
 
+  bool upper=(sec != WDBPARAMETER);
+
   miString content,key;
-  if(!splitToken(token,key,content))
+  if(!splitToken(token,key,content,upper))
     return;
 
   while(checkLookup(content))
@@ -468,7 +470,7 @@ void tsSetup::setStreams(miString& key, miString& content)
 
 void tsSetup::setWdbParameter(miString& key, miString& content)
 {
-   wdb.parameters[key] = content;
+   wdb.parameters[key]=content;
 }
 
 

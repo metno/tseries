@@ -47,6 +47,7 @@ qtsSidebar::qtsSidebar()
   : QWidget()
 {
 
+  tsSetup s;
 
   tabs       = new QTabWidget(this);
 
@@ -74,8 +75,12 @@ qtsSidebar::qtsSidebar()
 
 
 
+  QString dbname= s.wdb.host.cStr();
+  dbname.truncate( dbname.indexOf(".") );
+
+
   stationIdx = tabs->addTab(stationtab,tr("Stations"));
-  wdbIdx     = tabs->addTab(wdbtab,tr("Wdb"));
+  wdbIdx     = tabs->addTab(wdbtab,dbname);
 
   connect(tabs,SIGNAL(currentChanged(int)), this,SLOT(tabChanged(int)));
 
@@ -89,7 +94,6 @@ qtsSidebar::qtsSidebar()
   // connectbuttons are hosted here... but are used and
   // connected in qtsMain!
 
-  tsSetup s;
   QPixmap find_pix(ts_find_xpm);
   QPixmap filter_pix(ts_filter_xpm);
   QPixmap refresh_pix(view_refresh_xpm);
@@ -169,8 +173,8 @@ QString  qtsSidebar::fillList(const vector<miutil::miString>& v, const StationTa
 
 
 
-  if(l==StationTab::CMSTYLE)
-    wdbtab->setStyles(qlist);
+  if(l==StationTab::CMWDBSTYLE)
+    return wdbtab->setStyles(qlist);
 
   return stationtab->fillList(qlist,l);
 

@@ -188,7 +188,7 @@ miutil::miString CoordinateTab::coordinateString()
 }
 
 
-void CoordinateTab::setStyles(const QStringList& qlist)
+QString CoordinateTab::setStyles(const QStringList& qlist)
 {
 
   QString cur = stylel->currentText();
@@ -201,6 +201,7 @@ void CoordinateTab::setStyles(const QStringList& qlist)
     if( idx >= 0)
       stylel->setCurrentIndex(idx);
   }
+  return stylel->currentText();
 }
 
 

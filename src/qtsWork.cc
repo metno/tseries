@@ -231,14 +231,20 @@ void qtsWork::makeStationList(bool forced)
 bool qtsWork::makeStyleList()
 {
   vector<miString> tmp;
+  vector<miString> wdbtmp;
 
   session.getStyleTypes(tmp);
+  session.getWdbStyles(wdbtmp);
 
   QString cstyle = sidebar->fillList(tmp,StationTab::CMSTYLE);
+  QString wstyle = sidebar->fillList(wdbtmp,StationTab::CMWDBSTYLE);
 
   miString st;
   qStr2miStr(cstyle,st);
   bool changed = request.setStyle(st);
+
+  qStr2miStr(wstyle,st);
+  request.setWdbStyle(st);
 
   return (  makeModelList(st) || changed );
 

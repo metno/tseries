@@ -54,7 +54,7 @@
 class StationTab : public QWidget {
   Q_OBJECT
 public:
-  enum lEntry { CMMODEL, CMSTYLE,CMRUN };
+  enum lEntry { CMMODEL, CMSTYLE,CMRUN,CMWDBSTYLE };
 
 private:
   QLineEdit   * searchw;    // search widget (stations)

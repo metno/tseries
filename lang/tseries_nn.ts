@@ -274,23 +274,18 @@ met.no 2002</translation>
         <translation type="obsolete">Vis posisjon (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="111"/>
+        <location filename="../src/qtsSidebar.cc" line="115"/>
         <source>Position filter</source>
         <translation type="unfinished">Posisjonsfilter</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="105"/>
+        <location filename="../src/qtsSidebar.cc" line="109"/>
         <source>Show position (DIANA)</source>
         <translation type="unfinished">Syn position (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="77"/>
+        <location filename="../src/qtsSidebar.cc" line="82"/>
         <source>Stations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtsSidebar.cc" line="78"/>
-        <source>Wdb</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

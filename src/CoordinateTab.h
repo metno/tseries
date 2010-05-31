@@ -45,6 +45,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QTreeView>
+#include <QString>
 #include <QStandardItemModel>
 #include "WdbBookmarkTools.h"
 #include "CoordinateManager.h"
@@ -70,7 +71,7 @@ private:
 public:
   CoordinateTab(QWidget*);
 
-  void setStyles(const QStringList& qlist);
+  QString setStyles(const QStringList& qlist);
   void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat);
 
   miutil::miString coordinateString();
