@@ -20,7 +20,10 @@ dist_mydoc_DATA = \
 	share/doc/delete.xpm	      \
 	share/doc/tseries.xpm	      \
 	share/doc/de_news.html	      \
-	share/doc/de_index.html	     
+	share/doc/de_index.html	      \
+	share/doc/view-refresh.xpm    \
+	share/doc/busy.gif            \
+	share/doc/list-add.xpm
 
 
 

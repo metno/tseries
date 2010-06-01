@@ -19,6 +19,7 @@
       <li><a href="#DIANALINK">Kobling mot DIANA</a>
       <li><a href="#ACCELERATORS">Liste over kortkommandoer</a>
       <li><a href="#FILTER">Posisjonsfilter</a>
+      <li><a href="#WDB">Wdb forbindelse</a>
      <li><a href="news.html">Nyheter</a>
     </ul>
 
@@ -136,6 +137,45 @@
       <br>
 
 
+   <hr>
+    <a NAME="WDB"></a><h3>Wdb forbindelse</h3>
+    <p>
+      F.o.m. versjon 5.0 er tseries istand til å hente data fra en WDB database. Dataene blir interpolert der og da etter forespørsel, en trasisjonell stedsliste trengs ikke.
+     <br>
+     Navnet i fliken representerer databaseserveren tseries henter data fra.
+      <br>
+      Grensesnittet er basert på koordinater. Man can velge koordinatene med Lat/Lon sliders, 
+      skriver dem inn i Lat/Lon tekstfeltene eller klikke i diana-kartet for å få en ny posisjon.
+      NB! du må holde  <i>SHIFT</i> tasten nede for å gjøre det når du er i editeringsmodus.
+      Modelnavn, tider og koordinatgrensene er hentet fra wdb dynamisk. Når databasefliken
+      er slått av betyr det at tseries på ettellerannen grunn ikke kunne oppnå kontakt med den
+      ønskede severen.
+     
+      <p>
+     <b>CACHE</b><br>
+      Databasen interpolerer for deg på forespørsel. For dette trenger serveren tilgang til
+      alle felter som trengs for å plukke dataene. Dette er en tung jobb og kan ta tid. Hvis
+      plukketiden overskrider en viss grense  (standard > 1.5s) blir 
+      cache-knappen <img SRC="view-refresh.xpm"  BORDER=0> aktiv.
+      Musetipsen over denne knappen forteller hvor langt den siste forespørselen tok.
+      Trykker man denne knappen, så leser databasen alle felter som trengs for det aktuelle diagrammet (modell/tid)
+      i minne. Dette øker hastigheten for de senere søkene på samme model kraftig for alle som bruker denne modell/tid
+      kombinasjonen. Cache prosessen går i en egen tråd og kan ta opptil ett minutt. Den er ferdig når den røde, blinkene
+      ikonen <img SRC="busy.gif"  BORDER=0> forsvinner.
+ <p>
+     <B>BOKMERKER</b><br>
+      Man kan på enkeltvis lage egne lister med bookmerker for seg selv. Bare klikk på
+      <img SRC="list-add.xpm"  BORDER=0> for å lage en "NEW" katalog . Dobleklikk på den nylagde katalogen og gi den ett nytt navn.
+      Etterpå kan man dra posisjoner fra andre kataloger ditt. Gi de stedene nye navn med dobbelklikk.
+      Noen kataloger følger med tseries i distribusjonen, disse kan editeres, men vil settes tilbake etter omstart.
+      Private kataloger lagres under ($HOME/.tseries/bookmarks.def).
+      Now one can drag positions from the other folders there. Posisjonene kan draes i trash for å fjerne dem. 
+      De blir borte etter omstart. Tomme, private kataloger fjernes automatisk etter omstart.
+      Alle Posisjoner som velges blir registert i <b>RECORD</b> katalogen. Bare dra en posisjon derifra til en privat katalog og
+      gi den ett nytt navn hvis du vil ta vare på en ny sted.
+
+
+
     <hr>
     <a NAME="ACCELERATORS"></a><h3>Liste over kortkommandoer</h3>
     <p>
@@ -164,7 +204,7 @@
 
     <!-- Created: Mon Apr 22 16:44:18 GMT 2002 -->
     <!-- hhmts start -->
-Last modified: Fri Nov 15 16:28:19 GMT 2002
+Last modified: Tue Jun  1 11:25:09 CEST 2010
 <!-- hhmts end -->
   </body>
 </html>
