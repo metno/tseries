@@ -19,6 +19,7 @@
       <li><a href="#DIANALINK">Linking to DIANA</a>
       <li><a href="#ACCELERATORS">Accelerators</a>
       <li><a href="#FILTER">Position filter</a>
+      <li><a href="#WDB">Wdb connection</a>
      <li><a href="news.html">News</a>
     </ul>
 
@@ -120,6 +121,47 @@
       <br>
       <a href="#START" target><img SRC="pil.png" ALT="opp" BORDER=0 align=TOP></a>
       <br>
+    <hr>
+    <a NAME="WDB"></a><h3>Wdb Connection</h3>
+    <p>
+      From version 5.0 tseries is able to connect to a WDB database and
+      get data interpolated on demand. <br>
+      The Tab name is similar to the database-server which is used in the connection.
+      <br>
+      The user interface is coordinate based, you can choose coordinates
+      by the lat/lon sliders, write them directly into the Lat/Lon textfields
+      or click into any given place in the diana map to get the diagram for
+      the specific coordinates. Remember to hold down the <i>SHIFT</i> button when
+      you are in the profet-edit modus<p>
+      All the modelnames,times and coordinate borders are selected from the database.
+      When the database-tab is disabled, the connection to the database failed for some reason.
+
+      <p>
+     <b>CACHE</b><br>
+      The database interpolates data for you on demand, for this, the server
+      has to read all the fields nessecary to generate your diagram. If this
+      is to slow (default > 1.5s) the cache button <img SRC="view-refresh.xpm"  BORDER=0>
+      becomes active. By pushing
+      the cache button you send a request to the server to take all your fields
+      into memory - speeding up the interpolation. When you have cached a fieldset,
+      the fieldset will be fast for anyone who is using it. The caching process
+      is running in background and takes up to one minute. Its finished when the
+      red blinking icon <img SRC="busy.gif"  BORDER=0> vanishes.
+      <p>
+     <B>BOOKMARS</b><br>
+      One can easyly define bookmarks in tseries. By pushing the  <img SRC="list-add.xpm"  BORDER=0> button one can add      new folder to the Bookmarks. Just doubleclick on the NEW folder and rename it.
+      Now one can drag positions from the other folders there. Rename the 
+      bookmarks as you wish. There are some distributed folders with given positions.
+      These can be edited, but will be restored after restart. Private created folders
+      will be stored locally ($HOME/.tseries/bookmarks.def)
+      All positions can be dragged into trash for removal. Empty private folders are
+      automatically removed after restart. Any choosen position is tracked under
+      the <b>RECORD</b> folder. Drag from there into a private folder if you want to
+      track the actual position.
+
+
+
+
 
 
     <hr>
@@ -150,7 +192,7 @@
 
     <!-- Created: Mon Apr 22 16:44:18 GMT 2002 -->
     <!-- hhmts start -->
-Last modified: Thu Jun  2 12:50:30 CEST 2005
+Last modified: Tue Jun  1 10:50:25 CEST 2010
 <!-- hhmts end -->
   </body>
 </html>
