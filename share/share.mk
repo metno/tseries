@@ -75,7 +75,8 @@ dist_pixmaps_DATA= \
 	share/pixmaps/weather_17.png            \
 	share/pixmaps/weather_18.png            \
 	share/pixmaps/weather_19.png            \
-	share/pixmaps/weather_999.png
+	share/pixmaps/weather_999.png           \
+	share/pixmaps/busy.gif
 
 # tseries stylefiles share/tseries/style  ------
 

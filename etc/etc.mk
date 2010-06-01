@@ -9,7 +9,8 @@ dist_etc_DATA += \
 	etc/tseries/tseries.ctl            \
 	etc/tseries/tseries.ctl_batch      \
 	etc/tseries/tseries.ctl_export     \
-	etc/tseries/tseries.filter         
+	etc/tseries/tseries.filter         \
+	etc/tseries/tseries-bookmarks.common
 
 
 betcdir= $(sysconfdir)/btseries

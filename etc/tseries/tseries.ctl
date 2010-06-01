@@ -33,7 +33,7 @@ finImage=$(Images)/ts_find.xpm
 iconImage=$(Work)/share/pixmaps/tseries.png
 baseFilter=$(Etc)/tseries.filter
 bookmarks=$(Home)/.tseries/bookmarks.def
-commonBookmarks=$(Home)/.tseries/tseries-bookmarks.common
+commonBookmarks=$(Etc)/tseries-bookmarks.common
 
 
 <server>
