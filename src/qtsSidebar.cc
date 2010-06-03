@@ -114,6 +114,8 @@ qtsSidebar::qtsSidebar()
   filterB->setCheckable(true);
   filterB->setToolTip(  tr("Position filter") );
 
+  connect(filterB,SIGNAL(toggled(bool)), this, SIGNAL(filterToggled(bool)));
+
 
   addBookmarkButton =  new QPushButton(add_pix, "",this);
   connect(addBookmarkButton,SIGNAL(clicked()),wdbtab, SLOT(addBookmarkFolder()));
