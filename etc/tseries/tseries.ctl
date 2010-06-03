@@ -35,6 +35,10 @@ baseFilter=$(Etc)/tseries.filter
 bookmarks=$(Home)/.tseries/bookmarks.def
 commonBookmarks=$(Etc)/tseries-bookmarks.common
 
+[VNN]
+commonBookmarks=$(Etc)/tseries-bookmarks.VNN
+
+[]
 
 <server>
 
