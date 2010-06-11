@@ -80,7 +80,7 @@
         <translation type="unfinished">Aide</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="819"/>
+        <location filename="../src/qtsMain.cc" line="823"/>
         <source>Manual</source>
         <translation type="unfinished">Manuel</translation>
     </message>
@@ -170,12 +170,12 @@
         <translation type="unfinished">Langues</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="420"/>
+        <location filename="../src/qtsMain.cc" line="424"/>
         <source>About T-series</source>
         <translation type="unfinished"> A propos T-series</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="422"/>
+        <location filename="../src/qtsMain.cc" line="426"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -186,7 +186,7 @@ Version: %1
 met.no 2002</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="942"/>
+        <location filename="../src/qtsMain.cc" line="946"/>
         <source>Language Changed</source>
         <translation type="unfinished">Langue changée</translation>
     </message>
@@ -196,7 +196,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series doit etre redémarré pour réactualiser la langue en: [%1]</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="823"/>
+        <location filename="../src/qtsMain.cc" line="827"/>
         <source>News</source>
         <translation type="unfinished">Modifications</translation>
     </message>
@@ -261,7 +261,7 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="943"/>
+        <location filename="../src/qtsMain.cc" line="947"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>

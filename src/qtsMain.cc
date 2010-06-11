@@ -334,7 +334,7 @@ void qtsMain::print()
 
   printOptions priop;
 
-  miString fname = "qed_temp.ps";//work->file("ps");
+  miString fname = "tseries_temp.ps";//work->file("ps");
 
   QString ofn = printer->outputFileName();
 
@@ -351,6 +351,7 @@ void qtsMain::print()
 
   QPrintDialog *dialog = new QPrintDialog(printer, this);
   dialog->setWindowTitle(tr("Print Diagram"));
+
   if (dialog->exec() != QDialog::Accepted)
     return;
 
@@ -387,6 +388,9 @@ void qtsMain::print()
 
   // reset number of copies (saves a lot of paper)
   printer->setNumCopies(1);
+
+
+
 }
 
 
@@ -764,7 +768,7 @@ void qtsMain::processLetter(miMessage& letter)
       cleanConnection();
   }
 
-  if(letter.command== qmstrings::positions)
+  if (letter.command == qmstrings::positions && letter.common == "diana")
     if (letter.data.size())
       work->changePositions(letter.data[0]);
 

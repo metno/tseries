@@ -150,6 +150,13 @@ void CoordinateTab::setWdbGeometry(int minLon, int maxLon, int minLat, int maxLa
 
 void CoordinateTab::setCoordinates(float lon, float lat, QString name)
 {
+  float oldlat=latitude->getValue();
+  float oldlon=longitude->getValue();
+
+  if(fabs(oldlat -lat ) < 0.00001 )
+    if(fabs(oldlon -lon ) < 0.00001 )
+      return;
+
   longitude->setValue(lon);
   latitude->setValue(lat);
 

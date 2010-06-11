@@ -85,7 +85,7 @@
         <translation type="unfinished">Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="819"/>
+        <location filename="../src/qtsMain.cc" line="823"/>
         <source>Manual</source>
         <translation type="unfinished">Benutzerhandbuch</translation>
     </message>
@@ -170,7 +170,7 @@
         <translation type="unfinished">Schrifttype</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="420"/>
+        <location filename="../src/qtsMain.cc" line="424"/>
         <source>About T-series</source>
         <translation type="unfinished">Über T-series</translation>
     </message>
@@ -190,7 +190,7 @@ met.no 2002-2005</translation>
         <translation type="unfinished">Aktueller Ortsname (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="422"/>
+        <location filename="../src/qtsMain.cc" line="426"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -205,7 +205,7 @@ met.no 2002</translation>
         <translation type="unfinished">Sprachen</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="942"/>
+        <location filename="../src/qtsMain.cc" line="946"/>
         <source>Language Changed</source>
         <translation type="unfinished">Sprache gewechselt</translation>
     </message>
@@ -215,7 +215,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series muß neu gestartet werden um die Sprache auf [%1] zu ändern</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="823"/>
+        <location filename="../src/qtsMain.cc" line="827"/>
         <source>News</source>
         <translation type="unfinished">Neuheiten</translation>
     </message>
@@ -280,7 +280,7 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="943"/>
+        <location filename="../src/qtsMain.cc" line="947"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="nb">
-<defaultcodec></defaultcodec>
 <context>
     <name>CoordinateTab</name>
     <message>
@@ -81,7 +80,7 @@
         <translation>Hjelp</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="819"/>
+        <location filename="../src/qtsMain.cc" line="823"/>
         <source>Manual</source>
         <translation>Brukerveiledning</translation>
     </message>
@@ -166,7 +165,7 @@
         <translation>Velg Font</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="420"/>
+        <location filename="../src/qtsMain.cc" line="424"/>
         <source>About T-series</source>
         <translation>Om T-series</translation>
     </message>
@@ -187,7 +186,7 @@ met.no 2002-2005</translation>
         <translation>Vis valgt stedsnavn (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="422"/>
+        <location filename="../src/qtsMain.cc" line="426"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -203,7 +202,7 @@ met.no 2002</translation>
         <translation>Språk</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="942"/>
+        <location filename="../src/qtsMain.cc" line="946"/>
         <source>Language Changed</source>
         <translation>Språk endret</translation>
     </message>
@@ -213,7 +212,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series må startes på nytt for å sette språk til: [%1]</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="823"/>
+        <location filename="../src/qtsMain.cc" line="827"/>
         <source>News</source>
         <translation>Nyheter</translation>
     </message>
@@ -278,7 +277,7 @@ met.no 2002</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="943"/>
+        <location filename="../src/qtsMain.cc" line="947"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation>T-series må startes på nytt for å sette språk til: [%1]</translation>
     </message>
