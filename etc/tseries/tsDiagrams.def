@@ -635,6 +635,43 @@ PARAM=CC,x,x,x,RAW
 PARAM=WW,x,x,x,RAW
 PARAM=WVFD,x,x,x,RAW
 [END]
+[ADD]
+
+[DIAGRAM]
+NAME=Proff redigering
+STYLEFILE=/usr/local/share/tseries/style/style.proff_edit
+[LEGALMODELS]
+MODEL=WDB
+
+
+[MODELINDEPENDENT]
+PARAM=UU,x,x,x,APP
+PARAM=VV,x,x,x,APP
+PARAM=FF,x,x,x,APP
+PARAM=DD,x,x,x,APP
+PARAM=TT,x,x,x,APP
+PARAM=MSLP,x,x,x,APP
+PARAM=RR,x,x,x,APP
+PARAM=CC,x,x,x,APP
+PARAM=WW,x,x,x,APP
+PARAM=WVFD,x,x,x,APP
+# RAW
+PARAM=UU,x,x,x,RAW
+PARAM=VV,x,x,x,RAW
+PARAM=FF,x,x,x,RAW
+PARAM=DD,x,x,x,RAW
+PARAM=TT,x,x,x,RAW
+PARAM=MSLP,x,x,x,RAW
+PARAM=RR,x,x,x,RAW
+PARAM=CC,x,x,x,RAW
+PARAM=WW,x,x,x,RAW
+PARAM=WVFD,x,x,x,RAW
+[END]
+
+
+
+
+
 
 
 [ADD]
