@@ -241,7 +241,7 @@ interval=   1
 minValue=   0.0
 minIsSet=   TRUE
 maxValue=   30.0
-text=       FF [m/s]
+text=       FF [kt]
 axis=       LEFTLEFT
 color=      BLACK
 align=      CENTER
@@ -266,7 +266,7 @@ patternInColour=FALSE
 quantized=      TRUE
 quantum=        1.0
 colorbyvalue=   TRUE
-datalimits=     0,10.8,20.8,32.7,400
+datalimits=     0,22,41,63,400
 colorlist=      BLACK,ORANGE,RUST_RED,PURPLE
 order=          2
 
