@@ -58,10 +58,10 @@ public:
   void write(    std::string file );
   void addLine(  std::string line, bool ignoreFromSave,bool reverse=false);
   void addFolder(std::string name, bool ignoreFromSave);
-  void addRecord(float lon,float lat);
+  void addRecord(float lon,float lat,std::string name="");
   void cutRecord();
   void setMaxRecords(int m) { maxRecords=m;}
-
+  std::string createRecordName(float f,char pos, char neg);
   QStandardItem * createFolder(std::string folder,bool ignoreFromSave);
 };
 

@@ -110,7 +110,7 @@ public:
   void setCoordinates(float lon, float lat)      { wdbtab->setCoordinates(lon, lat);}
 
   void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat) {wdbtab->setWdbGeometry(minLon, maxLon, minLat, maxLat);}
-  bool restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miString run);
+  bool restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miString run, miutil::miString posname);
   void enableBusyLabel(bool enable);
   void enableCacheButton(bool enable, bool force, unsigned long querytime);
 

@@ -163,6 +163,7 @@ void CoordinateTab::setCoordinates(float lon, float lat, QString name)
   if(name.isEmpty())
     coordinatesChanged();
   else {
+    bookmarkTools.addRecord(lon,lat,name.toStdString());
     emit changeCoordinates(lon,lat,name);
   }
 
@@ -182,7 +183,7 @@ void CoordinateTab::coordinatesChanged()
 {
   float lat=latitude->getValue();
   float lon=longitude->getValue();
-  bookmarkTools.addRecord(lon,lat);
+  bookmarkTools.addRecord(lon,lat,"");
   emit changeCoordinates(lon,lat,"");
 
 }

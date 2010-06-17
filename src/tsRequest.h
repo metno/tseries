@@ -78,7 +78,7 @@ public:
   void setWdbStationName(miutil::miString nname) { wdbstationname=nname;}
 
 
-  bool restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miTime run);
+  bool restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miTime run, miutil::miString posname="");
 
   double           getWdbLat()      const { return wdbLat;      }
   double           getWdbLon()      const { return wdbLon;      }

@@ -106,9 +106,10 @@ void tsRequest::setType(tsRequest::Streamtype s)
 
 
 
-bool tsRequest::restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miTime run)
+bool tsRequest::restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miTime run,miString posname)
 {
   setWdbPos(lon,lat);
+  setWdbStationName(posname);
   setWdbRun(run);
   setWdbModel(mod);
   setWdbStyle(sty);

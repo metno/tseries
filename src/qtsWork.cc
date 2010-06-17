@@ -489,15 +489,17 @@ void qtsWork::restoreLog()
 
   float lat,lon;
   miString run;
+  miString posname;
 
   c.get("WDBMODEL",mo);
   c.get("WDBSTYLE",st);
   c.get("WDBLAT",lat);
   c.get("WDBLON",lon);
   c.get("WDBRUN",run);
+  c.get("WDBPOSNAME",posname);
 
-  request.restoreWdbFromLog(mo,st,lat,lon,miTime(run));
-  sidebar->restoreWdbFromLog(mo,st,lat,lon,run);
+  request.restoreWdbFromLog(mo,st,lat,lon,miTime(run),posname);
+  sidebar->restoreWdbFromLog(mo,st,lat,lon,run,posname);
 
 }
 
@@ -520,6 +522,7 @@ void qtsWork::collectLog()
   c.set("WDBLAT",float(request.getWdbLat()) );
   c.set("WDBLON",float(request.getWdbLon()) );
   c.set("WDBRUN",request.getWdbRun().isoTime());
+  c.set("WDBPOSNAME",request.getWdbStationName());
 
   sidebar->writeBookmarks();
 

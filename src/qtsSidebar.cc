@@ -220,7 +220,7 @@ void qtsSidebar::enableBusyLabel(bool enable)
 }
 
 
-bool qtsSidebar::restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miString run)
+bool qtsSidebar::restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miString run,miutil::miString posname)
 {
   if(!wdbtab->isEnabled()) {
     cout << "WDB-tab disabled log information discarded" << endl;
@@ -230,8 +230,7 @@ bool qtsSidebar::restoreWdbFromLog(miutil::miString mod, miutil::miString sty, d
   wdbtab->setStyle( sty.cStr() );
   wdbtab->setModel( mod.cStr() );
   wdbtab->setRun(   run.cStr() );
-
-  wdbtab->setCoordinates(lon,lat);
+  wdbtab->setCoordinates(lon,lat,posname.cStr());
 
 }
 

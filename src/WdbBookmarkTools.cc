@@ -174,10 +174,34 @@ void WdbBookmarkTools::write(string filename)
 }
 
 
-void WdbBookmarkTools::addRecord(float lon,float lat)
+
+std::string WdbBookmarkTools::createRecordName(float f,char pos, char neg)
 {
+  float fdeg = f;
+  int   deg = int(fdeg);
+  fdeg-=deg;
+  fdeg*=60;
+  int min = int(fdeg);
+
   ostringstream ost;
-  ost << "RECORD." << ++record << "|" << lat << ":" << lon;
+  ost << abs(deg) << "° " << abs(min) << "\' " << ( deg >=0 ? pos : neg );
+  return ost.str();
+}
+
+
+
+void WdbBookmarkTools::addRecord(float lon,float lat,std::string name)
+{
+
+  ostringstream ost;
+  ost << "RECORD.";
+   if(name.empty()) {
+     ost << createRecordName(lon,'E','W') << " " << createRecordName(lat,'N','S');
+   } else
+    ost << name;
+
+
+  ost << "|" << lat << ":" << lon;
   addLine(ost.str(),false,true);
   cutRecord();
 }
