@@ -104,5 +104,5 @@ dist_style_DATA = \
 	share/style/style.lameps_z500		 \
 	share/style/style.meteogram		 \
 	share/style/style.eps_z500		 \
-	share/style/style.eps_t2m
-
+	share/style/style.eps_t2m                \
+	share/style/style.proff_edit
