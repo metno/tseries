@@ -65,6 +65,8 @@ AC_CONFIG_FILES([
 	bin/tseries
 	Makefile
 	src/Makefile
+	etc/tseries/tseries.ctl
+	etc/tseries/tsDiagrams.def
 ])
 
 AC_OUTPUT

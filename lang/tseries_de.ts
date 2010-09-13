@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1">
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>CoordinateTab</name>
     <message>
@@ -11,22 +12,18 @@
 <context>
     <name>HelpDialog</name>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="63"/>
         <source>Help</source>
         <translation type="obsolete">Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="74"/>
         <source>Backwards</source>
         <translation type="obsolete">Nächste</translation>
     </message>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="78"/>
         <source>Forward</source>
         <translation type="obsolete">Zurück</translation>
     </message>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="82"/>
         <source>Close</source>
         <translation type="obsolete">Schließen</translation>
     </message>
@@ -39,7 +36,6 @@
         <translation type="unfinished">Start:</translation>
     </message>
     <message>
-        <location filename="../src/qtsTimeControl.cc" line="49"/>
         <source>Length</source>
         <translation type="obsolete">Stunden:</translation>
     </message>
@@ -85,12 +81,12 @@
         <translation type="unfinished">Hilfe</translation>
     </message>
     <message>
+        <location filename="../src/qtsMain.cc" line="111"/>
         <location filename="../src/qtsMain.cc" line="823"/>
         <source>Manual</source>
         <translation type="unfinished">Benutzerhandbuch</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="104"/>
         <source>About..</source>
         <translation type="obsolete">Über</translation>
     </message>
@@ -115,7 +111,6 @@
         <translation type="unfinished">Filter ändern</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="118"/>
         <source>Quit</source>
         <translation type="obsolete">Abschließen</translation>
     </message>
@@ -145,7 +140,6 @@
         <translation type="unfinished">Ortsnamen anzeigen (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="131"/>
         <source>show active position (DIANA)</source>
         <translation type="obsolete">Aktueller Ortsname (DIANA)</translation>
     </message>
@@ -175,7 +169,6 @@
         <translation type="unfinished">Über T-series</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="364"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -190,7 +183,7 @@ met.no 2002-2005</translation>
         <translation type="unfinished">Aktueller Ortsname (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="426"/>
+        <location filename="../src/qtsMain.cc" line="425"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -210,7 +203,6 @@ met.no 2002</translation>
         <translation type="unfinished">Sprache gewechselt</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="934"/>
         <source>T-series must be restarted to reset the Language to: [%1] </source>
         <translation type="obsolete">T-series muß neu gestartet werden um die Sprache auf [%1] zu ändern</translation>
     </message>
@@ -220,12 +212,10 @@ met.no 2002</translation>
         <translation type="unfinished">Neuheiten</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="935"/>
         <source>Ok</source>
         <translation type="obsolete">Ok</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="936"/>
         <source>Quit T-series</source>
         <translation type="obsolete">T-series beenden</translation>
     </message>
@@ -280,7 +270,7 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="947"/>
+        <location filename="../src/qtsMain.cc" line="946"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>

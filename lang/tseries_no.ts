@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="nb">
+<!DOCTYPE TS>
+<TS version="2.0" language="nb">
 <context>
     <name>CoordinateTab</name>
     <message>
@@ -11,22 +12,18 @@
 <context>
     <name>HelpDialog</name>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="63"/>
         <source>Help</source>
         <translation type="obsolete">Hjelp</translation>
     </message>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="74"/>
         <source>Backwards</source>
         <translation type="obsolete">Bakover</translation>
     </message>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="78"/>
         <source>Forward</source>
         <translation type="obsolete">Framover</translation>
     </message>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="82"/>
         <source>Close</source>
         <translation type="obsolete">Lukk</translation>
     </message>
@@ -80,12 +77,12 @@
         <translation>Hjelp</translation>
     </message>
     <message>
+        <location filename="../src/qtsMain.cc" line="111"/>
         <location filename="../src/qtsMain.cc" line="823"/>
         <source>Manual</source>
         <translation>Brukerveiledning</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="104"/>
         <source>About..</source>
         <translation type="obsolete"> Om..</translation>
     </message>
@@ -110,7 +107,6 @@
         <translation>Endre filter</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="118"/>
         <source>Quit</source>
         <translation type="obsolete">Avslutt</translation>
     </message>
@@ -140,7 +136,6 @@
         <translation>vis stedsnavn (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="131"/>
         <source>show active position (DIANA)</source>
         <translation type="obsolete">Vis valgt stedsnavn (DIANA)</translation>
     </message>
@@ -170,7 +165,6 @@
         <translation>Om T-series</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="364"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -186,7 +180,7 @@ met.no 2002-2005</translation>
         <translation>Vis valgt stedsnavn (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="426"/>
+        <location filename="../src/qtsMain.cc" line="425"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -207,7 +201,6 @@ met.no 2002</translation>
         <translation>Språk endret</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="934"/>
         <source>T-series must be restarted to reset the Language to: [%1] </source>
         <translation type="obsolete">T-series må startes på nytt for å sette språk til: [%1]</translation>
     </message>
@@ -217,12 +210,10 @@ met.no 2002</translation>
         <translation>Nyheter</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="935"/>
         <source>Ok</source>
         <translation type="obsolete">OK</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="936"/>
         <source>Quit T-series</source>
         <translation type="obsolete">Avslutt T-series</translation>
     </message>
@@ -277,7 +268,7 @@ met.no 2002</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="947"/>
+        <location filename="../src/qtsMain.cc" line="946"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation>T-series må startes på nytt for å sette språk til: [%1]</translation>
     </message>

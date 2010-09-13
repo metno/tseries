@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1">
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>CoordinateTab</name>
     <message>
@@ -11,22 +12,18 @@
 <context>
     <name>HelpDialog</name>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="63"/>
         <source>Help</source>
         <translation type="obsolete">Hjälp</translation>
     </message>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="74"/>
         <source>Backwards</source>
         <translation type="obsolete">Bakåt</translation>
     </message>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="78"/>
         <source>Forward</source>
         <translation type="obsolete">Framåt</translation>
     </message>
     <message>
-        <location filename="../src/qtHelpDialog.cc" line="82"/>
         <source>Close</source>
         <translation type="obsolete">Stäng</translation>
     </message>
@@ -80,12 +77,12 @@
         <translation type="unfinished">Hjälp</translation>
     </message>
     <message>
+        <location filename="../src/qtsMain.cc" line="111"/>
         <location filename="../src/qtsMain.cc" line="823"/>
         <source>Manual</source>
         <translation type="unfinished">Bruksanvisning</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="104"/>
         <source>About..</source>
         <translation type="obsolete">Om..</translation>
     </message>
@@ -110,7 +107,6 @@
         <translation type="unfinished">Ändra filter</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="118"/>
         <source>Quit</source>
         <translation type="obsolete">Avsluta</translation>
     </message>
@@ -175,7 +171,7 @@
         <translation type="unfinished">Om T-series</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="426"/>
+        <location filename="../src/qtsMain.cc" line="425"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -196,17 +192,14 @@ met.no 2002</translation>
         <translation type="unfinished">Språk ändrat</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="934"/>
         <source>T-series must be restarted to reset the Language to: [%1] </source>
         <translation type="obsolete">T-series måste startas om för att ändra språk til : [%1]</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="935"/>
         <source>Ok</source>
         <translation type="obsolete">Ok</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="936"/>
         <source>Quit T-series</source>
         <translation type="obsolete">Avsluta T-series</translation>
     </message>
@@ -261,7 +254,7 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="947"/>
+        <location filename="../src/qtsMain.cc" line="946"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>
