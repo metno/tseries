@@ -187,7 +187,7 @@ public:
 		   float&,float&,int&);
   // returns info about position idx in dset
   bool getPosition(int dset, int &idx, ExtStation** es);
-  map<miutil::miString,miutil::miString> getPositions(const miutil::miString mod);
+  std::map<miutil::miString,miutil::miString> getPositions(const miutil::miString mod);
   // get list of indices for files which contain data for a
   // specific model and run. Returns number of files found
   int findModel(const Model& mid, const Run& rid, int* idx, int max);
@@ -202,9 +202,9 @@ public:
 
   // wdb --------------------
   bool has_wdb_stream() const { return wdbStreamIsOpen;}
-  set<string> getWdbProviders();
-  set<miTime> getWdbReferenceTimes(string provider);
-  vector<string> getWdbParameterNames() const { return wdbStream->getWdbParameterNames(); }
+  std::set<std::string> getWdbProviders();
+  std::set<miutil::miTime> getWdbReferenceTimes(string provider);
+  std::vector<std::string> getWdbParameterNames() const { return wdbStream->getWdbParameterNames(); }
   pets::WdbStream::BoundaryBox getWdbGeometry();
   pets::WdbStream*  getWdbStream() { return wdbStream;}
 

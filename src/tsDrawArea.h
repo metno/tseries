@@ -32,9 +32,9 @@
 #define _tsDrawArea_h
 
 
-#include <tsRequest.h>
-#include <tsDatafileColl.h>
-#include <tsSession.h>
+#include "tsRequest.h"
+#include "tsDatafileColl.h"
+#include "tsSession.h"
 
 #include <map>
 #include <vector>
@@ -45,15 +45,13 @@
 #include <tsData/ptWeatherParameter.h>
 #include <pets2/ptPlotElement.h>
 #include <pets2/ptEditLineElement.h>
-#include <tsSetup.h>
+#include "tsSetup.h"
 
 
 
 //#include <GLP.h>
-#include <diPrintOptions.h>
+#include "diPrintOptions.h"
 
-
-using namespace std;
 
 class tsDrawArea {
 private:
@@ -79,7 +77,7 @@ private:
   bool  oco; // original
   bool  ico; // new color
 
-  map<miutil::miString,miTime> timemarks;
+  map<miutil::miString,miutil::miTime> timemarks;
   void useTimemarks();
   bool prepareData();
   bool prepareDiagram();

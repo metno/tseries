@@ -38,6 +38,7 @@
 #include <glText/glTextQtTexture.h>
 
 using namespace d_print;
+using namespace std;
 
 tsDrawArea::tsDrawArea( tsRequest* tsr,
 			DatafileColl* tsd,
