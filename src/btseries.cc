@@ -543,7 +543,7 @@ int main(int argc, char** argv)
   // replaceable values for plot-commands
   std::vector<keyvalue> keys;
 
-  miTime time, ptime, fixedtime;
+  miutil::miTime time, ptime, fixedtime;
 
   miutil::miString xhost = ":0.0";
   miutil::miString sarg;
