@@ -34,6 +34,7 @@
 
 using namespace d_print;
 using namespace miutil;
+using namespace std;
 
 vector<printerManager::printerExtra> printerManager::printers;
 map<miString,d_print::PageSize> printerManager::pages;
