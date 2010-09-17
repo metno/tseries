@@ -31,6 +31,7 @@
 #include "qtsShow.h"
 #include <iostream>
 
+using namespace std;
 
 const float gl_width =  1500.0;
 const float gl_height = 1000.0;

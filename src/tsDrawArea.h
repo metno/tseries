@@ -100,7 +100,7 @@ public:
 
   void plot();
 
-  void setTimemark(miTime nt,miutil::miString name="");
+  void setTimemark(miutil::miTime nt,miutil::miString name="");
   void clearTimemarks(miutil::miString name="");
 
   void setProgintervall(int mi,int ma)

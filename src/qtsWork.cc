@@ -40,6 +40,7 @@
 #include "WdbCacheThread.h"
 #include <QSplitter>
 
+using namespace std;
 
 bool qStr2miStr(const QString& i, miString& o)
 {

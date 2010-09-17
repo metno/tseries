@@ -51,8 +51,6 @@
 
 #include <set>
 
-using namespace std;
-
 const miutil::miString DATASET_TSERIES= "T-series ";
 const miutil::miString TARGETS_TSERIES= "TARGETS_TSERIES";
 const miutil::miString IMG_STD_TSERIES= "IMG_STD_TSERIES";
@@ -78,11 +76,11 @@ private:
   SelectionType  selectionType;
   unsigned int   maxWDBreadTime;
   miutil::miString               oldModel;
-  map<miutil::miString,Model>    modelMap;
-  vector<miutil::miString>       myStations;
+  std::map<miutil::miString,Model>    modelMap;
+  std::vector<miutil::miString>       myStations;
   miMessage              myTarget;
-  map<miutil::miString,miString> myList;
-  set<miutil::miString>          filter;
+  std::map<miutil::miString,miutil::miString> myList;
+  std::set<miutil::miString>          filter;
 
   bool activeRefresh;
   bool filterOn;
@@ -95,7 +93,7 @@ private:
   bool makeStyleList();
   bool makeModelList(const miutil::miString&);
   bool makeRunList(const miutil::miString&);
-  bool makeRunList(const miutil::miString&,const miString&);
+  bool makeRunList(const miutil::miString&,const miutil::miString&);
   void restoreModelFromLog();
   void checkPosition(miutil::miString st);
 
@@ -113,20 +111,20 @@ public:
   void changeStation(const miutil::miString&);
   void changeRun(const miutil::miString&);
 
-  set<miutil::miString> Filter() const {return filter;}
-  set<miutil::miString> fullPosList();
-  set<miutil::miString> createFilter(bool orig=false);
+  std::set<miutil::miString> Filter() const {return filter;}
+  std::set<miutil::miString> fullPosList();
+  std::set<miutil::miString> createFilter(bool orig=false);
 
   miMessage getStationList();
   miutil::miString  model() const {return request.model();}
   miutil::miString  lastList() { return (filterOn ? TS_MINE : "" ) + request.model();}
 
   miMessage target();
-  miutil::miString  file(const miString typ) const { return request.file(typ);}
+  miutil::miString  file(const miutil::miString typ) const { return request.file(typ);}
   qtsShow*  Show() {return show;}
   qtsSidebar* sideBar() const {return sidebar;}
 
-  void changePositions(const miString&);
+  void changePositions(const miutil::miString&);
   SelectionType getSelectionType() const {return selectionType;};
 
 

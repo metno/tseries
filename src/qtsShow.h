@@ -34,12 +34,7 @@
 #include <qgl.h>
 #include <QGLFormat>
 #include <QGLWidget>
-#include <tsDrawArea.h>
-
-
-
-
-using namespace std;
+#include "tsDrawArea.h"
 
 class qtsShow : public QGLWidget {
   Q_OBJECT
@@ -61,7 +56,7 @@ public:
 
   void refresh(bool readData = false);
   void hardcopy(const printOptions&);
-  void setTimemark(miTime,miutil::miString="");
+  void setTimemark(miutil::miTime,miutil::miString="");
   void clearTimemarks(miutil::miString="");
   void setProgintervall(int mi,int ma) { drawArea.setProgintervall(mi,ma);}
 signals:

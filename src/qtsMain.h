@@ -61,8 +61,6 @@
 #include <set>
 
 
-using namespace std;
-
 class qtsMain : public QMainWindow {
   Q_OBJECT
 private:
@@ -118,7 +116,7 @@ private:
   miutil::miString      lang;
   miutil::miString      currentModel;
   miutil::miTime        currentTime;
-  set<miutil::miString> sendModels;
+  std::set<miutil::miString> sendModels;
 
   void timerEvent(QTimerEvent*);
   int updateTimer;
@@ -141,8 +139,8 @@ private:
   void initHelp();
   void setRemoteParameters();
   void makeEPS(const miutil::miString&);
-  void setTimemark(miTime);
-  void setDianaTimemark(miTime);
+  void setTimemark(miutil::miTime);
+  void setDianaTimemark(miutil::miTime);
 
   void disablePoslist(miutil::miString);
   void enableCurrentPoslist();
