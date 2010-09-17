@@ -46,7 +46,7 @@
 #include <config.h>
 
 
-const miString version_string=VERSION;
+const miutil::miString version_string=VERSION;
 
 
 using namespace std;
@@ -79,15 +79,15 @@ void endHardcopy()
  key/value pairs from commandline-parameters
  */
 struct keyvalue {
-  miString key;
-  miString value;
+  miutil::miString key;
+  miutil::miString value;
 };
 
 /*
  clean an input-string: remove preceding and trailing blanks,
  remove comments
  */
-void cleanstr(miString& s)
+void cleanstr(miutil::miString& s)
 {
   std::string::size_type p;
   if ((p = s.find("#")) != string::npos)
@@ -99,12 +99,12 @@ void cleanstr(miString& s)
 
 // one list of strings with name
 struct stringlist {
-  miString name;
-  vector<miString> l;
+  miutil::miString name;
+  std::vector<miutil::miString> l;
 };
 
 // list of lists..
-vector<stringlist> lists;
+std::vector<stringlist> lists;
 
 /*
  Recursively unpack one (or several nested) LOOP-section(s)
@@ -117,18 +117,18 @@ vector<stringlist> lists;
  <contents, all VAR1,VAR2,.. replaced by ARG1,ARG2,.. for each iteration>
  ENDLOOP or LOOP.END
  */
-void unpackloop(vector<miString>& orig, // original strings..
-    vector<int>& origlines, // ..with corresponding line-numbers
+void unpackloop(std::vector<miutil::miString>& orig, // original strings..
+    std::vector<int>& origlines, // ..with corresponding line-numbers
     unsigned int& index, // original string-counter to update
-    vector<miString>& part, // final strings from loop-unpacking..
-    vector<int>& partlines) // ..with corresponding line-numbers
+    std::vector<miutil::miString>& part, // final strings from loop-unpacking..
+    std::vector<int>& partlines) // ..with corresponding line-numbers
 {
   unsigned int start = index;
 
-  miString loops = orig[index];
+  miutil::miString loops = orig[index];
   loops = loops.substr(4, loops.length() - 4);
 
-  vector<miString> vs, vs2;
+  std::vector<miutil::miString> vs, vs2;
 
   vs = loops.split('=');
   if (vs.size() < 2) {
@@ -137,18 +137,18 @@ void unpackloop(vector<miString>& orig, // original strings..
     exit(1);
   }
 
-  miString keys = vs[0]; // key-part
-  vector<miString> vkeys = keys.split('|');
+  miutil::miString keys = vs[0]; // key-part
+  std::vector<miutil::miString> vkeys = keys.split('|');
   unsigned int nkeys = vkeys.size();
 
-  miString argu = vs[1]; // argument-part
+  miutil::miString argu = vs[1]; // argument-part
   int nargu;
-  vector<vector<miString> > arguments;
+  std::vector<std::vector<miutil::miString> > arguments;
 
   /* Check if argument is name of list
    Lists are recognized with preceding '@' */
   if (argu.length() > 1 && argu.substr(0, 1) == "@") {
-    miString name = argu.substr(1, argu.length() - 1);
+    miutil::miString name = argu.substr(1, argu.length() - 1);
     // search for list..
     unsigned int k;
     for (k = 0; k < lists.size(); k++) {
@@ -192,8 +192,8 @@ void unpackloop(vector<miString>& orig, // original strings..
   }
 
   // temporary storage of loop-contents
-  vector<miString> tmppart;
-  vector<int> tmppartlines;
+  std::vector<miutil::miString> tmppart;
+  std::vector<int> tmppartlines;
 
   // go to next line
   index++;
@@ -204,7 +204,7 @@ void unpackloop(vector<miString>& orig, // original strings..
       // we have the loop-contents
       for (int i = 0; i < nargu; i++) { // loop over arguments
         for (unsigned int j = 0; j < tmppart.size(); j++) { // loop over lines
-          miString l = tmppart[j];
+          miutil::miString l = tmppart[j];
           for (unsigned int k = 0; k < nkeys; k++) { // loop over keywords
             // replace all variables
             l.replace(vkeys[k], arguments[i][k]);
@@ -242,10 +242,10 @@ void unpackloop(vector<miString>& orig, // original strings..
  ...
  LIST.END
  */
-void unpackinput(vector<miString>& orig, // original setup
-    vector<int>& origlines, // original list of linenumbers
-    vector<miString>& final, // final setup
-    vector<int>& finallines) // final list of linenumbers
+void unpackinput(std::vector<miutil::miString>& orig, // original setup
+    std::vector<int>& origlines, // original list of linenumbers
+    std::vector<miutil::miString>& final, // final setup
+    std::vector<int>& finallines) // final list of linenumbers
 {
   for (unsigned int i = 0; i < orig.size(); i++) {
     if (orig[i].substr(0, 4) == "LOOP") {
@@ -282,7 +282,7 @@ void unpackinput(vector<miString>& orig, // original setup
  parse setupfile
  perform other initialisations based on setup information
  */
-bool readSetup(const miString& setupfile, const miString& site,
+bool readSetup(const miutil::miString& setupfile, const miutil::miString& site,
     SessionManager& session, DatafileColl& data)
 {
   cout << "Reading setupfile:" << setupfile << " for site " << site << endl;
@@ -321,7 +321,7 @@ bool readSetup(const miString& setupfile, const miString& site,
 void printUsage(bool showexample)
 {
 
-  const miString
+  const miutil::miString
       help =
                 "***************************************************               \n"
                 "* TSERIES batch version:" + version_string +
@@ -356,7 +356,7 @@ void printUsage(bool showexample)
                 "                                                                  \n"
                 "                                                                  \n";
 
-  const miString
+  const miutil::miString
       example =
             "#--------------------------------------------------------------   \n"
             "# inputfile for btseries                                          \n"
@@ -544,16 +544,16 @@ int main(int argc, char** argv)
   DatafileColl data;
 
   // replaceable values for plot-commands
-  vector<keyvalue> keys;
+  std::vector<keyvalue> keys;
 
   miTime time, ptime, fixedtime;
 
-  miString xhost = ":0.0";
-  miString sarg;
-  miString batchinput;
+  miutil::miString xhost = ":0.0";
+  miutil::miString sarg;
+  miutil::miString batchinput;
   // tseries setup file
-  miString setupfile = "tseries.ctl";
-  miString site = "FOU";
+  miutil::miString setupfile = "tseries.ctl";
+  miutil::miString site = "FOU";
   bool setupfilegiven = false;
 
   // check command line arguments
@@ -561,7 +561,7 @@ int main(int argc, char** argv)
     printUsage(false);
   }
 
-  vector<miString> ks;
+  std::vector<miutil::miString> ks;
   int ac = 1;
   while (ac < argc) {
     sarg = argv[ac];
@@ -654,14 +654,14 @@ int main(int argc, char** argv)
   priop.papersize.vsize = 420;
   priop.doEPS = false;
 
-  miString diagramtype;
-  miString modelname;
+  miutil::miString diagramtype;
+  miutil::miString modelname;
   int modelrun = R_UNDEF;
-  miString posname;
-  miString newposname;
+  miutil::miString posname;
+  miutil::miString newposname;
 
-  miString s;
-  vector<miString> vs, vvs, vvvs;
+  miutil::miString s;
+  std::vector<miutil::miString> vs, vvs, vvvs;
   int n, nv;
   bool setupread = false;
   bool buffermade = false;
@@ -671,8 +671,8 @@ int main(int argc, char** argv)
   pixwidth = 1.0;
   pixheight = 1.0;
 
-  vector<miString> lines, tmplines;
-  vector<int> linenumbers, tmplinenumbers;
+  std::vector<miutil::miString> lines, tmplines;
+  std::vector<int> linenumbers, tmplinenumbers;
   bool merge = false, newmerge;
   int linenum = 0;
   int nkeys = keys.size();
@@ -806,7 +806,7 @@ int main(int argc, char** argv)
           bool result = image.save(priop.fname.c_str());
 
           if (verbose){
-            cout << " .." << miString(result ? "Ok" : " **FAILED!**") << endl;
+            cout << " .." << miutil::miString(result ? "Ok" : " **FAILED!**") << endl;
           } else if (!result){
             cerr << " ERROR, saving image to:" << priop.fname << endl;
           }
@@ -826,7 +826,7 @@ int main(int argc, char** argv)
           endHardcopy();
           multiple_newpage = true;
 
-          miString command = printman.printCommand();
+          miutil::miString command = printman.printCommand();
           priop.numcopies = 1;
 
           printman.expandCommand(command, priop);
@@ -844,8 +844,8 @@ int main(int argc, char** argv)
        */
     } else if (lines[k].upcase().contains("POSLOOP ")) {
       int j;
-      miString loopvar, xvar = "[COL]", yvar = "[ROW]";
-      vector<miString> newlines, vs, vvs, positions;
+      miutil::miString loopvar, xvar = "[COL]", yvar = "[ROW]";
+      std::vector<miutil::miString> newlines, vs, vvs, positions;
       vs = lines[k].split(" ");
       if (vs.size() > 1) {
         loopvar = vs[1];
@@ -853,7 +853,7 @@ int main(int argc, char** argv)
       bool make_multi = false;
       int nx = 1, ny = 1, ns = 0, nm = 0;
       int ix, iy;
-      miString mulcom;
+      miutil::miString mulcom;
       if (vs.size() > 2) {
         if (vs[2].upcase().contains("MULTIPLE.PLOTS=")) {
           mulcom = vs[2];
@@ -884,14 +884,14 @@ int main(int argc, char** argv)
       }
       int numpos = data.getNumPositions();
       int ii = 0;
-      miString pos;
+      miutil::miString pos;
       int id, prio;
       float lat, lng;
       while (data.getPosition(-1, ii, pos, id, lat, lng, prio)) {
         positions.push_back(pos);
       }
       numpos = positions.size();
-      vector<miString> looplines;
+      std::vector<miutil::miString> looplines;
       int m = newlines.size();
       ix = -1;
       iy = 0;
@@ -913,10 +913,10 @@ int main(int argc, char** argv)
           }
         }
         for (int jj = 0; jj < m; jj++) {
-          miString tmp = newlines[jj];
+          miutil::miString tmp = newlines[jj];
           tmp.replace(loopvar, positions[ii]);
-          tmp.replace(xvar, miString(ix));
-          tmp.replace(yvar, miString(iy));
+          tmp.replace(xvar, miutil::miString(ix));
+          tmp.replace(yvar, miutil::miString(iy));
           looplines.push_back(tmp);
         }
       }
@@ -944,7 +944,7 @@ int main(int argc, char** argv)
       endHardcopy();
       multiple_newpage = true;
 
-      miString command = printman.printCommand();
+      miutil::miString command = printman.printCommand();
       priop.numcopies = 1;
 
       printman.expandCommand(command, priop);
@@ -965,10 +965,10 @@ int main(int argc, char** argv)
           << linenumbers[k] << endl;
       return 1;
     }
-    miString key = vs[0].downcase();
-    //     miString value= vs[1];
+    miutil::miString key = vs[0].downcase();
+    //     miutil::miString value= vs[1];
     int ieq = lines[k].find_first_of("=");
-    miString value = lines[k].substr(ieq + 1, lines[k].length() - ieq - 1);
+    miutil::miString value = lines[k].substr(ieq + 1, lines[k].length() - ieq - 1);
     key.trim();
     value.trim();
 
@@ -1143,7 +1143,7 @@ int main(int argc, char** argv)
         glViewport(0, 0, xsize, ysize);
 
       } else {
-        vector<miString> v1 = value.split(",");
+        std::vector<miutil::miString> v1 = value.split(",");
         if (v1.size() < 2) {
           cerr << "WARNING. Illegal values to multiple.plots:" << lines[k]
               << " Linenumber:" << linenumbers[k] << endl;
@@ -1194,7 +1194,7 @@ int main(int argc, char** argv)
             << " Linenumber:" << linenumbers[k] << endl;
         return 1;
       } else {
-        vector<miString> v1 = value.split(",");
+        std::vector<miutil::miString> v1 = value.split(",");
         if (v1.size() != 2) {
           cerr << "WARNING. Illegal values to plotcell:" << lines[k]
               << " Linenumber:" << linenumbers[k] << endl;
