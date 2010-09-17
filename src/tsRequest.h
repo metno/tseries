@@ -38,7 +38,7 @@ using namespace std;
 
 class tsRequest {
 public:
-  typedef enum Streamtype {HDFSTREAM, WDBSTREAM};
+  enum Streamtype {HDFSTREAM, WDBSTREAM};
 
 private:
   miutil::miString mod_;
