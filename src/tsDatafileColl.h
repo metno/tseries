@@ -46,8 +46,6 @@
 #define MAXMODELSINSTREAM 100
 
 
-using namespace std;
-
 class dataset {
   bool bits[MAXDATASETS];
 public:
@@ -116,18 +114,18 @@ struct  DsInfo {
   Model modelList[MAXMODELSINSTREAM];// model id
   Run   runList[MAXMODELSINSTREAM];  // run id
   int   idList[MAXMODELSINSTREAM];   // model production number
-  vector<miutil::miString> txtList[MAXMODELSINSTREAM]; // info texts
+  std::vector<miutil::miString> txtList[MAXMODELSINSTREAM]; // info texts
 };
 
 class DatafileColl
 {
 private:
   miutil::miString collectName;          // file collection name
-  vector<DsInfo>   datastreams;    // List of datafiles
+  std::vector<DsInfo>   datastreams;    // List of datafiles
   pets::WdbStream*       wdbStream;      // the wdb data stream
-  vector<ExtStation> stations;   // List of stations
-  vector<miutil::miString> datasetname;  // name of dataset
-  map<miutil::miString,miPosition> pos_info; // all positions ordered by name....
+  std::vector<ExtStation> stations;   // List of stations
+  std::vector<miutil::miString> datasetname;  // name of dataset
+  std::map<miutil::miString,miPosition> pos_info; // all positions ordered by name....
   int numStationsDS[MAXDATASETS];// number of positions in each dataset
   //vector<miutil::miString> priorStations;// names of prioritized stations
   float tolerance;               // 10000*degrees
@@ -160,7 +158,7 @@ public:
 //   // check if name is prioritized
 //   bool isPriorStation(const miutil::miString);
   // adds file to collection, return index
-  int  addStream(const miutil::miString,const miString,
+  int  addStream(const miutil::miString,const miutil::miString,
 		 const miutil::miString,
 		 const int, const int,
 		 const miutil::miString= "x,x,x,x");
@@ -175,9 +173,9 @@ public:
   // closes all streams
   void closeStreams();
   // check if newer files on disk, return indexes
-  bool check(vector<int>&);
+  bool check(std::vector<int>&);
   // returns name, desc, filesize, dataset and n_in_dataset for file
-  bool getStreamInfo(int,miutil::miString&,miString&,int&,int&,int&);
+  bool getStreamInfo(int,miutil::miString&,miutil::miString&,int&,int&,int&);
   // returns pointer to datastream object
   DataStream* getDataStream(int idx);
   // returns number of unique positions in dataset
@@ -189,7 +187,7 @@ public:
 		   float&,float&,int&);
   // returns info about position idx in dset
   bool getPosition(int dset, int &idx, ExtStation** es);
-  map<miutil::miString,miString> getPositions(const miString mod);
+  map<miutil::miString,miutil::miString> getPositions(const miutil::miString mod);
   // get list of indices for files which contain data for a
   // specific model and run. Returns number of files found
   int findModel(const Model& mid, const Run& rid, int* idx, int max);
