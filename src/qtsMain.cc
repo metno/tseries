@@ -48,7 +48,8 @@
 
 #include "tseries.xpm"
 
-
+using namespace std;
+using namespace miutil;
 
 const miString thisTM  = "MARKEDTIME";
 const miString dianaTM = "DIANATIME";
