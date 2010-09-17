@@ -39,6 +39,7 @@
 
 using namespace d_print;
 using namespace std;
+using namespace miutil;
 
 tsDrawArea::tsDrawArea( tsRequest* tsr,
 			DatafileColl* tsd,

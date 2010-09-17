@@ -48,10 +48,8 @@
 #include "tsSetup.h"
 
 
-
 //#include <GLP.h>
 #include "diPrintOptions.h"
-
 
 class tsDrawArea {
 private:
