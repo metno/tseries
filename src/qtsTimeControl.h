@@ -37,8 +37,6 @@
 #include <QLabel>
 #include <QLayout>
 
-using namespace std;
-
 class TimeControl : public QFrame {
   Q_OBJECT
 private:

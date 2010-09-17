@@ -48,41 +48,37 @@
 #undef Bool
 #endif 
 
-using namespace std;
-
 // Should have a list of required models for a station 
 // for each style type
 class SessionManager {
-
-  
 private:
   ParameterDefinition pdef;
   struct modeldata{       // Menynavn og id til aktuelle modeller
     miutil::miString modelname;
     Model modelid;
   };
-  vector<modeldata> models;
+  std::vector<modeldata> models;
   
   struct pardata{
     int midx;             // model index
-    vector<ParId> params; // the parameters
+    std::vector<ParId> params; // the parameters
   };
   struct styledata{
     miutil::miString stylename;         // name of style
     miutil::miString stylefile;         // name of stylefile
     ptStyle  style;             // pets-style
     bool modelchoice;           // whether there is a choice of models
-    vector<int> modelidx;       // model indices for modelchoice
-    vector<ParId> params;       // id without model
-    vector<pardata> fullparams; // full id with model
+    std::vector<int> modelidx;       // model indices for modelchoice
+    std::vector<ParId> params;       // id without model
+    std::vector<pardata> fullparams; // full id with model
   };
-  vector<styledata> styles;
+  std::vector<styledata> styles;
 
   bool checkEnvironment(miutil::miString& t);
 public:
 
   // get defined stylenames, return number of style
-  int getStyleTypes(vector<miutil::miString>& stylenam);
+  int getStyleTypes(std::vector<miutil::miString>& stylenam);
   // get a PETS style by name
   ptStyle& getStyle(const miutil::miString);
   // get a PETS style by index
@@ -99,12 +95,12 @@ public:
 
   // get a list of available models for a given styleindex
   int getModels(const miutil::miString& s, 
-		map<miutil::miString,Model>& modid,
-		vector<miutil::miString>& modname);
+      std::map<miutil::miString,Model>& modid,
+      std::vector<miutil::miString>& modname);
   // get a list of available runs for style/model
   int getRuns(const int sidx, const int midx,
-	      vector<Run>& runid,
-	      vector<miutil::miString>& runname);
+      std::vector<Run>& runid,
+      std::vector<miutil::miString>& runname);
   
   // read diagram-sessions from file
   void readSessions(const miutil::miString& fname,

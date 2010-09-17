@@ -32,6 +32,7 @@
 #include <iostream>
 #include <fstream>
 
+using namespace std;
 using namespace miutil;
 
 map<miString,miString>             tsConfigure::contents;

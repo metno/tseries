@@ -30,6 +30,7 @@
 */
 #include "tsRequest.h"
 
+using namespace std;
 using namespace miutil;
 
 bool tsRequest::setString(const miString& i, miString& o)

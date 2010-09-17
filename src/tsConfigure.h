@@ -37,9 +37,6 @@
 #include <map>
 
 
-
-using namespace std;
-
 class tsConfigure {
 
 public:
@@ -56,8 +53,8 @@ public:
   void set(miutil::miString key, const bool token);
   void set(miutil::miString key, const int token);
 
-  vector<miutil::miString> getCustoms();
-  vector<miutil::miString> getList(miutil::miString);
+  std::vector<miutil::miString> getCustoms();
+  std::vector<miutil::miString> getList(miutil::miString);
 
   bool save(miutil::miString);
 
@@ -65,11 +62,11 @@ private:
 
   struct tsCustoms {
     miutil::miString name;
-    vector<miutil::miString> list;
+    std::vector<miutil::miString> list;
   };
 
-  static map<miutil::miString,miutil::miString> contents;
-  static vector<tsCustoms> custom;
+  static std::map<miutil::miString,miutil::miString> contents;
+  static std::vector<tsCustoms> custom;
 
 
   enum { PUBLIC,STYLE,LIST} sec;

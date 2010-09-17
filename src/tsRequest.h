@@ -34,8 +34,6 @@
 #include <puTools/miString.h>
 #include <puTools/miTime.h>
 
-using namespace std;
-
 class tsRequest {
 public:
   enum Streamtype {HDFSTREAM, WDBSTREAM};
@@ -97,7 +95,7 @@ public:
   miutil::miString file(const miutil::miString type) const;
 
 
-  friend ostream& operator<<(ostream&, const tsRequest&);
+  friend std::ostream& operator<<(std::ostream&, const tsRequest&);
 
 };
 

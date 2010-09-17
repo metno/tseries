@@ -31,8 +31,6 @@
 #ifndef _qtsFilterManager_h
 #define _qtsFilterManager_h
 
-
-
 #include <QDialog>
 #include <QPushButton>
 #include <QLabel>
@@ -46,9 +44,6 @@
 #include <vector>
 #include <set>
 
-
-
-using namespace std; 
 
 class qtsFilterManager : public QDialog 
 {
@@ -66,19 +61,19 @@ private:
 
   QStringList original;
 
-  QStringList createList(const set<miutil::miString>&);
+  QStringList createList(const std::set<miutil::miString>&);
 private slots: 
   void reload();
   void remove();
   void copy();
 
 public:
-  qtsFilterManager(const set<miutil::miString>&,
-		   const set<miutil::miString>&,
-		   const set<miutil::miString>&,
+  qtsFilterManager(const std::set<miutil::miString>&,
+		   const std::set<miutil::miString>&,
+		   const std::set<miutil::miString>&,
 		   QWidget* parent = 0);
   
-  set<miutil::miString> result();
+  std::set<miutil::miString> result();
 
 };
 

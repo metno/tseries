@@ -51,14 +51,9 @@
 #include <puTools/miString.h>
 #include <qUtilities/ClientButton.h>
 
-using namespace std;
-
 class qtsSidebar : public QWidget
 {
   Q_OBJECT
-public:
-
-
 private:
 
   QTabWidget  *  tabs;
@@ -74,9 +69,6 @@ private:
   CoordinateTab* wdbtab;
   int wdbIdx, stationIdx;
 
-
-
-
 private slots:
   void tabChanged(int);
   void chacheQueryActivated();
@@ -88,7 +80,7 @@ public slots:
 public:
   qtsSidebar();
 
-  QString fillList(const vector<miutil::miString>& v, const StationTab::lEntry l);
+  QString fillList(const std::vector<miutil::miString>& v, const StationTab::lEntry l);
   QString fillStations(const QStringList& s) { return stationtab->fillStations(s);}
 
   QString current(const StationTab::lEntry l) { return stationtab->current(l);}

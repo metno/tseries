@@ -42,17 +42,15 @@
 #include <tsData/ptParameterDefinition.h>
 #include <tsData/ptPrimitiveType.h>
 
-using namespace std;
-
 class SessionOptions {
 private:
   struct modeldata{
     Model model;
     miutil::miString modelname;
-    vector<ParId> parameters;
+    std::vector<ParId> parameters;
   };
 private:
-  vector<modeldata> mdata;
+  std::vector<modeldata> mdata;
   miutil::miTime start, stop;  // timeline interval to use
   miutil::miString dialogname; // dialog headline (Customer name etc)
   miPosition station;
@@ -68,7 +66,7 @@ public:
 
   // return name of model
   const miutil::miString& getmodelname(const int);
-  const vector<ParId>& paramVector(const int idx);
+  const std::vector<ParId>& paramVector(const int idx);
 
   // add a new parameter to a model
   bool addParam(const ParId parid, const int idx);

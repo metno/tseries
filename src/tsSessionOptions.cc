@@ -32,6 +32,7 @@
 
 #define SO_MAX_MODELS 20
 
+using namespace std;
 using namespace miutil;
 
 const vector<ParId> emptyvec;

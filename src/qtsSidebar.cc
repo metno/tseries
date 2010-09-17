@@ -42,6 +42,7 @@
 #include <iostream>
 
 using namespace miutil;
+using namespace std;
 
 qtsSidebar::qtsSidebar()
   : QWidget()

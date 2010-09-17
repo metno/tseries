@@ -34,8 +34,6 @@
 
 #include <puTools/miString.h>
 
-using namespace std; 
-
 namespace imageIO {
 
   /*

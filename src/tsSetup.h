@@ -38,9 +38,6 @@
 #include <map>
 #include <set>
 
-
-using namespace std;
-
 /// T-series setup read and storage
 /** All Tseries setup is read in this class
  *  usually represented in the tseries.ctl file.
@@ -56,7 +53,7 @@ class tsSetup {
 private:
   static bool           Initialised;
   miutil::miString      site;
-  set<miutil::miString> actualSites;
+  std::set<miutil::miString> actualSites;
 
   bool readsetup(miutil::miString filename);
 
@@ -96,7 +93,7 @@ public:
     int  InitialOpen;
     miutil::miString collectionName;
     miutil::miString preferredStyle;
-    vector<sStruct> data;
+    std::vector<sStruct> data;
   };
 
   struct wdbstruct {
@@ -104,8 +101,8 @@ public:
     miutil::miString    user;
     miutil::miString    busyMovie;
     unsigned long       readtime;            /// time to enable cache button (ms)
-    vector<std::string> vectorFunctions;     ///< run vector transformations on these
-    map<std::string,std::string> parameters; ///< translate parameters from wdb
+    std::vector<std::string> vectorFunctions;     ///< run vector transformations on these
+    std::map<std::string,std::string> parameters; ///< translate parameters from wdb
     int                 maxRecord;           ///< size of record ringbuffer;
   };
 
@@ -140,7 +137,7 @@ public:
     miutil::miString saves;
     miutil::miString doc;
     miutil::miString home;
-    vector<miutil::miString> lang;
+    std::vector<miutil::miString> lang;
   };
 
   /// Struct containing GUI-specific information
@@ -168,7 +165,7 @@ public:
     miutil::miString newsLink;
   };
 
-  static vector<dsStruct> streams; ///< Data streams
+  static std::vector<dsStruct> streams; ///< Data streams
 
   static wdbstruct wdb;            ///< wdb information
   static fistruct files;           ///< All filenames
@@ -185,7 +182,7 @@ private:
   enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,WDB,WDBPARAMETER,WDBVECTORFUNCTIONS} sec;
   enum warning { wKEY, wTOKEN, wSECTION, wFILE };
 
-  map<miutil::miString,miutil::miString> lookup;
+  std::map<miutil::miString,miutil::miString> lookup;
   miutil::miString fname;
   int line;
   int idx,ids;
