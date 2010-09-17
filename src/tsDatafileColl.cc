@@ -41,6 +41,7 @@
 #include <set>
 
 using namespace std;
+using namespace miutil;
 
 bool Union(const dataset& d1, const dataset& d2){
   for (int i=0; i<MAXDATASETS;i++)
