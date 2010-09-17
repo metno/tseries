@@ -41,6 +41,7 @@
 #include <QSplitter>
 
 using namespace std;
+using namespace miutil;
 
 bool qStr2miStr(const QString& i, miString& o)
 {
