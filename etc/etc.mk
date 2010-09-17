@@ -6,7 +6,6 @@ dist_etc_DATA += \
 	etc/tseries/tsDiagrams.def         \
 	etc/tseries/tsDiagrams_export.def  \
 	etc/tseries/tsDiagramsREGIONS.def  \
-	etc/tseries/tseries.ctl            \
 	etc/tseries/tseries.ctl_batch      \
 	etc/tseries/tseries.ctl_export     \
 	etc/tseries/tseries.filter         \
