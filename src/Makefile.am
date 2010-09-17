@@ -90,7 +90,11 @@ img_sources=               \
 	ts_filter.xpm      \
 	ts_find.xpm        \
 	view-refresh.xpm   \
-	list-add.xpm
+	list-add.xpm       \
+	directory.xpm      \
+	media-record.xpm   \
+	metno.xpm          \
+	trashcan.xpm
 
 # Flags -----------------------------
 
