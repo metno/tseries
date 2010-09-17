@@ -35,7 +35,7 @@
 
 
 using namespace miutil;
-
+using namespace std;
 
 bool imageIO::read_image(Image_data& img)
 {
