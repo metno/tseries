@@ -30,7 +30,7 @@
 */
 
 
-#include <qtPrintManager.h>
+#include "qtPrintManager.h"
 
 
 // conversion from Qt-printing types to diana-types

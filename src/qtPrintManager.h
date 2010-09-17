@@ -34,7 +34,7 @@
 
 
 #include <QPrinter>
-#include <diPrintOptions.h>
+#include "diPrintOptions.h"
 
 using namespace std; 
 
