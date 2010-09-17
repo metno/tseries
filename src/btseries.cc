@@ -38,18 +38,15 @@
 #include <puTools/miTime.h>
 #include <glob.h>
 
-#include <diPrintOptions.h>
-#include <tsSetup.h>
-#include <tsConfigure.h>
-#include <tsDrawArea.h>
+#include "diPrintOptions.h"
+#include "tsSetup.h"
+#include "tsConfigure.h"
+#include "tsDrawArea.h"
 
-#include <config.h>
+#include "config.h"
 
 
 const miutil::miString version_string=VERSION;
-
-
-using namespace std;
 
 tsDrawArea *drawarea;
 
