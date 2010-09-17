@@ -88,7 +88,9 @@ img_sources=               \
 	tb_yes.xpm         \
 	tseries.xpm        \
 	ts_filter.xpm      \
-	ts_find.xpm
+	ts_find.xpm        \
+	view-refresh.xpm   \
+	list-add.xpm
 
 # Flags -----------------------------
 
