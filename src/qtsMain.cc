@@ -335,7 +335,7 @@ void qtsMain::print()
 
   printOptions priop;
 
-  miString fname = "tseries_temp.ps";//work->file("ps");
+  miString fname = work->file("ps");//"tseries_temp.ps"
 
   QString ofn = printer->outputFileName();
 
@@ -347,8 +347,7 @@ void qtsMain::print()
     printer->setOutputFileName(p.path() + "/" + fname.cStr());
   }
 
-  //printer->setOutputFileName("");
-  //printer->setOutputToFile(false);
+  printer->setOutputFormat(QPrinter::NativeFormat);
 
   QPrintDialog *dialog = new QPrintDialog(printer, this);
   dialog->setWindowTitle(tr("Print Diagram"));
