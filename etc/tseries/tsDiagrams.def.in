@@ -32,7 +32,7 @@ WDB=Wdb
 # Standard meteogram
 [DIAGRAM]
 NAME=Meteogram
-STYLEFILE=@datarootdir@/tseries/style/style.meteogram
+STYLEFILE=@prefix@/share/tseries/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=HIRLAM.12km
@@ -75,7 +75,7 @@ PARAM=CC,x,x,x
 # Batch meteogram med snø
 [DIAGRAM]
 NAME=Batch_Meteogram
-STYLEFILE=  @datarootdir@/tseries/style/style.meteogram_batch
+STYLEFILE=  @prefix@/share/tseries/style/style.meteogram_batch
 
 [LEGALMODELS]
 MODEL=HIRLAM.12km
@@ -118,7 +118,7 @@ PARAM=CC,x,x,x
 # Standard meteogram
 [DIAGRAM]
 NAME=Batch_Meteogram_ec
-STYLEFILE=  @datarootdir@/tseries/style/style.meteogram_batch
+STYLEFILE=  @prefix@/share/tseries/style/style.meteogram_batch
 
 [LEGALMODELS]
 MODEL=HIRLAM.12km
@@ -161,7 +161,7 @@ PARAM=CC,x,x,x
 # Havdiagram
 [DIAGRAM]
 NAME=Havdiagram
-STYLEFILE= @datarootdir@/tseries/style/style.meteogram
+STYLEFILE= @prefix@/share/tseries/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=Nordic_4km
@@ -179,7 +179,7 @@ PARAM=CFD,x,x,x
 # Bølgediagram
 [DIAGRAM]
 NAME=Bølgediagram
-STYLEFILE= @datarootdir@/tseries/style/style.meteogram
+STYLEFILE= @prefix@/share/tseries/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=WAM
@@ -205,7 +205,7 @@ PARAM=DDPP,x,x,x
 # Standard meteogram med vær
 [DIAGRAM]
 NAME=S-Meteogram
-STYLEFILE= @datarootdir@/tseries/style/style.meteogram
+STYLEFILE= @prefix@/share/tseries/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=HIRLAM.12km
@@ -248,7 +248,7 @@ PARAM=WW,x,x,x
 
 [DIAGRAM]
 NAME=Meteogram m/snø
-STYLEFILE= @datarootdir@/tseries/style/style.snow_meteogram
+STYLEFILE= @prefix@/share/tseries/style/style.snow_meteogram
 
 [LEGALMODELS]
 MODEL=HIRLAM.12km
@@ -288,7 +288,7 @@ PARAM=CC,x,x,x
 # Marinogram
 [DIAGRAM]
 NAME=Marinogram
-STYLEFILE= @datarootdir@/tseries/style/style.marinogram
+STYLEFILE= @prefix@/share/tseries/style/style.marinogram
 
 [MODELSPECIFIC]
 MODEL=HIRLAM.12km
@@ -336,7 +336,7 @@ PARAM=HSDD,x,x,x
 # Røykfane T2m Deciler+Ensembler+Operasjonell
 [DIAGRAM]
 NAME=EPS_T2M
-STYLEFILE= @datarootdir@/tseries/style/style.eps_t2m
+STYLEFILE= @prefix@/share/tseries/style/style.eps_t2m
 
 [MODELSPECIFIC]
 MODEL=EPS
@@ -355,7 +355,7 @@ PARAM=TT,x,x,x
 # Røykfane RR Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_RR
-STYLEFILE= @datarootdir@/tseries/style/style.eps_rr
+STYLEFILE= @prefix@/share/tseries/style/style.eps_rr
 
 [MODELSPECIFIC]
 MODEL=EPS
@@ -374,7 +374,7 @@ PARAM=RR,x,x,x
 # Røykfane Z500 Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_Z500
-STYLEFILE= @datarootdir@/tseries/style/style.eps_z500
+STYLEFILE= @prefix@/share/tseries/style/style.eps_z500
 
 [MODELSPECIFIC]
 MODEL=EPS
@@ -393,7 +393,7 @@ PARAM=Z,x,x,x
 # Røykfane RR/T2m Deciler + operasjonell
 [DIAGRAM]
 NAME=EPS_RR/T2M
-STYLEFILE= @datarootdir@/tseries/style/style.eps_rrt2m
+STYLEFILE= @prefix@/share/tseries/style/style.eps_rrt2m
 
 [MODELSPECIFIC]
 MODEL=ECMWF_U
@@ -415,7 +415,7 @@ PARAM=EPTT,x,x,x
 # 
 [DIAGRAM]
 NAME=Boksplott-Døgnnedbør
-STYLEFILE= @datarootdir@/tseries/style/style.rrqgram
+STYLEFILE= @prefix@/share/tseries/style/style.rrqgram
 
 [MODELSPECIFIC]
 MODEL=rr24
@@ -434,7 +434,7 @@ PARAM=RRQT,x,x,x,x
 # 
 [DIAGRAM]
 NAME=Boksplott-Maks.vind
-STYLEFILE= @datarootdir@/tseries/style/style.fxqgram
+STYLEFILE= @prefix@/share/tseries/style/style.fxqgram
 
 [MODELSPECIFIC]
 MODEL=fx10-6h
@@ -453,7 +453,7 @@ PARAM=FXQT-6h,x,x,x,x
 # 
 [DIAGRAM]
 NAME=Boksplott-Temperatur2m
-STYLEFILE= @datarootdir@/tseries/style/style.t2mqgram
+STYLEFILE= @prefix@/share/tseries/style/style.t2mqgram
 
 [MODELSPECIFIC]
 MODEL=t2m
@@ -474,7 +474,7 @@ PARAM=t2mQT,x,x,x,x
 # Røykfane T2m Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_T2M
-STYLEFILE= @datarootdir@/tseries/style/style.lameps_t2m
+STYLEFILE= @prefix@/share/tseries/style/style.lameps_t2m
 [MODELSPECIFIC]
 MODEL=LAMEPS
 PARAM=EPTD,x,x,x
@@ -493,7 +493,7 @@ PARAM=TT_U,x,x,x
 # Røykfane RR Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_RR
-STYLEFILE= @datarootdir@/tseries/style/style.lameps_rr
+STYLEFILE= @prefix@/share/tseries/style/style.lameps_rr
 
 [MODELSPECIFIC]
 MODEL=LAMEPS
@@ -514,7 +514,7 @@ PARAM=RR,x,x,x
 # Røykfane Z500 Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_Z500
-STYLEFILE= @datarootdir@/tseries/style/style.lameps_z500
+STYLEFILE= @prefix@/share/tseries/style/style.lameps_z500
 
 [MODELSPECIFIC]
 MODEL=LAMEPS
@@ -529,7 +529,7 @@ PARAM=EPFC,x,x,x
 
 [DIAGRAM]
 NAME=LAMEPS_FF
-STYLEFILE= @datarootdir@/tseries/style/style.lameps_ff
+STYLEFILE= @prefix@/share/tseries/style/style.lameps_ff
 
 
 [MODELSPECIFIC]
@@ -556,7 +556,7 @@ PARAM=FFMS,x,x,x
 # Offshore
 [DIAGRAM]
 NAME=MariProd
-STYLEFILE= @datarootdir@/tseries/style/style.maritim
+STYLEFILE= @prefix@/share/tseries/style/style.maritim
 
 [LEGALMODELS]
 MODEL=SUBJ
@@ -583,7 +583,7 @@ PARAM=CWW,x,x,x
 
 [DIAGRAM]
 NAME=Proff Meteogrammer
-STYLEFILE=@datarootdir@/tseries/style/style.meteogram
+STYLEFILE=@prefix@/share/tseries/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=proff.approved
@@ -607,7 +607,7 @@ PARAM=WVFD,x,x,x
 
 [DIAGRAM]
 NAME=Proff Kombinert
-STYLEFILE=@datarootdir@/tseries/style/style.proff_combi
+STYLEFILE=@prefix@/share/tseries/style/style.proff_combi
 [LEGALMODELS]
 MODEL=WDB
 
@@ -639,7 +639,7 @@ PARAM=WVFD,x,x,x,RAW
 
 [DIAGRAM]
 NAME=Proff redigering
-STYLEFILE=@datarootdir@/tseries/style/style.proff_edit
+STYLEFILE=@prefix@/share/tseries/style/style.proff_edit
 [LEGALMODELS]
 MODEL=WDB
 

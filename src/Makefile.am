@@ -89,12 +89,14 @@ img_sources=               \
 	tseries.xpm        \
 	ts_filter.xpm      \
 	ts_find.xpm        \
+	bookmark.xpm       \
 	view-refresh.xpm   \
 	list-add.xpm       \
 	directory.xpm      \
 	media-record.xpm   \
 	metno.xpm          \
 	trashcan.xpm
+
 
 # Flags -----------------------------
 

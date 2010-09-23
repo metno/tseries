@@ -14,9 +14,9 @@ Edata=$(Odata)/ec
 <Path>
 
 Etc=@sysconfdir@/tseries
-Images=@datarootdir@/pixmaps/tseries/
-Doc=@datarootdir@/doc/tseries
-Lang=@datarootdir@/tseries/lang
+Images=@prefix@/share/pixmaps/tseries/
+Doc=@prefix@/share/doc/tseries
+Lang=@prefix@/share/tseries/lang
 
 #------------------
 
@@ -27,7 +27,7 @@ Configure=$(Home)/.tseries/tseries.conf
 WeatherSymbols=$(Etc)/symbols.def
 stdImage=$(Images)/ts_station.xpm
 finImage=$(Images)/ts_find.xpm
-iconImage=@datarootdir@/pixmaps/tseries.png
+iconImage=@prefix@/share/pixmaps/tseries.png
 baseFilter=$(Etc)/tseries.filter
 bookmarks=$(Home)/.tseries/bookmarks.def
 commonBookmarks=$(Etc)/tseries-bookmarks.common
