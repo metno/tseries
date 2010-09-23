@@ -217,8 +217,9 @@ bool tsSetup::read(const miString& f, miString s)
 
   if(!readsetup(f))
     if(!readsetup( path.home+"/.tseries/tseries.ctl"))
-      if(!readsetup("/usr/local/etc/tseries/tseries.ctl")) {
-	cerr << "NO setup found!" << endl;
+      if(!readsetup("/etc/tseries/tseries.ctl"))
+        if(!readsetup("/usr/local/etc/tseries/tseries.ctl")) {
+          cerr << "NO setup found!" << endl;
 	return false;
       }
   return true;
