@@ -1,3 +1,9 @@
+tseries-test (5.0.1-ubuntu1) lucid; urgency=low
+
+  * 1st lucid version of tseries-test
+
+ -- Juergen Schulze <j.schulze@met.no>  Thu, 23 Sep 2010 11:32:28 +0200
+
 tseries-test (4.1.0-ubuntu1) stable; urgency=low
 
   * Initial release  
