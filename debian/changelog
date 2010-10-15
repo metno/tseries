@@ -1,3 +1,9 @@
+tseries (5.0.1-ubuntu4) lucid; urgency=low
+
+  * fixed deafukt printer problem 
+
+ -- Juergen Schulze <j.schulze@met.no>  Thu, 23 Sep 2010 11:27:04 +0200
+
 tseries (5.0.1-ubuntu3) lucid; urgency=low
 
   *  more setup trouble under debian 

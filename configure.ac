@@ -66,6 +66,7 @@ AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
 	etc/tseries/tseries.ctl
+	etc/tseries-test/tseries.ctl
 	etc/tseries/tsDiagrams.def
 ])
 
