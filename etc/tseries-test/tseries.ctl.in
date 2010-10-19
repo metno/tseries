@@ -339,12 +339,12 @@ CollectionName=Nordic4Havdiagrammer
 PreferredDiagram=Havdiagram
 InitialOpen=1
 
-DataFile=$(Sdata)/Nordic_4km_npl00.hdf
+DataFile=$(Sdata)/Nordic_4km_quba00.hdf
 DataDescription=Nordic_4km
 DataType=HDF
 Contents=x,x,Nordic_4km,0
 
-DataFile=$(Sdata)/Nordic_4km_npl12.hdf
+DataFile=$(Sdata)/Nordic_4km_quba12.hdf
 DataDescription=Nordic_4km 
 DataType=HDF
 Contents=x,x,Nordic_4km,12
@@ -358,12 +358,12 @@ CollectionName=Nordic4residHavdiagrammer
 PreferredDiagram=Havdiagram
 InitialOpen=1
 
-DataFile=$(Sdata)/Nordic_4km_resid_npl00.hdf
+DataFile=$(Sdata)/Nordic_4km_resid_quba00.hdf
 DataDescription=Nordic_4km_resid
 DataType=HDF
 Contents=x,x,Nordic_4km_resid,0
 
-DataFile=$(Sdata)/Nordic_4km_resid_npl12.hdf
+DataFile=$(Sdata)/Nordic_4km_resid_quba12.hdf
 DataDescription=Nordic_4km_resid
 DataType=HDF
 Contents=x,x,Nordic_4km_resid,12
@@ -379,30 +379,25 @@ CollectionName=Bølgediagrammer
 PreferredDiagram=Bølgediagram
 InitialOpen=1
 
-DataFile=$(Wdata)/wam_npl00.hdf
+DataFile=$(Wdata)/wam_quba00.hdf
 DataDescription=WAM00
 DataType=HDF
 Contents=x,x,WAM,0
 
-DataFile=$(Wdata)/wam_npl06.hdf
+DataFile=$(Wdata)/wam_quba06.hdf
 DataDescription=WAM06
 DataType=HDF
 Contents=x,x,WAM,06
 
-DataFile=$(Wdata)/wam_npl12.hdf
+DataFile=$(Wdata)/wam_quba12.hdf
 DataDescription=WAM12
 DataType=HDF
 Contents=x,x,WAM,12
 
-DataFile=$(Wdata)/wam_npl18.hdf
+DataFile=$(Wdata)/wam_quba18.hdf
 DataDescription=WAM18
 DataType=HDF
 Contents=x,x,WAM,18
-
-DataFile=$(Wdata)/wam_npl_ec12.hdf
-DataDescription=WAMEC
-DataType=HDF
-Contents=x,x,WAM_EC,12
 
 DataFile=$(Edata)/ecwam_quba_00.hdf
 DataDescription=ECMWF_WAM
@@ -425,12 +420,12 @@ CollectionName=Bølgediagrammer
 PreferredDiagram=Bølgediagram
 InitialOpen=1
 
-DataFile=$(Wdata)/wam_10km_npl00.hdf
+DataFile=$(Wdata)/wam_10km_quba00.hdf
 DataDescription=WAM_10km
 DataType=HDF
 Contents=x,x,WAM_10km,0
 
-DataFile=$(Wdata)/wam_10km_npl12.hdf
+DataFile=$(Wdata)/wam_10km_quba12.hdf
 DataDescription=WAM_10km
 DataType=HDF
 Contents=x,x,WAM_10km,12
