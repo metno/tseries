@@ -220,14 +220,14 @@ CollectionName=UM4kmMeteogrammer
 PreferredDiagram=Meteogram
 InitialOpen=0
 
-[VV:VNN:MA:VTK]
+[MA:VTK]
 
 DataFile=$(Mdata)/um4km.hdf
 DataDescription=UM.4km
 DataType=HDF
 Contents=x,x,UM.4km,x
 
-[VA:FOU:PU]
+[VV:VNN:VA:FOU:PU]
 
 DataFile=$(Mdata)/um4km00.hdf
 DataDescription=UM.4km
