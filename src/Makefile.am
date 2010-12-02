@@ -106,7 +106,6 @@ common_cppflags +=              \
 	$(GLTEXT_CPPFLAGS)      \
 	$(PUDATATYPES_CPPFLAGS) \
 	$(QUTILITIES_CPPFLAGS)  \
-	${HDF4_CPPFLAGS}        \
 	$(QT4_CPPFLAGS) 
 
 common_ldflags=                \
@@ -115,7 +114,6 @@ common_ldflags=                \
 	$(GLTEXT_LDFLAGS)      \
 	$(PUDATATYPES_LDFLAGS) \
 	$(QUTILITIES_LDFLAGS)  \
-	${HDF4_LDFLAGS}        \
 	$(QT4_LDFLAGS) 
 
 common_ldadd=               \
@@ -124,7 +122,6 @@ common_ldadd=               \
 	$(GLTEXT_LIBS)      \
 	$(PUDATATYPES_LIBS) \
 	$(QUTILITIES_LIBS)  \
-	${HDF4_LIBS}        \
 	$(QT4_LIBS) 
 
 
