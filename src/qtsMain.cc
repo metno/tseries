@@ -363,7 +363,9 @@ void qtsMain::print()
 
     cerr << "PRINT: " << command << endl;
 
-    system(command.c_str());
+    if (system(command.c_str()) == -1){
+      cerr << "Printing failed" << endl;
+    }
   }
   QApplication::restoreOverrideCursor();
 
