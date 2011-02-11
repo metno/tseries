@@ -510,7 +510,7 @@ Contents=x,x,t2m,x
 
 
 <wdb>
-host=proffdb.met.no
+host=proffdb-test.met.no
 user=proffread
 busymovie=$(Images)/busy.gif
 readtime=1500
