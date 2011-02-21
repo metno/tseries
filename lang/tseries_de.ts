@@ -82,7 +82,7 @@
     </message>
     <message>
         <location filename="../src/qtsMain.cc" line="106"/>
-        <location filename="../src/qtsMain.cc" line="779"/>
+        <location filename="../src/qtsMain.cc" line="780"/>
         <source>Manual</source>
         <translation>Benutzerhandbuch</translation>
     </message>
@@ -164,7 +164,7 @@
         <translation>Schrifttype</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="399"/>
+        <location filename="../src/qtsMain.cc" line="400"/>
         <source>About T-series</source>
         <translation>Über T-series</translation>
     </message>
@@ -183,7 +183,7 @@ met.no 2002-2005</translation>
         <translation>Aktueller Ortsname (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="400"/>
+        <location filename="../src/qtsMain.cc" line="401"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -198,7 +198,7 @@ met.no 2002</translation>
         <translation>Sprachen</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="889"/>
+        <location filename="../src/qtsMain.cc" line="890"/>
         <source>Language Changed</source>
         <translation>Sprache gewechselt</translation>
     </message>
@@ -207,7 +207,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series muß neu gestartet werden um die Sprache auf [%1] zu ändern</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="783"/>
+        <location filename="../src/qtsMain.cc" line="784"/>
         <source>News</source>
         <translation>Neuheiten</translation>
     </message>
@@ -270,7 +270,7 @@ met.no 2002</translation>
         <translation>Diagram drucken</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="889"/>
+        <location filename="../src/qtsMain.cc" line="890"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation>tseries muss neu gestartet werden um die sprache zu : [%1] zu wechseln</translation>
     </message>

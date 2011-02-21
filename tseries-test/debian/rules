@@ -35,7 +35,7 @@ configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
 	./configure $(confflags) \
-		--prefix=/usr --sysconfdir=/etc --localstatedir=/var --enable-beta --program-suffix=-test
+		--prefix=/usr --sysconfdir=/etc --localstatedir=/var --program-suffix=-test
 	touch configure-stamp
 
 

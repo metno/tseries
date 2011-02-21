@@ -78,7 +78,7 @@
     </message>
     <message>
         <location filename="../src/qtsMain.cc" line="106"/>
-        <location filename="../src/qtsMain.cc" line="779"/>
+        <location filename="../src/qtsMain.cc" line="780"/>
         <source>Manual</source>
         <translation type="unfinished">Manuel</translation>
     </message>
@@ -166,12 +166,12 @@
         <translation type="unfinished">Langues</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="399"/>
+        <location filename="../src/qtsMain.cc" line="400"/>
         <source>About T-series</source>
         <translation type="unfinished"> A propos T-series</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="400"/>
+        <location filename="../src/qtsMain.cc" line="401"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -182,7 +182,7 @@ Version: %1
 met.no 2002</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="889"/>
+        <location filename="../src/qtsMain.cc" line="890"/>
         <source>Language Changed</source>
         <translation type="unfinished">Langue changée</translation>
     </message>
@@ -191,7 +191,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series doit etre redémarré pour réactualiser la langue en: [%1]</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="783"/>
+        <location filename="../src/qtsMain.cc" line="784"/>
         <source>News</source>
         <translation type="unfinished">Modifications</translation>
     </message>
@@ -254,7 +254,7 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="889"/>
+        <location filename="../src/qtsMain.cc" line="890"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>

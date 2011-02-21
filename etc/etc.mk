@@ -9,8 +9,8 @@ dist_etc_DATA += \
 	etc/tseries/tseries.ctl_batch      \
 	etc/tseries/tseries.ctl_export     \
 	etc/tseries/tseries.filter         \
-	etc/tseries/tseries-bookmarks.common
-
+	etc/tseries/tseries-bookmarks.common \
+	etc/tseries/tseries-bookmarks.VNN
 
 betcdir= $(sysconfdir)/btseries
 dist_betc_DATA =                                \

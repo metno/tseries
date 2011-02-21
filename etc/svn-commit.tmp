@@ -1,0 +1,4 @@
+setup fix: um4km for VV:VNN in tseries.ctl
+--This line, and those below, will be ignored--
+
+M    tseries/tseries.ctl.in

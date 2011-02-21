@@ -128,6 +128,29 @@ Contents=x,x,HARMONIE.4km,12
 []
 
 # -------------------------------------------------
+[VA:VV:VNN]
+CollectionName=HARMONIE4Meteogrammer
+PreferredDiagram=Meteogram
+InitialOpen=0
+
+DataFile=/opdata_routine/metcorr/harmonie4km00.hdf
+DataDescription=HARMONIE.4km
+DataType=HDF
+Contents=x,x,HARMONIE.4km,0
+
+DataFile=$(Mdata)/harmonie4km12.hdf
+DataDescription=HARMONIE.4km
+DataType=HDF
+Contents=x,x,HARMONIE.4km,12
+[]
+
+
+
+
+
+
+
+# -------------------------------------------------
 
 CollectionName=HIRLAM4Meteogrammer
 PreferredDiagram=Meteogram

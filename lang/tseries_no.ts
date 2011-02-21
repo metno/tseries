@@ -78,7 +78,7 @@
     </message>
     <message>
         <location filename="../src/qtsMain.cc" line="106"/>
-        <location filename="../src/qtsMain.cc" line="779"/>
+        <location filename="../src/qtsMain.cc" line="780"/>
         <source>Manual</source>
         <translation>Brukerveiledning</translation>
     </message>
@@ -160,7 +160,7 @@
         <translation>Velg Font</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="399"/>
+        <location filename="../src/qtsMain.cc" line="400"/>
         <source>About T-series</source>
         <translation>Om T-series</translation>
     </message>
@@ -180,7 +180,7 @@ met.no 2002-2005</translation>
         <translation>Vis valgt stedsnavn (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="400"/>
+        <location filename="../src/qtsMain.cc" line="401"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -196,7 +196,7 @@ met.no 2002</translation>
         <translation>Språk</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="889"/>
+        <location filename="../src/qtsMain.cc" line="890"/>
         <source>Language Changed</source>
         <translation>Språk endret</translation>
     </message>
@@ -205,7 +205,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series må startes på nytt for å sette språk til: [%1]</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="783"/>
+        <location filename="../src/qtsMain.cc" line="784"/>
         <source>News</source>
         <translation>Nyheter</translation>
     </message>
@@ -268,7 +268,7 @@ met.no 2002</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="889"/>
+        <location filename="../src/qtsMain.cc" line="890"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation>T-series må startes på nytt for å sette språk til: [%1]</translation>
     </message>

@@ -830,7 +830,7 @@ int main(int argc, char** argv)
 
           if (verbose)
             cout << "- Issuing print command:" << command << endl;
-          system(command.c_str());
+         int sys = system(command.c_str());
         }
       }
 
@@ -948,7 +948,7 @@ int main(int argc, char** argv)
 
       if (verbose)
         cout << "- Issuing print command:" << command << endl;
-      system(command.c_str());
+      int sys = system(command.c_str());
 
       continue;
     }
