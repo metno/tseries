@@ -394,9 +394,8 @@ Contents=x,x,Nordic_4km_resid,12
 
 # -------------------------------------------------
 
+# Bølgediagrammer
 
-
-[VA:VV:VNN:MA:FOU:PU]
 
 CollectionName=Bølgediagrammer
 PreferredDiagram=Bølgediagram
@@ -422,22 +421,8 @@ DataDescription=WAM18
 DataType=HDF
 Contents=x,x,WAM,18
 
-DataFile=$(Edata)/ecwam_quba_00.hdf
-DataDescription=ECMWF_WAM
-DataType=HDF
-Contents=x,x,ECMWF_WAM,0
-
-DataFile=$(Edata)/ecwam_quba_12.hdf
-DataDescription=ECMWF_WAM
-DataType=HDF
-Contents=x,x,ECMWF_WAM,12
-[]
-
-# -------------------------------------------------
 
 
-
-[VA:VV:VNN:MA:FOU:PU]
 
 CollectionName=Bølgediagrammer
 PreferredDiagram=Bølgediagram
@@ -452,7 +437,36 @@ DataFile=$(Wdata)/wam_10km_quba12.hdf
 DataDescription=WAM_10km
 DataType=HDF
 Contents=x,x,WAM_10km,12
-[]
+
+
+
+CollectionName=Bølgediagrammer
+PreferredDiagram=Bølgediagram
+InitialOpen=1
+
+DataFile=$(Wdata)/wam_4km_quba00.hdf
+DataDescription=WAM_4km
+DataType=HDF
+Contents=x,x,WAM_4km,0
+
+DataFile=$(Wdata)/wam_4km_quba12.hdf
+DataDescription=WAM_4km
+DataType=HDF
+Contents=x,x,WAM_4km,12
+
+
+
+DataFile=$(Edata)/ecwam_quba_00.hdf
+DataDescription=ECMWF_WAM
+DataType=HDF
+Contents=x,x,ECMWF_WAM,0
+
+DataFile=$(Edata)/ecwam_quba_12.hdf
+DataDescription=ECMWF_WAM
+DataType=HDF
+Contents=x,x,ECMWF_WAM,12
+
+
 
 # -------------------------------------------------
 
