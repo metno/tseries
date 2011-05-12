@@ -111,42 +111,38 @@ Contents=x,x,PROFF.APPROVED,x
 
 
 # -------------------------------------------------
-[FOU:PU]
-CollectionName=HARMONIE4Meteogrammer
+
+[FOU]
+CollectionName=HARMONIE25Meteogrammer
 PreferredDiagram=Meteogram
 InitialOpen=0
 
-DataFile=$(Mdata)/harmonie4km00.hdf
-DataDescription=HARMONIE.4km
+DataFile=$(Mdata)/harmonie25_00.hdf
+DataDescription=HARMONIE_2.5km
 DataType=HDF
-Contents=x,x,HARMONIE.4km,0
+Contents=x,x,HARMONIE_2.5km,0
 
-DataFile=$(Mdata)/harmonie4km12.hdf
-DataDescription=HARMONIE.4km
+DataFile=$(Mdata)/harmonie25_12.hdf
+DataDescription=HARMONIE_2.5km
 DataType=HDF
-Contents=x,x,HARMONIE.4km,12
-[]
+Contents=x,x,HARMONIE_2.5km,12
 
-# -------------------------------------------------
-[VA:VV:VNN]
-CollectionName=HARMONIE4Meteogrammer
+
+CollectionName=HARMONIE55Meteogrammer
 PreferredDiagram=Meteogram
 InitialOpen=0
 
-DataFile=/opdata_routine/metcorr/harmonie4km00.hdf
-DataDescription=HARMONIE.4km
+DataFile=$(Mdata)/harmonie55_00.hdf
+DataDescription=HARMONIE_5.5km
 DataType=HDF
-Contents=x,x,HARMONIE.4km,0
+Contents=x,x,HARMONIE_5.5km,0
 
-DataFile=$(Mdata)/harmonie4km12.hdf
-DataDescription=HARMONIE.4km
+DataFile=$(Mdata)/harmonie55_12.hdf
+DataDescription=HARMONIE_5.5km
 DataType=HDF
-Contents=x,x,HARMONIE.4km,12
+Contents=x,x,HARMONIE_5.5km,12
+
 []
-
-
-
-
 
 
 
@@ -155,8 +151,6 @@ Contents=x,x,HARMONIE.4km,12
 CollectionName=HIRLAM4Meteogrammer
 PreferredDiagram=Meteogram
 InitialOpen=0
-
-
 
 DataFile=$(Mdata)/hirlam4km00.hdf
 DataDescription=HIRLAM.4km
