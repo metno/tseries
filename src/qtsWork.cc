@@ -65,6 +65,7 @@ qtsWork::qtsWork(QWidget* parent)
   fmt.setDirectRendering(false);
 
 
+
   QSplitter   * splitter = new QSplitter(this);
   QHBoxLayout * hlayout  = new QHBoxLayout(this);
   oldModel = NOMODEL_TSERIES;
@@ -384,8 +385,14 @@ void qtsWork::changeModel(const miString& st)
 void qtsWork::changeStation(const miString& st)
 {
   if(selectionType!=SELECT_BY_STATION) return;
+
+  miPosition p=data.getPositionInfo(st);
+  miCoordinates cor=p.Coordinates();
+  checkObsPosition(cor);
+
   if(!request.setPos(st)) {
     miString ST = st.upcase();
+
     if(!request.setPos(ST))
       return;
   }
@@ -399,8 +406,7 @@ void qtsWork::checkPosition(miString name)
   if(p.Name()!=name ) return;
 
   miCoordinates cor=p.Coordinates();
-
-
+  checkObsPosition(cor);
   ostringstream ost;
 
   if(latlonInDecimal) {
@@ -408,8 +414,32 @@ void qtsWork::checkPosition(miString name)
   } else {
     ost <<  "<b>Lat:</b> " << cor.sLat()<< " <b>Lon:</b> " << cor.sLon();
   }
+
+
   sidebar->setStationInfo(ost.str().c_str());
+
+
+
 }
+
+
+void qtsWork::checkObsPosition(miCoordinates cor)
+{
+  pets::KlimaStation s = data.getNearestKlimaStation(cor);
+
+  if(!s.stationid) {
+    sidebar->setObsInfo("");
+    return;
+  }
+
+
+  //ostringstream ost;
+  //ost << "<b>Obs:</b> " << s.description() << endl;
+
+  sidebar->setObsInfo(s.description().c_str());
+}
+
+
 
 
 void qtsWork::changeRun(const miString& st)
@@ -747,8 +777,11 @@ void qtsWork::changeCoordinates(float lon, float lat,QString name)
   if(!has_wdb_stream) return;
 
   request.setWdbStationName(name.toStdString());
-  if(request.setWdbPos(lon,lat))
+  if(request.setWdbPos(lon,lat)) {
+    miCoordinates cor(lon,lat);
+    checkObsPosition(cor);
     refresh(true);
+  }
    emit coordinatesChanged();
 
 }

@@ -92,6 +92,12 @@ qtsSidebar::qtsSidebar()
   connect(timecontrol,SIGNAL(minmaxProg(int,int)),this, SIGNAL(minmaxProg(int,int)));
 
 
+
+  obsInfo = new QLabel(this);
+  obsInfo->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+  obsInfo->hide();
+
+
   // connectbuttons are hosted here... but are used and
   // connected in qtsMain!
 
@@ -132,6 +138,8 @@ qtsSidebar::qtsSidebar()
 
   vlayout->addWidget(timecontrol);
 
+  vlayout->addWidget(obsInfo);
+
   // Buttons -------------------
 
 
@@ -165,6 +173,15 @@ void qtsSidebar::currentStationChanged ( QListWidgetItem * current, QListWidgetI
   stationtab->currentStationChanged(current,previous);
 }
 
+
+void qtsSidebar::setObsInfo(QString s)
+{
+    obsInfo->setText(s);
+    if(s.isEmpty())
+      obsInfo->hide();
+    else
+      obsInfo->show();
+}
 
 
 QString  qtsSidebar::fillList(const vector<miutil::miString>& v, const StationTab::lEntry l)

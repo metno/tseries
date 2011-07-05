@@ -64,6 +64,7 @@ private:
   QPushButton *  cacheQueryButton;
   QPushButton *  addBookmarkButton;
   QLabel*        connectStatus;
+  QLabel*        obsInfo;
   QMovie*        busyLabel;
   StationTab*    stationtab;
   CoordinateTab* wdbtab;
@@ -90,6 +91,7 @@ public:
   ClientButton* pluginButton() const {return pluginB;}
   QPushButton*  targetButton() const {return targetB;}
   void setStationInfo(QString s) { stationtab->setStationInfo(s); }
+  void setObsInfo(QString s);
   miutil::miString coordinateString() const { return wdbtab->coordinateString(); }
 
   void writeBookmarks() { wdbtab->writeBookmarks();}

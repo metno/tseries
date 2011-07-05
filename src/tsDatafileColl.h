@@ -41,6 +41,7 @@
 #include <tsData/ptDataStream.h>
 #include <tsData/ptParameterDefinition.h>
 #include <tsData/WdbStream.h>
+#include <tsData/KlimaStream.h>
 
 #define MAXDATASETS 50
 #define MAXMODELSINSTREAM 100
@@ -123,6 +124,7 @@ private:
   miutil::miString collectName;          // file collection name
   std::vector<DsInfo>   datastreams;    // List of datafiles
   pets::WdbStream*       wdbStream;      // the wdb data stream
+  pets::KlimaStream*     klimaStream;    // the klima database from an url interface
   std::vector<ExtStation> stations;   // List of stations
   std::vector<miutil::miString> datasetname;  // name of dataset
   std::map<miutil::miString,miPosition> pos_info; // all positions ordered by name....
@@ -141,6 +143,8 @@ private:
   void openWdbStream();
   void closeWdbStream();
 
+  void openKlimaStream();
+  void closeKlimaStream();
 
   bool wdbStreamIsOpen;
 
@@ -207,6 +211,11 @@ public:
   std::vector<std::string> getWdbParameterNames() const { return wdbStream->getWdbParameterNames(); }
   pets::WdbStream::BoundaryBox getWdbGeometry();
   pets::WdbStream*  getWdbStream() { return wdbStream;}
+  pets::KlimaStream* getKlimaStream() { return klimaStream;}
+
+
+  pets::KlimaStation getNearestKlimaStation(miCoordinates& pos) { return klimaStream->getNearestKlimaStation(pos);}
+
 
 };
 

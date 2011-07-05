@@ -45,11 +45,14 @@
 #include "tsDatafileColl.h"
 #include "tsSetup.h"
 #include "tsRequest.h"
+#include "tsData/KUrl.h"
 
 #include <puTools/miString.h>
 #include <qUtilities/miMessage.h>
+#include <puDatatypes/miCoordinates.h>
 
 #include <set>
+
 
 const miutil::miString DATASET_TSERIES= "T-series ";
 const miutil::miString TARGETS_TSERIES= "TARGETS_TSERIES";
@@ -82,6 +85,8 @@ private:
   std::map<miutil::miString,miutil::miString> myList;
   std::set<miutil::miString>          filter;
 
+  klapp::KUrl klima;
+
   bool activeRefresh;
   bool filterOn;
   bool latlonInDecimal;
@@ -96,6 +101,7 @@ private:
   bool makeRunList(const miutil::miString&,const miutil::miString&);
   void restoreModelFromLog();
   void checkPosition(miutil::miString st);
+  void checkObsPosition(miCoordinates cor);
 
   // WDB ------
   void makeWdbModels();

@@ -27,7 +27,7 @@
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ */
 #include "tsDrawArea.h"
 #include <puMet/miSymbol.h>
 #include <puMet/symbolMaker.h>
@@ -42,11 +42,11 @@ using namespace std;
 using namespace miutil;
 
 tsDrawArea::tsDrawArea( tsRequest* tsr,
-			DatafileColl* tsd,
-			SessionManager* ses)
-  : request(tsr), data(tsd), session(ses), diagram(0), theData(0),
-    width(1), height(1), pixwidth(1), pixheight(1),
-    Initialised(false), hardcopy(false), hardcopystarted(false)
+    DatafileColl* tsd,
+    SessionManager* ses)
+: request(tsr), data(tsd), session(ses), diagram(0), theData(0),
+  width(1), height(1), pixwidth(1), pixheight(1),
+  Initialised(false), hardcopy(false), hardcopystarted(false)
 {
   minProg=0;
   maxProg=300;
@@ -60,12 +60,12 @@ void tsDrawArea::prepare(bool readData)
     //cout << "Preparing FONTS, display:" << FM.display_name() << endl;
 
 
-/*
+    /*
     glText* gltext= new glTextX(FM.display_name());
     gltext->testDefineFonts();
     FM.addFontCollection(gltext, XFONTSET);
     FM.setFontColl(XFONTSET);
-*/
+     */
 
 
 
@@ -87,13 +87,13 @@ void tsDrawArea::prepare(bool readData)
   else {
     if (!theData) {
       if (!prepareData()) {
-	cerr << "tsDrawArea Warning: prepareData failed" << endl;
-	return;
+        cerr << "tsDrawArea Warning: prepareData failed" << endl;
+        return;
       }
     }
   }
   if (!prepareDiagram()) {
-	  cerr << "tsDrawArea Warning:  prepareDiagram failed" << endl;
+    cerr << "tsDrawArea Warning:  prepareDiagram failed" << endl;
   }
 }
 
@@ -157,10 +157,22 @@ bool tsDrawArea::prepareData()
 
       if (numstreams < 1)
         cerr << "tsDrawArea::prepareData, found " << numstreams
-            << " matching streams for model " << modid.model << endl;
+        << " matching streams for model " << modid.model << endl;
 
       if (numstreams > 0) {
         datafound = false;
+        //---------------------------------------------------------
+        // Here we got to insert the klimadata as WeatherParameters:
+        // hack for now - fix input values....
+        miTime tot  = miTime::nowTime();
+        tot.addHour(2);
+        miTime fromt = tot;
+        fromt.addHour(-24);
+
+        theData->fetchDataFromKlimaDB(  data->getKlimaStream(), 18700,
+            inlist, outlist, fromt, tot);
+        //  < klima ends----------------------------------------------
+
         for (int j = 0; j < numstreams && !datafound; j++) {
           datastream = data->getDataStream(streamidx[j]);
           if (datastream) {
@@ -174,6 +186,7 @@ bool tsDrawArea::prepareData()
             //vector<ParId> parlist;
             theData->fetchDataFromFile(datastream, station, modid, M_UNDEF, btime,
                 etime, inlist, &first, &last, outlist, true, &error);
+
             datafound = ((error != DF_STATION_NOT_FOUND) && (error
                 != DD_NO_PARAMETERS_FOUND));
             if (datafound && error == DD_SOME_PARAMETERS_NOT_FOUND) {
@@ -208,8 +221,8 @@ bool tsDrawArea::prepareData()
 
 bool tsDrawArea::prepareDiagram()
 {
-//  if(request->type()==tsRequest::WDBSTREAM)
-//    cout << " prepareWdbDiagram " << endl;
+  //  if(request->type()==tsRequest::WDBSTREAM)
+  //    cout << " prepareWdbDiagram " << endl;
 
   if (!theData) {
     cerr << "tsDrawArea::prepareDiagram(): !theData" << endl;
@@ -235,8 +248,8 @@ bool tsDrawArea::prepareDiagram()
   ptColor bgColor;
   if (!diagram->makeDefaultPlotElements(&bgColor)) {
     cerr
-        << "tsDrawArea::prepareDiagram(): !diagram->makeDefaultPlotElements(&bgColor)"
-        << endl;
+    << "tsDrawArea::prepareDiagram(): !diagram->makeDefaultPlotElements(&bgColor)"
+    << endl;
     return false;
   }
 
@@ -426,9 +439,9 @@ bool tsDrawArea::prepareWdbData()
   }
 
   if(!options.numModels()) {
-     cerr << "empty model list in options in the retry" << endl;
-     return false;
-   }
+    cerr << "empty model list in options in the retry" << endl;
+    return false;
+  }
 
   if (theData)
     delete theData;

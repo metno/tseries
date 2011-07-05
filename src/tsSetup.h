@@ -106,6 +106,12 @@ public:
     int                 maxRecord;           ///< size of record ringbuffer;
   };
 
+  struct klstruct {
+    miutil::miString    url;
+    int                 maxDistance;
+    std::map<std::string,std::string> parameters; ///< translate parameters from klima
+  };
+
 
   /// Struct containing filenames for tseries
   struct fistruct {
@@ -174,12 +180,13 @@ public:
   static gustruct gui;             ///< GUI info
   static distruct diana;           ///< DIANA information
   static dostruct doc;             ///< Documentation locations
+  static klstruct klima;           ///< url and info for klapp connection
   static miutil::miString lang;            ///< Languages
 
   static symbolMaker wsymbols;
 
 private:
-  enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,WDB,WDBPARAMETER,WDBVECTORFUNCTIONS} sec;
+  enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,WDB,WDBPARAMETER,WDBVECTORFUNCTIONS,KLIMA,KLIMAPARAMETER} sec;
   enum warning { wKEY, wTOKEN, wSECTION, wFILE };
 
   std::map<miutil::miString,miutil::miString> lookup;
@@ -208,7 +215,8 @@ private:
   void setDoc(miutil::miString&, miutil::miString&);
   void setWdb(miutil::miString&, miutil::miString&);
   void setWdbParameter(miutil::miString&, miutil::miString&);
-
+  void setKlimaParameter(miutil::miString&, miutil::miString&);
+  void setKlima(miutil::miString&, miutil::miString&);
 
   void setup(miutil::miString&, const miutil::miString&);
   void setup(int&,const miutil::miString&);

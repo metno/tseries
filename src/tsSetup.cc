@@ -38,6 +38,7 @@ using namespace miutil;
 
 vector<tsSetup::dsStruct>  tsSetup::streams;
 
+tsSetup::klstruct          tsSetup::klima;
 tsSetup::wdbstruct         tsSetup::wdb;
 tsSetup::fistruct          tsSetup::files;
 tsSetup::svstruct          tsSetup::server;
@@ -58,6 +59,10 @@ tsSetup::tsSetup() : sec(PUBLIC) , line(0)
     ids=0;
     wdb.readtime=2000;
     wdb.maxRecord=20;
+
+    klima.url="http://klapp.oslo.dnmi.no/metnopub/production/metno?ct=text/plain&del=semicolon";
+    klima.maxDistance=50;
+
   }
 }
 
@@ -82,7 +87,10 @@ miString tsSetup::inSection()
     return ", in <diana>";
   case DOC:
     return ", in <doc>";
-
+  case KLIMA:
+    return ", in <klima>";
+  case KLIMAPARAMETER:
+     return ", in <klimaparameter>";
   case WDB:
     return ", in <wdb>";
   case WDBPARAMETER:
@@ -155,6 +163,10 @@ void tsSetup::fetchSection(miString token)
     sec = DIANA;
   else if( token.contains("DOC"))
     sec = DOC;
+  else if( token.contains("KLIMAPARAMETER"))
+    sec = KLIMAPARAMETER;
+  else if( token.contains("KLIMA"))
+    sec = KLIMA;
   else if( token.contains("WDBPARAMETER"))
     sec = WDBPARAMETER;
   else if ( token.contains("WDBVECTORFUNCTIONS"))
@@ -340,7 +352,7 @@ void tsSetup::setSimpleToken(miString token)
     return;
   }
 
-  bool upper=(sec != WDBPARAMETER);
+  bool upper=(sec != WDBPARAMETER && sec != KLIMAPARAMETER);
 
   miString content,key;
   if(!splitToken(token,key,content,upper))
@@ -376,6 +388,11 @@ void tsSetup::setSimpleToken(miString token)
   case DOC:
     setDoc(key,content);
     break;
+  case KLIMAPARAMETER:
+    setKlimaParameter(key,content);
+    break;
+  case KLIMA:
+    setKlima(key,content);
   case PATH:
     setPath(key,content);
     break;
@@ -398,6 +415,15 @@ void tsSetup::setPublic(miString& key, miString& content)
   if(key == "LANG")
     setup(lang,content);
 
+}
+void tsSetup::setKlima(miString& key, miString& content)
+{
+  if(key == "URL" )
+    setup(klima.url,content);
+  else if(key == "MAXDISTANCE")
+    setup(klima.maxDistance,content);
+  else
+    warn(key,wKEY);
 }
 
 void tsSetup::setFiles(miString& key, miString& content)
@@ -472,6 +498,11 @@ void tsSetup::setStreams(miString& key, miString& content)
 void tsSetup::setWdbParameter(miString& key, miString& content)
 {
    wdb.parameters[key]=content;
+}
+
+void tsSetup::setKlimaParameter(miString& key, miString& content)
+{
+   klima.parameters[key]=content;
 }
 
 

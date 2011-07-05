@@ -27,7 +27,7 @@
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ */
 #include "tsDatafileColl.h"
 #include <tsData/ptHDFFile.h>
 #include <tsData/ptAsciiStream.h>
@@ -61,11 +61,14 @@ bool Union(const dataset& d1, const dataset& d2, dataset& result){
 DatafileColl::DatafileColl()  : tolerance(1000.0), verbose(false), streams_opened(false), wdbStream(NULL)
 {
   openWdbStream();
+  openKlimaStream();
+
 }
 
 DatafileColl::~DatafileColl(){
   closeStreams();
   closeWdbStream();
+  closeKlimaStream();
 }
 
 int DatafileColl::addDataset(miString name){
@@ -80,11 +83,11 @@ int DatafileColl::addDataset(miString name){
 
 
 int DatafileColl::addStream(const miString name,
-			    const miString desc,
-			    const miString dsT,
-			    const int dset,
-			    const int numindset,
-			    const miString sparid)
+    const miString desc,
+    const miString dsT,
+    const int dset,
+    const int numindset,
+    const miString sparid)
 {
   int n= datastreams.size();
   if (dset<(signed int)datasetname.size()) {
@@ -113,8 +116,8 @@ int DatafileColl::addStream(const miString name,
     }
 
     if (verbose) cout << "Has added stream:"
-		      << datastreams[n].streamname
-		      << endl;
+        << datastreams[n].streamname
+        << endl;
 
     return n+1;
   } else { return -1; }
@@ -152,19 +155,19 @@ bool DatafileColl::openStream(const int idx)
 
 
   if (verbose) cout << "About to open stream:"
-		    << datastreams[idx].streamname << endl;
+      << datastreams[idx].streamname << endl;
 
   if(datastreams[idx].sType == "HDF") {
     datastreams[idx].dataStream =
-      new HDFFile(datastreams[idx].streamname);
+        new HDFFile(datastreams[idx].streamname);
   } else if (datastreams[idx].sType == "ASCII") {
     datastreams[idx].dataStream =
-      new AsciiStream(datastreams[idx].streamname);
+        new AsciiStream(datastreams[idx].streamname);
   }
 #ifdef GRIBSTREAM
   else if (datastreams[idx].sType == "GRIB") {
     datastreams[idx].dataStream =
-      new GribStream(datastreams[idx].streamname);
+        new GribStream(datastreams[idx].streamname);
   }
 #endif
 
@@ -172,29 +175,29 @@ bool DatafileColl::openStream(const int idx)
     datastreams[idx].mtime = _modtime(datastreams[idx].streamname);
     if (datastreams[idx].dataStream)
       datastreams[idx].streamOpen =
-	datastreams[idx].dataStream->openStream(&ef);
+          datastreams[idx].dataStream->openStream(&ef);
     if (!datastreams[idx].streamOpen) {
       // error message
       cerr << "ERROR Datafilecollection: could not open stream: "
-	   << datastreams[idx].streamname << endl;
+          << datastreams[idx].streamname << endl;
       return false;
     } else {
       // get model list from file
       int numm = 0;
       while (numm < MAXMODELSINSTREAM && datastreams[idx].dataStream->
-	     getModelSeq(numm,
-			 datastreams[idx].modelList[numm],
-			 datastreams[idx].runList[numm],
-			 datastreams[idx].idList[numm],
-			 datastreams[idx].txtList[numm]))
-	numm++;
+          getModelSeq(numm,
+              datastreams[idx].modelList[numm],
+              datastreams[idx].runList[numm],
+              datastreams[idx].idList[numm],
+              datastreams[idx].txtList[numm]))
+        numm++;
       datastreams[idx].numModels=numm;
 #ifdef DEBUG
       cout << "FILECOLLECTION: numModels:"<<datastreams[idx].numModels<<endl;
       for (int k=0;k<datastreams[idx].numModels;k++)
-	cout << "Model:"<<datastreams[idx].modelList[k]<<
-	  " Run:"<<datastreams[idx].runList[k]<<
-	  " Id:"<<datastreams[idx].idList[k]<<endl;
+        cout << "Model:"<<datastreams[idx].modelList[k]<<
+        " Run:"<<datastreams[idx].runList[k]<<
+        " Id:"<<datastreams[idx].idList[k]<<endl;
 #endif
     }
   }
@@ -330,11 +333,11 @@ void DatafileColl::makeStationList()
 }
 
 bool DatafileColl::getStreamInfo(int idx,
-				 miString& name,
-				 miString& desc,
-				 int& size,
-				 int& dset,
-				 int& nindset)
+    miString& name,
+    miString& desc,
+    int& size,
+    int& dset,
+    int& nindset)
 {
   struct stat fstat;
   if (idx>=0 && (idx<(signed int)datastreams.size())) {
@@ -381,9 +384,9 @@ miPosition DatafileColl::getPositionInfo(miString name)
 
 
 bool DatafileColl::getPosition(int dset, int &idx,
-			       miString& name, int &id,
-			       float& lat, float& lng,
-			       int &prio)
+    miString& name, int &id,
+    float& lat, float& lng,
+    int &prio)
 {
   int n= stations.size();
   if ((idx <0) || (idx>=n)) return false;
@@ -391,7 +394,7 @@ bool DatafileColl::getPosition(int dset, int &idx,
   if (dset>=0){
     if (dset>=(signed int)datasetname.size()) return false;
     while (!(stations[idx].d.isdata(dset))
-	   && (idx<n)) idx++;
+        && (idx<n)) idx++;
     if (!(stations[idx].d.isdata(dset))) return false;
   }
 
@@ -435,14 +438,14 @@ map<miString,miString> DatafileColl::getPositions(const miString mod)
   for (i=0; i<n; i++)
     for (j=0; j<datastreams[i].numModels;j++)
       if ( mod == datastreams[i].modelList[j] )
-	ds.setdata(datastreams[i].dataSet);
+        ds.setdata(datastreams[i].dataSet);
 
   n= stations.size();
   for( i=0 ; i<n ; i++ ) {
     if (Union(ds,stations[i].d)){
       result[stations[i].station.Name()] =
-	miString(stations[i].station.lat()) + ":" +
-	miString(stations[i].station.lon());
+          miString(stations[i].station.lat()) + ":" +
+          miString(stations[i].station.lon());
     }
   }
   return result;
@@ -453,19 +456,19 @@ map<miString,miString> DatafileColl::getPositions(const miString mod)
 // specific model and run (returned in idx).
 // Returnvalue is number of files found
 int DatafileColl::findModel(const Model& mid,
-			    const Run& rid,
-			    int* idx, int max)
+    const Run& rid,
+    int* idx, int max)
 {
   int numi=0;
   int n= datastreams.size();
   for (int i=0; i<n; i++){
     for (int j=0; j<datastreams[i].numModels;j++){
       if ((mid == datastreams[i].modelList[j] || mid == M_UNDEF) &&
-	  (rid == datastreams[i].runList[j] || rid == R_UNDEF ||
-	   datastreams[i].runList[j]==R_UNDEF)){
-	if (numi<max){
-	  idx[numi++]= i;
-	}
+          (rid == datastreams[i].runList[j] || rid == R_UNDEF ||
+              datastreams[i].runList[j]==R_UNDEF)){
+        if (numi<max){
+          idx[numi++]= i;
+        }
       }
     }
   }
@@ -481,8 +484,8 @@ vector<miString> DatafileColl::findRuns(const Model& mid)
   for (int i=0; i<n; i++)
     for (int j=0; j<datastreams[i].numModels;j++) {
       if (mid == datastreams[i].modelList[j] ) {
-	rid = datastreams[i].runList[j];
-	srid.insert(rid);
+        rid = datastreams[i].runList[j];
+        srid.insert(rid);
       }
     }
   set<int>::iterator itr = srid.begin();
@@ -517,6 +520,27 @@ bool DatafileColl::findpos(const miString& name, int& idx)
   return false;
 }
 
+/////// Klima database -----------------------------
+
+
+void DatafileColl::openKlimaStream()
+{
+  tsSetup setup;
+  klimaStream = new pets::KlimaStream(setup.klima.url,setup.klima.parameters, setup.klima.maxDistance);
+}
+
+void DatafileColl::closeKlimaStream()
+{
+  try {
+    delete klimaStream;
+  } catch(exception& e) {
+    cerr << " Exception caught while trying to delete klimaStream " << e.what() << endl;
+  }
+  klimaStream=NULL;
+
+}
+
+
 
 
 /////// WDB ------------------------------------------
@@ -541,7 +565,7 @@ void DatafileColl::openWdbStream()
 void DatafileColl::closeWdbStream()
 {
   try {
-  delete wdbStream;
+    delete wdbStream;
   } catch(exception& e) {
     cerr << " Exception caught while trying to delete WdbStream " << e.what() << endl;
   }
@@ -579,14 +603,14 @@ set<miTime> DatafileColl::getWdbReferenceTimes(string provider)
 pets::WdbStream::BoundaryBox DatafileColl::getWdbGeometry()
 {
   pets::WdbStream::BoundaryBox  boundaries;
-    try {
+  try {
 
-      boundaries = wdbStream->getGeometry();
-    } catch(exception& e) {
-      cerr << "Exception in getGeometry(): " << e.what() << endl;
-    }
+    boundaries = wdbStream->getGeometry();
+  } catch(exception& e) {
+    cerr << "Exception in getGeometry(): " << e.what() << endl;
+  }
 
-    return boundaries;
+  return boundaries;
 }
 
 
