@@ -169,8 +169,7 @@ bool tsDrawArea::prepareData()
         miTime fromt = tot;
         fromt.addHour(-24);
 
-        theData->fetchDataFromKlimaDB(  data->getKlimaStream(), 18700,
-            inlist, outlist, fromt, tot);
+        theData->fetchDataFromKlimaDB(  data->getKlimaStream(), inlist, outlist, fromt, tot);
         //  < klima ends----------------------------------------------
 
         for (int j = 0; j < numstreams && !datafound; j++) {
