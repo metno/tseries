@@ -45,7 +45,7 @@
 #include "tsDatafileColl.h"
 #include "tsSetup.h"
 #include "tsRequest.h"
-#include "tsData/KUrl.h"
+
 
 #include <puTools/miString.h>
 #include <qUtilities/miMessage.h>
@@ -85,7 +85,7 @@ private:
   std::map<miutil::miString,miutil::miString> myList;
   std::set<miutil::miString>          filter;
 
-  klapp::KUrl klima;
+
 
   bool activeRefresh;
   bool filterOn;
