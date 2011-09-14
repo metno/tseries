@@ -52,6 +52,7 @@
 #include "diPrintOptions.h"
 
 class tsDrawArea {
+
 private:
   tsRequest     * request;
   tsSetup         setup;
@@ -74,6 +75,10 @@ private:
   bool  hardcopystarted;
   bool  oco; // original
   bool  ico; // new color
+  bool showObservations;
+  int totalLength;
+  int forecastLength;
+  bool lengthChanged;
 
   map<miutil::miString,miutil::miTime> timemarks;
   void useTimemarks();
@@ -96,10 +101,20 @@ public:
 		     bool delay_creation= true);
   void endHardcopy();
 
+  void getTimeRange(int & t, int& f) { t=totalLength; f=forecastLength; }
+
+  bool newLength() { return lengthChanged;}
+  void resetNewLength() { lengthChanged = false; }
   void plot();
 
   void setTimemark(miutil::miTime nt,miutil::miString name="");
   void clearTimemarks(miutil::miString name="");
+  void setShowObservations(bool o) { showObservations=o;}
+
+  void getMaxIntervall(int& totall, int& forecastl){
+    totall=totalLength;
+    forecastl=forecastLength;
+  };
 
   void setProgintervall(int mi,int ma)
   {minProg=mi; maxProg=ma;}

@@ -59,10 +59,10 @@ tsSetup::tsSetup() : sec(PUBLIC) , line(0)
     ids=0;
     wdb.readtime=2000;
     wdb.maxRecord=20;
-
-    klima.url="http://klapp.oslo.dnmi.no/metnopub/production/metno?ct=text/plain&del=semicolon";
+    klima.baseQuery="?ct=text/plain&del=semicolon";
+    klima.url="http://klapp.oslo.dnmi.no/metnopub/production/metno"+klima.baseQuery;
     klima.maxDistance=50;
-
+    klima.maxObservationLength=300;
   }
 }
 
@@ -393,6 +393,7 @@ void tsSetup::setSimpleToken(miString token)
     break;
   case KLIMA:
     setKlima(key,content);
+    break;
   case PATH:
     setPath(key,content);
     break;
@@ -418,12 +419,16 @@ void tsSetup::setPublic(miString& key, miString& content)
 }
 void tsSetup::setKlima(miString& key, miString& content)
 {
-  if(key == "URL" )
-    setup(klima.url,content);
-  else if(key == "MAXDISTANCE")
+  if(key == "URL" ){
+    setup(klima.url,content+klima.baseQuery);
+  } else if(key == "MAXDISTANCE") {
     setup(klima.maxDistance,content);
-  else
+  } else if(key == "MAXOBSERVATIONLENGTH") {
+    setup(klima.maxObservationLength,content);
+  } else {
+    cerr << "warn here" << endl;
     warn(key,wKEY);
+  }
 }
 
 void tsSetup::setFiles(miString& key, miString& content)

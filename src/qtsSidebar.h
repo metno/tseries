@@ -61,6 +61,7 @@ private:
   ClientButton*  pluginB;
   QPushButton*   targetB;
   QPushButton*   filterB;
+  QPushButton*   observationB;
   QPushButton *  cacheQueryButton;
   QPushButton *  addBookmarkButton;
   QLabel*        connectStatus;
@@ -76,7 +77,7 @@ private slots:
 
 public slots:
   void searchStation(const QString&);
-
+  void newTimeRange(int,int);
   void currentStationChanged ( QListWidgetItem * current, QListWidgetItem * previous );
 public:
   qtsSidebar();
@@ -96,6 +97,14 @@ public:
 
   void writeBookmarks() { wdbtab->writeBookmarks();}
 
+
+  miutil::miString getTimecontrolLog() { return timecontrol->getTimecontrolLog(); }
+  void setTimeControlFromLog(miutil::miString t) { timecontrol->setTimecontrolFromlLog(t); }
+
+
+  void setObservationsEnabled(bool e) {if(e) observationB->setChecked(e);}
+  bool getObservationsEnabled() {return observationB->isChecked();}
+
   // WDB ------
 
   void enableWdb(bool);
@@ -114,6 +123,7 @@ signals:
   void changerun(const QString&);
   void changestation(const QString&);
   void filterToggled(bool);
+  void observationToggled(bool);
   void minmaxProg(int,int);
 
     // WDB ---------

@@ -28,11 +28,15 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-
+#include <iostream>
+#include <sstream>
+#include <puTools/miString.h>
 #include "qtsTimeControl.h"
 
+using namespace std;
+
 TimeControl::TimeControl(QWidget* parent)
-  : QFrame( parent)
+  : QFrame( parent), totalrange(300), fcastrange(300),obsrange(0)
 {
   QGridLayout* timeLayout = new QGridLayout(this);
   setFrameStyle(QFrame::Panel | QFrame::Sunken);
@@ -73,9 +77,57 @@ TimeControl::TimeControl(QWidget* parent)
    
 }
 
+
+miutil::miString TimeControl::getTimecontrolLog()
+{
+  ostringstream ost;
+  ost << totalrange << "," << fcastrange << "," << startSlider->value() << "," << stopSlider->value();
+
+  return ost.str();
+
+}
+
+void TimeControl::setTimecontrolFromlLog(  miutil::miString logString)
+{
+  vector<miutil::miString> logEntries=logString.split(",");
+  if(logEntries.size() < 4) return;
+
+  int t=atoi(logEntries[0].cStr());
+  int f=atoi(logEntries[1].cStr());
+  int s=atoi(logEntries[2].cStr());
+  int l=atoi(logEntries[3].cStr());
+
+    setTimeRange(t,f);
+    setLengthSlider(l);
+    setStartSlider(s);
+
+}
+
+void TimeControl::setLengthSlider(int v)
+{
+  stopSlider->setValue(v);
+}
+
+void TimeControl::setStartSlider(int v)
+{
+  if(v < startSlider->minimum() || v > startSlider->maximum())
+    return;
+  startSlider->setValue(v);
+}
+
+int TimeControl::getLengthValue()
+{
+  return stopSlider->value();
+}
+
+int TimeControl::getStartValue()
+{
+  return startSlider->value();
+}
+
 void TimeControl::startchanged(int v)
 {
-  startLabel->setNum(v);
+  startLabel->setNum(v-obsrange);
   minmaxSlot();
 }
 
@@ -85,7 +137,27 @@ void TimeControl::stopchanged(int v)
   minmaxSlot(); 
 }
 
+void TimeControl::setTimeRange(int total, int fcast)
+{
+  std::cerr << __FUNCTION__ << " called with " << total << " / " << fcast << std::endl;
 
+  if( total == totalrange && fcast == fcastrange )
+      return;
+  totalrange=total;
+  fcastrange=fcast;
+
+  int newobs=totalrange - fcastrange;
+  int activeposition= startSlider->value()+newobs - obsrange;
+  obsrange=newobs;
+
+  startSlider->setRange(0,totalrange);
+  stopSlider->setRange(0,totalrange);
+  stopSlider->setRange(0,totalrange);
+  stopSlider->setValue(fcastrange);
+
+  startSlider->setValue(activeposition);
+
+}
 
 
 

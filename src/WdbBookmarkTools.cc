@@ -54,13 +54,13 @@ bool WdbBookmarkTools::read(std::string filename,bool ignoreFromSave)
 void WdbBookmarkTools::addLine(string line,bool ignoreFromSave, bool reverse)
 {
   vector<string> words;
-  boost::split( words, line, boost::algorithm::is_any_of("|") );
+  boost::split( words, line, boost::is_any_of("|") );
   if(words.size() < 2 ) return;
   string data  = words[1];
   string token = words[0];
   string folder;
 
-  boost::split( words,token, boost::algorithm::is_any_of(".") );
+  boost::split( words,token, boost::is_any_of(".") );
 
   QStandardItem *parentItem = model->invisibleRootItem();
 
@@ -184,7 +184,7 @@ std::string WdbBookmarkTools::createRecordName(float f,char pos, char neg)
   int min = int(fdeg);
 
   ostringstream ost;
-  ost << abs(deg) << "° " << abs(min) << "\' " << ( deg >=0 ? pos : neg );
+  ost << abs(deg) << "ï¿½ " << abs(min) << "\' " << ( deg >=0 ? pos : neg );
   return ost.str();
 }
 

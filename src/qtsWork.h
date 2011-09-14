@@ -146,6 +146,8 @@ public slots:
   void latlonInDecimalToggled(bool);
   void refreshFinished();
   void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh();}
+  void observationToggled(bool showobs) { show->setShowObservations(showobs);refresh(true);}
+
 
   // WDB
   void changeWdbModel(const QString&);

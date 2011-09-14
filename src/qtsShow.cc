@@ -57,6 +57,7 @@ void qtsShow::paintGL()
 
   drawArea.prepare(false);
   drawArea.plot();
+
   swapBuffers();
 
 }
@@ -99,6 +100,15 @@ void qtsShow::refresh(bool readData)
   makeCurrent(); // set current OpenGL context
   drawArea.prepare(readData);
   updateGL();
+
+  if(drawArea.newLength()) {
+    int totall, fcastl;
+    drawArea.getMaxIntervall(totall,fcastl);
+    drawArea.resetNewLength();
+    emit newTimeRange(totall,fcastl);
+  }
+
+
   emit refreshFinished();
 }
 

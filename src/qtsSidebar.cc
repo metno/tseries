@@ -38,6 +38,7 @@
 #include "ts_filter.xpm"
 #include "view-refresh.xpm"
 #include "list-add.xpm"
+#include "synop.xpm"
 
 #include <iostream>
 
@@ -101,6 +102,7 @@ qtsSidebar::qtsSidebar()
   // connectbuttons are hosted here... but are used and
   // connected in qtsMain!
 
+  QPixmap synop_pix(synop_xpm);
   QPixmap find_pix(ts_find_xpm);
   QPixmap filter_pix(ts_filter_xpm);
   QPixmap refresh_pix(view_refresh_xpm);
@@ -110,6 +112,15 @@ qtsSidebar::qtsSidebar()
 			     s.server.command.cStr(),
 			     this);
   pluginB->useLabel(true);
+
+
+
+  observationB = new QPushButton(synop_pix,"",this);
+  observationB->setMaximumWidth(synop_pix.width());
+  observationB->setCheckable(true);
+  observationB->setToolTip(  tr("enable/disable observations") );
+
+  connect(observationB,SIGNAL(toggled(bool)), this, SIGNAL(observationToggled(bool)));
 
   targetB = new QPushButton(find_pix,"",this);
   targetB->setMaximumWidth(find_pix.width());
@@ -153,6 +164,7 @@ qtsSidebar::qtsSidebar()
   blayout->addWidget(cacheQueryButton);
   blayout->addWidget(connectStatus);
   blayout->addStretch(2);
+  blayout->addWidget(observationB);
   blayout->addWidget(filterB);
   blayout->addWidget(targetB);
   blayout->addWidget(pluginB);
@@ -162,6 +174,10 @@ qtsSidebar::qtsSidebar()
   cacheQueryButton->hide();
 }
 
+void qtsSidebar::newTimeRange(int total,int fcast)
+{
+  timecontrol->setTimeRange(total,fcast);
+}
 
 void qtsSidebar::searchStation(const QString& s)
 {

@@ -108,7 +108,9 @@ public:
 
   struct klstruct {
     miutil::miString    url;
+    miutil::miString    baseQuery;
     int                 maxDistance;
+    int                 maxObservationLength;
     std::map<std::string,std::string> parameters; ///< translate parameters from klima
   };
 

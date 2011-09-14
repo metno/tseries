@@ -51,6 +51,8 @@ void tsConfigure::setDefaults()
   contents["SHOWNORMAL"] = "1";     // show pos names in DIANA
   contents["SHOWSELECT"] = "1";     // show selected pos names in DIANA
   contents["TIMEMARK"]   = "1";     // show now in Diagram
+  contents["VISIBLESTART"] ="0";
+  contents["VISIBLELENGTH"]="0";
 
 }
 

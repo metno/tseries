@@ -76,6 +76,7 @@ qtsWork::qtsWork(QWidget* parent)
 
   connect (show,SIGNAL(refreshFinished()),this,SLOT(refreshFinished()));
 
+
   //sidebar->setMinimumWidth(170);
 //  sidebar->setMaximumWidth(255);
 
@@ -83,6 +84,9 @@ qtsWork::qtsWork(QWidget* parent)
   connect( sidebar, SIGNAL( minmaxProg(int,int)),
 	   this,    SLOT(setProgintervall(int,int)));
 
+  connect(show,SIGNAL(newTimeRange(int, int)), sidebar,SLOT(newTimeRange(int,int)));
+
+  connect( sidebar, SIGNAL(  observationToggled(bool)), this, SLOT(observationToggled(bool)));
 
   splitter->addWidget(show);
 
@@ -106,6 +110,7 @@ qtsWork::qtsWork(QWidget* parent)
 	  this,SLOT(changeStation(const QString&)));
   connect(sidebar,SIGNAL(filterToggled(bool)),
 	  this,SLOT(filterToggled(bool)));
+
 
 
   Initialise(); // the none gui stuff...
@@ -159,6 +164,10 @@ void qtsWork::Initialise()
   myTarget.description   = TARGETS_TSERIES+";name:lat:lon:image";
 
   makeStyleList();
+
+  int t,f;
+   show->getTimeRange(t,f);
+   sidebar->newTimeRange(t,f);
 
   filter = createFilter();
 }
@@ -431,11 +440,6 @@ void qtsWork::checkObsPosition(miCoordinates cor)
     sidebar->setObsInfo("");
     return;
   }
-
-
-  //ostringstream ost;
-  //ost << "<b>Obs:</b> " << s.description() << endl;
-
   sidebar->setObsInfo(s.description().c_str());
 }
 
@@ -515,7 +519,7 @@ void qtsWork::restoreLog()
   changeStation(po);
 
   activeRefresh = true;
-  refresh();
+  refresh(true);
 
 
 
@@ -529,6 +533,16 @@ void qtsWork::restoreLog()
   c.get("WDBLON",lon);
   c.get("WDBRUN",run);
   c.get("WDBPOSNAME",posname);
+
+  miString timecontrol;
+  c.get("TIMECONTROL",timecontrol);
+
+  sidebar->setTimeControlFromLog(timecontrol);
+
+  bool showobs=false;
+  c.get("SHOWOBSERVATIONS",showobs);
+  sidebar->setObservationsEnabled(showobs);
+
 
   request.restoreWdbFromLog(mo,st,lat,lon,miTime(run),posname);
   sidebar->restoreWdbFromLog(mo,st,lat,lon,run,posname);
@@ -556,7 +570,12 @@ void qtsWork::collectLog()
   c.set("WDBRUN",request.getWdbRun().isoTime());
   c.set("WDBPOSNAME",request.getWdbStationName());
 
+  c.set("SHOWOBSERVATIONS",sidebar->getObservationsEnabled());
+  c.set("TIMECONTROL",sidebar->getTimecontrolLog());
+
   sidebar->writeBookmarks();
+
+
 
 
 }

@@ -36,6 +36,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QLayout>
+#include <puTools/miString.h>
 
 class TimeControl : public QFrame {
   Q_OBJECT
@@ -44,9 +45,19 @@ private:
   QSlider* stopSlider;
   QLabel*  startLabel;
   QLabel*  stopLabel;
+  int totalrange;
+  int fcastrange;
+  int obsrange;
 
 public:
   TimeControl(QWidget*);
+  void setLengthSlider(int);
+  void setStartSlider(int v);
+  int getLengthValue();
+  int getStartValue();
+  void setTimeRange(int, int);
+  miutil::miString getTimecontrolLog();
+  void setTimecontrolFromlLog(  miutil::miString t);
   
 signals:
   void minmaxProg(int,int);

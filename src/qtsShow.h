@@ -59,8 +59,12 @@ public:
   void setTimemark(miutil::miTime,miutil::miString="");
   void clearTimemarks(miutil::miString="");
   void setProgintervall(int mi,int ma) { drawArea.setProgintervall(mi,ma);}
+  void setShowObservations(bool showObs) {drawArea.setShowObservations(showObs);}
+  void getTimeRange(int& t,int& f) { drawArea.getTimeRange(t,f);}
+
 signals:
   void refreshFinished();
+  void newTimeRange(int total, int fcast);
 };
 
 #endif
