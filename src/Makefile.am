@@ -95,7 +95,8 @@ img_sources=               \
 	directory.xpm      \
 	media-record.xpm   \
 	metno.xpm          \
-	trashcan.xpm
+	trashcan.xpm       \
+	synop.xpm
 
 
 # Flags -----------------------------
