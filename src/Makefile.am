@@ -1,7 +1,6 @@
 # Makefile to build tseries & btseries 
 # $Id$ 
 #
-
 bin_PROGRAMS= tseries.bin btseries
 
 # sources --------------------------

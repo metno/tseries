@@ -59,6 +59,8 @@ METNO_REQUIRE_QT4([
 
 # creating bin/tseries from bin/tseries.in - substituting from configure
 
+#AC_SUBST([prefix],[$prefix])
+
 AC_CONFIG_FILES([
 	bin/tseries
 	Makefile
@@ -66,6 +68,7 @@ AC_CONFIG_FILES([
 	etc/tseries/tseries.ctl
 	etc/tseries-test/tseries.ctl
 	etc/tseries/tsDiagrams.def
+	etc/tseries-test/tsDiagrams.def
 ])
 
 AC_OUTPUT

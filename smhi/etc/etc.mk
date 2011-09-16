@@ -1,7 +1,7 @@
 # Makefile to distribute stuff into /etc/tseries 
 
 
-dist_etc_DATA = \
+dist_etctseries_DATA = \
 	smhi/etc/tseries/tseries.ctl \
 	smhi/etc/tseries/tseries.ctl_SMHI \
 	smhi/etc/tseries/tsDiagrams_export.def_smhi \
@@ -9,7 +9,7 @@ dist_etc_DATA = \
 	smhi/etc/tseries/HirlamC22.grib
 
 
-dist_etc_DATA += \
+dist_etctseries_DATA += \
 	smhi/etc/tseries/symbols.def            \
 	smhi/etc/tseries/tsDiagrams.batch       \
 	smhi/etc/tseries/tsDiagrams.def         \

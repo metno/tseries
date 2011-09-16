@@ -22,7 +22,7 @@ Lang=@prefix@/share/tseries/lang
 
 <files>
 
-Defs=@sysconfdir@/tseries/tsDiagrams.def
+Defs=@sysconfdir@/tseries@PSUFFIX@/tsDiagrams.def
 Configure=$(Home)/.tseries/tseries.conf
 WeatherSymbols=$(Etc)/symbols.def
 stdImage=$(Images)/ts_station.xpm
@@ -547,7 +547,7 @@ Contents=x,x,t2m,x
 
 
 <wdb>
-host=proffdb-test.met.no
+host=proffdb@PSUFFIX@.met.no
 user=proffread
 busymovie=$(Images)/busy.gif
 readtime=1500
@@ -583,3 +583,21 @@ CH,0,x,x,RAW=   high cloud cover (RAW)            | 300 isobaric surface pressur
 <WDBVECTORFUNCTIONS>
 UU,0,x,x,APP:VV,0,x,x,APP
 UU,0,x,x,RAW:VV,0,x,x,RAW
+
+
+
+<klima>
+url=http://klapp.oslo.dnmi.no/metnopub/production/metno
+maxDistance=50
+maxObservationLength=300
+
+<klimaparameter>
+
+TT_O,0,x,OBS,x=TA 
+MSLP_O,0,x,OBS,x=PR 
+DD,0,x,OBS,x=DD 
+FF,0,x,OBS,x=FF 
+RR_O,0,x,OBS,x=RR_1
+CC,0,x,OBS,x=NN:*12.5
+WVFD,0,x,OBS,x=COMPUTE
+

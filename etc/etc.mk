@@ -1,9 +1,8 @@
 # Makefile to distribute stuff into /etc/tseries 
 
-dist_etc_DATA += \
+dist_etctseries_DATA += \
 	etc/tseries/symbols.def            \
 	etc/tseries/tsDiagrams.batch       \
-	etc/tseries/tsDiagrams.def         \
 	etc/tseries/tsDiagrams_export.def  \
 	etc/tseries/tsDiagramsREGIONS.def  \
 	etc/tseries/tseries.ctl_batch      \
