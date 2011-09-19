@@ -3,7 +3,7 @@
 #
 
 AC_PREREQ(2.59)
-AC_INIT([tseries], [5.0.1], [diana@met.no])
+AC_INIT([tseries], [5.1.0], [diana@met.no])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign])
@@ -13,7 +13,7 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LN_S
 
-METNO_PROGRAM_SUFFIX
+
 
 METNO_PROG_PKG_CONFIG
 
@@ -60,6 +60,9 @@ METNO_REQUIRE_QT4([
 # creating bin/tseries from bin/tseries.in - substituting from configure
 
 #AC_SUBST([prefix],[$prefix])
+
+METNO_PROGRAM_SUFFIX
+
 
 AC_CONFIG_FILES([
 	bin/tseries

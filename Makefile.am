@@ -20,8 +20,7 @@ include smhi/etc/etc.mk
 
 else
 
-#dist_etctseries_DATA = etc/${APP}/tseries.ctl etc/${APP}/tsDiagrams.def      
-dist_etctseries_DATA = etc/tseries-test/tseries.ctl etc/tseries-test/tsDiagrams.def      
+dist_etctseries_DATA = etc/${APP}/tseries.ctl etc/${APP}/tsDiagrams.def      
 
 if !HAS_PROGRAM_SUFFIX
 
