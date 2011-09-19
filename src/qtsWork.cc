@@ -27,7 +27,7 @@
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ */
 #include "qtsWork.h"
 #include "tsConfigure.h"
 
@@ -54,7 +54,7 @@ bool qStr2miStr(const QString& i, miString& o)
 }
 
 qtsWork::qtsWork(QWidget* parent)
-  : QWidget(parent) , activeRefresh(true)
+: QWidget(parent) , activeRefresh(true)
 {
   selectionType   = SELECT_BY_STATION;
   filterOn        = false;
@@ -78,11 +78,11 @@ qtsWork::qtsWork(QWidget* parent)
 
 
   //sidebar->setMinimumWidth(170);
-//  sidebar->setMaximumWidth(255);
+  //  sidebar->setMaximumWidth(255);
 
 
   connect( sidebar, SIGNAL( minmaxProg(int,int)),
-	   this,    SLOT(setProgintervall(int,int)));
+      this,    SLOT(setProgintervall(int,int)));
 
   connect(show,SIGNAL(newTimeRange(int, int)), sidebar,SLOT(newTimeRange(int,int)));
 
@@ -101,15 +101,15 @@ qtsWork::qtsWork(QWidget* parent)
 
 
   connect(sidebar,SIGNAL(changestyle(const QString&)),
-	  this,SLOT(changeStyle(const QString&)));
+      this,SLOT(changeStyle(const QString&)));
   connect(sidebar,SIGNAL(changemodel(const QString&)),
-	  this,SLOT(changeModel(const QString&)));
+      this,SLOT(changeModel(const QString&)));
   connect(sidebar,SIGNAL(changerun(const QString&)),
-	  this,SLOT(changeRun(const QString&)));
+      this,SLOT(changeRun(const QString&)));
   connect(sidebar,SIGNAL(changestation(const QString&)),
-	  this,SLOT(changeStation(const QString&)));
+      this,SLOT(changeStation(const QString&)));
   connect(sidebar,SIGNAL(filterToggled(bool)),
-	  this,SLOT(filterToggled(bool)));
+      this,SLOT(filterToggled(bool)));
 
 
 
@@ -149,11 +149,11 @@ void qtsWork::Initialise()
 
     for (unsigned int j=0; j<setup.streams[i].data.size(); j++) {
       data.addStream(setup.streams[i].data[j].name,      // streamname
-		     setup.streams[i].data[j].descript,  // description
-		     setup.streams[i].data[j].type,      // streamtype
-		     i, j,                               // dataset and
-		                                         // number in dataset
-		     setup.streams[i].data[j].contents); // models/runs
+          setup.streams[i].data[j].descript,  // description
+          setup.streams[i].data[j].type,      // streamtype
+          i, j,                               // dataset and
+          // number in dataset
+          setup.streams[i].data[j].contents); // models/runs
     }
   }
 
@@ -166,8 +166,8 @@ void qtsWork::Initialise()
   makeStyleList();
 
   int t,f;
-   show->getTimeRange(t,f);
-   sidebar->newTimeRange(t,f);
+  show->getTimeRange(t,f);
+  sidebar->newTimeRange(t,f);
 
   filter = createFilter();
 }
@@ -181,7 +181,7 @@ miMessage qtsWork::getStationList()
   m.command     = qmstrings::positions;
   m.commondesc  = "dataset:image:icon:annotation:normal:selected";
   m.common      =  DATASET_TSERIES +f+ request.model() + ":"
-    + IMG_STD_TSERIES + ":" + IMG_ICON_TSERIES +":"+annotation + ":";
+      + IMG_STD_TSERIES + ":" + IMG_ICON_TSERIES +":"+annotation + ":";
   m.description = "name:lat:lon";
   m.data = myStations;
   return m;
@@ -202,7 +202,7 @@ set<miString> qtsWork::fullPosList()
 
 void qtsWork::makeStationList(bool forced)
 {
-
+  cerr << "make stationlist called with " << ( forced ? " force " : " no force ") << endl;
   if(!request.model().exists())
     restoreModelFromLog();
 
@@ -215,25 +215,27 @@ void qtsWork::makeStationList(bool forced)
   QStringList slist;
   myStations.clear();
 
-
+  cerr << " myStations.clear();" << endl;
 
   myList = data.getPositions(request.model());
   map<miString,miString>::iterator itr = myList.begin();
   miString pos;
+
+  cerr << " Found " << myList.size() << " positions in data" << endl;
 
   for (;itr!=myList.end();itr++) {
     pos = itr->first;
 
     if(filterOn)
       if(!filter.empty())
-	if(!filter.count(pos))
-	  continue;
+        if(!filter.count(pos))
+          continue;
 
     slist << pos.cStr();
     myStations.push_back( pos  + ":" + itr->second );
   }
 
-
+  cerr << " filling sidebar with " << slist.size() << " places " << endl;
   sidebar->fillStations(slist);
 
   emit(refreshStations());
@@ -308,8 +310,8 @@ bool qtsWork::makeRunList(const miString& st,const miString& ru)
   if(runList.size()) {
     for(unsigned int i=0;i<runList.size();i++)
       if(ru == runList[i] ) {
-	sidebar->set(ru,StationTab::CMRUN);
-	return request.setRun(atoi(ru.cStr()));
+        sidebar->set(ru,StationTab::CMRUN);
+        return request.setRun(atoi(ru.cStr()));
       }
 
 
@@ -464,7 +466,7 @@ void qtsWork::refresh(bool readData)
 
     // check if any streams recently opened
     if (data.has_opened_streams() && readData){
-      //cerr << "qtsWork::refresh - remaking station list" << endl;
+      cerr << "qtsWork::refresh - remaking station list" << endl;
       data.makeStationList();
       makeStationList();
     }
@@ -542,6 +544,7 @@ void qtsWork::restoreLog()
   bool showobs=false;
   c.get("SHOWOBSERVATIONS",showobs);
   sidebar->setObservationsEnabled(showobs);
+  show->setShowObservations(showobs);
 
 
   request.restoreWdbFromLog(mo,st,lat,lon,miTime(run),posname);
@@ -583,10 +586,10 @@ void qtsWork::collectLog()
 
 void qtsWork::restoreModelFromLog()
 {
-   tsConfigure c;
-   miString mo;
-   c.get("REQUESTMODEL",mo);
-   request.setModel(mo);
+  tsConfigure c;
+  miString mo;
+  c.get("REQUESTMODEL",mo);
+  request.setModel(mo);
 }
 
 
@@ -690,7 +693,7 @@ set<miString> qtsWork::createFilter(bool orig)
       continue;
     if(token.exists())
       fl.insert(token);
-    }
+  }
   in.close();
   return fl;
 }
@@ -801,7 +804,7 @@ void qtsWork::changeCoordinates(float lon, float lat,QString name)
     checkObsPosition(cor);
     refresh(true);
   }
-   emit coordinatesChanged();
+  emit coordinatesChanged();
 
 }
 

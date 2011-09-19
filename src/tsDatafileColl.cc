@@ -436,11 +436,13 @@ map<miString,miString> DatafileColl::getPositions(const miString mod)
   int i,j,n= datastreams.size();
 
   for (i=0; i<n; i++)
-    for (j=0; j<datastreams[i].numModels;j++)
-      if ( mod == datastreams[i].modelList[j] )
+    for (j=0; j<datastreams[i].numModels;j++){
+      if ( mod == datastreams[i].modelList[j] ) {
         ds.setdata(datastreams[i].dataSet);
-
+      }
+    }
   n= stations.size();
+  cerr << "stations.size() " << n << " ------------------" << endl;
   for( i=0 ; i<n ; i++ ) {
     if (Union(ds,stations[i].d)){
       result[stations[i].station.Name()] =

@@ -203,9 +203,9 @@ void qtsSidebar::setObsInfo(QString s)
 QString  qtsSidebar::fillList(const vector<miutil::miString>& v, const StationTab::lEntry l)
 {
   QStringList qlist;
-  for(unsigned int i=0;i<v.size();i++)
+  for(unsigned int i=0;i<v.size();i++) {
      qlist << v[i].cStr();
-
+  }
 
 
 

@@ -96,6 +96,7 @@ void StationTab::searchStation(const QString& str )
 
 QString StationTab::fillStations(const QStringList& qlist )
 {
+  if(qlist.isEmpty()) return "";
   QString tmp;
   if(statl->count()) {
     if(statl->currentItem())
