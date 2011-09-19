@@ -1,3 +1,10 @@
+tseries-test (5.1.0-ubuntu1) lucid; urgency=low
+
+  * Interface to read from klimadb implemented
+  * new style for EPS precipitation plots
+
+ -- Juergen Schulze <j.schulze@met.no>  Mon, 19 Sep 2011 10:00:28 +0200
+
 tseries-test (5.0.1-ubuntu1) lucid; urgency=low
 
   * 1st lucid version of tseries-test
