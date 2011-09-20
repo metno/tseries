@@ -1,9 +1,9 @@
 # setup file for pu's time-series viewer
 
 lang=no
-
-Sysconfdir= @sysconfdir@
 Prefix=@prefix@
+Sysconfdir= @sysconfdir@
+
 Odata=/opdata
 Mdata=$(Odata)/metcorr
 Sdata=$(Odata)/sea
