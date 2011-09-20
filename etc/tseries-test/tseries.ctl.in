@@ -2,7 +2,8 @@
 
 lang=no
 
-
+Sysconfdir= @sysconfdir@
+Prefix=@prefix@
 Odata=/opdata
 Mdata=$(Odata)/metcorr
 Sdata=$(Odata)/sea
@@ -13,21 +14,21 @@ Edata=$(Odata)/ec
 
 <Path>
 
-Etc=@sysconfdir@/tseries
-Images=@prefix@/share/pixmaps/tseries/
-Doc=@prefix@/share/doc/tseries
-Lang=@prefix@/share/tseries/lang
+Etc= $(Sysconfdir)/tseries
+Images=$(Prefix)/share/pixmaps/tseries/
+Doc=$(Prefix)/share/doc/tseries
+Lang=$(Prefix)/share/tseries/lang
 
 #------------------
 
 <files>
 
-Defs=@sysconfdir@/tseries@PSUFFIX@/tsDiagrams.def
+Defs=$(Sysconfdir)/tseries@PSUFFIX@/tsDiagrams.def
 Configure=$(Home)/.tseries/tseries.conf
 WeatherSymbols=$(Etc)/symbols.def
 stdImage=$(Images)/ts_station.xpm
 finImage=$(Images)/ts_find.xpm
-iconImage=@prefix@/share/pixmaps/tseries.png
+iconImage=$(Prefix)/share/pixmaps/tseries.png
 baseFilter=$(Etc)/tseries.filter
 bookmarks=$(Home)/.tseries/bookmarks.def
 commonBookmarks=$(Etc)/tseries-bookmarks.common
@@ -42,7 +43,7 @@ commonBookmarks=$(Etc)/tseries-bookmarks.VNN
 Client=Diana
 Name=tseries
 
-Command=@prefix@/bin/coserver4
+Command=$(Prefix)/bin/coserver4
 
 <doc>
 mainsource=index.html
