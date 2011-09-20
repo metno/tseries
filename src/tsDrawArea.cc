@@ -219,6 +219,10 @@ bool tsDrawArea::prepareData()
               // request observations a tiny bit into the future
               tot.addHour(3);
               fromt.addHour(-(setup.klima.maxObservationLength));
+              cerr << "maxObservationLength= " << setup.klima.maxObservationLength << endl;
+
+              cout << "From= " << fromt <<  "  To= " << tot << endl;
+
               theData->fetchDataFromKlimaDB(data->getKlimaStream(),
                   obsParameters, unresolvedObs, fromt, tot);
 

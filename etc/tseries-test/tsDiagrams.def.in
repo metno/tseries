@@ -229,6 +229,7 @@ MODEL=UM4BX
 MODEL=SUBJ
 MODEL=UM.1km
 MODEL=WDB
+MODEL=OBS
 
 
 [MODELINDEPENDENT]
@@ -254,6 +255,9 @@ PARAM=CM,x,x,x
 PARAM=CH,x,x,x
 PARAM=CC,x,x,x
 PARAM=WW,x,x,x
+[END]
+
+
 
 [ADD]
 
@@ -353,6 +357,11 @@ STYLEFILE= @prefix@/share/@APP@/style/style.eps_t2m
 MODEL=EPS
 PARAM=EPTD,x,x,x
 PARAM=EPTT,x,x,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=OBS
+PARAM=TT_O,x,x,x
 [END]
 
 [MODELSPECIFIC]
@@ -493,6 +502,12 @@ PARAM=EPTT,x,x,x
 [END]
 
 [MODELSPECIFIC]
+MODEL=OBS
+PARAM=TT_O,x,x,x
+[END]
+
+
+[MODELSPECIFIC]
 MODEL=HIRLAM.12km
 PARAM=TT,x,x,x
 PARAM=TT_U,x,x,x
@@ -510,6 +525,11 @@ STYLEFILE= @prefix@/share/@APP@/style/style.lameps_rr
 MODEL=LAMEPS
 PARAM=EPRD,x,x,x
 PARAM=EPRR,x,x,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=OBS
+PARAM=RR_O,x,x,x
 [END]
 
 [MODELSPECIFIC]
@@ -547,6 +567,13 @@ STYLEFILE= @prefix@/share/@APP@/style/style.lameps_ff
 MODEL=LAMEPS
 PARAM=EPFD,x,x,x
 PARAM=EPFF,x,x,x
+[END]
+
+
+
+[MODELSPECIFIC]
+MODEL=OBS
+FF,0,x,OBS,x=FF 
 [END]
 
 

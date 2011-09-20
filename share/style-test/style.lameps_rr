@@ -281,6 +281,24 @@ linestep=TRUE
 [ADD]
 
 
+# Observed precipitation
+[NEW]
+yaid=0
+type=AXISHIST
+alias=RR_O
+fillPattern=SOLID
+label=TRUE
+unit=TRUE
+color=DARK_BLUE
+font=SUBSCRIPT
+histogramstart=0
+histogramstop=10
+[ADD]
+
+
+
+
+
 # inside axes primitives
 [NEW]
 mother=DIAGRAM

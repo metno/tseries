@@ -202,7 +202,6 @@ set<miString> qtsWork::fullPosList()
 
 void qtsWork::makeStationList(bool forced)
 {
-  cerr << "make stationlist called with " << ( forced ? " force " : " no force ") << endl;
   if(!request.model().exists())
     restoreModelFromLog();
 
@@ -215,13 +214,9 @@ void qtsWork::makeStationList(bool forced)
   QStringList slist;
   myStations.clear();
 
-  cerr << " myStations.clear();" << endl;
-
   myList = data.getPositions(request.model());
   map<miString,miString>::iterator itr = myList.begin();
   miString pos;
-
-  cerr << " Found " << myList.size() << " positions in data" << endl;
 
   for (;itr!=myList.end();itr++) {
     pos = itr->first;
@@ -235,7 +230,6 @@ void qtsWork::makeStationList(bool forced)
     myStations.push_back( pos  + ":" + itr->second );
   }
 
-  cerr << " filling sidebar with " << slist.size() << " places " << endl;
   sidebar->fillStations(slist);
 
   emit(refreshStations());

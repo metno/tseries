@@ -288,6 +288,23 @@ patternInColour=FALSE
 [ADD]
 
 
+
+
+# line - observation TT
+[NEW]
+type=LINE
+yaid=0
+parameter=TT_O,0,x,OBS
+color=RED
+text=T2m obs [°C]
+lineWidth=4
+linePattern=DOTTED
+patternInColour=TRUE
+[ADD]
+
+
+
+
 # inside axes primitives
 [NEW]
 mother=DIAGRAM

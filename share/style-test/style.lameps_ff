@@ -298,6 +298,23 @@ linePattern=FULL
 patternInColour=FALSE
 [ADD]
 
+
+
+# line - observation FF
+[NEW]
+type=LINE
+yaid=0
+parameter=FF,0,x,OBS
+color=RED
+text=FF obs [m/s]
+lineWidth=4
+linePattern=DOTTED
+patternInColour=TRUE
+[ADD]
+
+
+
+
 # inside axes primitives
 [NEW]
 mother=DIAGRAM
