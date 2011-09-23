@@ -301,16 +301,16 @@ patternInColour=FALSE
 
 
 # line - observation FF
-[NEW]
-type=LINE
-yaid=0
-parameter=FF,0,x,OBS
-color=RED
-text=FF obs [m/s]
-lineWidth=4
-linePattern=DOTTED
-patternInColour=TRUE
-[ADD]
+#[NEW]
+#type=LINE
+#yaid=0
+#parameter=FF,0,x,OBS
+#color=RED
+#text=FF obs [m/s]
+#lineWidth=4
+#linePattern=DOTTED
+#patternInColour=TRUE
+#[ADD]
 
 
 
