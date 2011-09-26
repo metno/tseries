@@ -1,3 +1,15 @@
+tseries-test (5.1.0-ubuntu3) lucid; urgency=low
+
+  * get observations in utc - not nmt 
+
+ -- Juergen Schulze <j.schulze@met.no>  Mon, 26 Sep 2011 11:49:42 +0200
+
+tseries-test (5.1.0-ubuntu2) lucid; urgency=low
+
+  * updated styles 
+
+ -- Juergen Schulze <j.schulze@met.no>  Tue, 20 Sep 2011 14:05:09 +0200
+
 tseries-test (5.1.0-ubuntu1) lucid; urgency=low
 
   * Interface to read from klimadb implemented

@@ -1,3 +1,9 @@
+tseries (5.1.0-ubuntu2) lucid; urgency=low
+
+  * setup fixes - wind in knots 
+
+ -- Juergen Schulze <j.schulze@met.no>  Fri, 23 Sep 2011 08:25:33 +0200
+
 tseries (5.1.0-ubuntu1) lucid; urgency=low
 
   * Interface to read from klimadb implemented

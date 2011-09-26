@@ -59,7 +59,7 @@ tsSetup::tsSetup() : sec(PUBLIC) , line(0)
     ids=0;
     wdb.readtime=2000;
     wdb.maxRecord=20;
-    klima.baseQuery="?ct=text/plain&del=semicolon";
+    klima.baseQuery="?ct=text/plain&del=semicolon&nmt=0";
     klima.url="http://klapp.oslo.dnmi.no/metnopub/production/metno"+klima.baseQuery;
     klima.maxDistance=50;
     klima.maxObservationLength=300;
