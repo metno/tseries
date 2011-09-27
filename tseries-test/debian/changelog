@@ -1,3 +1,9 @@
+tseries-test (5.1.0-ubuntu4) lucid; urgency=low
+
+  * more utc  
+
+ -- Juergen Schulze <j.schulze@met.no>  Tue, 27 Sep 2011 08:45:37 +0200
+
 tseries-test (5.1.0-ubuntu3) lucid; urgency=low
 
   * get observations in utc - not nmt 
