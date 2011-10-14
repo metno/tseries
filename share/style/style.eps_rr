@@ -193,6 +193,7 @@ text=EC-operasjonell
 lineWidth=4
 linePattern=DASHED
 patternInColour=TRUE
+linestep=TRUE
 [ADD]
 
 # line - primitive RR, EPS control forecast
@@ -206,6 +207,7 @@ text=Kontroll
 lineWidth=4
 linePattern=FULL
 patternInColour=FALSE
+linestep=TRUE
 [ADD]
 
 # line - primitive RR, EPS ensemble mean
@@ -219,6 +221,7 @@ text=Ensemble middel
 lineWidth=4
 linePattern=DASHED
 patternInColour=TRUE
+linestep=TRUE
 [ADD]
 
 # line - primitive RR, EPS ensemble median
@@ -232,6 +235,7 @@ text=Ensemble median
 lineWidth=4
 linePattern=DASHED
 patternInColour=TRUE
+linestep=TRUE
 [ADD]
 
 
@@ -249,6 +253,7 @@ linePattern=FULL
 patternInColour=FALSE
 #marker=M_RECTANGLE
 #size=4
+linestep=TRUE
 [ADD]
 
 # line - primitive RR, EPS 50 decil
@@ -259,6 +264,8 @@ color=BLACK
 color2=YELLOW
 #marker=M_TRIANGLE
 #size=6
+linestep=TRUE
+
 [ADD]
 
 # line - primitive RR, EPS 90 decil
@@ -268,6 +275,7 @@ color=ORANGE
 color2=DARK_BLUE
 text=P90
 #marker=M_DIAMOND
+linestep=TRUE
 [ADD]
 
 # line - primitive EPS RR
@@ -276,11 +284,14 @@ type=MULTI_LINE
 yaid=0
 order=1
 parameter=EPRR,x,x,x
-color=GREY50
+#color=GREY50
+color=DARK_GREEN
 text=EC-ensemble
 lineWidth=1
 linePattern=FULL
 patternInColour=FALSE
+linestep=TRUE
+
 [ADD]
 
 

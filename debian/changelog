@@ -1,3 +1,9 @@
+tseries (5.1.0-ubuntu3) lucid; urgency=low
+
+  * get observations in utc - not nmt
+
+ -- Juergen Schulze <j.schulze@met.no>  Fri, 14 Oct 2011 10:45:02 +0200
+
 tseries (5.1.0-ubuntu2) lucid; urgency=low
 
   * setup fixes - wind in knots 

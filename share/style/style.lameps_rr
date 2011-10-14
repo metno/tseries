@@ -193,6 +193,7 @@ text=Hirlam12 operasjonell
 lineWidth=4
 linePattern=DASHED
 patternInColour=TRUE
+linestep=TRUE
 [ADD]
 
 # line - primitive RR, LAMEPS ensemble mean
@@ -206,6 +207,7 @@ text=Ensemble middel
 lineWidth=4
 linePattern=DASHED
 patternInColour=TRUE
+linestep=TRUE
 [ADD]
 
 # line - primitive RR, LAMEPS ensemble median
@@ -219,6 +221,7 @@ text=Ensemble median
 lineWidth=4
 linePattern=DASHED
 patternInColour=TRUE
+linestep=TRUE
 [ADD]
 
 
@@ -236,6 +239,7 @@ linePattern=FULL
 patternInColour=FALSE
 #marker=M_RECTANGLE
 #size=4
+linestep=TRUE
 [ADD]
 
 # line - primitive RR, LAMEPS 50 decil
@@ -246,7 +250,10 @@ color=BLACK
 color2=YELLOW
 #marker=M_TRIANGLE
 #size=6
+linestep=TRUE
+
 [ADD]
+
 
 # line - primitive RR, LAMEPS 90 decil
 parameter=EPRD,90,LAMEPS,x
@@ -255,6 +262,7 @@ color=ORANGE
 color2=DARK_BLUE
 text=P90
 #marker=M_DIAMOND
+linestep=TRUE
 [ADD]
 
 # line - primitive LAMEPS RR
@@ -263,12 +271,32 @@ type=MULTI_LINE
 yaid=0
 order=1
 parameter=EPRR,x,x,x
-color=GREY50
+#color=GREY50
+color=DARK_GREEN
 text=LAMEPS-ensemble
 lineWidth=1
 linePattern=FULL
 patternInColour=FALSE
+linestep=TRUE
 [ADD]
+
+
+# Observed precipitation
+[NEW]
+yaid=0
+type=AXISHIST
+alias=RR_O
+fillPattern=SOLID
+label=TRUE
+unit=TRUE
+color=DARK_BLUE
+font=SUBSCRIPT
+histogramstart=0
+histogramstop=10
+[ADD]
+
+
+
 
 
 # inside axes primitives

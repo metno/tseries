@@ -189,9 +189,49 @@ patternInColour=TRUE
 useTimes=3
 [ADD]
 
+
+
+
+
+# Yaxis (RR24)
+[NEW]
+yaid=7
+type=YAXIS_STATIC
+label=FALSE
+horLabels=FALSE
+verLabels=FALSE
+minValue=0.0
+minIsSet=TRUE
+maxIsSet=FALSE
+#align=LEFT
+axis= NO_AXIS
+lineWidth=0
+text=
+color=white
+size=ZERO
+versides=NONE
+
+[ADD]
+
+
+# Observed precipitation
+[NEW]
+yaid=7
+type=AXISHIST
+alias=RR_O
+fillPattern=DIAGRIGHT
+label=TRUE
+unit=TRUE
+color=DARK_BLUE
+font=SUBSCRIPT
+histogramstart=0
+histogramstop=10
+[ADD]
+
 # precipitation
 [NEW]
-type=HIST
+yaid=7
+type=AXISHIST
 alias=RR
 fillPattern=DIAGLEFT
 #fillPattern=SOLID
@@ -204,6 +244,10 @@ histogramstop=10
 [ADD]
 
 
+
+
+
+
 # ----------------------------
 # Yaxis (T2m)
 [NEW]
@@ -213,7 +257,7 @@ delta=1.0
 interval=0.5
 minMargin = 0.25
 minRange = 5.0
-#minValue=0.0
+#minValue=-7.0
 minIsSet=FALSE
 #maxValue=360.0
 maxIsSet=FALSE
@@ -237,8 +281,19 @@ parameter=TT,0,x,x
 color=RED
 text=T2m [°C]
 lineWidth=2
-linePattern=DASHED
+linePattern=FULL
 patternInColour=FALSE
+[ADD]
+
+[NEW]
+type=LINE
+yaid=0
+parameter=TT_O,0,x,OBS
+color=RED
+text=T2m obs [°C]
+lineWidth=2
+linePattern=DOTTED
+patternInColour=TRUE
 [ADD]
 
 # line - uncorr primitive TT
@@ -314,6 +369,23 @@ lineWidth=2
 linePattern=FULL
 patternInColour=FALSE
 [ADD]
+
+
+# line - obs MSLP
+[NEW]
+type=LINE
+yaid=1
+parameter=MSLP_O,x,x,x
+color=BLUE
+text=MSLP obs [hPa]
+lineWidth=2
+linePattern=DASH_DOT
+patternInColour=TRUE
+[ADD]
+
+
+
+
 
 
 # ----------------------------
