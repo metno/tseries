@@ -132,7 +132,7 @@ public:
 
   void changePositions(const miutil::miString&);
   SelectionType getSelectionType() const {return selectionType;};
-
+  void toggleLockHoursToModel(bool lockHoursToModel) { sidebar->toggleLockHoursToModel(lockHoursToModel);}
 
 public slots:
 

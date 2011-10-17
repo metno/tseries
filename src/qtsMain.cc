@@ -236,6 +236,14 @@ void qtsMain::makeSettingsMenu()
 
   menu_setting->addSeparator();
 
+  config.get("LOCKHOURSTOMODEL",  lockHoursToModel);
+  lockHoursToModelAct =  new QAction(tr("Lock Hours to Model "), this);
+  lockHoursToModelAct->setCheckable(true);
+  lockHoursToModelAct->setChecked(lockHoursToModel);
+  connect(lockHoursToModelAct,  SIGNAL(toggled(bool)), this, SLOT(toggleLockHoursToModel(bool)));
+  menu_setting->addAction(lockHoursToModelAct);
+
+
   // ------------------------
 
   fontAct =  new QAction(tr("Font"), this);
@@ -443,6 +451,7 @@ void qtsMain::writeLog()
   config.set("TIMEMARK",tmark);
   config.set("LATLONDEC",latlond);
   config.set("FONT",miString(qApp->font().toString().toStdString()));
+  config.set("LOCKHOURSTOMODEL",  lockHoursToModel);
 
   if(lang.exists())
     config.set("LANG",lang);
@@ -543,6 +552,14 @@ void qtsMain::toggleLatLon(bool isOn)
   if(work)
     work->latlonInDecimalToggled(latlond);
 }
+
+void qtsMain::toggleLockHoursToModel(bool isOn)
+{
+  lockHoursToModel=isOn;
+  if(work)
+     work->toggleLockHoursToModel(lockHoursToModel);
+}
+
 
 
 

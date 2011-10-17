@@ -298,6 +298,10 @@ void DatafileColl::makeStationList()
         while (datastreams[i].dataStream->getStationSeq(nums, st)) {
           // force upcase on all stations
           st.setName(st.Name().upcase());
+
+          if(st.Name()=="OSLO")
+            cerr << st << endl;
+
           // Check if station already exists
           exists = findpos(st.Name(), posidx);
           if (posidx == ns)
@@ -305,7 +309,7 @@ void DatafileColl::makeStationList()
           else
             p = stations.begin() + posidx;
 
-          if (!exists) {
+        if (!exists) {
             ExtStation estat;
             estat.station = st;
             estat.priority = 2;
@@ -313,11 +317,11 @@ void DatafileColl::makeStationList()
             pos_info[st.Name()] = st;
             p = stations.begin() + posidx;
             ns++;
-          } else {
-            // if incoming station has a valid dbkey...keep it
-            if (st.DbKey() != 0 && p->station.DbKey() == 0)
-              p->station = st;
-          }
+        } else {
+          // if incoming station has a valid dbkey...keep it
+          // if (st.DbKey() != 0 && p->station.DbKey() == 0)
+          p->station = st;
+        }
           // update number of stations in each dataset
           if (!(p->d.setdata(datastreams[i].dataSet)))
             numStationsDS[datastreams[i].dataSet]++;

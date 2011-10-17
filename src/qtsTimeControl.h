@@ -48,6 +48,7 @@ private:
   int totalrange;
   int fcastrange;
   int obsrange;
+  bool lockHours;
 
 public:
   TimeControl(QWidget*);
@@ -58,7 +59,7 @@ public:
   void setTimeRange(int, int);
   miutil::miString getTimecontrolLog();
   void setTimecontrolFromlLog(  miutil::miString t);
-  
+  void toggleLockHoursToModel(bool lockHoursToModel) {lockHours = lockHoursToModel;}
 signals:
   void minmaxProg(int,int);
 

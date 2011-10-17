@@ -89,6 +89,7 @@ private:
   QAction * tmarkAct;
   QAction * latlonAct;
   QAction * fontAct;
+  QAction * lockHoursToModelAct;
 
   QMenu        * menu_lang;
   QActionGroup * languageGroup;
@@ -127,6 +128,7 @@ private:
   bool sicon;
   bool sposition;
   bool latlond;
+  bool lockHoursToModel;
 
   void makeMenuBar();
   void makeFileMenu();
@@ -166,6 +168,7 @@ private slots:
   void toggleTimemark(bool);
   void toggleLang(QAction*);
   void toggleLatLon(bool);
+  void toggleLockHoursToModel(bool);
 
   void processLetter(miMessage&);
   void processConnect();

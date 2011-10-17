@@ -100,7 +100,7 @@ public:
 
   miutil::miString getTimecontrolLog() { return timecontrol->getTimecontrolLog(); }
   void setTimeControlFromLog(miutil::miString t) { timecontrol->setTimecontrolFromlLog(t); }
-
+  void toggleLockHoursToModel(bool lockHoursToModel) {timecontrol->toggleLockHoursToModel(lockHoursToModel);}
 
   void setObservationsEnabled(bool e) {if(e) observationB->setChecked(e);}
   bool getObservationsEnabled() {return observationB->isChecked();}

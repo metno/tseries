@@ -202,6 +202,11 @@ set<miString> qtsWork::fullPosList()
 
 void qtsWork::makeStationList(bool forced)
 {
+  cerr << "making new stationlist with model ---------------------- " << request.model() << endl;
+
+  if(request.model() == "OBS" )
+    return;
+
   if(!request.model().exists())
     restoreModelFromLog();
 
@@ -420,6 +425,8 @@ void qtsWork::checkPosition(miString name)
     ost <<  "<b>Lat:</b> " << cor.sLat()<< " <b>Lon:</b> " << cor.sLon();
   }
 
+//  ost << " <b>Hoh:</b> " << p.height();
+
 
   sidebar->setStationInfo(ost.str().c_str());
 
@@ -459,9 +466,9 @@ void qtsWork::refresh(bool readData)
   if(request.type() == tsRequest::HDFSTREAM) {
 
     // check if any streams recently opened
+
     if (data.has_opened_streams() && readData){
-      cerr << "qtsWork::refresh - remaking station list" << endl;
-      data.makeStationList();
+       data.makeStationList();
       makeStationList();
     }
 

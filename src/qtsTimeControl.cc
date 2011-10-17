@@ -151,7 +151,10 @@ void TimeControl::setTimeRange(int total, int fcast)
   obsrange=newobs;
 
   int oldfcastrange = stopSlider->value();
-  if(oldfcastrange > totalrange) oldfcastrange = fcastrange;
+
+  if(oldfcastrange > totalrange || lockHours) oldfcastrange = fcastrange;
+
+
   startSlider->setRange(0,totalrange);
   stopSlider->setRange(0,totalrange);
   stopSlider->setRange(0,totalrange);
