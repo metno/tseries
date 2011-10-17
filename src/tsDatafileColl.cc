@@ -299,9 +299,6 @@ void DatafileColl::makeStationList()
           // force upcase on all stations
           st.setName(st.Name().upcase());
 
-          if(st.Name()=="OSLO")
-            cerr << st << endl;
-
           // Check if station already exists
           exists = findpos(st.Name(), posidx);
           if (posidx == ns)
