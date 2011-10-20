@@ -89,7 +89,6 @@ qtsSidebar::qtsSidebar()
   // Control the start and length
 
   timecontrol= new TimeControl(this);
-
   connect(timecontrol,SIGNAL(minmaxProg(int,int)),this, SIGNAL(minmaxProg(int,int)));
 
 

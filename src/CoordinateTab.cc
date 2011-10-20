@@ -82,6 +82,7 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   head << tr("Bookmarks");
 
   bookmarks = new QTreeView(this);
+  bookmarks->setMinimumHeight(1);
   model     = new QStandardItemModel();
   model->setHorizontalHeaderLabels ( head );
   tsSetup setup;

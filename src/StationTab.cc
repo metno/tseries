@@ -50,6 +50,7 @@ StationTab::StationTab(QWidget* parent) : QWidget(parent)
   statl   = new QListWidget(this);
   searchw = new QLineEdit(this);
 
+  statl->setMinimumHeight(1);
 
 
   // showing the positions
