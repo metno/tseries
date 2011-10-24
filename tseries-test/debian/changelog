@@ -1,3 +1,15 @@
+tseries-test (5.1.0-ubuntu6) lucid; urgency=low
+
+  * allow sidebar to shrink more vertically 
+
+ -- Juergen Schulze <j.schulze@met.no>  Thu, 20 Oct 2011 08:58:59 +0200
+
+tseries-test (5.1.0-ubuntu5) lucid; urgency=low
+
+  * fixed problem with time-selection
+
+ -- Juergen Schulze <j.schulze@met.no>  Mon, 17 Oct 2011 13:27:57 +0200
+
 tseries-test (5.1.0-ubuntu4) lucid; urgency=low
 
   * more utc  
