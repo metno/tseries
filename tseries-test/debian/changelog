@@ -1,3 +1,10 @@
+tseries-test (5.1.2-ubuntu1) lucid; urgency=low
+
+  * fixed invisible axis
+  * fixed vanishing stations 
+
+ -- Juergen Schulze <j.schulze@met.no>  Wed, 09 Nov 2011 12:05:14 +0100
+
 tseries-test (5.1.0-ubuntu6) lucid; urgency=low
 
   * allow sidebar to shrink more vertically 
