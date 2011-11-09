@@ -193,23 +193,15 @@ useTimes=3
 
 
 
+# invisible axis to scale rr from different sources
 # Yaxis (RR24)
 [NEW]
 yaid=7
 type=YAXIS_STATIC
-label=FALSE
-horLabels=FALSE
-verLabels=FALSE
 minValue=0.0
 minIsSet=TRUE
 maxIsSet=FALSE
-#align=LEFT
-axis= NO_AXIS
-lineWidth=0
-text=
-color=white
-size=ZERO
-versides=NONE
+visible=FALSE
 
 [ADD]
 

@@ -71,8 +71,9 @@ qtsMain::qtsMain(miString l) : lang(l), QMainWindow()
   makeConnectButtons();
 
   work->latlonInDecimalToggled(latlond);
+  toggleLockHoursToModel(lockHoursToModel);
 
- printer = new QPrinter( QPrinter::HighResolution );
+  printer = new QPrinter( QPrinter::HighResolution );
 
   setWindowIcon(QPixmap(tseries_xpm));
 
@@ -663,7 +664,6 @@ void qtsMain::sendNewPoslist()
 
   m.common+=( snormal ? "true" : "false");
   m.common+=( sselect ? ":true" : ":false");
-
   pluginB->sendMessage(m);
 }
 

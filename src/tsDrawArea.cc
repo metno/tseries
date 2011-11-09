@@ -143,7 +143,6 @@ bool tsDrawArea::prepareData()
   // fetch data
 
   for (i = 0; i < options.numModels(); i++) {
-    cerr << "option.model:" << options.getmodel(i) << endl;
     inlist = options.paramVector(i); // ParId vector
 
     for (int j = 0; j < inlist.size(); j++) {

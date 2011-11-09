@@ -36,7 +36,7 @@
 using namespace std;
 
 TimeControl::TimeControl(QWidget* parent)
-  : QFrame( parent), totalrange(300), fcastrange(300),obsrange(0)
+  : QFrame( parent), totalrange(300), fcastrange(300),obsrange(0), lockHours(false)
 {
   QGridLayout* timeLayout = new QGridLayout(this);
   setFrameStyle(QFrame::Panel | QFrame::Sunken);
@@ -139,8 +139,6 @@ void TimeControl::stopchanged(int v)
 
 void TimeControl::setTimeRange(int total, int fcast)
 {
-  std::cerr << __FUNCTION__ << " called with " << total << " / " << fcast << std::endl;
-
   if( total == totalrange && fcast == fcastrange )
       return;
   totalrange=total;
@@ -153,7 +151,6 @@ void TimeControl::setTimeRange(int total, int fcast)
   int oldfcastrange = stopSlider->value();
 
   if(oldfcastrange > totalrange || lockHours) oldfcastrange = fcastrange;
-
 
   startSlider->setRange(0,totalrange);
   stopSlider->setRange(0,totalrange);

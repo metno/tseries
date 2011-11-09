@@ -132,7 +132,7 @@ public:
 
   void changePositions(const miutil::miString&);
   SelectionType getSelectionType() const {return selectionType;};
-  void toggleLockHoursToModel(bool lockHoursToModel) { sidebar->toggleLockHoursToModel(lockHoursToModel);}
+  void toggleLockHoursToModel(bool lockHoursToModel) { if(sidebar) sidebar->toggleLockHoursToModel(lockHoursToModel);}
 
 public slots:
 
@@ -145,7 +145,7 @@ public slots:
   void newFilter(const set<miutil::miString>&);
   void latlonInDecimalToggled(bool);
   void refreshFinished();
-  void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh();}
+  void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(true);}
   void observationToggled(bool showobs) { show->setShowObservations(showobs);refresh(true);}
 
 

@@ -202,13 +202,9 @@ set<miString> qtsWork::fullPosList()
 
 void qtsWork::makeStationList(bool forced)
 {
-  cerr << "making new stationlist with model ---------------------- " << request.model() << endl;
-
-  if(request.model() == "OBS" )
-    return;
-
   if(!request.model().exists())
     restoreModelFromLog();
+
 
   if(!forced)
     if( oldModel == request.model())
@@ -222,7 +218,6 @@ void qtsWork::makeStationList(bool forced)
   myList = data.getPositions(request.model());
   map<miString,miString>::iterator itr = myList.begin();
   miString pos;
-
   for (;itr!=myList.end();itr++) {
     pos = itr->first;
 
@@ -468,7 +463,7 @@ void qtsWork::refresh(bool readData)
     // check if any streams recently opened
 
     if (data.has_opened_streams() && readData){
-       data.makeStationList();
+      data.makeStationList();
       makeStationList();
     }
 
