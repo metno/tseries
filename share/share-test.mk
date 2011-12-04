@@ -20,6 +20,7 @@ dist_style_DATA = \
 	share/style-test/style.snow_meteogram	 \
 	share/style-test/style.lameps_rr		 \
 	share/style-test/style.eps_rr		 \
+	share/style-test/style.eps_plum_rr		 \
 	share/style-test/style.eps_rr24t2m_noens_op	 \
 	share/style-test/style.maritim		 \
 	share/style-test/style.lameps_z500		 \
