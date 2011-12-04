@@ -365,10 +365,27 @@ PARAM=TT,x,x,x
 
 [ADD]
 
-# Røykfane RR Deciler+Ensembler+operasjonell
+# Histogram RR Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_RR
 STYLEFILE= @prefix@/share/@APP@/style/style.eps_rr
+
+[MODELSPECIFIC]
+MODEL=EPS
+PARAM=EPRD,x,x,x
+PARAM=EPRR,x,x,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=ECMWF_U
+PARAM=RR,x,x,x
+[END]
+
+
+# Røykfane RR Deciler+Ensembler+operasjonell
+[DIAGRAM]
+NAME=EPS_FANE_RR
+STYLEFILE= @prefix@/share/@APP@/style/style.eps_plum_rr
 
 [MODELSPECIFIC]
 MODEL=EPS
