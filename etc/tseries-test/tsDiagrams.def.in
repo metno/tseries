@@ -382,7 +382,7 @@ PARAM=RR,x,x,x
 [END]
 
 
-# Røykfane RR Deciler+Ensembler+operasjonell
+# RÃ¸kfane RR Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_FANE_RR
 STYLEFILE= @prefix@/share/@APP@/style/style.eps_plum_rr
@@ -540,6 +540,26 @@ PARAM=EPRR,x,x,x
 [MODELSPECIFIC]
 MODEL=OBS
 PARAM=RR_O,x,x,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIRLAM.12km
+PARAM=RR,x,x,x
+[END]
+
+
+
+[ADD]
+
+
+[DIAGRAM]
+NAME=LAMEPS_FANE_RR
+STYLEFILE= @prefix@/share/@APP@/style/style.eps_plum_rr
+
+[MODELSPECIFIC]
+MODEL=LAMEPS
+PARAM=EPRD,x,x,x
+PARAM=EPRR,x,x,x
 [END]
 
 [MODELSPECIFIC]
