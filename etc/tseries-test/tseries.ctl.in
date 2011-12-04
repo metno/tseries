@@ -12,7 +12,7 @@ Edata=$(Odata)/ec
 
 Rdata=$(Odata)/metcorr
 
-[VV:VNN]
+[VV:VNN:VTK]
 Rdata=/opdata_routine/metcorr
 []
 
