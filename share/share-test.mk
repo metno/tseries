@@ -19,6 +19,7 @@ dist_style_DATA = \
 	share/style-test/style.meteogram_batch	 \
 	share/style-test/style.snow_meteogram	 \
 	share/style-test/style.lameps_rr		 \
+	share/style-test/style.lameps_plum_rr     \
 	share/style-test/style.eps_rr		 \
 	share/style-test/style.eps_plum_rr		 \
 	share/style-test/style.eps_rr24t2m_noens_op	 \

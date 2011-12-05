@@ -191,7 +191,7 @@ parameter=RR,x,ECMWF_U,x
 color=BLUE
 text=EC-operasjonell
 lineWidth=4
-linePattern=DASHED
+linePattern=FULL
 patternInColour=TRUE
 linestep=TRUE
 [ADD]
