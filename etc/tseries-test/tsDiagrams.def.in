@@ -555,7 +555,7 @@ PARAM=RR,x,x,x
 
 [DIAGRAM]
 NAME=LAMEPS_FANE_RR
-STYLEFILE= @prefix@/share/@APP@/style/style.lampeps_plum_rr
+STYLEFILE= @prefix@/share/@APP@/style/style.lameps_plum_rr
 
 [MODELSPECIFIC]
 MODEL=LAMEPS
