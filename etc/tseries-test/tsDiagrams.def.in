@@ -381,6 +381,7 @@ MODEL=ECMWF_U
 PARAM=RR,x,x,x
 [END]
 
+[ADD]
 
 # Røkfane RR Deciler+Ensembler+operasjonell
 [DIAGRAM]
@@ -554,7 +555,7 @@ PARAM=RR,x,x,x
 
 [DIAGRAM]
 NAME=LAMEPS_FANE_RR
-STYLEFILE= @prefix@/share/@APP@/style/style.eps_plum_rr
+STYLEFILE= @prefix@/share/@APP@/style/style.lampeps_plum_rr
 
 [MODELSPECIFIC]
 MODEL=LAMEPS
