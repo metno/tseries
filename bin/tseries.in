@@ -4,17 +4,27 @@ prefix=@prefix@
 bindir=$prefix/bin
 etcdir=@sysconfdir@
 
-SUBNET=`/sbin/ifconfig eth0 | grep "inet addr" | cut -d. -f3`
+
+gw=`route | grep default | awk '{print $2}' `
+
+case "$gw" in
+    vpv*)   region="VV" ;;
+    vnn*)   region="VNN" ;;
+    vtk*)   region="VTK" ;;
+      *)   region="VA";;
+esac
+
+
+if [ $region = "VA" ] ; then
+
+    SUBNET=`/sbin/ifconfig eth0 | grep "inet addr" | cut -d. -f3`
+
+    if [ $SUBNET = "20" ] ; then
+	region="FOU"
+    fi
+fi
 
 mkdir -p $HOME/.tseries
-
-case $SUBNET in
-    20)                       region="FOU" ;;
-    36|40)                    region="VV"  ;;
-    48)                       region="VNN" ;;
-    16|18|24|26|56|90|104|50) region="VA"  ;;
-    *)                        region="VTK" ;;
-esac
 
 $bindir/tseries.bin@PSUFFIX@ $@ -S $region -s $etcdir/tseries@PSUFFIX@/tseries.ctl -T "@APP@"
 
