@@ -12,7 +12,14 @@ Edata=$(Odata)/ec
 
 Rdata=$(Odata)/metcorr
 
-[VV:VNN:VTK]
+day=
+[1:VNN1:VV2]
+day=-1
+[2:VNN2:VV2]
+day=-2
+[]
+
+[VV:VNN:VTK:VNN1:VNN2:VV1:VV2]
 Rdata=/opdata_routine/metcorr
 []
 
@@ -124,12 +131,12 @@ CollectionName=HARMONIE25Meteogrammer
 PreferredDiagram=Meteogram
 InitialOpen=0
 
-DataFile=$(Rdata)/harmonie25_00.hdf
+DataFile=$(Rdata)/harmonie25_00.hdf$(day)
 DataDescription=HARMONIE_2.5km
 DataType=HDF
 Contents=x,x,HARMONIE_2.5km,0
 
-DataFile=$(Rdata)/harmonie25_12.hdf
+DataFile=$(Rdata)/harmonie25_12.hdf$(day)
 DataDescription=HARMONIE_2.5km
 DataType=HDF
 Contents=x,x,HARMONIE_2.5km,12
@@ -139,12 +146,12 @@ CollectionName=HARMONIE55Meteogrammer
 PreferredDiagram=Meteogram
 InitialOpen=0
 
-DataFile=$(Rdata)/harmonie55_00.hdf
+DataFile=$(Rdata)/harmonie55_00.hdf$(day)
 DataDescription=HARMONIE_5.5km
 DataType=HDF
 Contents=x,x,HARMONIE_5.5km,0
 
-DataFile=$(Rdata)/harmonie55_12.hdf
+DataFile=$(Rdata)/harmonie55_12.hdf$(day)
 DataDescription=HARMONIE_5.5km
 DataType=HDF
 Contents=x,x,HARMONIE_5.5km,12
@@ -159,22 +166,22 @@ CollectionName=HIRLAM4Meteogrammer
 PreferredDiagram=Meteogram
 InitialOpen=0
 
-DataFile=$(Mdata)/hirlam4km00.hdf
+DataFile=$(Mdata)/hirlam4km00.hdf$(day)
 DataDescription=HIRLAM.4km
 DataType=HDF
 Contents=x,x,HIRLAM.4km,0
 
-DataFile=$(Mdata)/hirlam4km06.hdf
+DataFile=$(Mdata)/hirlam4km06.hdf$(day)
 DataDescription=HIRLAM.4km
 DataType=HDF
 Contents=x,x,HIRLAM.4km,6
 
-DataFile=$(Mdata)/hirlam4km12.hdf
+DataFile=$(Mdata)/hirlam4km12.hdf$(day)
 DataDescription=HIRLAM.4km
 DataType=HDF
 Contents=x,x,HIRLAM.4km,12
 
-DataFile=$(Mdata)/hirlam4km18.hdf
+DataFile=$(Mdata)/hirlam4km18.hdf$(day)
 DataDescription=HIRLAM.4km
 DataType=HDF
 Contents=x,x,HIRLAM.4km,18
@@ -187,22 +194,22 @@ CollectionName=HIRLAM8Meteogrammer
 PreferredDiagram=Meteogram
 InitialOpen=0
 
-DataFile=$(Mdata)/hirlam800.hdf
+DataFile=$(Mdata)/hirlam800.hdf$(day)
 DataDescription=HIRLAM.8km
 DataType=HDF
 Contents=x,x,HIRLAM.8km,0
 
-DataFile=$(Mdata)/hirlam806.hdf
+DataFile=$(Mdata)/hirlam806.hdf$(day)
 DataDescription=HIRLAM.8km
 DataType=HDF
 Contents=x,x,HIRLAM.8km,6
 
-DataFile=$(Mdata)/hirlam812.hdf
+DataFile=$(Mdata)/hirlam812.hdf$(day)
 DataDescription=HIRLAM.8km
 DataType=HDF
 Contents=x,x,HIRLAM.8km,12
 
-DataFile=$(Mdata)/hirlam818.hdf
+DataFile=$(Mdata)/hirlam818.hdf$(day)
 DataDescription=HIRLAM.8km
 DataType=HDF
 Contents=x,x,HIRLAM.8km,18
@@ -216,22 +223,22 @@ CollectionName=HIRLAM12Meteogrammer
 PreferredDiagram=Meteogram
 InitialOpen=0
 
-DataFile=$(Mdata)/hirlam1200.hdf
+DataFile=$(Mdata)/hirlam1200.hdf$(day)
 DataDescription=HIRLAM.12km
 DataType=HDF
 Contents=x,x,HIRLAM.12km,0
 
-DataFile=$(Mdata)/hirlam1206.hdf
+DataFile=$(Mdata)/hirlam1206.hdf$(day)
 DataDescription=HIRLAM.12km
 DataType=HDF
 Contents=x,x,HIRLAM.12km,6
 
-DataFile=$(Mdata)/hirlam1212.hdf
+DataFile=$(Mdata)/hirlam1212.hdf$(day)
 DataDescription=HIRLAM.12km
 DataType=HDF
 Contents=x,x,HIRLAM.12km,12
 
-DataFile=$(Mdata)/hirlam1218.hdf
+DataFile=$(Mdata)/hirlam1218.hdf$(day)
 DataDescription=HIRLAM.12km
 DataType=HDF
 Contents=x,x,HIRLAM.12km,18
@@ -246,30 +253,30 @@ InitialOpen=0
 
 [MA:VTK]
 
-DataFile=$(Mdata)/um4km.hdf
+DataFile=$(Mdata)/um4km.hdf$(day)
 DataDescription=UM.4km
 DataType=HDF
 Contents=x,x,UM.4km,x
 
 [VV:VNN:VA:FOU:PU]
 
-DataFile=$(Mdata)/um4km00.hdf
+DataFile=$(Mdata)/um4km00.hdf$(day)
 DataDescription=UM.4km
 DataType=HDF
 Contents=x,x,UM.4km,0
 
-DataFile=$(Mdata)/um4km06.hdf
+DataFile=$(Mdata)/um4km06.hdf$(day)
 DataDescription=UM.4km
 DataType=HDF
 Contents=x,x,UM.4km,6
 
 
-DataFile=$(Mdata)/um4km12.hdf
+DataFile=$(Mdata)/um4km12.hdf$(day)
 DataDescription=UM.4km
 DataType=HDF
 Contents=x,x,UM.4km,12
 
-DataFile=$(Mdata)/um4km18.hdf
+DataFile=$(Mdata)/um4km18.hdf$(day)
 DataDescription=UM.4km
 DataType=HDF
 Contents=x,x,UM.4km,18
@@ -280,7 +287,7 @@ CollectionName=UM4km Barentshavet
 PreferredDiagram=Meteogram
 InitialOpen=0
 
-DataFile=$(Mdata)/um4bx.hdf
+DataFile=$(Mdata)/um4bx.hdf$(day)
 DataDescription=UM4BX 
 DataType=HDF
 Contents=x,x,UM4BX,x
@@ -295,7 +302,7 @@ PreferredDiagram=Meteogram
 InitialOpen=0
 
 
-DataFile=$(Mdata)/um1km00.hdf
+DataFile=$(Mdata)/um1km00.hdf$(day)
 DataDescription=UM.1km
 DataType=HDF
 Contents=x,x,UM.1km,0
@@ -310,12 +317,12 @@ CollectionName=EPS-produkter
 PreferredDiagram=EPS_T2M
 InitialOpen=0
 
-DataFile=$(Mdata)/eps12.hdf
+DataFile=$(Mdata)/eps12.hdf$(day)
 DataDescription=EPS-data
 DataType=HDF
 Contents=x,x,EPS,12
 
-DataFile=$(Mdata)/eps00.hdf
+DataFile=$(Mdata)/eps00.hdf$(day)
 DataDescription=EPS-data
 DataType=HDF
 Contents=x,x,EPS,00
@@ -329,13 +336,13 @@ CollectionName=LAMEPS-produkter
 PreferredDiagram=LAMEPS_T2M
 InitialOpen=0
 
-DataFile=$(Mdata)/lameps18.hdf
+DataFile=$(Mdata)/lameps18.hdf$(day)
 DataDescription=LAMEPS-data
 DataType=HDF
 Contents=x,x,LAMEPS,18
 
 
-DataFile=$(Mdata)/lameps06.hdf
+DataFile=$(Mdata)/lameps06.hdf$(day)
 DataDescription=LAMEPS-data
 DataType=HDF
 Contents=x,x,LAMEPS,06
@@ -383,11 +390,11 @@ Contents=x,x,Nordic_4km_resid,12
 
 # -------------------------------------------------
 
-# BÃ¸lgediagrammer
+# Bølgediagrammer
 
 
-CollectionName=BÃ¸lgediagrammer
-PreferredDiagram=BÃ¸lgediagram
+CollectionName=Bølgediagrammer
+PreferredDiagram=Bølgediagram
 InitialOpen=1
 
 DataFile=$(Wdata)/wam_quba00.hdf
@@ -413,8 +420,8 @@ Contents=x,x,WAM,18
 
 
 
-CollectionName=BÃ¸lgediagrammer
-PreferredDiagram=BÃ¸lgediagram
+CollectionName=Bølgediagrammer
+PreferredDiagram=Bølgediagram
 InitialOpen=1
 
 DataFile=$(Wdata)/wam_10km_quba00.hdf
@@ -429,8 +436,8 @@ Contents=x,x,WAM_10km,12
 
 
 
-CollectionName=BÃ¸lgediagrammer
-PreferredDiagram=BÃ¸lgediagram
+CollectionName=Bølgediagrammer
+PreferredDiagram=Bølgediagram
 InitialOpen=1
 
 DataFile=$(Wdata)/wam_4km_quba00.hdf
@@ -502,7 +509,7 @@ Contents=x,x,SUBJ,06
 [VA:VV:VNN:MA:FOU:PU]
 
 CollectionName=rr24q
-PreferredDiagram=Boksplott-DÃ¸gnnedbÃ¸r
+PreferredDiagram=Boksplott-Døgnnedbør
 InitialOpen=0
 
 DataFile=$(Odata)/statprog/rr24_nn+lqr_ec/rr24_nn+lqr_ec.hdf
