@@ -98,7 +98,9 @@ dist_style_DATA = \
 	share/style/style.meteogram_batch	 \
 	share/style/style.snow_meteogram	 \
 	share/style/style.lameps_rr		 \
+	share/style-test/style.lameps_plum_rr    \
 	share/style/style.eps_rr		 \
+	share/style-test/style.eps_plum_rr	 \
 	share/style/style.eps_rr24t2m_noens_op	 \
 	share/style/style.maritim		 \
 	share/style/style.lameps_z500		 \

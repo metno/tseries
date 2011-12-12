@@ -383,7 +383,7 @@ PARAM=RR,x,x,x
 
 [ADD]
 
-# RÃ¸kfane RR Deciler+Ensembler+operasjonell
+# Røkfane RR Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_FANE_RR
 STYLEFILE= @prefix@/share/@APP@/style/style.eps_plum_rr

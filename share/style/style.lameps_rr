@@ -191,7 +191,7 @@ parameter=RR,x,HIRLAM.12km,x
 color=BLUE
 text=Hirlam12 operasjonell
 lineWidth=4
-linePattern=DASHED
+linePattern=FULL
 patternInColour=TRUE
 linestep=TRUE
 [ADD]

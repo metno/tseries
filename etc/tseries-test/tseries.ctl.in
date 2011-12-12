@@ -13,7 +13,7 @@ Edata=$(Odata)/ec
 Rdata=$(Odata)/metcorr
 
 day=
-[1:VNN1:VV2]
+[1:VNN1:VV1]
 day=-1
 [2:VNN2:VV2]
 day=-2

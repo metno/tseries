@@ -365,10 +365,28 @@ PARAM=TT,x,x,x
 
 [ADD]
 
-# Røykfane RR Deciler+Ensembler+operasjonell
+# Histogram RR Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_RR
 STYLEFILE= @prefix@/share/@APP@/style/style.eps_rr
+
+[MODELSPECIFIC]
+MODEL=EPS
+PARAM=EPRD,x,x,x
+PARAM=EPRR,x,x,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=ECMWF_U
+PARAM=RR,x,x,x
+[END]
+
+[ADD]
+
+# Røkfane RR Deciler+Ensembler+operasjonell
+[DIAGRAM]
+NAME=EPS_FANE_RR
+STYLEFILE= @prefix@/share/@APP@/style/style.eps_plum_rr
 
 [MODELSPECIFIC]
 MODEL=EPS
@@ -523,6 +541,26 @@ PARAM=EPRR,x,x,x
 [MODELSPECIFIC]
 MODEL=OBS
 PARAM=RR_O,x,x,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIRLAM.12km
+PARAM=RR,x,x,x
+[END]
+
+
+
+[ADD]
+
+
+[DIAGRAM]
+NAME=LAMEPS_FANE_RR
+STYLEFILE= @prefix@/share/@APP@/style/style.lameps_plum_rr
+
+[MODELSPECIFIC]
+MODEL=LAMEPS
+PARAM=EPRD,x,x,x
+PARAM=EPRR,x,x,x
 [END]
 
 [MODELSPECIFIC]

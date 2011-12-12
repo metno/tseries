@@ -1,4 +1,4 @@
-# npl rr EPSdiagram-style
+# npl rr LAMEPSdiagram-style
 
 # global settings
 
@@ -169,7 +169,7 @@ minValue=0.0
 minIsSet=TRUE
 #maxValue=360.0
 maxIsSet=FALSE
-text = RR [mm/6hr]
+text = RR [mm]
 align=LEFT
 axis = LEFTLEFT
 color=BLACK
@@ -182,69 +182,52 @@ patternInColour=TRUE
 fittopage=TRUE
 [ADD]
 
-# line - primitive RR
-[NEW]
-type=LINE
-yaid=0
-order=10
-parameter=RR,x,ECMWF_U,x
-color=BLUE
-text=EC-operasjonell
-lineWidth=4
-linePattern=FULL
-patternInColour=TRUE
-linestep=TRUE
-[ADD]
-
-# line - primitive RR, EPS control forecast
+# line - primitive RR, LAMEPS control forecast
 [NEW]
 type=LINE
 yaid=0
 order=6
-parameter=EPRC,x,EPS,x
-color=RED
-text=Kontroll
+parameter=RR,x,HIRLAM.12km,x
+color=BLUE
+text=Hirlam12 operasjonell
 lineWidth=4
-linePattern=FULL
-patternInColour=FALSE
-linestep=TRUE
+linePattern=DASHED
+patternInColour=TRUE
 [ADD]
 
-# line - primitive RR, EPS ensemble mean
+# line - primitive RR, LAMEPS ensemble mean
 [NEW]
 type=LINE
 yaid=0
 order=7
-parameter=EPRM,x,EPS,x
+parameter=EPRM,x,LAMEPS,x
 color=BLACK
 text=Ensemble middel
 lineWidth=4
 linePattern=DASHED
 patternInColour=TRUE
-linestep=TRUE
 [ADD]
 
-# line - primitive RR, EPS ensemble median
+# line - primitive RR, LAMEPS ensemble median
 [NEW]
 type=LINE
 yaid=0
 order=7
-parameter=EPRE,x,EPS,x
+parameter=EPRE,x,LAMEPS,x
 color=BLACK
 text=Ensemble median
 lineWidth=4
 linePattern=DASHED
 patternInColour=TRUE
-linestep=TRUE
 [ADD]
 
 
-# line - primitive RR, EPS 10 decil
+# line - primitive RR, LAMEPS 10 decil
 [NEW]
 type=LINE
 yaid=0
 order=5
-parameter=EPRD,10,EPS,x
+parameter=EPRD,10,LAMEPS,x
 color=BROWN
 color2=DARK_GREEN
 text=P10
@@ -253,45 +236,38 @@ linePattern=FULL
 patternInColour=FALSE
 #marker=M_RECTANGLE
 #size=4
-linestep=TRUE
 [ADD]
 
-# line - primitive RR, EPS 50 decil
-parameter=EPRD,50,EPS,x
+# line - primitive RR, LAMEPS 50 decil
+parameter=EPRD,50,LAMEPS,x
 order=4
 text=P50
 color=BLACK
 color2=YELLOW
 #marker=M_TRIANGLE
 #size=6
-linestep=TRUE
-
 [ADD]
 
-# line - primitive RR, EPS 90 decil
-parameter=EPRD,90,EPS,x
+# line - primitive RR, LAMEPS 90 decil
+parameter=EPRD,90,LAMEPS,x
 order=3
 color=ORANGE
 color2=DARK_BLUE
 text=P90
 #marker=M_DIAMOND
-linestep=TRUE
 [ADD]
 
-# line - primitive EPS RR
+# line - primitive LAMEPS RR
 [NEW]
 type=MULTI_LINE
 yaid=0
 order=1
 parameter=EPRR,x,x,x
-#color=GREY50
-color=DARK_GREEN
-text=EC-ensemble
+color=GREY50
+text=LAMEPS-ensemble
 lineWidth=1
 linePattern=FULL
 patternInColour=FALSE
-linestep=TRUE
-
 [ADD]
 
 
@@ -307,7 +283,7 @@ height=30
 font=HEADER2
 align=CENTER
 color=DNMI_BLUE
-text=#$ 6t nedbør
+text=#$ nedbør
 [ADD]
 
 
