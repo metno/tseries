@@ -518,7 +518,7 @@ void DatafileColl::openKlimaStream()
 {
   tsSetup setup;
   klimaStream = new pets::KlimaStream(setup.klima.url, setup.klima.parameters,
-      setup.klima.maxDistance);
+      setup.klima.normals,setup.klima.maxDistance);
 }
 
 void DatafileColl::closeKlimaStream()

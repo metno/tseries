@@ -390,11 +390,11 @@ Contents=x,x,Nordic_4km_resid,12
 
 # -------------------------------------------------
 
-# Bølgediagrammer
+# Bï¿½lgediagrammer
 
 
-CollectionName=Bølgediagrammer
-PreferredDiagram=Bølgediagram
+CollectionName=Bï¿½lgediagrammer
+PreferredDiagram=Bï¿½lgediagram
 InitialOpen=1
 
 DataFile=$(Wdata)/wam_quba00.hdf
@@ -420,8 +420,8 @@ Contents=x,x,WAM,18
 
 
 
-CollectionName=Bølgediagrammer
-PreferredDiagram=Bølgediagram
+CollectionName=Bï¿½lgediagrammer
+PreferredDiagram=Bï¿½lgediagram
 InitialOpen=1
 
 DataFile=$(Wdata)/wam_10km_quba00.hdf
@@ -436,8 +436,8 @@ Contents=x,x,WAM_10km,12
 
 
 
-CollectionName=Bølgediagrammer
-PreferredDiagram=Bølgediagram
+CollectionName=Bï¿½lgediagrammer
+PreferredDiagram=Bï¿½lgediagram
 InitialOpen=1
 
 DataFile=$(Wdata)/wam_4km_quba00.hdf
@@ -509,7 +509,7 @@ Contents=x,x,SUBJ,06
 [VA:VV:VNN:MA:FOU:PU]
 
 CollectionName=rr24q
-PreferredDiagram=Boksplott-Døgnnedbør
+PreferredDiagram=Boksplott-Dï¿½gnnedbï¿½r
 InitialOpen=0
 
 DataFile=$(Odata)/statprog/rr24_nn+lqr_ec/rr24_nn+lqr_ec.hdf
@@ -594,4 +594,10 @@ FF,0,x,OBS,x=FF:*1.94384
 RR_O,0,x,OBS,x=RR_1
 CC,0,x,OBS,x=NN:*12.5
 WVFD,0,x,OBS,x=COMPUTE
+
+<klimanormals>
+
+TAM,0,x,OBS,x=TAM
+
+
 

@@ -371,7 +371,7 @@ parameter=MSLP_O,x,x,x
 color=BLUE
 text=MSLP obs [hPa]
 lineWidth=2
-linePattern=DASH_DOT
+linePattern=DASHED
 patternInColour=TRUE
 [ADD]
 

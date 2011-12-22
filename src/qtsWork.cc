@@ -428,7 +428,11 @@ void qtsWork::checkPosition(miString name)
 
 
 }
-
+void  qtsWork::setKlimaBlackList(std::set<std::string>& bl)
+{
+  data.setKlimaBlacklist(bl);
+  refresh(true);
+}
 
 void qtsWork::checkObsPosition(miCoordinates cor)
 {
@@ -524,6 +528,10 @@ void qtsWork::restoreLog()
   float lat,lon;
   miString run;
   miString posname;
+  miString observationfilter;
+
+  c.get("OBSERVATIONFILTER",observationfilter);
+  data.setObservationBlacklistFromString(observationfilter);
 
   c.get("WDBMODEL",mo);
   c.get("WDBSTYLE",st);
@@ -571,6 +579,8 @@ void qtsWork::collectLog()
 
   c.set("SHOWOBSERVATIONS",sidebar->getObservationsEnabled());
   c.set("TIMECONTROL",sidebar->getTimecontrolLog());
+  c.set("OBSERVATIONFILTER",data.getObservationBlacklistAsString());
+
 
   sidebar->writeBookmarks();
 

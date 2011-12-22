@@ -134,6 +134,13 @@ public:
   SelectionType getSelectionType() const {return selectionType;};
   void toggleLockHoursToModel(bool lockHoursToModel) { if(sidebar) sidebar->toggleLockHoursToModel(lockHoursToModel);}
 
+
+  std::set<std::string>    getKlimaBlacklist() const { return data.getKlimaBlacklist();}
+  std::vector<std::string> getAllKlimaParameters() const {return data.getAllKlimaParameters();}
+  void  setKlimaBlackList(std::set<std::string>& bl);
+
+
+
 public slots:
 
   void changeStyle(const QString&);

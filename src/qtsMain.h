@@ -90,6 +90,7 @@ private:
   QAction * latlonAct;
   QAction * fontAct;
   QAction * lockHoursToModelAct;
+  QAction * filterParametersAct;
 
   QMenu        * menu_lang;
   QActionGroup * languageGroup;
@@ -179,6 +180,7 @@ private slots:
   void cleanConnection();
 
   void manageFilter();
+  void manageParameterFilter();
   void chooseFont();
   void findLanguages();
 

@@ -91,6 +91,8 @@ miString tsSetup::inSection()
     return ", in <klima>";
   case KLIMAPARAMETER:
      return ", in <klimaparameter>";
+  case KLIMANORMAL:
+       return ", in <klimanormal>";
   case WDB:
     return ", in <wdb>";
   case WDBPARAMETER:
@@ -165,6 +167,8 @@ void tsSetup::fetchSection(miString token)
     sec = DOC;
   else if( token.contains("KLIMAPARAMETER"))
     sec = KLIMAPARAMETER;
+  else if( token.contains("KLIMANORMAL"))
+     sec = KLIMANORMAL;
   else if( token.contains("KLIMA"))
     sec = KLIMA;
   else if( token.contains("WDBPARAMETER"))
@@ -352,7 +356,7 @@ void tsSetup::setSimpleToken(miString token)
     return;
   }
 
-  bool upper=(sec != WDBPARAMETER && sec != KLIMAPARAMETER);
+  bool upper=(sec != WDBPARAMETER && sec != KLIMAPARAMETER && sec != KLIMANORMAL);
 
   miString content,key;
   if(!splitToken(token,key,content,upper))
@@ -391,6 +395,9 @@ void tsSetup::setSimpleToken(miString token)
   case KLIMAPARAMETER:
     setKlimaParameter(key,content);
     break;
+  case KLIMANORMAL:
+     setKlimaNormal(key,content);
+     break;
   case KLIMA:
     setKlima(key,content);
     break;
@@ -509,6 +516,11 @@ void tsSetup::setKlimaParameter(miString& key, miString& content)
 {
    klima.parameters[key]=content;
 }
+void tsSetup::setKlimaNormal(miString& key, miString& content)
+{
+   klima.normals[key]=content;
+}
+
 
 
 void tsSetup::setWdb(miString& key, miString& content)

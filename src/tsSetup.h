@@ -112,6 +112,7 @@ public:
     int                 maxDistance;
     int                 maxObservationLength;
     std::map<std::string,std::string> parameters; ///< translate parameters from klima
+    std::map<std::string,std::string> normals;    ///< translate monthly normals from klima
   };
 
 
@@ -188,7 +189,7 @@ public:
   static symbolMaker wsymbols;
 
 private:
-  enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,WDB,WDBPARAMETER,WDBVECTORFUNCTIONS,KLIMA,KLIMAPARAMETER} sec;
+  enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,WDB,WDBPARAMETER,WDBVECTORFUNCTIONS,KLIMA,KLIMAPARAMETER,KLIMANORMAL} sec;
   enum warning { wKEY, wTOKEN, wSECTION, wFILE };
 
   std::map<miutil::miString,miutil::miString> lookup;
@@ -218,6 +219,7 @@ private:
   void setWdb(miutil::miString&, miutil::miString&);
   void setWdbParameter(miutil::miString&, miutil::miString&);
   void setKlimaParameter(miutil::miString&, miutil::miString&);
+  void setKlimaNormal(miutil::miString&, miutil::miString&);
   void setKlima(miutil::miString&, miutil::miString&);
 
   void setup(miutil::miString&, const miutil::miString&);

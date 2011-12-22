@@ -155,6 +155,13 @@ public:
   DatafileColl();
   ~DatafileColl();
 
+
+  std::set<std::string>    getKlimaBlacklist() const { return klimaStream->getBlacklist();}
+  std::vector<std::string> getAllKlimaParameters() const {return klimaStream->getAllParameters();}
+  void  setKlimaBlacklist(std::set<std::string>& bl) { klimaStream->setBlacklist(bl);}
+  std::string getObservationBlacklistAsString() {return  klimaStream->getObservationBlacklistAsString() ;}
+  void setObservationBlacklistFromString(std::string blist) { klimaStream->setObservationBlacklistFromString(blist);}
+
   // adds a new dataset
   int  addDataset(miutil::miString);
 //   // name of station with priority=1
