@@ -390,11 +390,11 @@ Contents=x,x,Nordic_4km_resid,12
 
 # -------------------------------------------------
 
-# B�lgediagrammer
+# Bølgediagrammer
 
 
-CollectionName=B�lgediagrammer
-PreferredDiagram=B�lgediagram
+CollectionName=Bølgediagrammer
+PreferredDiagram=Bølgediagram
 InitialOpen=1
 
 DataFile=$(Wdata)/wam_quba00.hdf
@@ -420,8 +420,8 @@ Contents=x,x,WAM,18
 
 
 
-CollectionName=B�lgediagrammer
-PreferredDiagram=B�lgediagram
+CollectionName=Bølgediagrammer
+PreferredDiagram=Bølgediagram
 InitialOpen=1
 
 DataFile=$(Wdata)/wam_10km_quba00.hdf
@@ -436,8 +436,8 @@ Contents=x,x,WAM_10km,12
 
 
 
-CollectionName=B�lgediagrammer
-PreferredDiagram=B�lgediagram
+CollectionName=Bølgediagrammer
+PreferredDiagram=Bølgediagram
 InitialOpen=1
 
 DataFile=$(Wdata)/wam_4km_quba00.hdf
@@ -509,7 +509,7 @@ Contents=x,x,SUBJ,06
 [VA:VV:VNN:MA:FOU:PU]
 
 CollectionName=rr24q
-PreferredDiagram=Boksplott-D�gnnedb�r
+PreferredDiagram=Boksplott-Døgnnedbør
 InitialOpen=0
 
 DataFile=$(Odata)/statprog/rr24_nn+lqr_ec/rr24_nn+lqr_ec.hdf
@@ -578,6 +578,7 @@ CH,0,x,x,RAW=    cloud area fraction in atmosphere layer (RAW)  | 300 atmosphere
 <WDBVECTORFUNCTIONS>
 UU,0,x,x,APP:VV,0,x,x,APP
 UU,0,x,x,RAW:VV,0,x,x,RAW
+
 
 
 <klima>

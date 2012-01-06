@@ -597,3 +597,10 @@ RR_O,0,x,OBS,x=RR_1
 CC,0,x,OBS,x=NN:*12.5
 WVFD,0,x,OBS,x=COMPUTE
 
+<klimanormals>
+
+TAM,0,x,OBS,x=TAM
+TANM,0,x,OBS,x=TANM
+TAXM,0,x,OBS,x=TAXM
+
+

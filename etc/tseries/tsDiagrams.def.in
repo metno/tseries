@@ -76,6 +76,10 @@ PARAM=MSLP_O,x,x,x
 PARAM=DD_O,x,x,x
 PARAM=FF_O,x,x,x
 PARAM=RR_O,x,x,x
+PARAM=TAM,x,x,x
+PARAM=TAXM,x,x,x
+PARAM=TANM,x,x,x
+
 [ADD]
 
 # Batch meteogram med snø
