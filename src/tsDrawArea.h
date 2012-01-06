@@ -79,6 +79,7 @@ private:
   int totalLength;
   int forecastLength;
   bool lengthChanged;
+  miutil::miTime observationStartTime;
 
   map<miutil::miString,miutil::miTime> timemarks;
   void useTimemarks();
@@ -86,7 +87,7 @@ private:
   bool prepareDiagram();
 
   bool prepareWdbData();
-
+  bool showGridLines;
   int  maxProg;
   int  minProg;
 
@@ -94,6 +95,8 @@ public:
   tsDrawArea( tsRequest* tsr, DatafileColl* tsd, SessionManager* ses);
 
   void prepare(bool readData = true);
+
+  void setShowGridLines(bool s){showGridLines=s;}
 
   void setViewport(int w, int h,float,float);
 
@@ -110,6 +113,8 @@ public:
   void setTimemark(miutil::miTime nt,miutil::miString name="");
   void clearTimemarks(miutil::miString name="");
   void setShowObservations(bool o) { showObservations=o;}
+  void setObservationStartTime(miutil::miTime st) {observationStartTime=st;}
+  miutil::miTime getObservationStartTime() const { return observationStartTime; }
 
   void getMaxIntervall(int& totall, int& forecastl){
     totall=totalLength;

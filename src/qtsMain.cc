@@ -41,8 +41,10 @@
 
 #include "config.h"
 #include "ParameterFilterDialog.h"
+#include "PopupCalendar.h"
 #include <qUtilities/QLetterCommands.h>
 #include <puTools/ttycols.h>
+#include <puTools/miDate.h>
 
 #include "tseries.xpm"
 
@@ -70,7 +72,9 @@ qtsMain::qtsMain(miString l) :
   makeConnectButtons();
 
   work->latlonInDecimalToggled(latlond);
+
   toggleLockHoursToModel(lockHoursToModel);
+  toggleShowGridlines(showGridLines);
 
   printer = new QPrinter(QPrinter::HighResolution);
 
@@ -138,6 +142,12 @@ void qtsMain::makeFileMenu()
   connect(filterParametersAct, SIGNAL(triggered()), this,
       SLOT( manageParameterFilter() ));
   menu_file->addAction(filterParametersAct);
+
+  observationStartAct = new QAction(tr("Change Observation start date"), this);
+  connect(observationStartAct, SIGNAL(triggered()), this,
+      SLOT( changeObservationStart() ));
+   menu_file->addAction(observationStartAct);
+
 
   // -------------------
 
@@ -223,6 +233,14 @@ void qtsMain::makeSettingsMenu()
   connect(tmarkAct, SIGNAL(toggled(bool)), this, SLOT(toggleTimemark(bool)));
   menu_setting->addAction(tmarkAct);
 
+  config.get("SHOWGRIDLINES", showGridLines);
+  showGridLinesAct = new QAction(tr("Show Gridlines "), this);
+  showGridLinesAct->setCheckable(true);
+  showGridLinesAct->setChecked(showGridLines);
+  connect(showGridLinesAct, SIGNAL(toggled(bool)), this,
+      SLOT(toggleShowGridlines(bool)));
+  menu_setting->addAction(showGridLinesAct);
+
   config.get("LATLONDEC", latlond);
   latlonAct = new QAction(tr("Lat/Lon in decimal"), this);
   latlonAct->setCheckable(true);
@@ -232,6 +250,10 @@ void qtsMain::makeSettingsMenu()
 
   menu_setting->addSeparator();
 
+
+
+
+
   config.get("LOCKHOURSTOMODEL", lockHoursToModel);
   lockHoursToModelAct = new QAction(tr("Lock Hours to Model "), this);
   lockHoursToModelAct->setCheckable(true);
@@ -239,6 +261,7 @@ void qtsMain::makeSettingsMenu()
   connect(lockHoursToModelAct, SIGNAL(toggled(bool)), this,
       SLOT(toggleLockHoursToModel(bool)));
   menu_setting->addAction(lockHoursToModelAct);
+
 
   // ------------------------
 
@@ -436,6 +459,7 @@ void qtsMain::writeLog()
   config.set("LATLONDEC", latlond);
   config.set("FONT", miString(qApp->font().toString().toStdString()));
   config.set("LOCKHOURSTOMODEL", lockHoursToModel);
+  config.set("SHOWGRIDLINES", showGridLines);
 
   if (lang.exists())
     config.set("LANG", lang);
@@ -527,6 +551,14 @@ void qtsMain::toggleLatLon(bool isOn)
   if (work)
     work->latlonInDecimalToggled(latlond);
 }
+
+void qtsMain::toggleShowGridlines(bool isOn)
+{
+  showGridLines = isOn;
+  if (work)
+    work->setShowGridLines( showGridLines );
+}
+
 
 void qtsMain::toggleLockHoursToModel(bool isOn)
 {
@@ -834,6 +866,28 @@ void qtsMain::cleanConnection()
 
   setRemoteParameters();
   setDianaTimemark(miTime::nowTime());
+}
+
+
+
+
+void qtsMain::changeObservationStart()
+{
+  miTime start = work->getObservationStartTime();
+  int year = start.year();
+  int month=start.month();
+  int day = start.day();
+  QDate qstart(year,month,day);
+
+  PopupCalendar * calendar = new PopupCalendar(this,qstart);
+
+  if (calendar->exec()) {
+     qstart=calendar->result();
+     qstart.getDate(&year,&month,&day);
+     start.setTime(year,month,day,0,0,0);
+     work->setObservationStartTime(start);
+   }
+
 }
 
 

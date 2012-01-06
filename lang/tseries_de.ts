@@ -82,7 +82,7 @@
     </message>
     <message>
         <location filename="../src/qtsMain.cc" line="112"/>
-        <location filename="../src/qtsMain.cc" line="824"/>
+        <location filename="../src/qtsMain.cc" line="841"/>
         <source>Manual</source>
         <translation>Benutzerhandbuch</translation>
     </message>
@@ -159,12 +159,12 @@
         <translation>Zeitmarkierung</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="241"/>
+        <location filename="../src/qtsMain.cc" line="249"/>
         <source>Font</source>
         <translation>Schrifttype</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="425"/>
+        <location filename="../src/qtsMain.cc" line="433"/>
         <source>About T-series</source>
         <translation>Über T-series</translation>
     </message>
@@ -183,7 +183,7 @@ met.no 2002-2005</translation>
         <translation>Aktueller Ortsname (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="426"/>
+        <location filename="../src/qtsMain.cc" line="434"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -193,12 +193,12 @@ Version: %1
 met.no 2002</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="248"/>
+        <location filename="../src/qtsMain.cc" line="256"/>
         <source>Languages</source>
         <translation>Sprachen</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="947"/>
+        <location filename="../src/qtsMain.cc" line="964"/>
         <source>Language Changed</source>
         <translation>Sprache gewechselt</translation>
     </message>
@@ -207,7 +207,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series muß neu gestartet werden um die Sprache auf [%1] zu ändern</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="828"/>
+        <location filename="../src/qtsMain.cc" line="845"/>
         <source>News</source>
         <translation>Neuheiten</translation>
     </message>
@@ -265,12 +265,17 @@ met.no 2002</translation>
         <translation>Program Schliessen</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="353"/>
+        <location filename="../src/qtsMain.cc" line="240"/>
+        <source>Lock Hours to Model </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtsMain.cc" line="361"/>
         <source>Print Diagram</source>
         <translation>Diagram drucken</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="947"/>
+        <location filename="../src/qtsMain.cc" line="964"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation>tseries muss neu gestartet werden um die sprache zu : [%1] zu wechseln</translation>
     </message>

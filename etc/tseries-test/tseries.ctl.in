@@ -598,6 +598,7 @@ WVFD,0,x,OBS,x=COMPUTE
 <klimanormals>
 
 TAM,0,x,OBS,x=TAM
-
+TANM,0,x,OBS,x=TANM
+TAXM,0,x,OBS,x=TAXM
 
 

@@ -50,6 +50,7 @@
 #include <puTools/miString.h>
 #include <qUtilities/miMessage.h>
 #include <puDatatypes/miCoordinates.h>
+#include <puTools/miString.h>
 
 #include <set>
 
@@ -133,12 +134,14 @@ public:
   void changePositions(const miutil::miString&);
   SelectionType getSelectionType() const {return selectionType;};
   void toggleLockHoursToModel(bool lockHoursToModel) { if(sidebar) sidebar->toggleLockHoursToModel(lockHoursToModel);}
-
+  void setShowGridLines( bool s ){ if(show) show->setShowGridLines(s); }
 
   std::set<std::string>    getKlimaBlacklist() const { return data.getKlimaBlacklist();}
   std::vector<std::string> getAllKlimaParameters() const {return data.getAllKlimaParameters();}
   void  setKlimaBlackList(std::set<std::string>& bl);
 
+  void setObservationStartTime(miutil::miTime st) {show->setObservationStartTime(st); refresh(true);}
+  miutil::miTime getObservationStartTime() const { return show->getObservationStartTime(); }
 
 
 public slots:
@@ -152,7 +155,7 @@ public slots:
   void newFilter(const set<miutil::miString>&);
   void latlonInDecimalToggled(bool);
   void refreshFinished();
-  void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(true);}
+  void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(false);}
   void observationToggled(bool showobs) { show->setShowObservations(showobs);refresh(true);}
 
 

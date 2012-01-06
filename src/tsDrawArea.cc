@@ -44,13 +44,15 @@ using namespace miutil;
 tsDrawArea::tsDrawArea(tsRequest* tsr, DatafileColl* tsd, SessionManager* ses) :
     request(tsr), data(tsd), session(ses), diagram(0), theData(0), width(1), height(
         1), pixwidth(1), pixheight(1), Initialised(false), hardcopy(false), hardcopystarted(
-        false)
+        false), showGridLines(true)
 {
   minProg = 0;
   maxProg = 300;
   totalLength=300;
   forecastLength=300;
   lengthChanged=false;
+  observationStartTime = miTime::nowTime();
+  observationStartTime.addHour(-(setup.klima.maxObservationLength));
 
 }
 
@@ -207,23 +209,20 @@ bool tsDrawArea::prepareData()
             if (showObservations) {
 //            ---------------------------------------------------------
 
+
+
+              miTime lastTime=  theData->timelineEnd();
+
+
               vector<ParId> obsParameters, unresolvedObs;
               set<ParId>::iterator itr = allObservations.begin();
               for (; itr != allObservations.end(); itr++) {
                 obsParameters.push_back(*itr);
               }
 
-              miTime tot = miTime::nowTime();
-              miTime fromt = tot;
-              // request observations a tiny bit into the future
-              tot.addHour(3);
-              fromt.addHour(-(setup.klima.maxObservationLength));
-              cerr << "maxObservationLength= " << setup.klima.maxObservationLength << endl;
-
-              cout << "From= " << fromt <<  "  To= " << tot << endl;
 
               theData->fetchDataFromKlimaDB(data->getKlimaStream(),
-                  obsParameters, unresolvedObs, fromt, tot);
+                  obsParameters, unresolvedObs, observationStartTime, lastTime);
 
               if (unresolvedObs.size()) {
                 theData->makeParameters(unresolvedObs, true);
@@ -256,7 +255,7 @@ bool tsDrawArea::prepareDiagram()
   }
   if (diagram)
     delete diagram;
-  diagram = new ptDiagram(&diaStyle);
+  diagram = new ptDiagram(&diaStyle,showGridLines);
 
   if (!diagram->attachData(theData)) {
     cerr << "tsDrawArea::prepareDiagram(): !diagram->attachData(theData)"

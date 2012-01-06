@@ -237,9 +237,6 @@ histogramstop=10
 
 
 
-
-
-
 # ----------------------------
 # Yaxis (T2m)
 [NEW]
@@ -283,8 +280,8 @@ yaid=0
 parameter=TT_O,0,x,OBS
 color=RED
 text=T2m obs [°C]
-lineWidth=2
-linePattern=DOTTED
+lineWidth=1
+linePattern=FULL
 patternInColour=TRUE
 [ADD]
 
@@ -300,6 +297,48 @@ linePattern=FULL
 patternInColour=FALSE
 [ADD]
 
+#line - monthly normal TT
+[NEW]
+type=LINE
+yaid=0
+parameter=TAM,0,x,x
+color=BLACK
+text=T2m normal [°C]
+lineWidth=1
+linePattern=FULL
+patternInColour=TRUE
+[ADD]
+
+
+#line - monthly normal max TT
+[NEW]
+type=LINE
+yaid=0
+parameter=TAXM,0,x,x
+color=RED
+text=T2m max normal [°C]
+legendlinesinside=FALSE
+lineWidth=1
+linePattern=FULL
+patternInColour=TRUE
+[ADD]
+
+
+#line - monthly normal min TT
+[NEW]
+type=LINE
+yaid=0
+parameter=TANM,0,x,x
+color=BLUE
+text=T2m min normal [°C]
+lineWidth=1
+linePattern=FULL
+patternInColour=TRUE
+[ADD]
+
+
+
+
 
 # line - primitive TT, EPS control forecast
 [NEW]
@@ -309,7 +348,7 @@ parameter=EPS0,0,EPS,x
 color=CYAN
 text=EPS kontroll
 lineWidth=2
-linePattern=DASHDASHDOTTED
+linePattern=DOTTED
 patternInColour=TRUE
 [ADD]
 
@@ -370,8 +409,8 @@ yaid=1
 parameter=MSLP_O,x,x,x
 color=BLUE
 text=MSLP obs [hPa]
-lineWidth=2
-linePattern=DASHED
+lineWidth=1
+linePattern=FULL
 patternInColour=TRUE
 [ADD]
 

@@ -53,6 +53,8 @@ void tsConfigure::setDefaults()
   contents["TIMEMARK"]   = "1";     // show now in Diagram
   contents["VISIBLESTART"] ="0";
   contents["VISIBLELENGTH"]="0";
+  contents["LOCKHOURSTOMODEL"]="0";
+  contents["SHOWGRIDLINES"]="1";
 
 }
 

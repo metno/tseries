@@ -78,7 +78,7 @@
     </message>
     <message>
         <location filename="../src/qtsMain.cc" line="112"/>
-        <location filename="../src/qtsMain.cc" line="824"/>
+        <location filename="../src/qtsMain.cc" line="841"/>
         <source>Manual</source>
         <translation>Brukerveiledning</translation>
     </message>
@@ -155,12 +155,12 @@
         <translation>Vis tidsmarkør</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="241"/>
+        <location filename="../src/qtsMain.cc" line="249"/>
         <source>Font</source>
         <translation>Velg Font</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="425"/>
+        <location filename="../src/qtsMain.cc" line="433"/>
         <source>About T-series</source>
         <translation>Om T-series</translation>
     </message>
@@ -180,7 +180,7 @@ met.no 2002-2005</translation>
         <translation>Vis valgt stedsnavn (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="426"/>
+        <location filename="../src/qtsMain.cc" line="434"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -191,12 +191,12 @@ Versjon: %1
 met.no 2002</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="248"/>
+        <location filename="../src/qtsMain.cc" line="256"/>
         <source>Languages</source>
         <translation>Språk</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="947"/>
+        <location filename="../src/qtsMain.cc" line="964"/>
         <source>Language Changed</source>
         <translation>Språk endret</translation>
     </message>
@@ -205,7 +205,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series må startes på nytt for å sette språk til: [%1]</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="828"/>
+        <location filename="../src/qtsMain.cc" line="845"/>
         <source>News</source>
         <translation>Nyheter</translation>
     </message>
@@ -263,12 +263,17 @@ met.no 2002</translation>
         <translation>Avslutt T-series</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="353"/>
+        <location filename="../src/qtsMain.cc" line="240"/>
+        <source>Lock Hours to Model </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtsMain.cc" line="361"/>
         <source>Print Diagram</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="947"/>
+        <location filename="../src/qtsMain.cc" line="964"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation>T-series må startes på nytt for å sette språk til: [%1]</translation>
     </message>

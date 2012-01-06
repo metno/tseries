@@ -32,7 +32,8 @@ qt_sources=                \
 	WdbCacheThread.cc  \
 	CoordinateManager.cc \
 	WdbBookmarkTools.cc  \
-	ParameterFilterDialog.cc
+	ParameterFilterDialog.cc \
+	PopupCalendar.cc
 
 # headers ( for distribution )  -----
 

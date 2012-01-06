@@ -35,6 +35,7 @@
 #include <QGLFormat>
 #include <QGLWidget>
 #include "tsDrawArea.h"
+#include <puTools/miTime.h>
 
 class qtsShow : public QGLWidget {
   Q_OBJECT
@@ -61,6 +62,10 @@ public:
   void setProgintervall(int mi,int ma) { drawArea.setProgintervall(mi,ma);}
   void setShowObservations(bool showObs) {drawArea.setShowObservations(showObs);}
   void getTimeRange(int& t,int& f) { drawArea.getTimeRange(t,f);}
+  void setObservationStartTime(miutil::miTime st) {drawArea.setObservationStartTime(st);}
+  miutil::miTime getObservationStartTime() const { return drawArea.getObservationStartTime(); }
+  void setShowGridLines( bool s ){ drawArea.setShowGridLines(s); }
+
 
 signals:
   void refreshFinished();

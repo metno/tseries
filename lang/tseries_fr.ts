@@ -78,7 +78,7 @@
     </message>
     <message>
         <location filename="../src/qtsMain.cc" line="112"/>
-        <location filename="../src/qtsMain.cc" line="824"/>
+        <location filename="../src/qtsMain.cc" line="841"/>
         <source>Manual</source>
         <translation type="unfinished">Manuel</translation>
     </message>
@@ -156,22 +156,27 @@
         <translation type="unfinished">Montrer curseur temps</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="241"/>
+        <location filename="../src/qtsMain.cc" line="240"/>
+        <source>Lock Hours to Model </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtsMain.cc" line="249"/>
         <source>Font</source>
         <translation type="unfinished">Choisir police</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="248"/>
+        <location filename="../src/qtsMain.cc" line="256"/>
         <source>Languages</source>
         <translation type="unfinished">Langues</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="425"/>
+        <location filename="../src/qtsMain.cc" line="433"/>
         <source>About T-series</source>
         <translation type="unfinished"> A propos T-series</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="426"/>
+        <location filename="../src/qtsMain.cc" line="434"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -182,7 +187,7 @@ Version: %1
 met.no 2002</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="947"/>
+        <location filename="../src/qtsMain.cc" line="964"/>
         <source>Language Changed</source>
         <translation type="unfinished">Langue changée</translation>
     </message>
@@ -191,7 +196,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series doit etre redémarré pour réactualiser la langue en: [%1]</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="828"/>
+        <location filename="../src/qtsMain.cc" line="845"/>
         <source>News</source>
         <translation type="unfinished">Modifications</translation>
     </message>
@@ -249,12 +254,12 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="353"/>
+        <location filename="../src/qtsMain.cc" line="361"/>
         <source>Print Diagram</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="947"/>
+        <location filename="../src/qtsMain.cc" line="964"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>

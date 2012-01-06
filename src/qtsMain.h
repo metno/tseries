@@ -91,6 +91,8 @@ private:
   QAction * fontAct;
   QAction * lockHoursToModelAct;
   QAction * filterParametersAct;
+  QAction * observationStartAct;
+  QAction * showGridLinesAct;
 
   QMenu        * menu_lang;
   QActionGroup * languageGroup;
@@ -130,6 +132,7 @@ private:
   bool sposition;
   bool latlond;
   bool lockHoursToModel;
+  bool showGridLines;
 
   void makeMenuBar();
   void makeFileMenu();
@@ -170,6 +173,7 @@ private slots:
   void toggleLang(QAction*);
   void toggleLatLon(bool);
   void toggleLockHoursToModel(bool);
+  void toggleShowGridlines(bool);
 
   void processLetter(miMessage&);
   void processConnect();
@@ -181,6 +185,7 @@ private slots:
 
   void manageFilter();
   void manageParameterFilter();
+  void changeObservationStart();
   void chooseFont();
   void findLanguages();
 
