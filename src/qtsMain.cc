@@ -663,6 +663,7 @@ void qtsMain::enableCurrentPoslist()
 
 void qtsMain::sendNewPoslist()
 {
+  cerr << "sendNewPosList" << endl;
   sendModels.insert(currentModel);
   if (!dianaconnected)
     return;

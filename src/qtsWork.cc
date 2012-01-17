@@ -333,7 +333,6 @@ void qtsWork::changeModel(const QString& qstr)
   miString st;
   if(qStr2miStr(qstr,st))
     changeModel(st);
-
   makeStationList();
 }
 
@@ -382,9 +381,11 @@ void qtsWork::changeModel(const miString& st)
   data.openStreams(tmp);
   QApplication::restoreOverrideCursor();
   bool changed = request.setModel(tmp);
-  if(makeRunList(tmp) || changed) {
-    refresh(true);
-  }
+
+  //if( makeRunList(tmp) || changed) {
+  makeRunList(tmp);
+  refresh(true);
+  //}
 }
 
 void qtsWork::changeStation(const miString& st)

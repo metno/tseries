@@ -155,6 +155,7 @@ public slots:
   void newFilter(const set<miutil::miString>&);
   void latlonInDecimalToggled(bool);
   void refreshFinished();
+  //void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(true);}
   void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(false);}
   void observationToggled(bool showobs) { show->setShowObservations(showobs);refresh(true);}
 

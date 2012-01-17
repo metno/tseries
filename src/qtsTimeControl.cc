@@ -139,6 +139,8 @@ void TimeControl::stopchanged(int v)
 
 void TimeControl::setTimeRange(int total, int fcast)
 {
+  if(!total && !fcast)
+    return;
   if( total == totalrange && fcast == fcastrange )
       return;
   totalrange=total;
