@@ -143,8 +143,8 @@ minSkipX= 15
 [NEW]
 type=    XAXIS
 order=   15
-color=   RED
-color2=  RED
+color=   BLACK
+color2=  BLACK
 spacing= 0
 [ADD]
 
@@ -182,7 +182,7 @@ patternInColour= TRUE
 [NEW]
 
 type=           GRIDLINE
-color=          GREY25
+color=          GREY75
 lineWidth=      1
 linePattern=    DOTTED
 patternInColour=TRUE
@@ -277,28 +277,34 @@ patternInColour=TRUE
 # line -  T2m
 
 [NEW]
-type=        LINE
-yaid=        0
-parameter=   TT,0,x,x
-color=       RED
-text=        T2m [°C]
-lineWidth=   2
-linePattern= FULL
-patternInColour=FALSE
+type=            LINE
+yaid=            0
+parameter=       TT,0,x,x
+text=            T2m [°C]
+lineWidth=       2
+linePattern=     FULL
+patternInColour= FALSE
+colorbyvalue=    TRUE
+datalimits=      -100,0,100
+colorlist=       BLUE,RED
+patternInColour= FALSE
 [ADD]
 
 # ----------------------------
 # Line - observed T2m
 
 [NEW]
-type=        LINE
-yaid=        0
-parameter=   TT_O,0,x,OBS
-color=       RED
-text=        T2m obs [°C]
-lineWidth=   1
-linePattern= FULL
-patternInColour=TRUE
+type=            LINE
+yaid=            0
+parameter=       TT_O,0,x,OBS
+text=            T2m obs [°C]
+lineWidth=       1
+linePattern=     FULL
+patternInColour= FALSE
+colorbyvalue=    TRUE
+datalimits=      -100,0,100
+colorlist=       BLUE,RED
+patternInColour= TRUE
 [ADD]
 
 # ----------------------------
@@ -379,7 +385,7 @@ maxIsSet=   FALSE
 text =
 align=      LEFT
 axis=       RIGHTRIGHT
-color=      BLUE
+color=      DNMI_GREEN
 lineWidth=  2 
 linePattern=     FULL
 patternInColour= TRUE
@@ -392,7 +398,7 @@ patternInColour= TRUE
 type=            LINE
 yaid=            1
 parameter=       MSLP,x,x,x
-color=           BLUE
+color=           DNMI_GREEN
 text=            MSLP [hPa]
 lineWidth=       2
 linePattern=     FULL
@@ -406,7 +412,7 @@ patternInColour= FALSE
 type=            LINE
 yaid=            1
 parameter=       MSLP_O,x,x,x
-color=           BLUE
+color=           DNMI_GREEN
 text=            MSLP obs [hPa]
 lineWidth=       1
 linePattern=     FULL
@@ -512,7 +518,7 @@ numTickMinor= 1
 [NEW]
 
 type=           GRIDLINE
-color=          GREY25
+color=          GREY75
 lineWidth=      1
 linePattern=    DOTTED
 patternInColour=TRUE
@@ -562,8 +568,6 @@ component=      0
 lineWidth=      1
 linePattern=    FULL
 patternInColour=FALSE
-quantized=      TRUE
-quantum=        1.0
 colorbyvalue=   TRUE
 datalimits=     0,22,41,63,400
 colorlist=      BLACK,ORANGE,RUST_RED,PURPLE
@@ -576,11 +580,9 @@ type=           LINE
 yaid=           10
 parameter=      FF,0,x,OBS,x
 component=      0
-lineWidth=      2
+lineWidth=      1
 linePattern=    FULL
 patternInColour=FALSE
-quantized=      TRUE
-quantum=        1.0
 colorbyvalue=   TRUE
 datalimits=     0,22,41,63,400
 colorlist=      BLACK,ORANGE,RUST_RED,PURPLE
