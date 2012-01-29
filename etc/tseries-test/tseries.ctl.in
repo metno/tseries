@@ -68,8 +68,6 @@ newslink=
 
 
 # -------------------------------------------------
-#
-# -------------------------------------------------
 
 <streams>
 
@@ -89,8 +87,6 @@ DataFile=$(Mdata)/ecatmo00.hdf
 DataDescription=ECMWF00
 DataType=HDF
 Contents=x,x,ECMWF,00
-
-
 
 
 # -------------------------------------------------
@@ -121,7 +117,6 @@ Contents=x,x,PROFF.APPROVED,x
 
 
 []
-
 
 
 # -------------------------------------------------
@@ -156,35 +151,6 @@ DataDescription=HARMONIE_5.5km
 DataType=HDF
 Contents=x,x,HARMONIE_5.5km,12
 
-
-
-
-
-# -------------------------------------------------
-
-CollectionName=HIRLAM4Meteogrammer
-PreferredDiagram=Meteogram
-InitialOpen=0
-
-DataFile=$(Mdata)/hirlam4km00.hdf$(day)
-DataDescription=HIRLAM.4km
-DataType=HDF
-Contents=x,x,HIRLAM.4km,0
-
-DataFile=$(Mdata)/hirlam4km06.hdf$(day)
-DataDescription=HIRLAM.4km
-DataType=HDF
-Contents=x,x,HIRLAM.4km,6
-
-DataFile=$(Mdata)/hirlam4km12.hdf$(day)
-DataDescription=HIRLAM.4km
-DataType=HDF
-Contents=x,x,HIRLAM.4km,12
-
-DataFile=$(Mdata)/hirlam4km18.hdf$(day)
-DataDescription=HIRLAM.4km
-DataType=HDF
-Contents=x,x,HIRLAM.4km,18
 
 
 
@@ -282,19 +248,6 @@ DataType=HDF
 Contents=x,x,UM.4km,18
 
 
-[VA:VNN:VV:FOU]
-CollectionName=UM4km Barentshavet
-PreferredDiagram=Meteogram
-InitialOpen=0
-
-DataFile=$(Mdata)/um4bx.hdf$(day)
-DataDescription=UM4BX 
-DataType=HDF
-Contents=x,x,UM4BX,x
-
-[]
-
-
 # -------------------------------------------------
 
 CollectionName=UM1kmMeteogrammer
@@ -306,8 +259,6 @@ DataFile=$(Mdata)/um1km00.hdf$(day)
 DataDescription=UM.1km
 DataType=HDF
 Contents=x,x,UM.1km,0
-
-
 
 
 
@@ -505,41 +456,6 @@ Contents=x,x,SUBJ,06
 []
 
 # -------------------------------------------------
-
-[VA:VV:VNN:MA:FOU:PU]
-
-CollectionName=rr24q
-PreferredDiagram=Boksplott-Døgnnedbør
-InitialOpen=0
-
-DataFile=$(Odata)/statprog/rr24_nn+lqr_ec/rr24_nn+lqr_ec.hdf
-DataDescription=RR24Q
-DataType=HDF
-Contents=x,x,rr24,x
-
-# -------------------------------------------------
-
-CollectionName=fx10q
-PreferredDiagram=Boksplott-Maks.vind
-InitialOpen=0
-
-DataFile=$(Odata)/statprog/fx10-6h_lqr_ec/fx10-6h_lqr_ec.hdf
-DataDescription=FX10Q
-DataType=HDF
-Contents=x,x,fx10-6h,x
-
-# -------------------------------------------------
-
-CollectionName=t2mq
-PreferredDiagram=Boksplott-Temperatur2m
-InitialOpen=0
-
-DataFile=$(Odata)/statprog/t2m_lqr_ec/t2m_lqr_ec.hdf
-DataDescription=T2mQ
-DataType=HDF
-Contents=x,x,t2m,x
-
-[]
 
 
 <wdb>

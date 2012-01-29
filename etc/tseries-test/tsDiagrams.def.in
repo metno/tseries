@@ -17,14 +17,10 @@ PROFF.RAW=proff raw
 PROFF.DEFAULT=proff default
 HIRLAM.12km=Hirlam 12km
 HIRLAM.8km=Hirlam 8km
-HIRLAM.4km=Hirlam 4km
 HARMONIE_2.5km=Harmonie 2.5km
 HARMONIE_5.5km=Harmonie 5.5km
 UM.4km=UM 4km
-UM4BX=UM 4km bx
 UM.1km=UM 1km
-rr24=rr24
-fx10-6h=fx10-6h
 t2m=t2m
 WDB=Wdb
 OBS=Obs
@@ -38,7 +34,6 @@ STYLEFILE=@prefix@/share/@APP@/style/style.meteogram
 [LEGALMODELS]
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HIRLAM.4km
 MODEL=HARMONIE_2.5km
 MODEL=HARMONIE_5.5km
 MODEL=ECMWF
@@ -93,12 +88,10 @@ STYLEFILE=@prefix@/share/@APP@/style/style.meteogram_ff
 [LEGALMODELS]
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HIRLAM.4km
 MODEL=HARMONIE_2.5km
 MODEL=HARMONIE_5.5km
 MODEL=ECMWF
 MODEL=UM.4km
-MODEL=UM4BX
 MODEL=UM.1km
 MODEL=WDB
 MODEL=OBS
@@ -140,12 +133,10 @@ STYLEFILE=  @prefix@/share/@APP@/style/style.meteogram_batch
 [LEGALMODELS]
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HIRLAM.4km
 MODEL=HARMONIE_2.5km
 MODEL=HARMONIE_5.5km
 MODEL=ECMWF
 MODEL=UM.4km
-MODEL=UM4BX
 MODEL=UM.1km
 MODEL=UM.3km
 
@@ -183,12 +174,10 @@ STYLEFILE=  @prefix@/share/@APP@/style/style.meteogram_batch
 [LEGALMODELS]
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HIRLAM.4km
 MODEL=HARMONIE_2.5km
 MODEL=HARMONIE_5.5km
 MODEL=ECMWF
 MODEL=UM.4km
-MODEL=UM4BX
 MODEL=UM.1km
 MODEL=UM.3km
 
@@ -270,13 +259,10 @@ STYLEFILE= @prefix@/share/@APP@/style/style.meteogram
 [LEGALMODELS]
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HIRLAM.4km
 MODEL=HARMONIE_2.5km
 MODEL=HARMONIE_5.5km
 MODEL=ECMWF
 MODEL=UM.4km
-MODEL=UM4BX
-MODEL=SUBJ
 MODEL=UM.1km
 MODEL=WDB
 MODEL=OBS
@@ -315,7 +301,6 @@ STYLEFILE= @prefix@/share/@APP@/style/style.snow_meteogram
 [LEGALMODELS]
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HIRLAM.4km
 MODEL=UM.4km
 MODEL=UM4BX
 MODEL=UM.1km
@@ -492,64 +477,6 @@ PARAM=EPRD,x,x,x
 PARAM=EPRR,x,x,x
 PARAM=EPTD,x,x,x
 PARAM=EPTT,x,x,x
-[END]
-
-[ADD]
-
-
-# 
-[DIAGRAM]
-NAME=Boksplott-Døgnnedbør
-STYLEFILE= @prefix@/share/@APP@/style/style.rrqgram
-
-[MODELSPECIFIC]
-MODEL=rr24
-PARAM=rr24_PROB,x,x,x,x
-PARAM=rr24_Q5,x,x,x,x
-PARAM=rr24_Q25,x,x,x,x
-PARAM=rr24_Q50,x,x,x,x
-PARAM=rr24_Q75,x,x,x,x
-PARAM=rr24_Q95,x,x,x,x
-PARAM=rr24_EC,x,x,x,x
-PARAM=RRQT,x,x,x,x
-[END]
-
-[ADD]
-
-# 
-[DIAGRAM]
-NAME=Boksplott-Maks.vind
-STYLEFILE= @prefix@/share/@APP@/style/style.fxqgram
-
-[MODELSPECIFIC]
-MODEL=fx10-6h
-PARAM=fx10-6h_PROB,x,x,x,x
-PARAM=fx10-6h_Q5,x,x,x,x
-PARAM=fx10-6h_Q25,x,x,x,x
-PARAM=fx10-6h_Q50,x,x,x,x
-PARAM=fx10-6h_Q75,x,x,x,x
-PARAM=fx10-6h_Q95,x,x,x,x
-PARAM=fx10-6h_EC,x,x,x,x
-PARAM=FXQT-6h,x,x,x,x
-[END]
-
-[ADD]
-
-# 
-[DIAGRAM]
-NAME=Boksplott-Temperatur2m
-STYLEFILE= @prefix@/share/@APP@/style/style.t2mqgram
-
-[MODELSPECIFIC]
-MODEL=t2m
-PARAM=t2m_PROB,x,x,x,x
-PARAM=t2m_Q5,x,x,x,x
-PARAM=t2m_Q25,x,x,x,x
-PARAM=t2m_Q50,x,x,x,x
-PARAM=t2m_Q75,x,x,x,x
-PARAM=t2m_Q95,x,x,x,x
-PARAM=t2m_EC,x,x,x,x
-PARAM=t2mQT,x,x,x,x
 [END]
 
 [ADD]
