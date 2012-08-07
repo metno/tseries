@@ -91,6 +91,8 @@ void tsDrawArea::prepare(bool readData)
   if (!prepareDiagram()) {
     cerr << "tsDrawArea Warning:  prepareDiagram failed" << endl;
   }
+
+
 }
 
 void tsDrawArea::setViewport(int w, int h, float pw, float ph)
@@ -137,10 +139,10 @@ bool tsDrawArea::prepareData()
 
   theData = new ptDiagramData(setup.wsymbols);
 
-  //   cerr << "RUN:" << request->run() << endl;
-  //   cerr << "POS:" << request->pos() << endl;
-  //   cerr << "STYLE:" << request->style() << endl;
-  //   cerr << "MODEL:" << request->model() << endl;
+//  cerr << "RUN:" << request->run() << endl;
+//  cerr << "POS:" << request->pos() << endl;
+//  cerr << "STYLE:" << request->style() << endl;
+//  cerr << "MODEL:" << request->model() << endl;
 
   // fetch data
 

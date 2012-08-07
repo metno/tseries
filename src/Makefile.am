@@ -116,7 +116,8 @@ common_ldflags=                \
 	$(GLTEXT_LDFLAGS)      \
 	$(PUDATATYPES_LDFLAGS) \
 	$(QUTILITIES_LDFLAGS)  \
-	$(QT4_LDFLAGS) 
+	$(QT4_LDFLAGS)         \
+	$(XEXT_LDFLAGS) $(GLU_LDFLAGS) $(X11_LDFLAGS) 
 
 common_ldadd=               \
 	$(PETS2_LIBS)       \
@@ -124,7 +125,8 @@ common_ldadd=               \
 	$(GLTEXT_LIBS)      \
 	$(PUDATATYPES_LIBS) \
 	$(QUTILITIES_LIBS)  \
-	$(QT4_LIBS) 
+	$(QT4_LIBS) \
+	$(XEXT_LIBS) $(GLU_LIBS) $(X11_LIBS) 
 
 
 # building tseries ------------------
