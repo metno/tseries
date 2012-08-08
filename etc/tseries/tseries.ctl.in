@@ -551,27 +551,26 @@ maxRecord=20
 
 <wdbParameter>
 
-MSLP,0,x,x,APP= mean sea level pressure       | 0   height above ground distance  :/100
-RR,0,x,x,APP=    total precipitation distance | 0   height above ground distance  :*1000
-TT,0,x,x,APP=    kalman air temperature       | 2   height above ground distance  :-273.15
-UU,0,x,x,APP=    wind velocity (u vector)     | 10  height above ground distance  :*1.94384
-VV,0,x,x,APP=    wind velocity (v vector)     | 10  height above ground distance  :*1.94384
-CC,0,x,x,APP=    total cloud cover            | 0   height above ground distance  :*100
-CL,0,x,x,APP=    low cloud cover              | 850 isobaric surface pressure     :*100
-CM,0,x,x,APP=    medium cloud cover           | 500 isobaric surface pressure     :*100
-CH,0,x,x,APP=    high cloud cover             | 300 isobaric surface pressure     :*100
+MSLP,0,x,x,APP=  air pressure at sea level               | 0   height above ground             :/100
+RR,0,x,x,APP=    lwe precipitation rate                  | 0   height above ground
+TT,0,x,x,APP=    kalman air temperature                  | 2   height above ground             :-273.15
+UU,0,x,x,APP=    x wind                                  | 10  height above ground             :*1.94384
+VV,0,x,x,APP=    y wind                                  | 10  height above ground             :*1.94384
+CC,0,x,x,APP=    cloud area fraction                     | 1000 atmosphere sigma coordinate
+CL,0,x,x,APP=    cloud area fraction in atmosphere layer | 850 atmosphere sigma coordinate
+CM,0,x,x,APP=    cloud area fraction in atmosphere layer | 500 atmosphere sigma coordinate
+CH,0,x,x,APP=    cloud area fraction in atmosphere layer | 300 atmosphere sigma coordinate
 
 
-MSLP,0,x,x,RAW= mean sea level pressure (RAW)     | 0   height above ground distance  :/100
-RR,0,x,x,RAW=   total precipitation distance (RAW)| 0   height above ground distance  :*1000
-TT,0,x,x,RAW=   kalman air temperature (RAW)      | 2   height above ground distance  :-273.15
-UU,0,x,x,RAW=   wind velocity (u vector) (RAW)    | 10  height above ground distance  :*1.94384
-VV,0,x,x,RAW=   wind velocity (v vector) (RAW)    | 10  height above ground distance  :*1.94384
-CC,0,x,x,RAW=   total cloud cover (RAW)           | 0   height above ground distance  :*100
-CL,0,x,x,RAW=   low cloud cover (RAW)             | 850 isobaric surface pressure     :*100
-CM,0,x,x,RAW=   medium cloud cover (RAW)          | 500 isobaric surface pressure     :*100
-CH,0,x,x,RAW=   high cloud cover (RAW)            | 300 isobaric surface pressure     :*100
-
+MSLP,0,x,x,RAW=  air pressure at sea level (RAW)                | 0   height above ground             :/100
+RR,0,x,x,RAW=    lwe precipitation rate (RAW)                   | 0   height above ground
+TT,0,x,x,RAW=    kalman air temperature  (RAW)                  | 2   height above ground             :-273.15
+UU,0,x,x,RAW=    x wind (RAW)                                   | 10  height above ground             :*1.94384
+VV,0,x,x,RAW=    y wind (RAW)                                   | 10  height above ground             :*1.94384
+CC,0,x,x,RAW=    cloud area fraction (RAW)                      | 1000 atmosphere sigma coordinate
+CL,0,x,x,RAW=    cloud area fraction in atmosphere layer (RAW)  | 850 atmosphere sigma coordinate
+CM,0,x,x,RAW=    cloud area fraction in atmosphere layer (RAW)  | 500 atmosphere sigma coordinate
+CH,0,x,x,RAW=    cloud area fraction in atmosphere layer (RAW)  | 300 atmosphere sigma coordinate
 
 
 
