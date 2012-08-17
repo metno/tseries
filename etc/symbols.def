@@ -1,0 +1,186 @@
+# this file is used by symbolMaker.cc to build weathersymbols
+# j.schulze /july 98
+# there are two entrances for each symbol. one for the normal
+# light time and the other for the dark time... 
+# example :
+# -------------------
+# < STRING : NAME OF THE TARGET CLASS >
+#
+# < INT: CUSTOMER NUMBER >  < STRING: NAME LIGHT >
+# < INT: CUSTOMER NUMBER >  < STRING: NAME DARK  >
+#	
+# -----------------------
+# the symbol library starts here......
+
+
+FOGSTATUS = false     
+VISIBILITY = true
+PICTURES = true
+
+{
+SUN
+1	@{fine}
+	weather_01.png
+16	@{fine}
+	weather_16.png
+9
+}
+
+{     
+LIGHTCLOUD
+2	@{fine}
+	weather_02.png
+17	@{fine}
+        weather_17.png
+9
+}
+
+{
+PARTLYCLOUD
+3	@{dry}
+	weather_03.png
+17	@{dry}
+        weather_17.png
+9
+}
+
+{
+CLOUD
+4	@{cloudy}
+	weather_04.png
+4	@{cloudy}
+	weather_04.png
+8
+}	
+
+{
+LIGHTRAINSUN
+5	@{showers}	
+	weather_05.png
+18	@{showers}	
+	weather_18.png
+7
+}
+
+
+{
+LIGHTRAINTHUNDERSUN
+6      @{lightrainthundersun}
+       weather_06.png
+6      @{lightrainthundersun}
+       weather_06.png
+5
+}
+
+	
+{    
+SLEETSUN
+7 	@{sleetshowers}	
+	weather_07.png
+7	@{sleetshowers}	
+	weather_07.png
+4
+}
+
+{
+SNOWSUN
+8	@{snowshowers}
+        weather_08.png
+19	@{snowshowers}
+        weather_19.png
+4
+}
+
+{
+LIGHTRAIN
+9	@{drizzly}
+        weather_09.png
+9	@{drizzly}
+        weather_09.png
+3
+}
+
+
+	
+{
+RAIN
+10	@{rain}
+        weather_10.png
+10	@{rain}
+        weather_10.png
+6
+}
+
+
+{
+RAINTHUNDER
+11     @{rainthunder}
+        weather_11.png
+11     @{rainthunder}
+        weather_11.png
+3
+}
+
+
+{
+SLEET
+12	@{sleet}
+        weather_12.png
+12	@{sleet}
+        weather_12.png
+3
+}
+
+
+{
+SNOW
+13	@{snow}
+        weather_13.png
+13	@{snow}
+        weather_13.png
+3
+}
+
+
+
+{
+SNOWTHUNDER
+14      @{snowthunder}
+        weather_14.png
+14      @{snowthunder}
+        weather_14.png
+3
+}
+
+{
+FOG
+15	@{fog}
+        weather_15.png
+15	@{fog}
+        weather_15.png
+1
+}
+
+
+{
+ERROR
+0  error
+   weather_999.png
+0  error
+   weather_999.png
+0
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

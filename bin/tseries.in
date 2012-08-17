@@ -26,7 +26,7 @@ fi
 
 mkdir -p $HOME/.tseries
 
-$bindir/tseries.bin-@PVERSION@ $@ -S $region -s $etcdir/tseries/@PVERSION@/tseries.ctl -T "@APP@"
+$bindir/tseries.bin-@PVERSION@ $@ -S $region -s $etcdir/tseries/@PVERSION@/tseries.ctl -T tseries
 
 
 
