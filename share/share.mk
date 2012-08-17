@@ -2,7 +2,7 @@
 
 
 
-mydocdir        = $(datarootdir)/doc/tseries
+mydocdir        = $(datarootdir)/doc/tseries-@PVERSION@
 dist_mydoc_DATA = \
 	share/doc/ts_station.xpm      \
 	share/doc/no_news.html	      \
@@ -35,7 +35,7 @@ dist_pixmapsbase_DATA= \
 
 # images to share/pixmaps/tseries --------------
 
-pixmapsdir= $(datarootdir)/pixmaps/tseries
+pixmapsdir= $(datarootdir)/pixmaps/tseries/@PVERSION@
 dist_pixmaps_DATA= \
 	share/pixmaps/circle_mixed.rgba         \
 	share/pixmaps/cloud.rgba                \
@@ -83,7 +83,7 @@ dist_pixmaps_DATA= \
 
 # tseries stylefiles share/tseries/style  ------
 
-styledir        = $(datarootdir)/tseries/style
+styledir        = $(datarootdir)/tseries/@PVERSION@/style
 dist_style_DATA = \
 	share/style/style.lameps_t2m            \
 	share/style/style.marinogram		 \

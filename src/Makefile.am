@@ -59,10 +59,9 @@ language_sources= \
 	$(top_srcdir)/lang/tseries_no.ts \
 	$(top_srcdir)/lang/tseries_se.ts
 
-if !HAS_PROGRAM_SUFFIX
-languagedir= $(datarootdir)/tseries/lang
+languagedir= $(datarootdir)/tseries/@PVERSION@/lang
 nodist_language_DATA=$(language_sources:.ts=.qm)
-endif
+
 
 common_cppflags =
 if ENABLE_GRIBFILE

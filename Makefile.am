@@ -8,7 +8,7 @@ ACLOCAL_AMFLAGS= -I m4
 
 
 tseriesbindir= $(bindir)
-dist_tseriesbin_SCRIPTS= bin/tseries-$(PVERSION)
+dist_tseriesbin_SCRIPTS= bin/tseries
 
 
 etctseriesdir = $(sysconfdir)/tseries/$(PVERSION)
@@ -29,8 +29,11 @@ endif # ENABLE_SMHI
 
 
 applicationsdir        = $(datarootdir)/applications
-dist_applications_DATA = share/applications/metno-tseries-$(PVERSION).desktop
+dist_applications_DATA = share/applications/metno-tseries.desktop
 
 
--include mk/debian.mk
+install-data-hook:
+	cd $(DESTDIR)/$(applicationsdir) && mv metno-tseries.desktop metno-tseries-@PVERSION@.desktop
+	cd $(DESTDIR)/$(pixmapsbasedir) && mv tseries.png tseries-@PVERSION@.png
+
 

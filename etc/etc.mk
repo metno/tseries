@@ -11,18 +11,18 @@ dist_etctseries_DATA += \
 	etc/tseries/tseries-bookmarks.common \
 	etc/tseries/tseries-bookmarks.VNN
 
-betcdir= $(sysconfdir)/btseries
-dist_betc_DATA =                                \
-	etc/btseries/parameters.def             \
-	etc/btseries/style.eps_rr24             \
-	etc/btseries/pose.metdat                \
-	etc/btseries/tsDiagrams.def             \
-	etc/btseries/metgrm_ps.sh               \
-	etc/btseries/symbols.def                \
-	etc/btseries/style.eps_rr24t2m_noens_op \
-	etc/btseries/tseries.setup              \
-	etc/btseries/style.meteogram            \
-	etc/btseries/style.eps_z500             \
-	etc/btseries/style.eps_t2m              \
-	etc/btseries/btseries.input
+#betcdir= $(sysconfdir)/btseries
+#dist_betc_DATA =                                \
+# 	etc/btseries/parameters.def             \
+# 	etc/btseries/style.eps_rr24             \
+# 	etc/btseries/pose.metdat                \
+# 	etc/btseries/tsDiagrams.def             \
+# 	etc/btseries/metgrm_ps.sh               \
+# 	etc/btseries/symbols.def                \
+# 	etc/btseries/style.eps_rr24t2m_noens_op \
+# 	etc/btseries/tseries.setup              \
+# 	etc/btseries/style.meteogram            \
+# 	etc/btseries/style.eps_z500             \
+# 	etc/btseries/style.eps_t2m              \
+# 	etc/btseries/btseries.input
 

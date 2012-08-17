@@ -109,7 +109,7 @@
     </message>
     <message>
         <location filename="../src/qtsMain.cc" line="111"/>
-        <location filename="../src/qtsMain.cc" line="838"/>
+        <location filename="../src/qtsMain.cc" line="839"/>
         <source>Manual</source>
         <translation type="unfinished">Manuel</translation>
     </message>
@@ -223,7 +223,7 @@ Version: %1
 met.no 2002</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="987"/>
+        <location filename="../src/qtsMain.cc" line="988"/>
         <source>Language Changed</source>
         <translation type="unfinished">Langue changée</translation>
     </message>
@@ -232,7 +232,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series doit etre redémarré pour réactualiser la langue en: [%1]</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="842"/>
+        <location filename="../src/qtsMain.cc" line="843"/>
         <source>News</source>
         <translation type="unfinished">Modifications</translation>
     </message>
@@ -305,7 +305,7 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="988"/>
+        <location filename="../src/qtsMain.cc" line="989"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>

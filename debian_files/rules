@@ -23,5 +23,4 @@ include /usr/share/metno-devscripts/metno_rules.mk
 
 do-configure:
 	./autogen.sh
-	./configure --program-suffix=$(METNO_SUFFIX)
-
+	./configure --program-suffix=$(METNO_SUFFIX) --prefix=/usr --sysconfdir=/etc --localstatedir=/var

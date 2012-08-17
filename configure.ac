@@ -73,6 +73,7 @@ AC_CONFIG_FILES([
 	src/Makefile
 	etc/tseries/tseries.ctl
 	etc/tseries/tsDiagrams.def
+	share/applications/metno-tseries.desktop
 ])
 
 AC_OUTPUT
