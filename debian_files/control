@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 5), autotools-dev
 Build-Conflicts: autoconf2.13, automake1.4
 Standards-Version: 3.7.2
 
-Package: tseries
+Package: tseries-@METNO_VERSION@
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Meteorological time series viewer

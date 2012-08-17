@@ -1,0 +1,4 @@
+#!/bin/sh
+
+set -e
+exec update-alternatives --remove tseries /usr/bin/tseries-@METNO_VERSION@
