@@ -27,16 +27,16 @@ Rdata=/opdata_routine/metcorr
 
 <Path>
 
-Etc= $(Sysconfdir)/tseries
-Images=$(Prefix)/share/pixmaps/tseries/
-Doc=$(Prefix)/share/doc/tseries
-Lang=$(Prefix)/share/tseries/lang
+Etc= $(Sysconfdir)/tseries/@PVERSION@
+Images=$(Prefix)/share/pixmaps/tseries/@PVERSION@
+Doc=$(Prefix)/share/doc/tseries-@PVERSION@
+Lang=$(Prefix)/share/tseries/lang/@PVERSION@
 
 #------------------
 
 <files>
 
-Defs=$(Sysconfdir)/tseries@PSUFFIX@/tsDiagrams.def
+Defs=$(Etc)/tsDiagrams.def
 Configure=$(Home)/.tseries/tseries.conf
 WeatherSymbols=$(Etc)/symbols.def
 stdImage=$(Images)/ts_station.xpm

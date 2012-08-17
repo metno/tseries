@@ -13,6 +13,7 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LN_S
 
+METNO_PVERSION
 
 
 METNO_PROG_PKG_CONFIG
@@ -63,7 +64,7 @@ METNO_REQUIRE_QT4([
 
 #AC_SUBST([prefix],[$prefix])
 
-METNO_PROGRAM_SUFFIX
+#METNO_PROGRAM_SUFFIX
 
 
 AC_CONFIG_FILES([
@@ -71,9 +72,7 @@ AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
 	etc/tseries/tseries.ctl
-	etc/tseries-test/tseries.ctl
 	etc/tseries/tsDiagrams.def
-	etc/tseries-test/tsDiagrams.def
 ])
 
 AC_OUTPUT
