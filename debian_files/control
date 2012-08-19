@@ -14,3 +14,11 @@ Description: Meteorological time series viewer
  The curves are displayed in openGL using the pets2 library.
  Tseries can be connected to the diana meteorological visualisation
  system by using QSockets.
+
+Package: tseries-@METNO_VERSION@-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: tseries-@METNO_VERSION@ (= ${binary:Version}), ${misc:Depends}
+Description: debugging symbols for tseries-@METNO_VERSION@
+ This package contains the debugging symbols for tseries-@METNO_VERSION@.
