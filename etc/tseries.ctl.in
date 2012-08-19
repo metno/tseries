@@ -28,7 +28,7 @@ Rdata=/opdata_routine/metcorr
 <Path>
 
 Etc= $(Sysconfdir)/tseries/@PVERSION@
-Images=$(Prefix)/share/pixmaps/tseries/@PVERSION@
+Images=$(Prefix)/share/pixmaps/tseries/@PVERSION@/
 Doc=$(Prefix)/share/doc/tseries-@PVERSION@
 Lang=$(Prefix)/share/tseries/lang/@PVERSION@
 
@@ -543,7 +543,11 @@ Contents=x,x,t2m,x
 
 
 <wdb>
-host=proffdb@PSUFFIX@.met.no
+host=proffdb.met.no
+[TEST]
+host=proffdb-test.met.no
+[]
+
 user=proffread
 busymovie=$(Images)/busy.gif
 readtime=1500

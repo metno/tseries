@@ -1,28 +1,16 @@
 # Makefile to distribute stuff into /etc/tseries 
 
-dist_etctseries_DATA += \
-	etc/tseries/symbols.def            \
-	etc/tseries/tsDiagrams.batch       \
-	etc/tseries/tsDiagrams_export.def  \
-	etc/tseries/tsDiagramsREGIONS.def  \
-	etc/tseries/tseries.ctl_batch      \
-	etc/tseries/tseries.ctl_export     \
-	etc/tseries/tseries.filter         \
-	etc/tseries/tseries-bookmarks.common \
-	etc/tseries/tseries-bookmarks.VNN
 
-#betcdir= $(sysconfdir)/btseries
-#dist_betc_DATA =                                \
-# 	etc/btseries/parameters.def             \
-# 	etc/btseries/style.eps_rr24             \
-# 	etc/btseries/pose.metdat                \
-# 	etc/btseries/tsDiagrams.def             \
-# 	etc/btseries/metgrm_ps.sh               \
-# 	etc/btseries/symbols.def                \
-# 	etc/btseries/style.eps_rr24t2m_noens_op \
-# 	etc/btseries/tseries.setup              \
-# 	etc/btseries/style.meteogram            \
-# 	etc/btseries/style.eps_z500             \
-# 	etc/btseries/style.eps_t2m              \
-# 	etc/btseries/btseries.input
+dist_etctseries_DATA = \
+	etc/tseries.ctl            \
+	etc/tsDiagrams.def         \
+	etc/symbols.def		   \
+	etc/tsDiagrams.batch	   \
+	etc/tsDiagrams_export.def  \
+	etc/tsDiagramsREGIONS.def  \
+	etc/tseries.ctl_batch	   \
+	etc/tseries.ctl_export	   \
+	etc/tseries.filter	   \
+	etc/tseries-bookmarks.common \
+	etc/tseries-bookmarks.VNN
 

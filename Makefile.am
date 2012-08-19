@@ -20,8 +20,6 @@ include smhi/etc/etc.mk
 
 else
 
-dist_etctseries_DATA = etc/tseries/tseries.ctl etc/tseries/tsDiagrams.def      
-
 include share/share.mk
 include etc/etc.mk
 

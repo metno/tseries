@@ -72,8 +72,8 @@ AC_CONFIG_FILES([
 	bin/tseries
 	Makefile
 	src/Makefile
-	etc/tseries/tseries.ctl
-	etc/tseries/tsDiagrams.def
+	etc/tseries.ctl
+	etc/tsDiagrams.def
 	share/applications/metno-tseries.desktop
 ])
 

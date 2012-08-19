@@ -26,7 +26,6 @@ dist_mydoc_DATA = \
 	share/doc/list-add.xpm
 
 
-
 # images to share/pixmaps ----------------------
 
 pixmapsbasedir= $(datarootdir)/pixmaps
@@ -37,26 +36,7 @@ dist_pixmapsbase_DATA= \
 
 pixmapsdir= $(datarootdir)/pixmaps/tseries/@PVERSION@
 dist_pixmaps_DATA= \
-	share/pixmaps/circle_mixed.rgba         \
-	share/pixmaps/cloud.rgba                \
-	share/pixmaps/darkPartlyCloud.rgba      \
-	share/pixmaps/dark.rgba                 \
-	share/pixmaps/fog.rgba                  \
-	share/pixmaps/lightCloud.rgba           \
-	share/pixmaps/lightRain.rgba            \
-	share/pixmaps/lightRainSun.rgba         \
-	share/pixmaps/lightRainThunderSun.rgba  \
-	share/pixmaps/partlyCloud.rgba          \
-	share/pixmaps/rainDark.rgba             \
-	share/pixmaps/rain.rgba                 \
-	share/pixmaps/RainThunder.rgba          \
-	share/pixmaps/sleet.rgba                \
-	share/pixmaps/sleetSun.rgba             \
-	share/pixmaps/snowDark.rgba             \
-	share/pixmaps/snow.rgba                 \
-	share/pixmaps/snowSun.rgba              \
-	share/pixmaps/SnowThunder.rgba          \
-	share/pixmaps/sun.rgba                  \
+	share/pixmaps/tseries.png               \
 	share/pixmaps/ts_find.xpm               \
 	share/pixmaps/ts_station.xpm            \
 	share/pixmaps/weather_01.png            \
@@ -98,9 +78,7 @@ dist_style_DATA = \
 	share/style/style.meteogram_batch	 \
 	share/style/style.snow_meteogram	 \
 	share/style/style.lameps_rr		 \
-	share/style-test/style.lameps_plum_rr    \
 	share/style/style.eps_rr		 \
-	share/style-test/style.eps_plum_rr	 \
 	share/style/style.eps_rr24t2m_noens_op	 \
 	share/style/style.maritim		 \
 	share/style/style.lameps_z500		 \
