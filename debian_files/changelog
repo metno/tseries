@@ -1,4 +1,4 @@
-tseries (5.1.2-ubuntu2) precise; urgency=low
+tseries (5.1.2~rc-1) precise; urgency=low
 
   * first version adapted to precise 64 bit 
 
