@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Tseries
-GenericName=Tseries
+Name=Tseries-@PVERSION@
+GenericName=Tseries-@PVERSION@
 Comment=Tidsserie visning
-Exec=tseries
+Exec=tseries-@PVERSION@
 Icon=tseries-@PVERSION@
 MimeType=;
 ServiceTypes=
