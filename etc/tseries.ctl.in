@@ -282,30 +282,45 @@ DataType=HDF
 Contents=x,x,UM.4km,18
 
 
-[VA:VNN:VV:FOU]
-CollectionName=UM4km Barentshavet
-PreferredDiagram=Meteogram
-InitialOpen=0
-
-DataFile=$(Mdata)/um4bx.hdf$(day)
-DataDescription=UM4BX 
-DataType=HDF
-Contents=x,x,UM4BX,x
-
 []
-
-
 # -------------------------------------------------
+# HARMONIE 1 KM
 
-CollectionName=UM1kmMeteogrammer
+CollectionName=Harmonie1_Trondheim
 PreferredDiagram=Meteogram
 InitialOpen=0
 
 
-DataFile=$(Mdata)/um1km00.hdf$(day)
-DataDescription=UM.1km
+DataFile=$(Mdata)/har1_trondheim.hdf
+DataDescription=HARMONIE.1km.Trondheim
 DataType=HDF
-Contents=x,x,UM.1km,0
+Contents=x,x,HARMONIE.1km.Trondheim,x
+
+# --
+
+CollectionName=Harmonie1_East
+PreferredDiagram=Meteogram
+InitialOpen=0
+
+DataFile=$(Mdata)/har1_east.hdf
+DataDescription=HARMONIE.1km.Oslofjord
+DataType=HDF
+Contents=x,x,HARMONIE.1km.Oslofjord,x
+
+# --
+
+CollectionName=Harmonie1_West
+PreferredDiagram=Meteogram
+InitialOpen=0
+
+DataFile=$(Mdata)/har1_west.hdf
+DataDescription=HARMONIE.1km.Vestlandet
+DataType=HDF
+Contents=x,x,HARMONIE.1km.Vestlandet,x
+
+
+
+
 
 
 
