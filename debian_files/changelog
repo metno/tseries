@@ -1,4 +1,26 @@
-tseries (5.1.2~rc-1) precise; urgency=low
+tseries (5.3.1-1) unstable; urgency=low
+
+  * setup file changes
+  * removed um.1km
+  * added harmonie.1km
+  * distributed eps style
+  * fixed opdata_local trouble
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Thu, 20 Sep 2012 12:38:47 +0200
+
+tseries (5.3.0-1) unstable; urgency=low
+
+  * testing package uniqueness
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Thu, 23 Aug 2012 14:55:18 +0200
+
+tseries (5.2~rc1-2) unstable; urgency=low
+
+  * fixed launcher naming
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Wed, 22 Aug 2012 13:33:03 +0200
+
+tseries (5.2~rc1-1) precise; urgency=low
 
   * first version adapted to precise 64 bit 
 
