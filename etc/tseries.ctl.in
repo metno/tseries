@@ -4,13 +4,24 @@ lang=no
 Prefix=@prefix@
 Sysconfdir= @sysconfdir@
 
+
+Odata=/opdata_local
+
+[VA:FOU]
 Odata=/opdata
+[]
+
 Mdata=$(Odata)/metcorr
 Sdata=$(Odata)/sea
 Wdata=$(Odata)/wave
 Edata=$(Odata)/ec
 
 Rdata=$(Odata)/metcorr
+
+[VV:VNN:VTK:VNN1:VNN2:VV1:VV2]
+Rdata=/opdata/metcorr
+[]
+
 
 day=
 [1:VNN1:VV1]
@@ -19,9 +30,7 @@ day=-1
 day=-2
 []
 
-[VV:VNN:VTK:VNN1:VNN2:VV1:VV2]
-Rdata=/opdata_routine/metcorr
-[]
+
 
 #------------------
 
