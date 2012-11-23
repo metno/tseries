@@ -9,6 +9,7 @@ Standards-Version: 3.7.2
 Package: tseries-@METNO_VERSION@
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: tseries
 Description: Meteorological time series viewer
  This program shows time series from hdf4 and ASCII input.
  The curves are displayed in openGL using the pets2 library.
