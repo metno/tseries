@@ -618,6 +618,7 @@ maxObservationLength=300
 
 TT_O,0,x,OBS,x=TA 
 MSLP_O,0,x,OBS,x=PR 
+QNH_O,0,x,OBS,x=PH
 DD,0,x,OBS,x=DD 
 FF,0,x,OBS,x=FF:*1.94384
 RR_O,0,x,OBS,x=RR_1

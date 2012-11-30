@@ -75,6 +75,7 @@ PARAM=CH,x,x,x
 PARAM=CC,x,x,x
 PARAM=TT_O,x,x,x
 PARAM=MSLP_O,x,x,x
+PARAM=QNH_O,x,x,x
 PARAM=DD_O,x,x,x
 PARAM=FF_O,x,x,x
 PARAM=RR_O,x,x,x

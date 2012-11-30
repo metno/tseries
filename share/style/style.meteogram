@@ -420,6 +420,18 @@ patternInColour=TRUE
 
 
 
+# line - obs QNH
+[NEW]
+type=LINE
+yaid=1
+parameter=QNH_O,x,x,x
+color=BLUE
+text=QNH obs [hPa]
+lineWidth=2
+linePattern=DOTTED
+patternInColour=TRUE
+[ADD]
+
 
 
 # ----------------------------
