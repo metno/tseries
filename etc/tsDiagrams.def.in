@@ -361,6 +361,7 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_t2m
 MODEL=EPS
 PARAM=EPTD,x,x,x
 PARAM=EPTT,x,x,x
+PARAM=EPTC,x,x,x
 [END]
 
 [MODELSPECIFIC]
