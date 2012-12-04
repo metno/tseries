@@ -201,9 +201,9 @@ type=LINE
 yaid=0
 order=6
 parameter=EPZC,x,EPS,x
-color=RED
+color=DARK_MAGENTA
 text=Kontroll
-lineWidth=4
+lineWidth=3
 linePattern=FULL
 patternInColour=FALSE
 [ADD]

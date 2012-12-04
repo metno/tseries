@@ -386,6 +386,7 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_rr
 MODEL=EPS
 PARAM=EPRD,x,x,x
 PARAM=EPRR,x,x,x
+PARAM=EPRC,x,x,x
 [END]
 
 [MODELSPECIFIC]
@@ -404,6 +405,7 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_plum_rr
 MODEL=EPS
 PARAM=EPRD,x,x,x
 PARAM=EPRR,x,x,x
+PARAM=EPRC,x,x,x
 [END]
 
 [MODELSPECIFIC]
@@ -423,6 +425,7 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_z500
 MODEL=EPS
 PARAM=EPZD,x,x,x
 PARAM=EPZ,x,x,x
+PARAM=EPZC,x,x,x
 [END]
 
 [MODELSPECIFIC]
