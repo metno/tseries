@@ -150,6 +150,26 @@ DataDescription=HARMONIE_2.5km
 DataType=HDF
 Contents=x,x,HARMONIE_2.5km,12
 
+# ------------------------------------------
+
+CollectionName=HARMONIE25SvalbardMeteogrammer
+PreferredDiagram=Meteogram
+InitialOpe=0
+
+DataFile=$(Rdata)/harmonie25_svalbard_00.hdf$(day)
+DataDescription=HARMONIE_2.5km
+DataType=HDF
+Contents=x,x,HARMONIE_2.5km,0
+
+DataFile=$(Rdata)/harmonie25_svalbard_12.hdf$(day)
+DataDescription=HARMONIE_2.5km
+DataType=HDF
+Contents=x,x,HARMONIE_2.5km,12
+
+
+# ------------------------------------------
+
+
 
 CollectionName=HARMONIE55Meteogrammer
 PreferredDiagram=Meteogram
