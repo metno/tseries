@@ -1,3 +1,21 @@
+tseries (5.3.6-1) unstable; urgency=low
+
+  * added new stream - harmonie25 for svalbard
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Wed, 05 Dec 2012 08:51:09 +0100
+
+tseries (5.3.5-1) unstable; urgency=low
+
+  * added control to all eps diagrams
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Tue, 04 Dec 2012 08:35:26 +0100
+
+tseries (5.3.4-1) unstable; urgency=low
+
+  * added t2m control run to eps diagram
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Mon, 03 Dec 2012 14:38:16 +0100
+
 tseries (5.3.3-1) unstable; urgency=low
 
   * added QNH observation
