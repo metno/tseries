@@ -187,36 +187,6 @@ Contents=x,x,HARMONIE_5.5km,12
 
 
 
-
-
-# -------------------------------------------------
-
-CollectionName=HIRLAM4Meteogrammer
-PreferredDiagram=Meteogram
-InitialOpen=0
-
-DataFile=$(Mdata)/hirlam4km00.hdf$(day)
-DataDescription=HIRLAM.4km
-DataType=HDF
-Contents=x,x,HIRLAM.4km,0
-
-DataFile=$(Mdata)/hirlam4km06.hdf$(day)
-DataDescription=HIRLAM.4km
-DataType=HDF
-Contents=x,x,HIRLAM.4km,6
-
-DataFile=$(Mdata)/hirlam4km12.hdf$(day)
-DataDescription=HIRLAM.4km
-DataType=HDF
-Contents=x,x,HIRLAM.4km,12
-
-DataFile=$(Mdata)/hirlam4km18.hdf$(day)
-DataDescription=HIRLAM.4km
-DataType=HDF
-Contents=x,x,HIRLAM.4km,18
-
-
-
 # -------------------------------------------------
 
 CollectionName=HIRLAM8Meteogrammer

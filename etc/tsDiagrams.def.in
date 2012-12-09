@@ -17,7 +17,6 @@ PROFF.RAW=proff raw
 PROFF.DEFAULT=proff default
 HIRLAM.12km=Hirlam 12km
 HIRLAM.8km=Hirlam 8km
-HIRLAM.4km=Hirlam 4km
 HARMONIE_2.5km=Harmonie 2.5km
 HARMONIE_5.5km=Harmonie 5.5km
 UM.4km=UM 4km
@@ -39,7 +38,6 @@ STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.meteogram
 [LEGALMODELS]
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HIRLAM.4km
 MODEL=HARMONIE_2.5km
 MODEL=HARMONIE_5.5km
 MODEL=ECMWF
@@ -93,7 +91,6 @@ STYLEFILE=  @prefix@/share/tseries/@PVERSION@/style/style.meteogram_batch
 [LEGALMODELS]
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HIRLAM.4km
 MODEL=HARMONIE_2.5km
 MODEL=HARMONIE_5.5km
 MODEL=ECMWF
@@ -137,7 +134,6 @@ STYLEFILE=  @prefix@/share/tseries/@PVERSION@/style/style.meteogram_batch
 [LEGALMODELS]
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HIRLAM.4km
 MODEL=HARMONIE_2.5km
 MODEL=HARMONIE_5.5km
 MODEL=ECMWF
@@ -225,7 +221,6 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram
 [LEGALMODELS]
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HIRLAM.4km
 MODEL=HARMONIE_2.5km
 MODEL=HARMONIE_5.5km
 MODEL=ECMWF
@@ -271,7 +266,6 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.snow_meteogram
 [LEGALMODELS]
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HIRLAM.4km
 MODEL=UM.4km
 MODEL=HARMONIE.1km.Trondheim
 MODEL=HARMONIE.1km.Oslofjord
