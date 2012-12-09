@@ -1,3 +1,9 @@
+tseries (5.3.7-1) unstable; urgency=low
+
+  * removed stream hirlam4 
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Sun, 09 Dec 2012 13:00:29 +0100
+
 tseries (5.3.6-1) unstable; urgency=low
 
   * added new stream - harmonie25 for svalbard
