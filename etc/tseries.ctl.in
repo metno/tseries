@@ -12,7 +12,7 @@ Odata=/opdata
 []
 
 Mdata=$(Odata)/metcorr
-Sdata=$(Odata)/sea
+Sdata=$(Odata)/roms
 Wdata=$(Odata)/wave
 Edata=$(Odata)/ec
 
