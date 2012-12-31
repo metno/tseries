@@ -1,0 +1,592 @@
+#  tseries Meteogram-style with extra ff axis
+
+
+#==================================================================
+# 
+# Global settings
+#
+#==================================================================
+
+
+bgColor=      WHITE
+topMargin=    50
+bottomMargin= 50
+leftMargin=   150
+rightMargin=  150
+
+# --------------------------------
+# default values
+
+type=         DUM_PRIMITIVE
+parameter=    x,x,x,x
+mother=       DIAGRAM
+plotAll=      FALSE
+enabled=      TRUE
+
+color=        RED
+color2=       YELLOW
+font=         NORMAL
+linePattern=  FULL
+fillPattern=  SOLID
+align=        LEFT
+spacing=      MEDIUM
+intSpacing=   SMALL
+label=        TRUE
+patternInColour= FALSE
+lineWidth=    1.0
+axisWidth=    2.0
+tickWidth=    1.0
+minRange=     0
+interval=     1
+delta=        2
+minMargin=    0
+maxIsSet=     FALSE
+minIsSet=     FALSE
+minValue=     100000
+maxValue=    -100000
+yaid=         0
+centerVector= FALSE
+numTickMajor= 10
+numTickMinor= 2
+labelSpace=   120
+quantized=    FALSE
+quantum=      1.0
+gridxonly=    FALSE
+axisgrid=     FALSE
+gridwidth=    1
+gridcolor=    GREY25
+gridstyle=    DOTTED
+
+[DEFAULT]
+
+
+#==================================================================
+# 
+# WIND VECTOR
+#
+#==================================================================
+
+[NEW]
+type=         WIND_VECTOR
+order=        1
+parameter=    WVFD,x,x,x
+height=       80
+color=        DARK_GREEN
+color2=       DARK_GREEN
+label=        TRUE
+text=         Wind
+font=         HEADER3
+spacing=      MEDIUM
+centerVector= FALSE
+[ADD]
+
+#==================================================================
+# 
+# DATE AND TIME
+#
+#==================================================================
+
+# --------------------------------
+# date-line
+
+[NEW]
+type=    DATE
+order=   5
+height=  25
+spacing= SMALL
+font=    NORMAL
+color=   BLUE
+[ADD]
+
+# --------------------------------
+# day-line
+
+[NEW]
+type=    DAY
+order=   6
+height=  25
+spacing= SMALL
+font=    NORMAL
+color=   BLUE
+[ADD]
+
+# --------------------------------
+# prog-time
+
+[NEW]
+type=     PROG
+enabled=  FALSE
+order=    7
+height=   25
+spacing=  SMALL
+font=     NORMAL
+color=    BLUE
+minSkipX= 15
+[ADD]
+
+# --------------------------------
+# utc-time
+
+[NEW]
+type=     UTC
+order=    8
+height=   25
+spacing=  SMALL
+font=     NORMAL
+color=    BLUE
+minSkipX= 15
+[ADD]
+
+# --------------------------------
+# x-axis primitive
+
+[NEW]
+type=    XAXIS
+order=   15
+color=   BLACK
+color2=  BLACK
+spacing= 0
+[ADD]
+
+# --------------------------------
+# inside axes primitives
+
+[NEW]
+mother= AXES1
+[DEFAULT]
+
+# --------------------------------
+# Timemarkers
+
+[NEW]
+name=            MARKEDTIME
+type=            TIMEMARKER
+color=           GREY50
+lineWidth=       2
+linePattern=     FULL
+patternInColour= TRUE
+[ADD]
+
+[NEW]
+name=DIANATIME
+type=TIMEMARKER
+color=RED
+lineWidth=         2
+linePattern=     DOTTED
+patternInColour= TRUE
+[ADD]
+
+# --------------------------------
+# gridline
+
+[NEW]
+
+type=           GRIDLINE
+color=          GREY75
+lineWidth=      1
+linePattern=    DOTTED
+patternInColour=TRUE
+useTimes=       3
+
+[ADD]
+
+
+
+
+
+#==================================================================
+# 
+# PRECIPITATION
+#
+#==================================================================
+
+# --------------------------------
+# Invisible axis to scale rr from different sources
+# Yaxis (RR24)
+
+[NEW]
+yaid=     7
+type=     YAXIS_STATIC
+minValue= 0.0
+minIsSet= TRUE
+maxIsSet= FALSE
+visible=  FALSE
+
+[ADD]
+
+# --------------------------------
+# Observed precipitation
+
+[NEW]
+yaid=        7
+type=        AXISHIST
+alias=       RR_O
+fillPattern= DIAGRIGHT
+label=       TRUE
+unit=        TRUE
+color=       DARK_BLUE
+font=        SUBSCRIPT
+histogramstart= 0
+histogramstop=  10
+[ADD]
+
+# --------------------------------
+# Precipitation
+
+[NEW]
+yaid=        7
+type=        AXISHIST
+alias=       RR
+fillPattern= DIAGLEFT
+label=       TRUE
+unit=        TRUE
+color=       DARK_GREEN
+font=        SUBSCRIPT
+histogramstart= 0
+histogramstop=  10
+[ADD]
+
+#==================================================================
+# 
+# Temperatur
+#
+#==================================================================
+
+
+# ----------------------------
+# Yaxis (T2m)
+
+[NEW]
+type=        YAXIS_STATIC
+yaid=        0
+delta=       1.0
+interval=    0.5
+minMargin=   0.25
+minRange=    5.0
+minIsSet=    FALSE
+maxIsSet=    FALSE
+text=
+align=       LEFT
+axis=        LEFTLEFT
+color=       RED
+lineWidth=   2
+linePattern= FULL
+patternInColour=TRUE
+[ADD]
+# ----------------------------
+# line -  T2m
+
+[NEW]
+type=            LINE
+yaid=            0
+parameter=       TT,0,x,x
+text=            T2m [°C]
+lineWidth=       2
+linePattern=     FULL
+patternInColour= FALSE
+colorbyvalue=    TRUE
+datalimits=      -100,0,100
+colorlist=       BLUE,RED
+patternInColour= FALSE
+[ADD]
+
+# ----------------------------
+# Line - observed T2m
+
+[NEW]
+type=            LINE
+yaid=            0
+parameter=       TT_O,0,x,OBS
+text=            T2m obs [°C]
+lineWidth=       1
+linePattern=     FULL
+patternInColour= FALSE
+colorbyvalue=    TRUE
+datalimits=      -100,0,100
+colorlist=       BLUE,RED
+patternInColour= TRUE
+[ADD]
+
+# ----------------------------
+# Line - uncorr T2m
+
+[NEW]
+type=        LINE
+yaid=        0
+parameter=   TT_U,0,x,x
+color=       DARK_RED
+text=        T2m ukorr. [°C]
+lineWidth=   1
+linePattern= FULL
+patternInColour= FALSE
+[ADD]
+
+# ----------------------------
+# Line - monthly normal T2m
+
+[NEW]
+type=        LINE
+yaid=        0
+parameter=   TAM,0,x,x
+color=       BLACK
+text=        T2m normal [°C]
+lineWidth=   1
+linePattern= FULL
+patternInColour= TRUE
+[ADD]
+
+# ----------------------------
+# Line - monthly normal max T2m
+
+[NEW]
+type=        LINE
+yaid=        0
+parameter=   TAXM,0,x,x
+color=       RED
+text=        T2m max normal [°C]
+lineWidth=   1
+linePattern= FULL
+patternInColour= TRUE
+[ADD]
+
+# ----------------------------
+# Line - monthly normal min T2m
+
+[NEW]
+type=        LINE
+yaid=        0
+parameter=   TANM,0,x,x
+color=       BLUE
+text=        T2m min normal [°C]
+lineWidth=   1
+linePattern= FULL
+patternInColour= TRUE
+[ADD]
+
+
+#==================================================================
+# 
+# MSLP
+#
+#==================================================================
+
+# ----------------------------
+# Yaxis (MSLP)
+
+[NEW]
+type=       YAXIS_STATIC
+yaid=       1
+delta=      5.0
+interval=   0.5
+minMargin=  0.25
+minRange=   20.0
+minIsSet=   FALSE
+maxIsSet=   FALSE
+text =
+align=      LEFT
+axis=       RIGHTRIGHT
+color=      DNMI_GREEN
+lineWidth=  2 
+linePattern=     FULL
+patternInColour= TRUE
+[ADD]
+
+# ----------------------------
+# line - primitive MSLP
+
+[NEW]
+type=            LINE
+yaid=            1
+parameter=       MSLP,x,x,x
+color=           DNMI_GREEN
+text=            MSLP [hPa]
+lineWidth=       2
+linePattern=     FULL
+patternInColour= FALSE
+[ADD]
+
+# ----------------------------
+# line - obs MSLP
+
+[NEW]
+type=            LINE
+yaid=            1
+parameter=       MSLP_O,x,x,x
+color=           DNMI_GREEN
+text=            MSLP obs [hPa]
+lineWidth=       1
+linePattern=     FULL
+patternInColour= TRUE
+[ADD]
+
+
+# ----------------------------
+# inside axes primitives
+
+[NEW]
+mother=DIAGRAM
+[DEFAULT]
+
+#==================================================================
+#
+# Cloud-boxes
+#
+#==================================================================
+
+[NEW]
+type=       CLOUD
+order=      17
+parameter=  FG,0,x,x
+intSpacing= ZERO
+height=     17
+color=      BLACK
+[ADD]
+
+alias=  CL
+[ADD]
+
+alias=  CM
+[ADD]
+
+alias=  CH
+[ADD]
+
+alias=  CC
+height= 30
+[ADD]
+
+
+# ----------------------------
+# Weather symbol
+
+[NEW]
+type=       SYMBOL
+order=      23
+enabled=    TRUE
+parameter=  WW,x,x,x
+intSpacing= 0 
+height=     70
+[ADD]
+
+
+# ----------------------------
+# Title (station name)
+
+[NEW]
+type=   STAT
+order=  25
+height= 40
+font=   HEADER2
+align=  CENTER
+text=   #$
+drawbackground=FALSE
+color=  RED
+[ADD]
+
+
+
+#==================================================================
+#
+# DIAGRAM - FF
+#
+#==================================================================
+
+[NEW]
+mother= DIAGRAM
+type=   XAXIS
+order=  10
+color=  BLACK
+color2= BLACK
+spacing=0
+height= 100
+[ADD]
+
+# ----------------------------
+# inside axes primitives
+
+[NEW]
+mother=       AXES2
+labelSpace=   0
+numTickMajor= 4
+numTickMinor= 1
+[DEFAULT]
+
+# ----------------------------
+# gridline
+
+
+[NEW]
+
+type=           GRIDLINE
+color=          GREY75
+lineWidth=      1
+linePattern=    DOTTED
+patternInColour=TRUE
+useTimes=       3
+
+[ADD]
+
+
+# ----------------------------
+# Timemarkers
+
+[NEW]
+type=           TIMEMARKER
+color=          GREY50
+lineWidth=      2
+linePattern=    FULL
+patternInColour=TRUE
+[ADD]
+
+
+
+# ----------------------------
+# YAXIS (FF)
+
+[NEW]
+type=       YAXIS_STATIC
+yaid=       10
+minValue=   0.0
+minIsSet=   TRUE
+text=       FF [kt]                           .
+axis=       LEFTLEFT
+color=      BLACK
+align=      LEFT
+lineWidth=  1
+
+[ADD]
+
+# ----------------------------
+# Line FF
+
+
+[NEW]
+type=           LINE
+yaid=           10
+parameter=      WVFD,x,x,x
+component=      0
+lineWidth=      1
+linePattern=    FULL
+patternInColour=FALSE
+colorbyvalue=   TRUE
+datalimits=     0,22,41,63,400
+colorlist=      BLACK,ORANGE,RUST_RED,PURPLE
+order=          2
+
+[ADD]
+
+[NEW]
+type=           LINE
+yaid=           10
+parameter=      FF,0,x,OBS,x
+component=      0
+lineWidth=      1
+linePattern=    FULL
+patternInColour=FALSE
+colorbyvalue=   TRUE
+datalimits=     0,22,41,63,400
+colorlist=      BLACK,ORANGE,RUST_RED,PURPLE
+order=          2
+
+[ADD]
+

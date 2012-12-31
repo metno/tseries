@@ -259,6 +259,56 @@ PARAM=WW,x,x,x
 
 [ADD]
 
+# Standard meteogram med FF
+[DIAGRAM]
+NAME=FF-Meteogram
+STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram_ff
+
+[LEGALMODELS]
+MODEL=HIRLAM.12km
+MODEL=HIRLAM.8km
+MODEL=HARMONIE_2.5km
+MODEL=HARMONIE_5.5km
+MODEL=ECMWF
+MODEL=UM.4km
+MODEL=SUBJ
+MODEL=HARMONIE.1km.Trondheim
+MODEL=HARMONIE.1km.Oslofjord
+MODEL=HARMONIE.1km.Vestlandet
+MODEL=WDB
+MODEL=OBS
+
+[MODELINDEPENDENT]
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=WVFD,x,x,x
+PARAM=TT,x,x,x
+PARAM=TT_U,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR1,x,x,x
+PARAM=RR2,x,x,x
+PARAM=RR,x,x,x
+PARAM=FG,x,x,x
+PARAM=CL,x,x,x
+PARAM=CM,x,x,x
+PARAM=CH,x,x,x
+PARAM=CC,x,x,x
+PARAM=TT_O,x,x,x
+PARAM=MSLP_O,x,x,x
+PARAM=DD_O,x,x,x
+PARAM=FF_O,x,x,x
+PARAM=RR_O,x,x,x
+PARAM=TAM,x,x,x
+PARAM=TAXM,x,x,x
+PARAM=TANM,x,x,x
+
+[ADD]
+
+
+
+
 [DIAGRAM]
 NAME=Meteogram m/snø
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.snow_meteogram

@@ -80,12 +80,13 @@ dist_style_DATA = \
 	share/style/style.lameps_rr		 \
 	share/style/style.lameps_plum_rr \
 	share/style/style.eps_rr		 \
-	share/style/style.eps_plum_rr    \	
+	share/style/style.eps_plum_rr            \
 	share/style/style.eps_rr24t2m_noens_op	 \
 	share/style/style.maritim		 \
 	share/style/style.lameps_z500		 \
 	share/style/style.meteogram		 \
+	share/style/style.meteogram_ff           \
 	share/style/style.eps_z500		 \
 	share/style/style.eps_t2m                \
 	share/style/style.proff_edit
-	
+
