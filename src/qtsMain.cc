@@ -288,8 +288,8 @@ void qtsMain::makeConnectButtons()
   connect(targetB, SIGNAL(pressed()), this, SLOT(sendTarget()));
   connect(targetB, SIGNAL(released()), this, SLOT(clearTarget()));
 
-  connect(pluginB, SIGNAL(receivedMessage(miMessage&)),
-      SLOT(processLetter(miMessage&)));
+  connect(pluginB, SIGNAL(receivedMessage(const miMessage&)),
+      SLOT(processLetter(const miMessage&)));
   connect(pluginB, SIGNAL(addressListChanged()), SLOT(processConnect()));
   connect(pluginB, SIGNAL(connectionClosed()), SLOT(cleanConnection()));
 }
@@ -762,7 +762,7 @@ void qtsMain::sendNamePolicy()
 
 // processes incoming miMessages
 
-void qtsMain::processLetter(miMessage& letter)
+void qtsMain::processLetter(const miMessage& letter)
 {
 #ifdef DEBUG
   cerr <<"Command: "<<letter.command<<"  ";
@@ -782,7 +782,7 @@ void qtsMain::processLetter(miMessage& letter)
 #endif
   if (letter.command == qmstrings::removeclient) {
     tsSetup s;
-    if (letter.common.contains(s.server.client.cStr()))
+    if (letter.common.find(s.server.client.cStr()) != string::npos)
       cleanConnection();
   }
 

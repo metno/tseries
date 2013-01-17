@@ -81,7 +81,7 @@ private:
   unsigned int   maxWDBreadTime;
   miutil::miString               oldModel;
   std::map<miutil::miString,Model>    modelMap;
-  std::vector<miutil::miString>       myStations;
+  std::vector<std::string>            myStations;
   miMessage              myTarget;
   std::map<miutil::miString,miutil::miString> myList;
   std::set<miutil::miString>          filter;

@@ -227,7 +227,7 @@ void qtsWork::makeStationList(bool forced)
           continue;
 
     slist << pos.cStr();
-    myStations.push_back( pos  + ":" + itr->second );
+    myStations.push_back(string(pos  + ":" + itr->second));
   }
 
   sidebar->fillStations(slist);

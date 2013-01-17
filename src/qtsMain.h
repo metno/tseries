@@ -175,7 +175,7 @@ private slots:
   void toggleLockHoursToModel(bool);
   void toggleShowGridlines(bool);
 
-  void processLetter(miMessage&);
+  void processLetter(const miMessage&);
   void processConnect();
   void sendTarget();
   void clearTarget();
