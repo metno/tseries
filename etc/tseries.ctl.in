@@ -39,7 +39,7 @@ day=-2
 Etc= $(Sysconfdir)/tseries/@PVERSION@
 Images=$(Prefix)/share/pixmaps/tseries/@PVERSION@/
 Doc=$(Prefix)/share/doc/tseries-@PVERSION@
-Lang=$(Prefix)/share/tseries/lang/@PVERSION@
+Lang=$(Prefix)/share/tseries/@PVERSION@/lang
 
 #------------------
 
