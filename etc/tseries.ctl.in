@@ -167,26 +167,6 @@ DataType=HDF
 Contents=x,x,HARMONIE_2.5km,12
 
 
-# ------------------------------------------
-
-
-
-CollectionName=HARMONIE55Meteogrammer
-PreferredDiagram=Meteogram
-InitialOpen=0
-
-DataFile=$(Rdata)/harmonie55_00.hdf$(day)
-DataDescription=HARMONIE_5.5km
-DataType=HDF
-Contents=x,x,HARMONIE_5.5km,0
-
-DataFile=$(Rdata)/harmonie55_12.hdf$(day)
-DataDescription=HARMONIE_5.5km
-DataType=HDF
-Contents=x,x,HARMONIE_5.5km,12
-
-
-
 # -------------------------------------------------
 
 CollectionName=HIRLAM8Meteogrammer
@@ -406,6 +386,8 @@ Contents=x,x,Nordic_4km_resid,12
 
 # Bølgediagrammer
 
+#-------------------
+# WAM 50
 
 CollectionName=Bølgediagrammer
 PreferredDiagram=Bølgediagram
@@ -432,7 +414,8 @@ DataType=HDF
 Contents=x,x,WAM,18
 
 
-
+# -----------------
+# WAM 10
 
 CollectionName=Bølgediagrammer
 PreferredDiagram=Bølgediagram
@@ -443,12 +426,25 @@ DataDescription=WAM_10km
 DataType=HDF
 Contents=x,x,WAM_10km,0
 
+DataFile=$(Wdata)/wam_10km_quba06.hdf
+DataDescription=WAM_10km
+DataType=HDF
+Contents=x,x,WAM_10km,0
+
+
 DataFile=$(Wdata)/wam_10km_quba12.hdf
 DataDescription=WAM_10km
 DataType=HDF
 Contents=x,x,WAM_10km,12
 
+DataFile=$(Wdata)/wam_10km_quba18.hdf
+DataDescription=WAM_10km
+DataType=HDF
+Contents=x,x,WAM_10km,0
 
+
+#-------------------
+# WAM 4
 
 CollectionName=Bølgediagrammer
 PreferredDiagram=Bølgediagram
@@ -523,7 +519,7 @@ Contents=x,x,SUBJ,06
 [VA:VV:VNN:MA:FOU:PU]
 
 CollectionName=rr24q
-PreferredDiagram=Boksplott-Døgnnedbør
+PreferredDiagram=Boksplott-Dï¿½gnnedbï¿½r
 InitialOpen=0
 
 DataFile=$(Odata)/statprog/rr24_nn+lqr_ec/rr24_nn+lqr_ec.hdf

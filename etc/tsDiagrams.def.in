@@ -18,7 +18,6 @@ PROFF.DEFAULT=proff default
 HIRLAM.12km=Hirlam 12km
 HIRLAM.8km=Hirlam 8km
 HARMONIE_2.5km=Harmonie 2.5km
-HARMONIE_5.5km=Harmonie 5.5km
 UM.4km=UM 4km
 HARMONIE.1km.Trondheim=HARMONIE 1km Trondheim
 HARMONIE.1km.Oslofjord=HARMONIE 1km Oslofjord
@@ -39,7 +38,6 @@ STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.meteogram
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=HARMONIE_2.5km
-MODEL=HARMONIE_5.5km
 MODEL=ECMWF
 MODEL=UM.4km
 MODEL=HARMONIE.1km.Trondheim
@@ -83,7 +81,7 @@ PARAM=TANM,x,x,x
 
 [ADD]
 
-# Batch meteogram med snø
+# Batch meteogram med snï¿½
 [DIAGRAM]
 NAME=Batch_Meteogram
 STYLEFILE=  @prefix@/share/tseries/@PVERSION@/style/style.meteogram_batch
@@ -92,7 +90,6 @@ STYLEFILE=  @prefix@/share/tseries/@PVERSION@/style/style.meteogram_batch
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=HARMONIE_2.5km
-MODEL=HARMONIE_5.5km
 MODEL=ECMWF
 MODEL=UM.4km
 MODEL=HARMONIE.1km.Trondheim
@@ -135,7 +132,6 @@ STYLEFILE=  @prefix@/share/tseries/@PVERSION@/style/style.meteogram_batch
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=HARMONIE_2.5km
-MODEL=HARMONIE_5.5km
 MODEL=ECMWF
 MODEL=UM.4km
 MODEL=HARMONIE.1km.Trondheim
@@ -187,9 +183,9 @@ PARAM=CFD,x,x,x
 
 [ADD]
 
-# Bølgediagram
+# Bï¿½lgediagram
 [DIAGRAM]
-NAME=Bølgediagram
+NAME=Bï¿½lgediagram
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram
 
 [LEGALMODELS]
@@ -213,7 +209,7 @@ PARAM=DDPP,x,x,x
 
 [ADD]
 
-# Standard meteogram med vær
+# Standard meteogram med vï¿½r
 [DIAGRAM]
 NAME=S-Meteogram
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram
@@ -222,7 +218,6 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=HARMONIE_2.5km
-MODEL=HARMONIE_5.5km
 MODEL=ECMWF
 MODEL=UM.4km
 MODEL=SUBJ
@@ -268,7 +263,6 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram_ff
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=HARMONIE_2.5km
-MODEL=HARMONIE_5.5km
 MODEL=ECMWF
 MODEL=UM.4km
 MODEL=SUBJ
@@ -310,7 +304,7 @@ PARAM=TANM,x,x,x
 
 
 [DIAGRAM]
-NAME=Meteogram m/snø
+NAME=Meteogram m/snï¿½
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.snow_meteogram
 
 [LEGALMODELS]
@@ -396,7 +390,7 @@ PARAM=HSDD,x,x,x
 
 [ADD]
 
-# Røykfane T2m Deciler+Ensembler+Operasjonell
+# Rï¿½ykfane T2m Deciler+Ensembler+Operasjonell
 [DIAGRAM]
 NAME=EPS_T2M
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_t2m
@@ -440,7 +434,7 @@ PARAM=RR,x,x,x
 
 [ADD]
 
-# Røkfane RR Deciler+Ensembler+operasjonell
+# Rï¿½kfane RR Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_FANE_RR
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_plum_rr
@@ -460,7 +454,7 @@ PARAM=RR,x,x,x
 [ADD]
 
 
-# Røykfane Z500 Deciler+Ensembler+operasjonell
+# Rï¿½ykfane Z500 Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_Z500
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_z500
@@ -480,7 +474,7 @@ PARAM=Z,x,x,x
 
 [ADD]
 
-# Røykfane RR/T2m Deciler + operasjonell
+# Rï¿½ykfane RR/T2m Deciler + operasjonell
 [DIAGRAM]
 NAME=EPS_RR/T2M
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_rrt2m
@@ -504,7 +498,7 @@ PARAM=EPTT,x,x,x
 
 # 
 [DIAGRAM]
-NAME=Boksplott-Døgnnedbør
+NAME=Boksplott-Dï¿½gnnedbï¿½r
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.rrqgram
 
 [MODELSPECIFIC]
@@ -561,7 +555,7 @@ PARAM=t2mQT,x,x,x,x
 
 
 
-# Røykfane T2m Deciler+Ensembler
+# Rï¿½ykfane T2m Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_T2M
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.lameps_t2m
@@ -586,7 +580,7 @@ PARAM=TT_U,x,x,x
 
 [ADD]
 
-# Røykfane RR Deciler+Ensembler
+# Rï¿½ykfane RR Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_RR
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.lameps_rr
@@ -632,7 +626,7 @@ PARAM=RR,x,x,x
 [ADD]
 
 
-# Røykfane Z500 Deciler+Ensembler
+# Rï¿½ykfane Z500 Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_Z500
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.lameps_z500
