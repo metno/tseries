@@ -131,6 +131,34 @@ Contents=x,x,PROFF.APPROVED,x
 
 []
 
+# -------------------------------------------------
+
+
+CollectionName=AROME-NorwayMeteogrammer
+PreferredDiagram=Meteogram
+InitialOpen=0
+
+DataFile=$(Rdata)/AROME_Norway25_00.hdf$(day)
+DataDescription=AROME-Norway
+DataType=HDF
+Contents=x,x,AROME-Norway,0
+
+DataFile=$(Rdata)/AROME_Norway25_06.hdf$(day)
+DataDescription=AROME-Norway
+DataType=HDF
+Contents=x,x,AROME-Norway,6
+
+DataFile=$(Rdata)/AROME_Norway25_12.hdf$(day)
+DataDescription=AROME-Norway
+DataType=HDF
+Contents=x,x,AROME-Norway,12
+
+
+DataFile=$(Rdata)/AROME_Norway25_18.hdf$(day)
+DataDescription=AROME-Norway
+DataType=HDF
+Contents=x,x,AROME-Norway,18
+
 
 
 # -------------------------------------------------
@@ -296,10 +324,6 @@ DataFile=$(Mdata)/har1_west.hdf
 DataDescription=HARMONIE.1km.Vestlandet
 DataType=HDF
 Contents=x,x,HARMONIE.1km.Vestlandet,x
-
-
-
-
 
 
 
@@ -514,42 +538,8 @@ Contents=x,x,SUBJ,06
 
 []
 
-# -------------------------------------------------
-
-[VA:VV:VNN:MA:FOU:PU]
-
-CollectionName=rr24q
-PreferredDiagram=Boksplott-D�gnnedb�r
-InitialOpen=0
-
-DataFile=$(Odata)/statprog/rr24_nn+lqr_ec/rr24_nn+lqr_ec.hdf
-DataDescription=RR24Q
-DataType=HDF
-Contents=x,x,rr24,x
 
 # -------------------------------------------------
-
-CollectionName=fx10q
-PreferredDiagram=Boksplott-Maks.vind
-InitialOpen=0
-
-DataFile=$(Odata)/statprog/fx10-6h_lqr_ec/fx10-6h_lqr_ec.hdf
-DataDescription=FX10Q
-DataType=HDF
-Contents=x,x,fx10-6h,x
-
-# -------------------------------------------------
-
-CollectionName=t2mq
-PreferredDiagram=Boksplott-Temperatur2m
-InitialOpen=0
-
-DataFile=$(Odata)/statprog/t2m_lqr_ec/t2m_lqr_ec.hdf
-DataDescription=T2mQ
-DataType=HDF
-Contents=x,x,t2m,x
-
-[]
 
 
 <wdb>

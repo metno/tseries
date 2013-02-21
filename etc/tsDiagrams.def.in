@@ -4,6 +4,7 @@ SUBJ=Subjective
 ECMWF=Ecmwf
 Nordic_4km=Nordic 4km
 Nordic_4km_resid=Nordic 4km resid
+AROME-Norway=Arome-Norway (test)
 WAM=Wam 50km
 WAM_10km=Wam 10km
 WAM_4km=Wam 4km
@@ -23,7 +24,6 @@ HARMONIE.1km.Trondheim=HARMONIE 1km Trondheim
 HARMONIE.1km.Oslofjord=HARMONIE 1km Oslofjord
 HARMONIE.1km.Vestlandet=HARMONIE 1km Vestlandet
 rr24=rr24
-fx10-6h=fx10-6h
 t2m=t2m
 WDB=Wdb
 OBS=Obs
@@ -35,6 +35,7 @@ NAME=Meteogram
 STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.meteogram
 
 [LEGALMODELS]
+MODEL=AROME-Norway
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=HARMONIE_2.5km
@@ -81,12 +82,13 @@ PARAM=TANM,x,x,x
 
 [ADD]
 
-# Batch meteogram med snï¿½
+# Batch meteogram med snoe
 [DIAGRAM]
 NAME=Batch_Meteogram
 STYLEFILE=  @prefix@/share/tseries/@PVERSION@/style/style.meteogram_batch
 
 [LEGALMODELS]
+MODEL=AROME-Norway
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=HARMONIE_2.5km
@@ -129,6 +131,7 @@ NAME=Batch_Meteogram_ec
 STYLEFILE=  @prefix@/share/tseries/@PVERSION@/style/style.meteogram_batch
 
 [LEGALMODELS]
+MODEL=AROME-Norway
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=HARMONIE_2.5km
@@ -183,9 +186,9 @@ PARAM=CFD,x,x,x
 
 [ADD]
 
-# Bï¿½lgediagram
+# Boelgediagram
 [DIAGRAM]
-NAME=Bï¿½lgediagram
+NAME=Bølgediagram
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram
 
 [LEGALMODELS]
@@ -209,12 +212,13 @@ PARAM=DDPP,x,x,x
 
 [ADD]
 
-# Standard meteogram med vï¿½r
+# Standard meteogram med vaer
 [DIAGRAM]
 NAME=S-Meteogram
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram
 
 [LEGALMODELS]
+MODEL=AROME-Norway
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=HARMONIE_2.5km
@@ -260,6 +264,7 @@ NAME=FF-Meteogram
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram_ff
 
 [LEGALMODELS]
+MODEL=AROME-Norway
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=HARMONIE_2.5km
@@ -304,10 +309,11 @@ PARAM=TANM,x,x,x
 
 
 [DIAGRAM]
-NAME=Meteogram m/snï¿½
+NAME=Meteogram m/snoe
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.snow_meteogram
 
 [LEGALMODELS]
+MODEL=AROME-Norway
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=UM.4km
@@ -390,7 +396,7 @@ PARAM=HSDD,x,x,x
 
 [ADD]
 
-# Rï¿½ykfane T2m Deciler+Ensembler+Operasjonell
+# Roykfane T2m Deciler+Ensembler+Operasjonell
 [DIAGRAM]
 NAME=EPS_T2M
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_t2m
@@ -434,7 +440,7 @@ PARAM=RR,x,x,x
 
 [ADD]
 
-# Rï¿½kfane RR Deciler+Ensembler+operasjonell
+# Roykfane RR Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_FANE_RR
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_plum_rr
@@ -454,7 +460,7 @@ PARAM=RR,x,x,x
 [ADD]
 
 
-# Rï¿½ykfane Z500 Deciler+Ensembler+operasjonell
+# Roykfane Z500 Deciler+Ensembler+operasjonell
 [DIAGRAM]
 NAME=EPS_Z500
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_z500
@@ -474,7 +480,7 @@ PARAM=Z,x,x,x
 
 [ADD]
 
-# Rï¿½ykfane RR/T2m Deciler + operasjonell
+# Roykfane RR/T2m Deciler + operasjonell
 [DIAGRAM]
 NAME=EPS_RR/T2M
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_rrt2m
@@ -496,66 +502,9 @@ PARAM=EPTT,x,x,x
 [ADD]
 
 
-# 
-[DIAGRAM]
-NAME=Boksplott-Dï¿½gnnedbï¿½r
-STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.rrqgram
-
-[MODELSPECIFIC]
-MODEL=rr24
-PARAM=rr24_PROB,x,x,x,x
-PARAM=rr24_Q5,x,x,x,x
-PARAM=rr24_Q25,x,x,x,x
-PARAM=rr24_Q50,x,x,x,x
-PARAM=rr24_Q75,x,x,x,x
-PARAM=rr24_Q95,x,x,x,x
-PARAM=rr24_EC,x,x,x,x
-PARAM=RRQT,x,x,x,x
-[END]
-
-[ADD]
-
-# 
-[DIAGRAM]
-NAME=Boksplott-Maks.vind
-STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.fxqgram
-
-[MODELSPECIFIC]
-MODEL=fx10-6h
-PARAM=fx10-6h_PROB,x,x,x,x
-PARAM=fx10-6h_Q5,x,x,x,x
-PARAM=fx10-6h_Q25,x,x,x,x
-PARAM=fx10-6h_Q50,x,x,x,x
-PARAM=fx10-6h_Q75,x,x,x,x
-PARAM=fx10-6h_Q95,x,x,x,x
-PARAM=fx10-6h_EC,x,x,x,x
-PARAM=FXQT-6h,x,x,x,x
-[END]
-
-[ADD]
-
-# 
-[DIAGRAM]
-NAME=Boksplott-Temperatur2m
-STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.t2mqgram
-
-[MODELSPECIFIC]
-MODEL=t2m
-PARAM=t2m_PROB,x,x,x,x
-PARAM=t2m_Q5,x,x,x,x
-PARAM=t2m_Q25,x,x,x,x
-PARAM=t2m_Q50,x,x,x,x
-PARAM=t2m_Q75,x,x,x,x
-PARAM=t2m_Q95,x,x,x,x
-PARAM=t2m_EC,x,x,x,x
-PARAM=t2mQT,x,x,x,x
-[END]
-
-[ADD]
 
 
-
-# Rï¿½ykfane T2m Deciler+Ensembler
+# Roykfane T2m Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_T2M
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.lameps_t2m
@@ -580,7 +529,7 @@ PARAM=TT_U,x,x,x
 
 [ADD]
 
-# Rï¿½ykfane RR Deciler+Ensembler
+# Roykfane RR Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_RR
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.lameps_rr
@@ -626,7 +575,7 @@ PARAM=RR,x,x,x
 [ADD]
 
 
-# Rï¿½ykfane Z500 Deciler+Ensembler
+# Roykfane Z500 Deciler+Ensembler
 [DIAGRAM]
 NAME=LAMEPS_Z500
 STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.lameps_z500
