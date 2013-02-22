@@ -7,7 +7,7 @@ Sysconfdir= @sysconfdir@
 
 Odata=/opdata_local
 
-[VA:FOU]
+[VA:FOU:1:2]
 Odata=/opdata
 []
 
