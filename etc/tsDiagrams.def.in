@@ -5,6 +5,7 @@ ECMWF=Ecmwf
 Nordic_4km=Nordic 4km
 Nordic_4km_resid=Nordic 4km resid
 AROME-Norway=Arome-Norway (test)
+HARMONIE_2.5km=Arome-Arctic
 WAM=Wam 50km
 WAM_10km=Wam 10km
 WAM_4km=Wam 4km
@@ -18,7 +19,6 @@ PROFF.RAW=proff raw
 PROFF.DEFAULT=proff default
 HIRLAM.12km=Hirlam 12km
 HIRLAM.8km=Hirlam 8km
-HARMONIE_2.5km=Harmonie 2.5km
 UM.4km=UM 4km
 HARMONIE.1km.Trondheim=HARMONIE 1km Trondheim
 HARMONIE.1km.Oslofjord=HARMONIE 1km Oslofjord
@@ -36,9 +36,9 @@ STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=AROME-Norway
+MODEL=HARMONIE_2.5km
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HARMONIE_2.5km
 MODEL=ECMWF
 MODEL=UM.4km
 MODEL=HARMONIE.1km.Trondheim
@@ -89,9 +89,9 @@ STYLEFILE=  @prefix@/share/tseries/@PVERSION@/style/style.meteogram_batch
 
 [LEGALMODELS]
 MODEL=AROME-Norway
+MODEL=HARMONIE_2.5km
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HARMONIE_2.5km
 MODEL=ECMWF
 MODEL=UM.4km
 MODEL=HARMONIE.1km.Trondheim
@@ -132,9 +132,9 @@ STYLEFILE=  @prefix@/share/tseries/@PVERSION@/style/style.meteogram_batch
 
 [LEGALMODELS]
 MODEL=AROME-Norway
+MODEL=HARMONIE_2.5km
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HARMONIE_2.5km
 MODEL=ECMWF
 MODEL=UM.4km
 MODEL=HARMONIE.1km.Trondheim
@@ -219,9 +219,9 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=AROME-Norway
+MODEL=HARMONIE_2.5km
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HARMONIE_2.5km
 MODEL=ECMWF
 MODEL=UM.4km
 MODEL=SUBJ
@@ -265,9 +265,9 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram_ff
 
 [LEGALMODELS]
 MODEL=AROME-Norway
+MODEL=HARMONIE_2.5km
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
-MODEL=HARMONIE_2.5km
 MODEL=ECMWF
 MODEL=UM.4km
 MODEL=SUBJ
@@ -314,6 +314,7 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.snow_meteogram
 
 [LEGALMODELS]
 MODEL=AROME-Norway
+MODEL=HARMONIE_2.5km
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=UM.4km

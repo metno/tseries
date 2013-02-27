@@ -160,27 +160,9 @@ DataType=HDF
 Contents=x,x,AROME-Norway,18
 
 
-
-# -------------------------------------------------
-
-
-CollectionName=HARMONIE25Meteogrammer
-PreferredDiagram=Meteogram
-InitialOpen=0
-
-DataFile=$(Rdata)/harmonie25_00.hdf$(day)
-DataDescription=HARMONIE_2.5km
-DataType=HDF
-Contents=x,x,HARMONIE_2.5km,0
-
-DataFile=$(Rdata)/harmonie25_12.hdf$(day)
-DataDescription=HARMONIE_2.5km
-DataType=HDF
-Contents=x,x,HARMONIE_2.5km,12
-
 # ------------------------------------------
 
-CollectionName=HARMONIE25SvalbardMeteogrammer
+CollectionName=AROME-ArcticMeteogrammer
 PreferredDiagram=Meteogram
 InitialOpe=0
 
