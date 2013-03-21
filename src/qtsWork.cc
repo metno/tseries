@@ -757,7 +757,7 @@ void qtsWork::changeWdbModel(const QString& newmodel)
 
   set<miTime>::reverse_iterator itr = wdbtimes.rbegin();
   for(;itr!=wdbtimes.rend();itr++)
-    newruns << itr->isoTime().cStr();
+    newruns << itr->isoTime().c_str();
   sidebar->setWdbRuns(newruns);
 
 

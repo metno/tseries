@@ -202,7 +202,7 @@ public:
   // get list of indices for files which contain data for a
   // specific model and run. Returns number of files found
   int findModel(const Model& mid, const Run& rid, int* idx, int max);
-  vector<miutil::miString> findRuns(const Model& mid);
+  std::vector<miutil::miString> findRuns(const Model& mid);
 
   void setVerbose(bool v){verbose= v;}
   bool has_opened_streams() {
@@ -214,7 +214,7 @@ public:
   // wdb --------------------
   bool has_wdb_stream() const { return wdbStreamIsOpen;}
   std::set<std::string> getWdbProviders();
-  std::set<miutil::miTime> getWdbReferenceTimes(string provider);
+  std::set<miutil::miTime> getWdbReferenceTimes(std::string provider);
   std::vector<std::string> getWdbParameterNames() const { return wdbStream->getWdbParameterNames(); }
   pets::WdbStream::BoundaryBox getWdbGeometry();
   pets::WdbStream*  getWdbStream() { return wdbStream;}

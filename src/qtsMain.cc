@@ -29,7 +29,6 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 #include "qtsMain.h"
-#include <iostream>
 
 #include <QTimerEvent>
 #include <QPixmap>
@@ -45,6 +44,10 @@
 #include <qUtilities/QLetterCommands.h>
 #include <puTools/ttycols.h>
 #include <puTools/miDate.h>
+
+#include <iomanip>
+#include <iostream>
+#include <map>
 
 #include "tseries.xpm"
 

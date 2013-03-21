@@ -35,21 +35,18 @@
 #include "tsRequest.h"
 #include "tsDatafileColl.h"
 #include "tsSession.h"
-
-#include <map>
-#include <vector>
-#include <puTools/miTime.h>
+#include "tsSetup.h"
+#include "diPrintOptions.h"
 
 #include <pets2/ptGlobals.h>
 #include <pets2/ptDiagram.h>
-#include <tsData/ptWeatherParameter.h>
 #include <pets2/ptPlotElement.h>
 #include <pets2/ptEditLineElement.h>
-#include "tsSetup.h"
+#include <puTools/miTime.h>
+#include <tsData/ptWeatherParameter.h>
 
-
-//#include <GLP.h>
-#include "diPrintOptions.h"
+#include <map>
+#include <vector>
 
 class tsDrawArea {
 
@@ -81,7 +78,7 @@ private:
   bool lengthChanged;
   miutil::miTime observationStartTime;
 
-  map<miutil::miString,miutil::miTime> timemarks;
+  std::map<miutil::miString,miutil::miTime> timemarks;
   void useTimemarks();
   bool prepareData();
   bool prepareDiagram();

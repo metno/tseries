@@ -102,7 +102,7 @@ private:
 
 
   // languages
-  map<int,miutil::miString> langID;
+  std::map<int,miutil::miString> langID;
 
   // printerdefinitions
   printerManager pman;

@@ -30,9 +30,10 @@
 */
 #include "diImageIO.h"
 #include <png.h>
-#include <map>
-#include <fstream>
 
+#include <iostream>
+#include <fstream>
+#include <map>
 
 using namespace miutil;
 using namespace std;

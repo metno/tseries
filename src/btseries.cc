@@ -31,9 +31,6 @@
 #include <QApplication>
 #include <QGLPixelBuffer>
 
-#include <fstream>
-#include <iostream>
-
 #include <puTools/miString.h>
 #include <puTools/miTime.h>
 #include <glob.h>
@@ -45,6 +42,12 @@
 
 #include "config.h"
 
+#include <fstream>
+#include <iostream>
+
+using std::cout;
+using std::endl;
+using std::cerr;
 
 const miutil::miString version_string=VERSION;
 
@@ -87,7 +90,7 @@ struct keyvalue {
 void cleanstr(miutil::miString& s)
 {
   std::string::size_type p;
-  if ((p = s.find("#")) != string::npos)
+  if ((p = s.find("#")) != std::string::npos)
     s.erase(p);
 
   s.remove('\n');
@@ -621,7 +624,7 @@ int main(int argc, char** argv)
   data.setVerbose(verbose);
 
   // open batchinput
-  ifstream bfile(batchinput.cStr());
+  std::ifstream bfile(batchinput.cStr());
   if (!bfile) {
     cerr << "ERROR cannot open inputfile " << batchinput << endl;
     return 1;
@@ -693,7 +696,7 @@ int main(int argc, char** argv)
    - strip lines for comments and left/right whitespace
    - merge lines (ending with \)
    */
-  while (getline(bfile, s)) {
+  while (std::getline(bfile, s)) {
     linenum++;
     cleanstr(s);
     n = s.length();

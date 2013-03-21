@@ -34,16 +34,14 @@
 #include "tsConfigure.h"
 #include "qtsMain.h"
 
-#include <fstream>
-
 #include <puTools/miCommandLine.h>
 #include <puTools/miTime.h>
 #include <puTools/miString.h>
 
-
-
 #include <QTranslator>
 #include <QApplication>
+
+#include <fstream>
 
 using namespace std;
 using namespace miutil;
@@ -118,7 +116,7 @@ int main(int argc, char **argv)
   QTranslator  qt( 0 );
 
   miTime defTime;
-  defTime.setDefaultLanguage(lang);
+  defTime.setDefaultLanguage(lang.c_str());
 
   if(setup.gui.style.exists())
     a.setStyle(setup.gui.style.cStr());

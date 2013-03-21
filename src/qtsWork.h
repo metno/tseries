@@ -152,7 +152,7 @@ public slots:
   void changeRun(const QString&);
   void updateStreams();
   void filterToggled(bool);
-  void newFilter(const set<miutil::miString>&);
+  void newFilter(const std::set<miutil::miString>&);
   void latlonInDecimalToggled(bool);
   void refreshFinished();
   //void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(true);}
