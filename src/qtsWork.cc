@@ -505,7 +505,7 @@ void qtsWork::restoreLog()
   sidebar->set(st,StationTab::CMSTYLE);
   changeStyle(st);
 
-  map<miString,miString>::iterator itr = modelMap.begin();
+  map<miString,std::string>::const_iterator itr = modelMap.begin();
   for(;itr!=modelMap.end();itr++)
     if(itr->second == mo) {
       sidebar->set(itr->first,StationTab::CMMODEL);

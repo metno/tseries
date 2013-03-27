@@ -105,7 +105,7 @@ int DatafileColl::addStream(const miString name, const miString desc,
     datastreams[n].streamOpen = false;
     datastreams[n].mtime = 0;
 
-    vector<miString> sp = sparid.split(':');
+    const std::vector<std::string> sp = miutil::split(sparid, ":");
     int m = sp.size();
     ParId parid;
     if (m > MAXMODELSINSTREAM
@@ -183,11 +183,14 @@ bool DatafileColl::openStream(const int idx)
     } else {
       // get model list from file
       int numm = 0;
-      while (numm < MAXMODELSINSTREAM
-          && datastreams[idx].dataStream->getModelSeq(numm,
+      while (numm < MAXMODELSINSTREAM) {
+          std::vector<std::string> dt(datastreams[idx].txtList[numm].begin(), datastreams[idx].txtList[numm].end());
+          if (not datastreams[idx].dataStream->getModelSeq(numm,
               datastreams[idx].modelList[numm], datastreams[idx].runList[numm],
-              datastreams[idx].idList[numm], datastreams[idx].txtList[numm]))
-        numm++;
+              datastreams[idx].idList[numm], dt))
+              break;
+          numm++;
+      }
       datastreams[idx].numModels = numm;
 #ifdef DEBUG
       cout << "FILECOLLECTION: numModels:"<<datastreams[idx].numModels<<endl;
@@ -229,7 +232,7 @@ void DatafileColl::closeStreams()
 bool DatafileColl::_isafile(const miString& name)
 {
   FILE *fp;
-  if ((fp = fopen(name.cStr(), "r"))) {
+  if ((fp = fopen(name.c_str(), "r"))) {
     fclose(fp);
     return true;
   } else
@@ -249,7 +252,7 @@ unsigned long DatafileColl::_modtime(miString& fname)
 
 void DatafileColl::_filestat(miString& fname, struct stat& filestat)
 {
-  stat(fname.cStr(), &filestat);
+  stat(fname.c_str(), &filestat);
 }
 
 bool DatafileColl::check(vector<int>& idx)
