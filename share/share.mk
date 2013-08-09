@@ -78,7 +78,7 @@ dist_style_DATA = \
 	share/style/style.meteogram_batch	 \
 	share/style/style.snow_meteogram	 \
 	share/style/style.lameps_rr		 \
-	share/style/style.lameps_plum_rr \
+	share/style/style.lameps_plum_rr         \
 	share/style/style.eps_rr		 \
 	share/style/style.eps_plum_rr            \
 	share/style/style.eps_rr24t2m_noens_op	 \
@@ -88,5 +88,9 @@ dist_style_DATA = \
 	share/style/style.meteogram_ff           \
 	share/style/style.eps_z500		 \
 	share/style/style.eps_t2m                \
-	share/style/style.proff_edit
+	share/style/style.proff_edit             \
+	share/style/style.glameps_z500           \
+	share/style/style.glameps_t2m            \
+	share/style/style.glameps_rr             \
+	share/style/style.glameps_ff
 
