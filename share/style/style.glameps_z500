@@ -1,4 +1,4 @@
-# npl t2m EPSdiagram-style
+# RR GLAMEPS diagram-style
 
 # global settings
 
@@ -17,7 +17,6 @@ plotAll = false
 enabled=true
 
 color = RED
-#color2 = GREY95
 color2 = YELLOW
 font = NORMAL
 linePattern = FULL
@@ -42,7 +41,6 @@ yaid = 0
 centerVector = false
 numTickMajor = 10
 numTickMinor = 2
-#labelSpace = 220
 labelSpace = 100
 quantized=false
 quantum=1.0
@@ -153,7 +151,7 @@ useTimes=3
 [ADD]
 
 # ----------------------------
-# Yaxis (T2m)
+# Yaxis (Z500)
 [NEW]
 type=YAXIS_STATIC
 yaid=0
@@ -167,7 +165,7 @@ minRange = 5.0
 minIsSet=FALSE
 #maxValue=360.0
 maxIsSet=FALSE
-text = T2m [°C]
+text = Z500 [m]
 align=LEFT
 axis = LEFTLEFT
 color=BLACK
@@ -180,122 +178,64 @@ patternInColour=TRUE
 fittopage=TRUE
 [ADD]
 
-# line - primitive TT
-[NEW]
-type=LINE
-yaid=0
-order=10
-parameter=TT,0,ECMWF_U,x
-color=BLUE
-text=EC-operasjonell
-lineWidth=4
-linePattern=DASHED
-patternInColour=TRUE
-[ADD]
+# -----------------------------------------------
 
-
-
-
-
-# line - primitive TT, EPS control forecast
-[NEW]
-type=LINE
-yaid=0
-order=6
-parameter=EPTC,x,EPS,x
-color=DARK_MAGENTA
-text=Kontroll
-lineWidth=3
-linePattern=FULL
-patternInColour=FALSE
-[ADD]
-
-# line - primitive TT, EPS ensemble mean
-[NEW]
-type=LINE
-yaid=0
-order=7
-parameter=EPTM,x,EPS,x
-color=BLACK
-text=Ensemble middel
-lineWidth=4
-linePattern=DASHED
-patternInColour=TRUE
-[ADD]
-
-# line - primitive TT, EPS ensemble median
-[NEW]
-type=LINE
-yaid=0
-order=7
-parameter=EPTE,x,EPS,x
-color=BLACK
-text=Ensemble median
-lineWidth=4
-linePattern=DASHED
-patternInColour=TRUE
-[ADD]
-
-# line - primitive TT, EPS 10 decil
-[NEW]
-type=LINE
-yaid=0
-order=5
-parameter=EPTD,10,EPS,x
-color=BROWN
-color2=DARK_GREEN
-text=P10
-lineWidth=3
-linePattern=FULL
-patternInColour=FALSE
-#marker=M_RECTANGLE
-#size=4
-[ADD]
-
-# line - primitive TT, EPS 50 decil
-parameter=EPTD,50,EPS,x
-order=4
-text=P50
-color=BLACK
-color2=YELLOW
-#marker=M_TRIANGLE
-#size=6
-[ADD]
-
-# line - primitive TT, EPS 90 decil
-parameter=EPTD,90,EPS,x
-order=3
-color=ORANGE
-color2=DARK_BLUE
-text=P90
-#marker=M_DIAMOND
-[ADD]
-
-# line - primitive EPS TT
+# line - primitive ALADEPS Z500
 [NEW]
 type=MULTI_LINE
 yaid=0
 order=1
-parameter=EPTT,x,x,x
-color=GREY50
-text=EC-ensemble
+parameter=EPZ,x,ALADEPS,x
+color=RUST_RED
+text=ALADEPS
 lineWidth=1
 linePattern=FULL
 patternInColour=FALSE
 [ADD]
 
 
-# line - observation TT
+# line - primitive HIREPS_K Z500
 [NEW]
-type=LINE
+type=MULTI_LINE
 yaid=0
-parameter=TT_O,0,x,OBS
-color=RED
-text=T2m obs [°C]
-lineWidth=4
-linePattern=DOTTED
-patternInColour=TRUE
+order=1
+parameter=EPZ,x,HIREPS_K,x
+color=DARK_BLUE
+text=HIREPS_K
+lineWidth=1
+linePattern=FULL
+patternInColour=FALSE
 [ADD]
+
+
+# line - primitive HIREPS_S Z500
+[NEW]
+type=MULTI_LINE
+yaid=0
+order=1
+parameter=EPZ,x,HIREPS_S,x
+color=DARK_MAGENTA
+text=HIREPS_S
+lineWidth=1
+linePattern=FULL
+patternInColour=FALSE
+[ADD]
+
+
+# line - primitive ECEPS Z500
+[NEW]
+type=MULTI_LINE
+yaid=0
+order=1
+parameter=EPZ,x,ECEPS,x
+color=DARK_GREEN
+text=ECEPS
+lineWidth=1
+linePattern=FULL
+patternInColour=FALSE
+[ADD]
+
+# --------------
 
 
 
@@ -311,17 +251,6 @@ height=30
 font=HEADER2
 align=CENTER
 color=DNMI_BLUE
-text=#$ temperatur kl. 12 UTC
+text=#$ 
 [ADD]
-
-[NEW]
-type=LOGO
-color=BLACK
-align=BELOW
-order=30
-height=1
-trueheight=130
-position=910
-font=NORMAL
-#[ADD]
 
