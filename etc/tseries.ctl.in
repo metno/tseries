@@ -1,7 +1,8 @@
 # setup file for pu's time-series viewer
 
 lang=no
-Prefix=@prefix@
+Prefix= @prefix@
+prefix= @prefix@
 Sysconfdir= @sysconfdir@
 
 
@@ -330,24 +331,37 @@ Contents=x,x,EPS,00
 
 # -------------------------------------------------
 
-[VA:VV:VNN:MA:FOU:PU]
 
-CollectionName=LAMEPS-produkter
-PreferredDiagram=LAMEPS_T2M
+CollectionName=GLAMEPS-produkter
+PreferredDiagram=GLAMEPS_TT
 InitialOpen=0
 
-DataFile=$(Mdata)/lameps18.hdf$(day)
-DataDescription=LAMEPS-data
+DataFile=$(Odata)/glameps/aladeps.hdf
+DataDescription=ALADEPS
 DataType=HDF
-Contents=x,x,LAMEPS,18
+Contents=x,x,ALADEPS,x
 
-
-DataFile=$(Mdata)/lameps06.hdf$(day)
-DataDescription=LAMEPS-data
+DataFile=$(Odata)/glameps/hireps_s.hdf
+DataDescription=HIREPS_S
 DataType=HDF
-Contents=x,x,LAMEPS,06
+Contents=x,x,HIREPS_S,x
 
-[]
+
+DataFile=$(Odata)/glameps/hireps_k.hdf
+DataDescription=HIREPS_K
+DataType=HDF
+Contents=x,x,HIREPS_K,x
+
+
+DataFile=$(Odata)/glameps/eceps.hdf
+DataDescription=ECEPS
+DataType=HDF
+Contents=x,x,ECEPS,x
+
+
+
+
+
 
 # -------------------------------------------------
 

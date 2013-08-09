@@ -11,7 +11,6 @@ WAM_10km=Wam 10km
 WAM_4km=Wam 4km
 ECMWF_WAM=ECMWF_WAM
 EPS=EPS
-LAMEPS=LAMEPS
 HIRLAM_U=Hirlam ukorr.
 ECMWF_U=Ecmwf ukorr.
 proff.approved= proff approved
@@ -27,7 +26,10 @@ rr24=rr24
 t2m=t2m
 WDB=Wdb
 OBS=Obs
-
+HIREPS_S=Hireps S
+HIREPS_K=Hireps K
+ALADEPS=Aladeps
+ECEPS=Ec eps
 
 # Standard meteogram
 [DIAGRAM]
@@ -44,7 +46,6 @@ MODEL=UM.4km
 MODEL=HARMONIE.1km.Trondheim
 MODEL=HARMONIE.1km.Oslofjord
 MODEL=HARMONIE.1km.Vestlandet
-MODEL=WDB
 MODEL=OBS
 
 [MODELINDEPENDENT]
@@ -274,7 +275,6 @@ MODEL=SUBJ
 MODEL=HARMONIE.1km.Trondheim
 MODEL=HARMONIE.1km.Oslofjord
 MODEL=HARMONIE.1km.Vestlandet
-MODEL=WDB
 MODEL=OBS
 
 [MODELINDEPENDENT]
@@ -304,8 +304,6 @@ PARAM=TAXM,x,x,x
 PARAM=TANM,x,x,x
 
 [ADD]
-
-
 
 
 [DIAGRAM]
@@ -481,149 +479,6 @@ PARAM=Z,x,x,x
 
 [ADD]
 
-# Roykfane RR/T2m Deciler + operasjonell
-[DIAGRAM]
-NAME=EPS_RR/T2M
-STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.eps_rrt2m
-
-[MODELSPECIFIC]
-MODEL=ECMWF_U
-PARAM=RR,x,x,x
-PARAM=TT,x,x,x
-[END]
-
-[MODELSPECIFIC]
-MODEL=EPS
-PARAM=EPRD,x,x,x
-PARAM=EPRR,x,x,x
-PARAM=EPTD,x,x,x
-PARAM=EPTT,x,x,x
-[END]
-
-[ADD]
-
-
-
-
-# Roykfane T2m Deciler+Ensembler
-[DIAGRAM]
-NAME=LAMEPS_T2M
-STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.lameps_t2m
-[MODELSPECIFIC]
-MODEL=LAMEPS
-PARAM=EPTD,x,x,x
-PARAM=EPTT,x,x,x
-[END]
-
-[MODELSPECIFIC]
-MODEL=OBS
-PARAM=TT_O,x,x,x
-[END]
-
-
-[MODELSPECIFIC]
-MODEL=HIRLAM.12km
-PARAM=TT,x,x,x
-PARAM=TT_U,x,x,x
-[END]
-
-
-[ADD]
-
-# Roykfane RR Deciler+Ensembler
-[DIAGRAM]
-NAME=LAMEPS_RR
-STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.lameps_rr
-
-[MODELSPECIFIC]
-MODEL=LAMEPS
-PARAM=EPRD,x,x,x
-PARAM=EPRR,x,x,x
-[END]
-
-[MODELSPECIFIC]
-MODEL=OBS
-PARAM=RR_O,x,x,x
-[END]
-
-[MODELSPECIFIC]
-MODEL=HIRLAM.12km
-PARAM=RR,x,x,x
-[END]
-
-
-
-[ADD]
-
-
-[DIAGRAM]
-NAME=LAMEPS_FANE_RR
-STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.lameps_plum_rr
-
-[MODELSPECIFIC]
-MODEL=LAMEPS
-PARAM=EPRD,x,x,x
-PARAM=EPRR,x,x,x
-[END]
-
-[MODELSPECIFIC]
-MODEL=HIRLAM.12km
-PARAM=RR,x,x,x
-[END]
-
-
-
-[ADD]
-
-
-# Roykfane Z500 Deciler+Ensembler
-[DIAGRAM]
-NAME=LAMEPS_Z500
-STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.lameps_z500
-
-[MODELSPECIFIC]
-MODEL=LAMEPS
-PARAM=EPZD,x,x,x
-PARAM=EPZ,x,x,x
-PARAM=EPFC,x,x,x
-[END]
-
-
-[ADD]
-
-
-[DIAGRAM]
-NAME=LAMEPS_FF
-STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.lameps_ff
-
-
-[MODELSPECIFIC]
-MODEL=LAMEPS
-PARAM=EPFD,x,x,x
-PARAM=EPFF,x,x,x
-[END]
-
-
-
-#[MODELSPECIFIC]
-#MODEL=OBS
-#FF,0,x,OBS,x=FF 
-#[END]
-
-
-[MODELSPECIFIC]
-MODEL=HIRLAM.12km
-PARAM=UU,x,x,x
-PARAM=VV,x,x,x
-PARAM=FF,x,x,x
-PARAM=FFMS,x,x,x
-[END]
-
-[ADD]
-
-
-
-
 
 # Offshore
 [DIAGRAM]
@@ -650,10 +505,162 @@ PARAM=CWW,x,x,x
 [END]
 [ADD]
 
+# GLAMEPS -------------------
+
+
+
+
+
+# GLAMEPS Roykfane TT Ensembler
+[DIAGRAM]
+NAME=Glameps t2m
+STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.glameps_t2m
+
+[LEGALMODELS]
+MODEL=ECEPS
+MODEL=OBS
+[END]
+
+[MODELINDEPENDENT]
+PARAM=EPTT,x,ECEPS,x
+PARAM=TT_O,x,x,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=ALADEPS
+PARAM=EPTT,x,ALADEPS,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIREPS_K
+PARAM=EPTT,x,HIREPS_K,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIREPS_S
+PARAM=EPTT,x,HIREPS_S,x
+[END]
+
+[ADD]
+
+
+
+# GLAMEPS Roykfane RR Ensembler
+[DIAGRAM]
+NAME=Glameps rr
+STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.glameps_rr
+
+[LEGALMODELS]
+MODEL=ECEPS
+MODEL=OBS
+[END]
+
+[MODELINDEPENDENT]
+PARAM=EPRR,x,ECEPS,x
+PARAM=RR_O,x,x,x
+[END]
+
+
+[MODELSPECIFIC]
+MODEL=ALADEPS
+PARAM=EPRR,x,ALADEPS,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIREPS_K
+PARAM=EPRR,x,HIREPS_K,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIREPS_S
+PARAM=EPRR,x,HIREPS_S,x
+[END]
+
+[ADD]
+
+
+
+# GLAMEPS Roykfane FF Ensembler
+[DIAGRAM]
+NAME=Glameps ff
+STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.glameps_ff
+
+[LEGALMODELS]
+MODEL=ECEPS
+[END]
+
+[MODELINDEPENDENT]
+PARAM=EPFF,x,ECEPS,x
+[END]
+
+
+[MODELSPECIFIC]
+MODEL=ALADEPS
+PARAM=EPFF,x,ALADEPS,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIREPS_K
+PARAM=EPFF,x,HIREPS_K,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIREPS_S
+PARAM=EPFF,x,HIREPS_S,x
+[END]
+
+[ADD]
+
+
+# GLAMEPS Roykfane Z500 Ensembler
+[DIAGRAM]
+NAME=Glameps Z500
+STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.glameps_z500
+
+[LEGALMODELS]
+MODEL=ECEPS
+[END]
+
+[MODELINDEPENDENT]
+PARAM=EPZ,x,ECEPS,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=ALADEPS
+PARAM=EPZ,x,ALADEPS,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIREPS_K
+PARAM=EPZ,x,HIREPS_K,x
+[END]
+
+[MODELSPECIFIC]
+MODEL=HIREPS_S
+PARAM=EPZ,x,HIREPS_S,x
+[END]
+
+[ADD]
+
+
+
+
+
+
+
+
+######################
+#                    #
+#                    #
+#       W D B        #
+#                    #
+#                    #
+######################
+
 
 # Proff analysis
 
-[DIAGRAM]
+[WDB::DIAGRAM]
 NAME=Proff Meteogrammer
 STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.meteogram
 
@@ -677,7 +684,7 @@ PARAM=WVFD,x,x,x
 [ADD]
 
 
-[DIAGRAM]
+[WDB::DIAGRAM]
 NAME=Proff Kombinert
 STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.proff_combi
 [LEGALMODELS]
@@ -709,7 +716,7 @@ PARAM=WVFD,x,x,x,RAW
 [END]
 [ADD]
 
-[DIAGRAM]
+[WDB::DIAGRAM]
 NAME=Proff redigering
 STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.proff_edit
 [LEGALMODELS]
@@ -740,11 +747,84 @@ PARAM=WW,x,x,x,RAW
 PARAM=WVFD,x,x,x,RAW
 [END]
 
+[ADD]
+
+
+# Standard meteogram wdb
+[WDB::DIAGRAM]
+NAME=Meteogram
+STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.meteogram
+
+[LEGALMODELS]
+MODEL=WDB
+
+[MODELINDEPENDENT]
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=WVFD,x,x,x
+PARAM=TT,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR,x,x,x
+PARAM=CL,x,x,x
+PARAM=CM,x,x,x
+PARAM=CH,x,x,x
+PARAM=CC,x,x,x
+
+
+[ADD]
+
+
+# Standard meteogram wdb
+[WDB::DIAGRAM]
+NAME=FF-Meteogram
+STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram_ff
+
+[LEGALMODELS]
+MODEL=WDB
+
+[MODELINDEPENDENT]
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=WVFD,x,x,x
+PARAM=TT,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR,x,x,x
+PARAM=CL,x,x,x
+PARAM=CM,x,x,x
+PARAM=CH,x,x,x
+PARAM=CC,x,x,x
+
+
+[ADD]
 
 
 
+# Standard meteogram med vær wdb
+[WDB::DIAGRAM]
+NAME=S-Meteogram
+STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram
 
+[LEGALMODELS]
+MODEL=WDB
 
+[MODELINDEPENDENT]
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=WVFD,x,x,x
+PARAM=TT,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR,x,x,x
+PARAM=CL,x,x,x
+PARAM=CM,x,x,x
+PARAM=CH,x,x,x
+PARAM=CC,x,x,x
+PARAM=WW,x,x,x
 
 [ADD]
 
