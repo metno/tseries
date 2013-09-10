@@ -317,7 +317,7 @@ void qtsMain::raster()
   miString format = "PNG";
   miString fname = "./" + work->file("png");
 
-  QString fpath = fname.cStr();
+  QString fpath = fname.c_str();
   QString fcaption = "save file dialog";
   QString fpattern = "Pictures (*.png *.xpm *.bmp *.eps);;All (*.*)";
 
@@ -345,7 +345,7 @@ void qtsMain::raster()
   }
 
   QImage img = work->Show()->grabFrameBuffer(true);
-  img.save(fname.cStr(), format.cStr(), quality);
+  img.save(fname.c_str(), format.c_str(), quality);
 }
 
 void qtsMain::print()
@@ -365,11 +365,11 @@ void qtsMain::print()
   QString ofn = printer->outputFileName();
 
   if (ofn.isNull()) {
-    QFileInfo p(fname.cStr());
+    QFileInfo p(fname.c_str());
     printer->setOutputFileName(p.absoluteFilePath());
   } else {
     QFileInfo p(ofn);
-    printer->setOutputFileName(p.path() + "/" + fname.cStr());
+    printer->setOutputFileName(p.path() + "/" + fname.c_str());
   }
 
   printer->setOutputFormat(QPrinter::NativeFormat);
@@ -485,7 +485,7 @@ void qtsMain::restoreLog()
 
   if (config.get("FONT", f)) {
     QFont font;
-    if (font.fromString(f.cStr()))
+    if (font.fromString(f.c_str()))
       qApp->setFont(font);
   }
 
@@ -715,9 +715,9 @@ void qtsMain::processConnect()
     cout << ttc::color(ttc::Blue) << "< CONNECTING TO: " << s.server.client
         << " > " << ttc::reset << endl;
 
-    QImage sImage(s.files.std_image.cStr());
-    QImage fImage(s.files.fin_image.cStr());
-    QImage iImage(s.files.icon_image.cStr());
+    QImage sImage(s.files.std_image.c_str());
+    QImage fImage(s.files.fin_image.c_str());
+    QImage iImage(s.files.icon_image.c_str());
 
     sendImage(IMG_STD_TSERIES, sImage);
     sendImage(IMG_FIN_TSERIES, fImage);
@@ -767,7 +767,7 @@ void qtsMain::sendNamePolicy()
 
 void qtsMain::processLetter(const miMessage& letter)
 {
-#ifdef DEBUG
+//#ifdef DEBUG
   cerr <<"Command: "<<letter.command<<"  ";
   cerr <<endl;
   cerr <<" Description: "<<letter.description<<"  ";
@@ -782,10 +782,10 @@ void qtsMain::processLetter(const miMessage& letter)
   cerr <<" From: "<<letter.from<<endl;
   cerr <<"To: "<<letter.to<<endl;
 
-#endif
+//#endif
   if (letter.command == qmstrings::removeclient) {
     tsSetup s;
-    if (letter.common.find(s.server.client.cStr()) != string::npos)
+    if (letter.common.find(s.server.client.c_str()) != string::npos)
       cleanConnection();
   }
 
@@ -820,8 +820,8 @@ void qtsMain::initHelp()
   miString helpfile = s.path.doc + "/" + lang + "_" + s.doc.mainSource;
   miString newsfile = s.path.doc + "/" + lang + "_" + s.doc.newsSource;
 
-  ifstream testhelpfile(helpfile.cStr());
-  ifstream testnewsfile(newsfile.cStr());
+  ifstream testhelpfile(helpfile.c_str());
+  ifstream testnewsfile(newsfile.c_str());
 
   if (testhelpfile) {
     helpfile = lang + "_" + s.doc.mainSource;
@@ -956,7 +956,7 @@ void qtsMain::findLanguages()
   tsSetup setup;
   miString dlang = (setup.path.lang.empty() ? "./" : setup.path.lang[0]);
 
-  d.setPath(dlang.cStr());
+  d.setPath(dlang.c_str());
   QStringList f = d.entryList(QStringList("tseries_??.qm"));
 
   languageGroup = new QActionGroup(this);
@@ -990,7 +990,7 @@ void qtsMain::toggleLang(QAction* action)
       this,
       tr("Language Changed"),
       tr("tseries must be restarted to reset the language to: [%1] ").arg(
-          lang.cStr()));
+          lang.c_str()));
 
 }
 

@@ -77,12 +77,12 @@ private:
   int forecastLength;
   bool lengthChanged;
   miutil::miTime observationStartTime;
-
   std::map<miutil::miString,miutil::miTime> timemarks;
   void useTimemarks();
   bool prepareData();
   bool prepareDiagram();
-
+  bool prepareKlimaData(std::vector<ParId>&);
+  bool prepareFimexData();
   bool prepareWdbData();
   bool showGridLines;
   int  maxProg;

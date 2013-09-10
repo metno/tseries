@@ -51,26 +51,29 @@
 // Should have a list of required models for a station 
 // for each style type
 class SessionManager {
+public:
+  enum DiagramTab { ADD_TO_STATION_TAB, ADD_TO_WDB_TAB, ADD_TO_FIMEX_TAB};
 private:
   ParameterDefinition pdef;
-  struct modeldata{       // Menynavn og id til aktuelle modeller
+  struct modeldata{       // name of menu and id to models
     miutil::miString modelname;
     Model modelid;
   };
   std::vector<modeldata> models;
   
   struct pardata{
-    int midx;             // model index
+    int midx;                  // model index
     std::vector<ParId> params; // the parameters
   };
   struct styledata{
-    miutil::miString stylename;         // name of style
-    miutil::miString stylefile;         // name of stylefile
-    ptStyle  style;             // pets-style
-    bool modelchoice;           // whether there is a choice of models
+    miutil::miString stylename;      // name of style
+    miutil::miString stylefile;      // name of stylefile
+    ptStyle  style;                  // pets-style
+    bool modelchoice;                // whether there is a choice of models
     std::vector<int> modelidx;       // model indices for modelchoice
     std::vector<ParId> params;       // id without model
     std::vector<pardata> fullparams; // full id with model
+    DiagramTab diagramtab;
   };
   std::vector<styledata> styles;
 
@@ -78,25 +81,26 @@ private:
 public:
 
   // get defined stylenames, return number of style
-  int getStyleTypes(std::vector<miutil::miString>& stylenam);
+  int getStyleTypes(std::vector<miutil::miString>& stylenam, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
   // get a PETS style by name
-  ptStyle& getStyle(const miutil::miString);
+  ptStyle& getStyle(const miutil::miString, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
   // get a PETS style by index
   ptStyle& getStyle(int idx);
   // get the PETS style index - WDBadd
-  int getStyleIndex(const miutil::miString name);
+  int getStyleIndex(const miutil::miString name, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
 
   // make a sessionoption with given style,model and run
   bool getShowOption(SessionOptions&, int, Model, Run);
-  bool getShowOption(SessionOptions&,const tsRequest *);
+  bool getShowOption(SessionOptions&,const tsRequest *, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
 
-  // wdb add
-  int getWdbStyles(std::vector<miutil::miString>& stylename);
 
   // get a list of available models for a given styleindex
   int getModels(const miutil::miString& s, 
       std::map<miutil::miString,Model>& modid,
-      std::vector<miutil::miString>& modname);
+      std::vector<miutil::miString>& modname,
+      SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
+
+
   // get a list of available runs for style/model
   int getRuns(const int sidx, const int midx,
       std::vector<Run>& runid,

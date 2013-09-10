@@ -27,7 +27,7 @@
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ */
 #ifndef _qtsWork_h
 #define _qtsWork_h
 
@@ -36,6 +36,7 @@
 #include <QLayout>
 #include <QWidget>
 #include <QLabel>
+#include <QString>
 #include <QHBoxLayout>
 
 #include "qtsSidebar.h"
@@ -144,7 +145,7 @@ public:
   miutil::miTime getObservationStartTime() const { return show->getObservationStartTime(); }
 
 
-public slots:
+  public slots:
 
   void changeStyle(const QString&);
   void changeModel(const QString&);
@@ -169,7 +170,15 @@ public slots:
   void requestWdbCacheQuery();
   void cacheRequestDone();
 
-signals:
+  // FIMEX
+
+  void changeFimexModel(const QString&);
+  void changeFimexStyle(const QString&);
+  void changeFimexRun(const QString&);
+  void changeFimexCoordinates(float lon, float lat, QString name);
+  void makeFimexModels(QString& activeStyle);
+
+  signals:
   void refreshStations();
   void selectionTypeChanged();
   void coordinatesChanged();

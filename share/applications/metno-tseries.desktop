@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Tseries-5.3
+GenericName=Tseries-5.3
+Comment=Tidsserie visning
+Exec=tseries-5.3
+Icon=tseries-5.3
+MimeType=;
+ServiceTypes=
+Terminal=false
+Type=Application
+Categories=Science;Meteorologisk;Meteorologisk-VersionedPrograms

@@ -27,7 +27,7 @@
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ */
 
 
 #include "tsSetup.h"
@@ -61,26 +61,26 @@ int main(int argc, char **argv)
 
   miCommandLine cl(o,argc, argv);
 
-   // read setup
+  // read setup
 
-  miString    site      = "FOU";
-  miString    setupfile = "tseries.ctl";
-  miString    title     = "T-series";
+  string    site      = "FOU";
+  string    setupfile = "tseries.ctl";
+  string    title     = "T-series";
   tsSetup     setup;
   tsConfigure config;
   miString    lang;
 
   if(cl.hasFlag('h')){
     cerr << "Usage: "
-         << argv[0]
-         << "  -s setupfile "  << endl
-         << "  -S site      "  << endl
-         << "  -l lang      "  << endl
-         << "  -T title     "  << endl
-         << "  -H wdbhost   "  << endl
-         << "  -u wdbuser   "  << endl
-         << "  -d section1:key1=token1 section2:key2=token2 "
-         << endl << endl;
+        << argv[0]
+                << "  -s setupfile "  << endl
+                << "  -S site      "  << endl
+                << "  -l lang      "  << endl
+                << "  -T title     "  << endl
+                << "  -H wdbhost   "  << endl
+                << "  -u wdbuser   "  << endl
+                << "  -d section1:key1=token1 section2:key2=token2 "
+                << endl << endl;
     exit (0);
   }
 
@@ -92,7 +92,14 @@ int main(int argc, char **argv)
   if(!setup.read(setupfile,site))
     exit(0);
 
-  if(setup.lang.exists())
+
+
+
+
+
+
+
+  if(!setup.lang.empty())
     lang=setup.lang;
 
   config.read(setup.files.configure);
@@ -118,24 +125,24 @@ int main(int argc, char **argv)
   miTime defTime;
   defTime.setDefaultLanguage(lang.c_str());
 
-  if(setup.gui.style.exists())
-    a.setStyle(setup.gui.style.cStr());
+  if(!setup.gui.style.empty())
+    a.setStyle(setup.gui.style.c_str());
 
 
-  if(lang.exists()) {
+  if(!lang.empty()) {
 
-    miString qtlang   = "qt_"     +lang;
-    miString langfile = "tseries_"+lang;
+    string qtlang   = "qt_"     +lang;
+    string langfile = "tseries_"+lang;
 
     // translation file for application strings
 
     for(unsigned int i=0;i<setup.path.lang.size(); i++ )
-      if( qt.load( qtlang.cStr(),setup.path.lang[i].cStr()))
-	break;
+      if( qt.load( qtlang.c_str(),setup.path.lang[i].c_str()))
+        break;
 
     for(unsigned int i=0;i<setup.path.lang.size(); i++ )
-      if( myapp.load( langfile.cStr(),setup.path.lang[i].cStr()))
-	break;
+      if( myapp.load( langfile.c_str(),setup.path.lang[i].c_str()))
+        break;
 
     a.installTranslator( &qt    );
     a.installTranslator( &myapp );
@@ -145,7 +152,7 @@ int main(int argc, char **argv)
 
   qtsMain *main = new qtsMain(lang);
 
-  main->setWindowTitle(title.cStr());
+  main->setWindowTitle(title.c_str());
   main->show();
 
   return a.exec();

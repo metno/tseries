@@ -27,15 +27,18 @@
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ */
 #include "tsConfigure.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
-using namespace miutil;
+using namespace boost;
 
-map<miString,miString>             tsConfigure::contents;
+
+map<string,string>             tsConfigure::contents;
 vector<tsConfigure::tsCustoms>     tsConfigure::custom;
 
 
@@ -58,15 +61,15 @@ void tsConfigure::setDefaults()
 
 }
 
-void tsConfigure::fetchSection(miString token)
+void tsConfigure::fetchSection(string token)
 {
-  token = token.upcase();
+  to_upper(token);
 
-  if ( token.contains("STYLE")) {
+  if ( find_first(token,"STYLE")) {
     sec =  STYLE;
     its++;
   }
-  else if( token.contains("LIST")) {
+  else if( find_first(token,"LIST")) {
     sec = LIST;
     itl++;
   }
@@ -75,42 +78,45 @@ void tsConfigure::fetchSection(miString token)
 }
 
 
-bool tsConfigure::splitToken(const miString& token,miString& key,miString& cont)
+bool tsConfigure::splitToken(const string& token,string& key,string& cont)
 {
   cont ="";
-  if(!token.contains("="))
-     return false;
+  if(!find_first(token,"="))
+    return false;
 
-  vector<miString> vtmp = token.split('=');
+  vector<string> vtmp;
+  split(vtmp,token,is_any_of("="));
 
-  key = vtmp[0].upcase();
+  key = to_upper_copy(vtmp[0]);
 
   if(vtmp.size() ==2)
     cont = vtmp[1];
+  trim(key);
+  trim(cont);
   return true;
 }
 
-void tsConfigure::stripComments(miString& token)
+void tsConfigure::stripComments(string& token)
 {
-  if(token.contains("#")) {
+  if(find_first(token,"#")) {
     int c = token.find_first_of("#",0);
     int k=token.length() -  c;
     token.erase(c,k);
   }
-  token.trim();
+  trim(token);
 }
 
 
-bool tsConfigure::read(const miString& fname)
+bool tsConfigure::read(const string& fname)
 {
-  ifstream in(fname.cStr());
+  ifstream in(fname.c_str());
 
   setDefaults();
 
   if(!in)
     return false;
 
-  miString token;
+  string token;
   its = -1;
   itl = -1;
 
@@ -120,9 +126,9 @@ bool tsConfigure::read(const miString& fname)
     getline(in,token);
     stripComments(token);
 
-    if(!token.exists())
+    if(token.empty())
       continue;
-    if(token.contains("<") && token.contains(">")) {
+    if(find_first(token,"<") && find_first(token,">")) {
       fetchSection(token);
       continue;
     }
@@ -135,9 +141,9 @@ bool tsConfigure::read(const miString& fname)
 
 }
 
-void tsConfigure::setToken(miString token)
+void tsConfigure::setToken(string token)
 {
-  miString cont,key;
+  string cont,key;
 
   if(sec == LIST )
     setList(token);
@@ -147,72 +153,79 @@ void tsConfigure::setToken(miString token)
 
   if(sec == STYLE )
     setStyle(key,cont);
-   else
+  else
     contents[key] = cont;
 }
 
-void tsConfigure::set(miString key, const miString token)
+void tsConfigure::set(string key, const string token)
 {
-  contents[key.upcase()] = token;
+  contents[to_upper_copy(key)] = token;
 }
 
-void tsConfigure::set(miString key, const int token)
+void tsConfigure::set(string key, const int token)
 {
-  contents[key.upcase()] = miString(token);
+  ostringstream ost;
+  ost << token;
+  set(key,ost.str());
 }
 
-void tsConfigure::set(miString key, const float token)
+void tsConfigure::set(string key, const float token)
 {
-  contents[key.upcase()] = miString(token);
+  ostringstream ost;
+  ost << token;
+  set(key,ost.str());
 }
 
-void tsConfigure::set(miString key, const bool token)
+void tsConfigure::set(string key, const bool token)
 {
-  contents[key.upcase()] = ( token ? "1" : "0");
-}
-
-
-
-void tsConfigure::setStyle(miString& key, miString& cont)
-{
-
+  contents[to_upper_copy(key)] = ( token ? "1" : "0");
 }
 
 
-void tsConfigure::setList(miString token)
+
+void tsConfigure::setStyle(string& key, string& cont)
 {
-  miString cont,key;
+
+}
+
+
+void tsConfigure::setList(string token)
+{
+  string cont,key;
   if(splitToken(token,key,cont)) {
     if( key == "NAME" ) {
-      if(cont.exists())
-	custom[itl].name = cont;
-      else
-	custom[itl].name = "Untitled" + miString(itl);
+      if(!cont.empty())
+        custom[itl].name = cont;
+      else {
+        ostringstream ost;
+        ost << "Untitled" <<  itl;
+        custom[itl].name = ost.str();
+      }
     }
   }
   else
     custom[itl].list.push_back(token);
 }
 
-vector<miString> tsConfigure::getList(miString search)
+vector<string> tsConfigure::getList(string search)
 {
   for(unsigned int i=0; i< custom.size();i++)
     if(custom[i].name == search)
       return custom[i].list;
-  vector<miString> empty;
+  vector<string> empty;
   return  empty;
 }
 
-vector<miString> tsConfigure::getCustoms()
+vector<string> tsConfigure::getCustoms()
 {
-  vector<miString> names;
+  vector<string> names;
   for(unsigned int i=0; i< custom.size();i++)
     names.push_back(custom[i].name);
   return names;
 }
 
 
-bool tsConfigure::get(const miString& key, miString& cont)
+bool tsConfigure::get(const string& key, string& cont)
 {
   if(contents.count(key)) {
     cont = contents[key];
@@ -222,28 +235,28 @@ bool tsConfigure::get(const miString& key, miString& cont)
 }
 
 
-bool tsConfigure::get(const miString& key, int& cont)
+bool tsConfigure::get(const string& key, int& cont)
 {
   if(contents.count(key)) {
-    cont = atoi(contents[key].cStr());
+    cont = atoi(contents[key].c_str());
     return true;
   }
   return false;
 }
 
-bool tsConfigure::get(const miString& key, float& cont)
+bool tsConfigure::get(const string& key, float& cont)
 {
   if(contents.count(key)) {
-    cont = atof(contents[key].cStr());
+    cont = atof(contents[key].c_str());
     return true;
   }
   return false;
 }
 
-bool tsConfigure::get(const miString& key, bool& cont)
+bool tsConfigure::get(const string& key, bool& cont)
 {
   if(contents.count(key)) {
-    int a = atoi(contents[key].cStr());
+    int a = atoi(contents[key].c_str());
     cont = bool(a);
     return true;
   }
@@ -252,10 +265,10 @@ bool tsConfigure::get(const miString& key, bool& cont)
 
 
 
-bool tsConfigure::save(miString fname)
+bool tsConfigure::save(string fname)
 {
-  ofstream out(fname.cStr());
-  map<miString,miString>::iterator itr = contents.begin();
+  ofstream out(fname.c_str());
+  map<string,string>::iterator itr = contents.begin();
 
   if(!out)
     return false;
@@ -268,7 +281,7 @@ bool tsConfigure::save(miString fname)
 
   for( unsigned int i=0; i< custom.size(); i++) {
     out << "<LIST>" << endl
-	<< "name="  << custom[i].name << endl;
+        << "name="  << custom[i].name << endl;
     for(unsigned int j=0; j< custom[i].list.size(); j++ )
       out << custom[i].list[j] << endl;
 

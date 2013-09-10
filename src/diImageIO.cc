@@ -59,7 +59,7 @@ bool imageIO::read_image(Image_data& img)
 bool imageIO::read_png(Image_data& img){
   cerr << "--------- read_png: " << img.filename << endl;
 
-  FILE *fp = fopen(img.filename.cStr(), "rb");
+  FILE *fp = fopen(img.filename.c_str(), "rb");
   if (!fp){
     cerr << "read_png ERROR can't open file:" << img.filename << endl;
     return false;
@@ -177,7 +177,7 @@ bool imageIO::write_png(const Image_data& img){
   cerr << "--------- write_png: " << img.filename << endl;
 
   // open file for write
-  FILE *fp = fopen(img.filename.cStr(), "wb");
+  FILE *fp = fopen(img.filename.c_str(), "wb");
   if (!fp) {
     cerr << "write_png ERROR can't open file:" << img.filename << endl;
     return false;
@@ -312,10 +312,10 @@ bool imageIO::imageFromXpmdata(const char** xd, Image_data& img){
     cerr << "imageFromXpmdata ERROR too few elements:" << buf << endl;
     return false;
   }
-  xsize= atoi(vs[0].cStr());
-  ysize= atoi(vs[1].cStr());
-  ncols= atoi(vs[2].cStr());
-  nchar= atoi(vs[3].cStr());
+  xsize= atoi(vs[0].c_str());
+  ysize= atoi(vs[1].c_str());
+  ncols= atoi(vs[2].c_str());
+  nchar= atoi(vs[3].c_str());
 
   if (xsize < 1 || ysize < 1 || ncols < 1 || nchar < 1){
     cerr << "imageFromXpmdata ERROR Illegal numbers "
@@ -415,7 +415,7 @@ bool imageIO::read_xpm(Image_data& img){
   //   cerr << "RESULTING DATA:" << endl;
   char **data = new (char*[vs.size()]);
   for (unsigned int i=0; i<vs.size(); i++){
-    data[i]= strdup(vs[i].cStr());
+    data[i]= strdup(vs[i].c_str());
     //     cerr << data[i] << endl;
   }
 

@@ -157,15 +157,15 @@ void StationTab::set(const miString& cur,const StationTab::lEntry c)
 {
   int idx;
   if(c == CMSTYLE) {
-    idx = stylel->findText(cur.cStr());
+    idx = stylel->findText(cur.c_str());
     if( idx >= 0)
       stylel->setCurrentIndex(idx);
   } else if(c == CMRUN) {
-    idx = runl->findText(cur.cStr());
+    idx = runl->findText(cur.c_str());
     if( idx >= 0)
       runl->setCurrentIndex(idx);
   } else if(c == CMMODEL) {
-    idx = modell->findText(cur.cStr());
+    idx = modell->findText(cur.c_str());
     if( idx >= 0)
       modell->setCurrentIndex(idx);
   }

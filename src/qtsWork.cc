@@ -113,6 +113,13 @@ qtsWork::qtsWork(QWidget* parent)
 
 
 
+
+  connect(sidebar,SIGNAL(changeFimexModel(const QString&)), this,SLOT(changeFimexModel(const QString& )));
+  connect(sidebar,SIGNAL(changeFimexStyle(const QString&)), this,SLOT(changeFimexStyle(const QString& )));
+  connect(sidebar,SIGNAL(changeFimexRun(const QString&)),   this,SLOT(changeFimexRun(  const QString& )));
+  connect(sidebar,SIGNAL(changeFimexCoordinates(float, float,QString)),this,SLOT(changeFimexCoordinates(float,float,QString)));
+
+
   Initialise(); // the none gui stuff...
 
 
@@ -127,6 +134,9 @@ qtsWork::qtsWork(QWidget* parent)
   connect(sidebar,SIGNAL(changeWdbRun(const QString&)),   this,SLOT(changeWdbRun(const QString&)));
   connect(sidebar,SIGNAL(changeCoordinates(float, float,QString)),this,SLOT(changeCoordinates(float,float,QString)));
   connect(sidebar,SIGNAL(requestWdbCacheQuery()),this,SLOT(requestWdbCacheQuery()));
+
+
+
 
 
   has_wdb_stream = data.has_wdb_stream();
@@ -226,7 +236,7 @@ void qtsWork::makeStationList(bool forced)
         if(!filter.count(pos))
           continue;
 
-    slist << pos.cStr();
+    slist << pos.c_str();
     myStations.push_back(string(pos  + ":" + itr->second));
   }
 
@@ -238,21 +248,30 @@ void qtsWork::makeStationList(bool forced)
 
 bool qtsWork::makeStyleList()
 {
-  vector<miString> tmp;
-  vector<miString> wdbtmp;
+  vector<miString> stationStyles, wdbStyles, fimexStyles;
 
-  session.getStyleTypes(tmp);
-  session.getWdbStyles(wdbtmp);
+  session.getStyleTypes( stationStyles, SessionManager::ADD_TO_STATION_TAB);
+  session.getStyleTypes( wdbStyles,     SessionManager::ADD_TO_WDB_TAB    );
+  session.getStyleTypes( fimexStyles,   SessionManager::ADD_TO_FIMEX_TAB  );
 
-  QString cstyle = sidebar->fillList(tmp,StationTab::CMSTYLE);
-  QString wstyle = sidebar->fillList(wdbtmp,StationTab::CMWDBSTYLE);
+
+  QString cstyle = sidebar->fillList( stationStyles, StationTab::CMSTYLE      );
+  QString wstyle = sidebar->fillList( wdbStyles,     StationTab::CMWDBSTYLE   );
+  QString fstyle = sidebar->fillList( fimexStyles,   StationTab::CMFIMEXSTYLE );
+
+  makeFimexModels(fstyle);
 
   miString st;
   qStr2miStr(cstyle,st);
   bool changed = request.setStyle(st);
 
+
   qStr2miStr(wstyle,st);
   request.setWdbStyle(st);
+
+  qStr2miStr(fstyle,st);
+  request.setFimexStyle(st);
+
 
   return (  makeModelList(st) || changed );
 
@@ -292,7 +311,7 @@ bool qtsWork::makeRunList(const miString& st)
   QString qtmp = sidebar->fillList(runList,StationTab::CMRUN);
   miString tmp;
   qStr2miStr(qtmp,tmp);
-  return request.setRun(atoi(tmp.cStr()));
+  return request.setRun(atoi(tmp.c_str()));
 }
 
 bool qtsWork::makeRunList(const miString& st,const miString& ru)
@@ -305,12 +324,12 @@ bool qtsWork::makeRunList(const miString& st,const miString& ru)
     for(unsigned int i=0;i<runList.size();i++)
       if(ru == runList[i] ) {
         sidebar->set(ru,StationTab::CMRUN);
-        return request.setRun(atoi(ru.cStr()));
+        return request.setRun(atoi(ru.c_str()));
       }
 
 
     sidebar->set(runList[0],StationTab::CMRUN);
-    return request.setRun(atoi(runList[0].cStr()));
+    return request.setRun(atoi(runList[0].c_str()));
   }
 
   return false;
@@ -338,12 +357,14 @@ void qtsWork::changeModel(const QString& qstr)
 
 void qtsWork::changePositions(const miString& pos)
 {
+  cerr << "changepositions called with " << pos << endl;
   if(selectionType != SELECT_BY_COORDINATES) return;
+
 
   vector<miString> vcoor = pos.split(":");
   if(vcoor.size() < 2) return;
-  float lat = atof(vcoor[0].cStr());
-  float lon = atof(vcoor[1].cStr());
+  float lat = atof(vcoor[0].c_str());
+  float lon = atof(vcoor[1].c_str());
 
   sidebar->setCoordinates(lon,lat);
 }
@@ -421,7 +442,7 @@ void qtsWork::checkPosition(miString name)
     ost <<  "<b>Lat:</b> " << cor.sLat()<< " <b>Lon:</b> " << cor.sLon();
   }
 
-//  ost << " <b>Hoh:</b> " << p.height();
+  //  ost << " <b>Hoh:</b> " << p.height();
 
 
   sidebar->setStationInfo(ost.str().c_str());
@@ -451,7 +472,7 @@ void qtsWork::checkObsPosition(miCoordinates cor)
 
 void qtsWork::changeRun(const miString& st)
 {
-  if(request.setRun(atoi(st.cStr())))
+  if(request.setRun(atoi(st.c_str())))
     refresh(true);
 }
 
@@ -672,7 +693,7 @@ set<miString> qtsWork::createFilter(bool orig)
 
   if(!orig) {
     fname = s.files.filter;
-    ifstream tst(fname.cStr());
+    ifstream tst(fname.c_str());
 
     if(!tst)
       fname = s.files.baseFilter;
@@ -681,7 +702,7 @@ set<miString> qtsWork::createFilter(bool orig)
   }
 
 
-  ifstream in(fname.cStr());
+  ifstream in(fname.c_str());
 
   if(!in) {
     cerr << "NO filter " << endl;
@@ -714,7 +735,7 @@ void qtsWork::newFilter(const set<miString>& f)
 
   tsSetup s;
 
-  ofstream of( s.files.filter.cStr());
+  ofstream of( s.files.filter.c_str());
 
   if(!of) {
     cerr << "could not write filter to file " <<  s.files.filter << endl;
@@ -788,11 +809,15 @@ void qtsWork::changeWdbStyle(const QString& nsty)
 
 void qtsWork::changeType(const tsRequest::Streamtype s)
 {
-  if(s==tsRequest::WDBSTREAM)
+  cerr << "changetype called" << s << endl;
+  if(s==tsRequest::WDBSTREAM || s==tsRequest::FIMEXSTREAM ) {
     selectionType=SELECT_BY_COORDINATES;
-  else
+    cerr << "selectionType = SELECT_BY_COORDINATES" << endl;
+  }
+  else {
+    cerr << "selectionType = SELECT_BY_STATION" << endl;
     selectionType=SELECT_BY_STATION;
-
+  }
   request.setType(s);
   refresh(true);
 
@@ -802,6 +827,10 @@ void qtsWork::changeType(const tsRequest::Streamtype s)
 
 void qtsWork::changeCoordinates(float lon, float lat,QString name)
 {
+
+  cerr << "changeCoordinates called with " << lon << " / "<< lat << " " << name.toStdString() <<  endl;
+  cerr << "selectiontype == " << (selectionType == SELECT_BY_STATION ? " Station" : " Coordinates")
+          << endl;
 
   if(!has_wdb_stream) return;
 
@@ -845,5 +874,76 @@ void   qtsWork::cacheRequestDone()
 {
   sidebar->enableBusyLabel(false);
 }
+
+////////////////////////////////////////////////////////////
+
+
+
+/// FIMEX --------------------------------------------
+//
+
+void qtsWork::makeFimexModels(QString& activeStyle)
+{
+  miString st;
+  qStr2miStr(activeStyle,st);
+
+  vector<miString>    modname;
+  bool changed = false;
+
+  int choice =  session.getModels(st, modelMap, modname,SessionManager::ADD_TO_FIMEX_TAB  );
+
+  if(choice < 0 )
+    if(modname.size() > 1 )
+      modname.erase(modname.begin()+1,modname.end());
+
+    sidebar->fillList(modname,StationTab::CMFIMEXMODEL);
+
+}
+
+
+
+void qtsWork::changeFimexModel(const QString& newmodel)
+{
+    cerr << "Changed fimexModel to: " << newmodel.toStdString() << endl;
+
+    request.setFimexModel(newmodel.toStdString());
+
+    vector<miString> times = data.getFimexTimes(newmodel.toStdString());
+
+    sidebar->fillList(times,StationTab::CMFIMEXRUN);
+
+
+}
+
+void qtsWork::changeFimexRun(const QString& nrun)
+{
+  cerr << "changed run to " << nrun.toStdString() << endl;
+
+  if(request.setFimexRun(nrun.toStdString())) {
+      refresh(true);
+  }
+}
+
+
+void qtsWork::changeFimexStyle(const QString& nsty)
+{
+  if(request.setFimexStyle(nsty.toStdString()))
+    refresh(true);
+}
+
+
+void qtsWork::changeFimexCoordinates(float lon, float lat,QString name)
+{
+
+  if(request.setFimexLocation(lat,lon,name.toStdString())) {
+    miCoordinates cor(lon,lat);
+    checkObsPosition(cor);
+    refresh(true);
+  }
+  emit coordinatesChanged();
+
+}
+
+
 
 

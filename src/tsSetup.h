@@ -31,7 +31,6 @@
 #ifndef _tsSetup_h
 #define _tsSetup_h
 
-#include <puTools/miString.h>
 #include <puMet/symbolMaker.h>
 
 #include <vector>
@@ -45,17 +44,17 @@
  *  as input. All Parameters er stored in static structs.
  *  After generating a tsSetup with read() one can
  *  tsSetup setup
- *  miutil::miString x=setup.path.work
+ *  std::string x=setup.path.work
  */
 
 
 class tsSetup {
 private:
   static bool           Initialised;
-  miutil::miString      site;
-  std::set<miutil::miString> actualSites;
+  std::string      site;
+  std::set<std::string> actualSites;
 
-  bool readsetup(miutil::miString filename);
+  bool readsetup(std::string filename);
 
 public:
   tsSetup();
@@ -68,47 +67,57 @@ public:
    *  [ANOTHERSWITCH] or \n[]\n
    *  everything inside the switch is invisible to
    *  anybody except those who are using the specific switch\n
-   *  Switches are free choosable strings and can be combined.
-   *  A section [ME:YOU] is valid for ME and YOU but noone else.
+   *  Switches are free chooseable strings and can be combined.
+   *  A section [ME:YOU] is valid for ME and YOU but no one else.
    *  By this, several people with different needs are able to
    *  share one setup-file without getting severe conflicts.
   */
-  bool read(const miutil::miString& filename, miutil::miString s="");
+  bool read(const std::string& filename, std::string s="");
+
+  std::string getenvAsString(std::string);
 
   // override with section:key=token
-  void overrideToken(miutil::miString token);
+  void overrideToken(std::string token);
 
   // contents
 
   /// Struct containing a single PETS datastream
   struct sStruct{
-    miutil::miString  name;
-    miutil::miString  descript;
-    miutil::miString  type;
-    miutil::miString  contents;
+    std::string  name;
+    std::string  descript;
+    std::string  type;
+    std::string  contents;
   };
 
   /// Struct containing datastreams
   struct dsStruct {
     int  InitialOpen;
-    miutil::miString collectionName;
-    miutil::miString preferredStyle;
+    std::string collectionName;
+    std::string preferredStyle;
     std::vector<sStruct> data;
   };
 
   struct wdbstruct {
-    miutil::miString    host;
-    miutil::miString    user;
-    miutil::miString    busyMovie;
+    std::string    host;
+    std::string    user;
+    std::string    busyMovie;
     unsigned long       readtime;            /// time to enable cache button (ms)
     std::vector<std::string> vectorFunctions;     ///< run vector transformations on these
     std::map<std::string,std::string> parameters; ///< translate parameters from wdb
     int                 maxRecord;           ///< size of record ringbuffer;
   };
 
+  // define loglevels foe DATA DIAGRAM TSERIES
+  struct logstruct {
+    std::string data;
+    std::string diagram;
+    std::string tseries;
+  };
+
+
   struct klstruct {
-    miutil::miString    url;
-    miutil::miString    baseQuery;
+    std::string    url;
+    std::string    baseQuery;
     int                 maxDistance;
     int                 maxObservationLength;
     std::map<std::string,std::string> parameters; ///< translate parameters from klima
@@ -118,60 +127,66 @@ public:
 
   /// Struct containing filenames for tseries
   struct fistruct {
-    miutil::miString defs;
-    miutil::miString configure;
-    miutil::miString weatherSymbols;
-    miutil::miString std_image;
-    miutil::miString fin_image;
-    miutil::miString icon_image;
-    miutil::miString filter;
-    miutil::miString baseFilter;
-    miutil::miString bookmarks;
-    miutil::miString commonBookmarks;
+    std::string defs;
+    std::string configure;
+    std::string weatherSymbols;
+    std::string std_image;
+    std::string fin_image;
+    std::string icon_image;
+    std::string filter;
+    std::string baseFilter;
+    std::string bookmarks;
+    std::string commonBookmarks;
   };
+
+  struct fimexstruct {
+    std::vector<std::string>  parameters; // parsed in tsData
+    std::set<std::string>     streamtypes;
+  };
+
 
   /// Struct containing coserver-info
   struct svstruct {
-    miutil::miString name;
-    miutil::miString command;
-    miutil::miString client;
+    std::string name;
+    std::string command;
+    std::string client;
   };
 
   /// Struct containing path-names
   struct ptstruct {
-    miutil::miString work;
-    miutil::miString images;
-    miutil::miString etc;
-    miutil::miString tmp;
-    miutil::miString saves;
-    miutil::miString doc;
-    miutil::miString home;
-    std::vector<miutil::miString> lang;
+    std::string work;
+    std::string images;
+    std::string etc;
+    std::string tmp;
+    std::string saves;
+    std::string doc;
+    std::string home;
+    std::vector<std::string> lang;
   };
 
   /// Struct containing GUI-specific information
   struct gustruct {
     float origoLon;
     float origoLat;
-    miutil::miString style;
+    std::string style;
   };
 
   /// Struct containing information about DIANA
   struct distruct {
-    miutil::miString name;
-    miutil::miString command;
-    miutil::miString workdir;
-    miutil::miString args;
+    std::string name;
+    std::string command;
+    std::string workdir;
+    std::string args;
   };
 
   /// Struct containing documentation path etc.
   struct dostruct {
-    miutil::miString mainSource;
-    miutil::miString mainName;
-    miutil::miString mainLink;
-    miutil::miString newsSource;
-    miutil::miString newsName;
-    miutil::miString newsLink;
+    std::string mainSource;
+    std::string mainName;
+    std::string mainLink;
+    std::string newsSource;
+    std::string newsName;
+    std::string newsLink;
   };
 
   static std::vector<dsStruct> streams; ///< Data streams
@@ -184,47 +199,54 @@ public:
   static distruct diana;           ///< DIANA information
   static dostruct doc;             ///< Documentation locations
   static klstruct klima;           ///< url and info for klapp connection
-  static miutil::miString lang;            ///< Languages
-
+  static std::string lang;    ///< Languages
+  static fimexstruct fimex;        /// fimex stuff
   static symbolMaker wsymbols;
+  static logstruct   loglevel;
 
 private:
-  enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,WDB,WDBPARAMETER,WDBVECTORFUNCTIONS,KLIMA,KLIMAPARAMETER,KLIMANORMAL} sec;
+  enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,WDB,WDBPARAMETER,WDBVECTORFUNCTIONS,
+    KLIMA,KLIMAPARAMETER,KLIMANORMAL,FIMEX,FIMEXPARAMETER,LOGLEVEL} sec;
   enum warning { wKEY, wTOKEN, wSECTION, wFILE };
 
-  std::map<miutil::miString,miutil::miString> lookup;
-  miutil::miString fname;
+  std::map<std::string,std::string> lookup;
+  std::string fname;
   int line;
   int idx,ids;
 
-  void fetchSite(miutil::miString);
-  void fetchSection(miutil::miString);
-  void setSimpleToken(miutil::miString);
-  bool checkLookup(miutil::miString&);
-  bool checkEnvironment(miutil::miString&);
-  void stripComments(miutil::miString&);
+  void fetchSite(std::string);
+  void fetchSection(std::string);
+  void setSimpleToken(std::string);
+  bool checkLookup(std::string&);
+  bool checkEnvironment(std::string&);
+  void stripComments(std::string&);
 
-  miutil::miString inSection();
-  bool splitToken(const miutil::miString&,miutil::miString&, miutil::miString&,bool upper=true);
-  void warn(miutil::miString&,warning);
+  std::string inSection();
+  bool splitToken(const std::string&,std::string&, std::string&,bool upper=true);
+  std::vector<std::string> tokenize(std::string token,std::string delimiters);
 
-  void setPublic(miutil::miString&, miutil::miString&);
-  void setFiles(miutil::miString&, miutil::miString&);
-  void setStreams(miutil::miString&, miutil::miString&);
-  void setServer(miutil::miString&, miutil::miString&);
-  void setGui(miutil::miString&, miutil::miString&);
-  void setPath(miutil::miString&, miutil::miString&);
-  void setDiana(miutil::miString&, miutil::miString&);
-  void setDoc(miutil::miString&, miutil::miString&);
-  void setWdb(miutil::miString&, miutil::miString&);
-  void setWdbParameter(miutil::miString&, miutil::miString&);
-  void setKlimaParameter(miutil::miString&, miutil::miString&);
-  void setKlimaNormal(miutil::miString&, miutil::miString&);
-  void setKlima(miutil::miString&, miutil::miString&);
+  void warn(std::string&,warning);
 
-  void setup(miutil::miString&, const miutil::miString&);
-  void setup(int&,const miutil::miString&);
-  void setup(float&, const miutil::miString&);
+  void setLoglevel(std::string&, std::string&);
+  void setPublic(std::string&, std::string&);
+  void setFiles(std::string&, std::string&);
+  void setStreams(std::string&, std::string&);
+  void setServer(std::string&, std::string&);
+  void setGui(std::string&, std::string&);
+  void setPath(std::string&, std::string&);
+  void setDiana(std::string&, std::string&);
+  void setDoc(std::string&, std::string&);
+  void setWdb(std::string&, std::string&);
+  void setWdbParameter(std::string&, std::string&);
+  void setKlimaParameter(std::string&, std::string&);
+  void setKlimaNormal(std::string&, std::string&);
+  void setKlima(std::string&, std::string&);
+  void setFimex(std::string&, std::string&);
+  void setFimexParameter(std::string&);
+
+  void setup(std::string&, const std::string&);
+  void setup(int&,const std::string&);
+  void setup(float&, const std::string&);
 
 };
 

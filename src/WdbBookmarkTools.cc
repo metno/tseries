@@ -184,7 +184,7 @@ std::string WdbBookmarkTools::createRecordName(float f,char pos, char neg)
   int min = int(fdeg);
 
   ostringstream ost;
-  ost << abs(deg) << "ï¿½ " << abs(min) << "\' " << ( deg >=0 ? pos : neg );
+  ost << abs(deg) << "° " << abs(min) << "\' " << ( deg >=0 ? pos : neg );
   return ost.str();
 }
 

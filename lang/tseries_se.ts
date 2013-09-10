@@ -313,22 +313,22 @@ met.no 2002</translation>
 <context>
     <name>qtsSidebar</name>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="120"/>
+        <location filename="../src/qtsSidebar.cc" line="129"/>
         <source>enable/disable observations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="126"/>
+        <location filename="../src/qtsSidebar.cc" line="135"/>
         <source>Show position (DIANA)</source>
         <translation type="unfinished">Visa position i Diana</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="132"/>
+        <location filename="../src/qtsSidebar.cc" line="141"/>
         <source>Position filter</source>
         <translation type="unfinished">Positionsfilter</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="84"/>
+        <location filename="../src/qtsSidebar.cc" line="92"/>
         <source>Stations</source>
         <translation type="unfinished"></translation>
     </message>

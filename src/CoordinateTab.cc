@@ -161,9 +161,13 @@ void CoordinateTab::setCoordinates(float lon, float lat, QString name)
   longitude->setValue(lon);
   latitude->setValue(lat);
 
-  if(name.isEmpty())
-    coordinatesChanged();
-  else {
+  if(name.isEmpty()) {
+    ostringstream ost;
+    ost << bookmarkTools.createRecordName(lon,'E','W') << " "
+        << bookmarkTools.createRecordName(lat,'N','S');
+
+    name.fromLatin1(ost.str().c_str());
+  } else {
     bookmarkTools.addRecord(lon,lat,name.toStdString());
     emit changeCoordinates(lon,lat,name);
   }
@@ -265,9 +269,10 @@ void CoordinateTab::setModels(const QStringList& newmodels)
     }
   }
   QString cur2 = modell->currentText();
-  if(cur2 != cur)
-    emit changemodel(cur2);
 
+  if(cur2 != cur) {
+    emit changemodel(cur2);
+  }
 }
 
 void CoordinateTab::setRuns(const QStringList& newruns)

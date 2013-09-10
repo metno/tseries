@@ -34,6 +34,7 @@
 
 #include "tsSetup.h"
 
+
 #ifdef GRIBSTREAM
 #include <tsData/ptGribStream.h>
 #endif
@@ -50,6 +51,7 @@ bool Union(const dataset& d1, const dataset& d2)
   return false;
 }
 
+
 bool Union(const dataset& d1, const dataset& d2, dataset& result)
 {
   result.clear();
@@ -61,10 +63,12 @@ bool Union(const dataset& d1, const dataset& d2, dataset& result)
 }
 
 DatafileColl::DatafileColl() :
-    tolerance(1000.0), verbose(false), streams_opened(false), wdbStream(NULL)
+                tolerance(1000.0), verbose(false), streams_opened(false), wdbStream(NULL)
 {
   openWdbStream();
   openKlimaStream();
+  initialiseFimexPositions();
+  initialiseFimexParameters();
 
 }
 
@@ -87,40 +91,58 @@ int DatafileColl::addDataset(miString name)
 }
 
 int DatafileColl::addStream(const miString name, const miString desc,
-    const miString dsT, const int dset, const int numindset,
+    const miString streamtype, const int dset, const int numindset,
     const miString sparid)
 {
-  int n = datastreams.size();
+  tsSetup setup;
+
   if (dset < (signed int) datasetname.size()) {
 
-    DsInfo dsinfo;
-    datastreams.push_back(dsinfo);
+    if(setup.fimex.streamtypes.count(streamtype)) {
+      FimexInfo finfo;
+      finfo.streamname = name;
+      finfo.model      = desc;
+      finfo.sType      = streamtype;
 
-    datastreams[n].streamname = name;
-    datastreams[n].descript = desc;
-    datastreams[n].sType = dsT;
-    datastreams[n].dataSet = dset;
-    datastreams[n].numindset = numindset;
-    datastreams[n].dataStream = 0;
-    datastreams[n].streamOpen = false;
-    datastreams[n].mtime = 0;
+      vector<pets::FimexParameter> fpar;
 
-    const std::vector<std::string> sp = miutil::split(sparid, ":");
-    int m = sp.size();
-    ParId parid;
-    if (m > MAXMODELSINSTREAM
-      ) m = MAXMODELSINSTREAM;
-    datastreams[n].numModels = m;
-    for (int i = 0; i < m; i++) {
-      parid = parDef.Str2ParId(sp[i]);
-      datastreams[n].modelList[i] = parid.model;
-      datastreams[n].runList[i] = parid.run;
+      if(fimexParameters.count(streamtype)) {
+        fpar = fimexParameters[streamtype];
+      }
+      cerr << "Added to fimexstreams" << name << " as " << streamtype << " with "
+          << fpar.size() << " known parameters " << endl;
+      fimexStreams.push_back(finfo);
+
+      fimexStreams.back().dataStream = new pets::FimexStream(name, desc, streamtype,fpar,fimexpositions);
+
+    } else {
+
+      DsInfo dsinfo;
+      //datastreams.push_back(dsinfo);
+      dsinfo.streamname = name;
+      dsinfo.descript = desc;
+      dsinfo.sType = streamtype;
+      dsinfo.dataSet = dset;
+      dsinfo.numindset = numindset;
+      dsinfo.dataStream = 0;
+      dsinfo.streamOpen = false;
+      dsinfo.mtime = 0;
+
+      const std::vector<std::string> sp = miutil::split(sparid, ":");
+      int m = sp.size();
+      ParId parid;
+      if (m > MAXMODELSINSTREAM) m = MAXMODELSINSTREAM;
+      dsinfo.numModels = m;
+      for (int i = 0; i < m; i++) {
+        parid = parDef.Str2ParId(sp[i]);
+        dsinfo.modelList[i] = parid.model;
+        dsinfo.runList[i] = parid.run;
+      }
+
+      datastreams.push_back(dsinfo);
     }
-
-    if (verbose)
-      cout << "Has added stream:" << datastreams[n].streamname << endl;
-
-    return n + 1;
+    //    return datastreams.size();
+    return 1;
   } else {
     return -1;
   }
@@ -166,7 +188,7 @@ bool DatafileColl::openStream(const int idx)
 #ifdef GRIBSTREAM
   else if (datastreams[idx].sType == "GRIB") {
     datastreams[idx].dataStream =
-    new GribStream(datastreams[idx].streamname);
+        new GribStream(datastreams[idx].streamname);
   }
 #endif
 
@@ -184,20 +206,20 @@ bool DatafileColl::openStream(const int idx)
       // get model list from file
       int numm = 0;
       while (numm < MAXMODELSINSTREAM) {
-          std::vector<std::string> dt(datastreams[idx].txtList[numm].begin(), datastreams[idx].txtList[numm].end());
-          if (not datastreams[idx].dataStream->getModelSeq(numm,
-              datastreams[idx].modelList[numm], datastreams[idx].runList[numm],
-              datastreams[idx].idList[numm], dt))
-              break;
-          numm++;
+        std::vector<std::string> dt(datastreams[idx].txtList[numm].begin(), datastreams[idx].txtList[numm].end());
+        if (not datastreams[idx].dataStream->getModelSeq(numm,
+            datastreams[idx].modelList[numm], datastreams[idx].runList[numm],
+            datastreams[idx].idList[numm], dt))
+          break;
+        numm++;
       }
       datastreams[idx].numModels = numm;
 #ifdef DEBUG
       cout << "FILECOLLECTION: numModels:"<<datastreams[idx].numModels<<endl;
       for (int k=0;k<datastreams[idx].numModels;k++)
-      cout << "Model:"<<datastreams[idx].modelList[k]<<
-      " Run:"<<datastreams[idx].runList[k]<<
-      " Id:"<<datastreams[idx].idList[k]<<endl;
+        cout << "Model:"<<datastreams[idx].modelList[k]<<
+        " Run:"<<datastreams[idx].runList[k]<<
+        " Id:"<<datastreams[idx].idList[k]<<endl;
 #endif
     }
   }
@@ -227,7 +249,25 @@ void DatafileColl::closeStreams()
       delete datastreams[i].dataStream;
     }
   }
+
+  for (unsigned int i = 0; i < fimexStreams.size(); i++) {
+      if (fimexStreams[i].dataStream ) {
+        delete fimexStreams[i].dataStream;
+        fimexStreams[i].dataStream=NULL;
+      }
+    }
+
+
+
 }
+
+
+
+
+
+
+
+
 
 bool DatafileColl::_isafile(const miString& name)
 {
@@ -295,7 +335,8 @@ void DatafileColl::makeStationList()
         nums = 0;
         while (datastreams[i].dataStream->getStationSeq(nums, st)) {
           // force upcase on all stations
-          st.setName(st.Name().upcase());
+          miString uppername= to_upper(st.Name());
+          st.setName(uppername);
           // Check if station already exists
           exists = findpos(st.Name(), posidx);
           if (posidx == ns)
@@ -444,7 +485,7 @@ map<miString, miString> DatafileColl::getPositions(const miString mod)
   for (i = 0; i < n; i++) {
     if (Union(ds, stations[i].d)) {
       result[stations[i].station.Name()] = miString(stations[i].station.lat())
-          + ":" + miString(stations[i].station.lon());
+                      + ":" + miString(stations[i].station.lon());
     }
   }
   return result;
@@ -530,7 +571,7 @@ void DatafileColl::closeKlimaStream()
     delete klimaStream;
   } catch (exception& e) {
     cerr << " Exception caught while trying to delete klimaStream " << e.what()
-        << endl;
+                    << endl;
   }
   klimaStream = NULL;
 
@@ -552,7 +593,7 @@ void DatafileColl::openWdbStream()
 
   } catch (exception& e) {
     cerr << " Exception caught while trying to open WdbStream " << e.what()
-        << endl;
+                    << endl;
   }
 }
 
@@ -562,7 +603,7 @@ void DatafileColl::closeWdbStream()
     delete wdbStream;
   } catch (exception& e) {
     cerr << " Exception caught while trying to delete WdbStream " << e.what()
-        << endl;
+                    << endl;
   }
   wdbStream = NULL;
 
@@ -605,4 +646,87 @@ pets::WdbStream::BoundaryBox DatafileColl::getWdbGeometry()
 
   return boundaries;
 }
+
+
+/////// FIMEX ------------------------------------------
+
+void DatafileColl::initialiseFimexPositions()
+{
+
+  tsSetup setup;
+  fimexpositions.clear();
+
+  try {
+    fimexpositions.addFile(setup.files.commonBookmarks);
+  } catch (exception &e){
+    cerr << "Exception caught from fimex position initialization: " << e.what() << endl;
+  }
+
+  try {
+    fimexpositions.addFile(setup.files.bookmarks);
+  } catch (exception &e){
+    cerr << "Exception caught from fimex position initialization: " << e.what() << endl;
+  }
+
+}
+
+void DatafileColl::initialiseFimexParameters()
+{
+  tsSetup setup;
+  fimexParameters.clear();
+  for(unsigned int i=0;i< setup.fimex.parameters.size();i++) {
+    pets::FimexParameter par;
+    try {
+      par.setFromString(setup.fimex.parameters[i]);
+      fimexParameters[par.streamtype].push_back(par);
+    } catch ( exception& e) {
+      cerr << e.what() << endl;
+    }
+  }
+}
+
+
+vector<miString> DatafileColl::getFimexTimes(std::string model)
+{
+  vector<miString> runtimes;
+  cerr << "trying to find runtimes for model: " << model << endl;
+
+  for ( int i = 0; i< fimexStreams.size();i++) {
+    if( model == fimexStreams[i].model) {
+      cerr << "Trying to read from Fimex file " << fimexStreams[i].streamname << endl;
+
+      try {
+
+        boost::posix_time::ptime time = fimexStreams[i].dataStream->getReferencetime();
+
+        std::string stime = boost::posix_time::to_simple_string(time);
+
+        fimexStreams[i].run = stime;
+
+        runtimes.push_back(stime);
+      } catch (exception & e ) {
+        cerr << e.what() << endl;
+      }
+    }
+  }
+
+  return runtimes;
+}
+
+
+pets::FimexStream* DatafileColl::getFimexStream(std::string model, std::string run)
+{
+  for ( int i = 0; i< fimexStreams.size();i++) {
+     if( model == fimexStreams[i].model && run == fimexStreams[i].run) {
+       return fimexStreams[i].dataStream;
+     }
+  }
+
+  ostringstream ost;
+  ost << "stream for " << model << " at " << run << " does not exist";
+  throw pets::FimexstreamException(ost.str());
+
+}
+
+
 

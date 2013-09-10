@@ -1,9 +1,9 @@
 # setup file for pu's time-series viewer
 
 lang=no
-Prefix= @prefix@
-prefix= @prefix@
-Sysconfdir= @sysconfdir@
+Prefix= /disk1/local/tseries/fimex
+prefix= /disk1/local/tseries/fimex
+Sysconfdir= ${prefix}/etc
 
 
 Odata=/opdata_local
@@ -42,10 +42,10 @@ day=-2
 
 <Path>
 
-Etc= $(Sysconfdir)/tseries/@PVERSION@
-Images=$(Prefix)/share/pixmaps/tseries/@PVERSION@/
-Doc=$(Prefix)/share/doc/tseries-@PVERSION@
-Lang=$(Prefix)/share/tseries/@PVERSION@/lang
+Etc= $(Sysconfdir)/tseries/5.3
+Images=$(Prefix)/share/pixmaps/tseries/5.3/
+Doc=$(Prefix)/share/doc/tseries-5.3
+Lang=$(Prefix)/share/tseries/5.3/lang
 
 #------------------
 

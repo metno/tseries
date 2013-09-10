@@ -158,7 +158,7 @@ QStringList qtsFilterManager::createList(const set<miString>& in)
   QStringList slist;
   set<miString>::iterator itr=in.begin();
   for(;itr!=in.end();itr++)
-    slist << itr->cStr();
+    slist << itr->c_str();
   return slist;
 }
 

@@ -624,7 +624,7 @@ int main(int argc, char** argv)
   data.setVerbose(verbose);
 
   // open batchinput
-  std::ifstream bfile(batchinput.cStr());
+  std::ifstream bfile(batchinput.c_str());
   if (!bfile) {
     cerr << "ERROR cannot open inputfile " << batchinput << endl;
     return 1;
@@ -993,8 +993,8 @@ int main(int argc, char** argv)
             << linenumbers[k] << endl;
         return 1;
       }
-      xsize = atoi(vvs[0].cStr());
-      ysize = atoi(vvs[1].cStr());
+      xsize = atoi(vvs[0].c_str());
+      ysize = atoi(vvs[1].c_str());
 
       // first stop ongoing postscript sessions
       endHardcopy();
@@ -1035,8 +1035,8 @@ int main(int argc, char** argv)
                 << lines[k] << " Linenumber:" << linenumbers[k] << endl;
             return 1;
           }
-          priop.papersize.hsize = atoi(vvs[0].cStr());
-          priop.papersize.vsize = atoi(vvs[1].cStr());
+          priop.papersize.hsize = atoi(vvs[0].c_str());
+          priop.papersize.vsize = atoi(vvs[1].c_str());
           priop.usecustomsize = true;
         } else {
           priop.pagesize = printman.getPage(vvvs[l]);
@@ -1150,8 +1150,8 @@ int main(int argc, char** argv)
           multiple_plots = false;
           return 1;
         }
-        numrows = atoi(v1[0].cStr());
-        numcols = atoi(v1[1].cStr());
+        numrows = atoi(v1[0].c_str());
+        numcols = atoi(v1[1].c_str());
         if (numrows < 1 || numcols < 1) {
           cerr << "WARNING. Illegal values to multiple.plots:" << lines[k]
               << " Linenumber:" << linenumbers[k] << endl;
@@ -1161,7 +1161,7 @@ int main(int argc, char** argv)
         float fmargin = 0.0;
         float fspacing = 0.0;
         if (v1.size() > 2) {
-          fspacing = atof(v1[2].cStr());
+          fspacing = atof(v1[2].c_str());
           if (fspacing >= 100 || fspacing < 0) {
             cerr << "WARNING. Illegal value for spacing:" << lines[k]
                 << " Linenumber:" << linenumbers[k] << endl;
@@ -1169,7 +1169,7 @@ int main(int argc, char** argv)
           }
         }
         if (v1.size() > 3) {
-          fmargin = atof(v1[3].cStr());
+          fmargin = atof(v1[3].c_str());
           if (fmargin >= 100 || fmargin < 0) {
             cerr << "WARNING. Illegal value for margin:" << lines[k]
                 << " Linenumber:" << linenumbers[k] << endl;
@@ -1200,8 +1200,8 @@ int main(int argc, char** argv)
               << " Linenumber:" << linenumbers[k] << endl;
           return 1;
         }
-        plotrow = atoi(v1[0].cStr());
-        plotcol = atoi(v1[1].cStr());
+        plotrow = atoi(v1[0].c_str());
+        plotcol = atoi(v1[1].c_str());
         if (plotrow < 0 || plotrow >= numrows || plotcol < 0 || plotcol
             >= numcols) {
           cerr << "WARNING. Illegal values to plotcell:" << lines[k]

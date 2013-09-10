@@ -118,6 +118,28 @@ bool tsRequest::restoreWdbFromLog(miutil::miString mod, miutil::miString sty, do
 
 
 
+bool  tsRequest::setFimexLocation(double flat,double flon, std::string name)
+{
+  if(name == fimexName)
+    return false;
+
+  fimexLat = flat;
+  fimexLon = flon;
+  fimexName= name;
+  return true;
+}
+
+void tsRequest::getFimexLocation(double& lat, double& lon, miutil::miString& name)
+{
+  lat = fimexLat;
+  lon = fimexLon;
+  name = fimexName;
+}
+
+
+
+
+
 
 
 

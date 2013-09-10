@@ -71,18 +71,27 @@ qtsSidebar::qtsSidebar()
   connect(wdbtab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeWdbModel(const QString& )));
   connect(wdbtab,SIGNAL(changerun(   const QString&)), this, SIGNAL(changeWdbRun(  const QString& )));
   connect(wdbtab,SIGNAL(changelevel( const QString&)), this, SIGNAL(changeWdbLevel(const QString& )));
-  connect(wdbtab,SIGNAL(changelevel( const QString&)), this, SIGNAL(changeWdbLevel(const QString& )));
-  connect(wdbtab,SIGNAL(changeCoordinates(float, float,QString)), this,
-      SIGNAL(changeCoordinates(float,float,QString)));
+  connect(wdbtab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeCoordinates(float,float,QString)));
+
+  fimextab = new CoordinateTab(this);
+
+  connect(fimextab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeFimexStyle(const QString& )));
+  connect(fimextab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeFimexModel(const QString& )));
+  connect(fimextab,SIGNAL(changerun(   const QString&)), this, SIGNAL(changeFimexRun(  const QString& )));
+  connect(fimextab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeFimexCoordinates(float,float,QString)));
 
 
 
-  QString dbname= s.wdb.host.cStr();
+
+
+  QString dbname= s.wdb.host.c_str();
   dbname.truncate( dbname.indexOf(".") );
+
 
 
   stationIdx = tabs->addTab(stationtab,tr("Stations"));
   wdbIdx     = tabs->addTab(wdbtab,dbname);
+  fimexIdx   = tabs->addTab(fimextab,"Fields");
 
   connect(tabs,SIGNAL(currentChanged(int)), this,SLOT(tabChanged(int)));
 
@@ -107,8 +116,8 @@ qtsSidebar::qtsSidebar()
   QPixmap refresh_pix(view_refresh_xpm);
   QPixmap add_pix(list_add_xpm);
 
-  pluginB = new ClientButton(s.server.name.cStr(),
-			     s.server.command.cStr(),
+  pluginB = new ClientButton(s.server.name.c_str(),
+			     s.server.command.c_str(),
 			     this);
   pluginB->useLabel(true);
 
@@ -156,7 +165,7 @@ qtsSidebar::qtsSidebar()
   connectStatus = new QLabel(this);
   connectStatus->setMinimumSize(50,32);
   cacheQueryButton->setMinimumSize(32,32);
-  busyLabel     = new QMovie(s.wdb.busyMovie.cStr());
+  busyLabel     = new QMovie(s.wdb.busyMovie.c_str());
 
   QHBoxLayout * blayout = new QHBoxLayout();
   blayout->addWidget(addBookmarkButton);
@@ -172,6 +181,18 @@ qtsSidebar::qtsSidebar()
   addBookmarkButton->hide();
   cacheQueryButton->hide();
 }
+
+void qtsSidebar::setCoordinates(float lon, float lat)
+{
+  if(actualIndex==wdbIdx) {
+    wdbtab->setCoordinates(lon, lat);
+  } else {
+
+
+    fimextab->setCoordinates(lon, lat);
+  }
+}
+
 
 void qtsSidebar::newTimeRange(int total,int fcast)
 {
@@ -203,10 +224,21 @@ QString  qtsSidebar::fillList(const vector<miutil::miString>& v, const StationTa
 {
   QStringList qlist;
   for(unsigned int i=0;i<v.size();i++) {
-     qlist << v[i].cStr();
+     qlist << v[i].c_str();
   }
 
+  if(l==StationTab::CMFIMEXSTYLE)
+    return fimextab->setStyles(qlist);
 
+  if(l==StationTab::CMFIMEXMODEL) {
+    fimextab->setModels(qlist);
+    return QString("");
+  }
+
+  if(l==StationTab::CMFIMEXRUN) {
+      fimextab->setRuns(qlist);
+      return QString("");
+    }
 
   if(l==StationTab::CMWDBSTYLE)
     return wdbtab->setStyles(qlist);
@@ -220,7 +252,7 @@ QString  qtsSidebar::fillList(const vector<miutil::miString>& v, const StationTa
 
 void qtsSidebar::tabChanged(int idx)
 {
-
+  actualIndex=idx;
   if(idx==wdbIdx){
     addBookmarkButton->show();
     cacheQueryButton->show();
@@ -229,6 +261,10 @@ void qtsSidebar::tabChanged(int idx)
     addBookmarkButton->hide();
     cacheQueryButton->hide();
     emit changetype(tsRequest::HDFSTREAM);
+  } else if (idx==fimexIdx) {
+    addBookmarkButton->show();
+    cacheQueryButton->hide();
+    emit changetype(tsRequest::FIMEXSTREAM);
   }
 }
 
@@ -260,10 +296,10 @@ bool qtsSidebar::restoreWdbFromLog(miutil::miString mod, miutil::miString sty, d
     return false;
   }
 
-  wdbtab->setStyle( sty.cStr() );
-  wdbtab->setModel( mod.cStr() );
-  wdbtab->setRun(   run.cStr() );
-  wdbtab->setCoordinates(lon,lat,posname.cStr());
+  wdbtab->setStyle( sty.c_str() );
+  wdbtab->setModel( mod.c_str() );
+  wdbtab->setRun(   run.c_str() );
+  wdbtab->setCoordinates(lon,lat,posname.c_str());
 
 }
 

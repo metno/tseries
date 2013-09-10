@@ -69,7 +69,10 @@ private:
   QMovie*        busyLabel;
   StationTab*    stationtab;
   CoordinateTab* wdbtab;
-  int wdbIdx, stationIdx;
+  CoordinateTab* fimextab;
+  int wdbIdx, stationIdx,fimexIdx;
+  int actualIndex;
+
 
 private slots:
   void tabChanged(int);
@@ -110,12 +113,19 @@ public:
   void enableWdb(bool);
   void setWdbModels(const QStringList& newModels){ wdbtab->setModels(newModels);    }
   void setWdbRuns(const QStringList& newRuns)    { wdbtab->setRuns(newRuns);        }
-  void setCoordinates(float lon, float lat)      { wdbtab->setCoordinates(lon, lat);}
+  void setCoordinates(float lon, float lat);
 
   void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat) {wdbtab->setWdbGeometry(minLon, maxLon, minLat, maxLat);}
   bool restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miString run, miutil::miString posname);
   void enableBusyLabel(bool enable);
   void enableCacheButton(bool enable, bool force, unsigned long querytime);
+
+
+  // Fimex
+
+  void setFimexModels(const QStringList& newModels){ fimextab->setModels(newModels);    }
+  void setFimexRuns(const QStringList& newRuns)    { fimextab->setRuns(newRuns);        }
+
 
 signals:
   void changestyle(const QString&);
@@ -134,6 +144,17 @@ signals:
   void changeCoordinates(float lon, float lat,QString name);
   void changetype(const tsRequest::Streamtype);
   void requestWdbCacheQuery();
+
+  // Fimex
+
+  void changeFimexStyle(const QString& );
+  void changeFimexModel(const QString& );
+  void changeFimexRun(  const QString& );
+  void changeFimexCoordinates(float lon, float lat,QString name);
+
+
+
+
 
 };
 

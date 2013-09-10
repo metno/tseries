@@ -92,10 +92,10 @@ void TimeControl::setTimecontrolFromlLog(  miutil::miString logString)
   vector<miutil::miString> logEntries=logString.split(",");
   if(logEntries.size() < 4) return;
 
-  int t=atoi(logEntries[0].cStr());
-  int f=atoi(logEntries[1].cStr());
-  int s=atoi(logEntries[2].cStr());
-  int l=atoi(logEntries[3].cStr());
+  int t=atoi(logEntries[0].c_str());
+  int f=atoi(logEntries[1].c_str());
+  int s=atoi(logEntries[2].c_str());
+  int l=atoi(logEntries[3].c_str());
 
     setTimeRange(t,f);
     setLengthSlider(l);

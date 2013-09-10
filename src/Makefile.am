@@ -107,7 +107,8 @@ common_cppflags +=              \
 	$(GLTEXT_CPPFLAGS)      \
 	$(PUDATATYPES_CPPFLAGS) \
 	$(QUTILITIES_CPPFLAGS)  \
-	$(QT4_CPPFLAGS) 
+	$(QT4_CPPFLAGS)         \
+	$(FIMEX_CPPFLAGS)
 
 common_ldflags=                \
 	$(PETS2_LDFLAGS)       \
@@ -116,7 +117,8 @@ common_ldflags=                \
 	$(PUDATATYPES_LDFLAGS) \
 	$(QUTILITIES_LDFLAGS)  \
 	$(QT4_LDFLAGS)         \
-	$(XEXT_LDFLAGS) $(GLU_LDFLAGS) $(X11_LDFLAGS) 
+	$(XEXT_LDFLAGS) $(GLU_LDFLAGS) $(X11_LDFLAGS) \
+	$(FIMEX_LDFLAGS)
 
 common_ldadd=               \
 	$(PETS2_LIBS)       \
@@ -125,7 +127,8 @@ common_ldadd=               \
 	$(PUDATATYPES_LIBS) \
 	$(QUTILITIES_LIBS)  \
 	$(QT4_LIBS) \
-	$(XEXT_LIBS) $(GLU_LIBS) $(X11_LIBS) 
+	$(XEXT_LIBS) $(GLU_LIBS) $(X11_LIBS) \
+	$(FIMEX_LIBS)
 
 
 # building tseries ------------------

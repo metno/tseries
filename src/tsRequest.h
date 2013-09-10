@@ -36,7 +36,7 @@
 
 class tsRequest {
 public:
-  enum Streamtype {HDFSTREAM, WDBSTREAM};
+  enum Streamtype {HDFSTREAM, WDBSTREAM,FIMEXSTREAM};
 
 private:
   miutil::miString mod_;
@@ -56,10 +56,20 @@ private:
   miutil::miString  wdbstationname;
 
 
+  double            fimexLat;
+  double            fimexLon;
+  miutil::miString  fimexModel;
+  miutil::miString  fimexStyle;
+  miutil::miString  fimexName;
+  miutil::miString  fimexRun;
+
+
+
+
   bool setString(const miutil::miString&, miutil::miString&);
 
 public:
-  tsRequest() : run_(-1), wdbReadTime(0), streamtype(tsRequest::HDFSTREAM), wdbStyle("Meteogram") {}
+  tsRequest() : run_(-1), wdbReadTime(0), streamtype(tsRequest::HDFSTREAM), wdbStyle("Meteogram"), fimexStyle("Meteogram") {}
 
   bool setModel(const miutil::miString& i) {              return setString(i,mod_); }
   bool setPos(  const miutil::miString& i) { posname_= i; return setString(i,pos_); }
@@ -93,6 +103,19 @@ public:
   miutil::miString posname()   const { return posname_;}
   tsRequest::Streamtype type() const { return streamtype;}
   miutil::miString file(const miutil::miString type) const;
+
+  bool setFimexModel(miutil::miString nmod) { return setString(nmod,fimexModel);  }
+  bool setFimexStyle(miutil::miString nsty) { return setString(nsty,fimexStyle);  }
+  bool setFimexRun(  miutil::miString nrun) { return setString(nrun,fimexRun);    }
+  bool setFimexLocation(double flat,double flon, std::string name);
+
+
+  miutil::miString getFimexModel()   const { return fimexModel; }
+  miutil::miString getFimexStyle()   const { return fimexStyle; }
+  miutil::miString getFimexRun()      const { return fimexRun; }
+  void getFimexLocation(double& lat, double& lon, miutil::miString& name);
+
+
 
 
   friend std::ostream& operator<<(std::ostream&, const tsRequest&);

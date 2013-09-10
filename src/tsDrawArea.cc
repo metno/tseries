@@ -42,9 +42,9 @@ using namespace std;
 using namespace miutil;
 
 tsDrawArea::tsDrawArea(tsRequest* tsr, DatafileColl* tsd, SessionManager* ses) :
-    request(tsr), data(tsd), session(ses), diagram(0), theData(0), width(1), height(
-        1), pixwidth(1), pixheight(1), Initialised(false), hardcopy(false), hardcopystarted(
-        false), showGridLines(true)
+                    request(tsr), data(tsd), session(ses), diagram(0), theData(0), width(1), height(
+                        1), pixwidth(1), pixheight(1), Initialised(false), hardcopy(false), hardcopystarted(
+                            false), showGridLines(true)
 {
   minProg = 0;
   maxProg = 300;
@@ -113,8 +113,12 @@ void tsDrawArea::setViewport(int w, int h, float pw, float ph)
 
 bool tsDrawArea::prepareData()
 {
+
   if (request->type() == tsRequest::WDBSTREAM)
     return prepareWdbData();
+
+  if(request->type() == tsRequest::FIMEXSTREAM)
+    return prepareFimexData();
 
   SessionOptions options;
 
@@ -124,7 +128,7 @@ bool tsDrawArea::prepareData()
 
   DataStream *datastream; // Current datafile
   vector<ParId> inlist, outlist;
-  set<ParId> allObservations;
+
   int first, last;
   ErrorFlag error;
   ParId modid = ID_UNDEF;
@@ -139,21 +143,16 @@ bool tsDrawArea::prepareData()
 
   theData = new ptDiagramData(setup.wsymbols);
 
-//  cerr << "RUN:" << request->run() << endl;
-//  cerr << "POS:" << request->pos() << endl;
-//  cerr << "STYLE:" << request->style() << endl;
-//  cerr << "MODEL:" << request->model() << endl;
+  //  cerr << "RUN:" << request->run() << endl;
+  //  cerr << "POS:" << request->pos() << endl;
+  //  cerr << "STYLE:" << request->style() << endl;
+  //  cerr << "MODEL:" << request->model() << endl;
 
   // fetch data
 
   for (i = 0; i < options.numModels(); i++) {
     inlist = options.paramVector(i); // ParId vector
 
-    for (int j = 0; j < inlist.size(); j++) {
-      ParId obsTmp = inlist[j];
-      obsTmp.model = "OBS";
-      allObservations.insert(obsTmp);
-    }
 
     if (inlist.size()) {
       modid.model = options.getmodel(i);
@@ -162,7 +161,7 @@ bool tsDrawArea::prepareData()
 
       if (numstreams < 1)
         cerr << "tsDrawArea::prepareData, found " << numstreams
-            << " matching streams for model " << modid.model << endl;
+        << " matching streams for model " << modid.model << endl;
 
       if (numstreams > 0) {
         datafound = false;
@@ -202,40 +201,8 @@ bool tsDrawArea::prepareData()
               theData->makeParameters(missingwp, true);
             }
 
-            lengthChanged=false;
 
-            int tmpLength = theData->timeLineLengthInHours();
-            lengthChanged = (tmpLength != forecastLength);
-            forecastLength= tmpLength;
-
-            if (showObservations) {
-//            ---------------------------------------------------------
-
-
-
-              miTime lastTime=  theData->timelineEnd();
-
-
-              vector<ParId> obsParameters, unresolvedObs;
-              set<ParId>::iterator itr = allObservations.begin();
-              for (; itr != allObservations.end(); itr++) {
-                obsParameters.push_back(*itr);
-              }
-
-
-              theData->fetchDataFromKlimaDB(data->getKlimaStream(),
-                  obsParameters, unresolvedObs, observationStartTime, lastTime);
-
-              if (unresolvedObs.size()) {
-                theData->makeParameters(unresolvedObs, true);
-              }
-            }
-
-            tmpLength = theData->timeLineLengthInHours();
-            if (tmpLength != totalLength)
-              lengthChanged=true;
-            totalLength = tmpLength;
-
+            prepareKlimaData(inlist);
           }
         }
       }
@@ -245,6 +212,54 @@ bool tsDrawArea::prepareData()
   //   cerr << *theData << endl;
   return true;
 }
+
+
+bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
+{
+  lengthChanged=false;
+  int tmpLength = theData->timeLineLengthInHours();
+  lengthChanged = (tmpLength != forecastLength);
+  forecastLength= tmpLength;
+
+
+
+  if (showObservations) {
+    vector<ParId> obsParameters, unresolvedObs;
+    set<ParId> allObservations;
+    miTime lastTime=  theData->timelineEnd();
+
+    for (int j = 0; j < inlist.size(); j++) {
+           ParId obsTmp = inlist[j];
+           obsTmp.model = "OBS";
+           if(allObservations.count(obsTmp))
+             continue;
+           allObservations.insert(obsTmp);
+           obsParameters.push_back(obsTmp);
+    }
+
+
+    set<ParId>::iterator itr = allObservations.begin();
+
+    theData->fetchDataFromKlimaDB(data->getKlimaStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
+
+    if (unresolvedObs.size()) {
+      theData->makeParameters(unresolvedObs, true);
+    }
+  }
+
+  tmpLength = theData->timeLineLengthInHours();
+  if (tmpLength != totalLength)
+    lengthChanged=true;
+  totalLength = tmpLength;
+
+  return true;
+}
+
+
+
+
+
+
 
 bool tsDrawArea::prepareDiagram()
 {
@@ -275,8 +290,8 @@ bool tsDrawArea::prepareDiagram()
   ptColor bgColor;
   if (!diagram->makeDefaultPlotElements(&bgColor)) {
     cerr
-        << "tsDrawArea::prepareDiagram(): !diagram->makeDefaultPlotElements(&bgColor)"
-        << endl;
+    << "tsDrawArea::prepareDiagram(): !diagram->makeDefaultPlotElements(&bgColor)"
+    << endl;
     return false;
   }
 
@@ -442,11 +457,11 @@ bool tsDrawArea::prepareWdbData()
   SessionOptions options;
   vector<ParId> inlist, outlist;
   // the style (for plot)
-  diaStyle = session->getStyle(request->getWdbStyle());
+  diaStyle = session->getStyle(request->getWdbStyle(),SessionManager::ADD_TO_WDB_TAB);
 
   // the style index - needed to find parameters according to our model which
   // is probably unknown in tsDiagrams
-  int styleIndex = session->getStyleIndex(request->getWdbStyle());
+  int styleIndex = session->getStyleIndex(request->getWdbStyle(),SessionManager::ADD_TO_WDB_TAB);
   miString mod = request->getWdbModel();
 
   //  Run=0; run is not used in the function at all!
@@ -495,6 +510,81 @@ bool tsDrawArea::prepareWdbData()
   if (outlist.size())
     theData->makeParameters(outlist, true);
 
+
+
+
+
   return true;
 }
+
+
+
+/// FIMEX
+
+
+bool tsDrawArea::prepareFimexData()
+{
+  cerr << "tsDrawArea::prepareFimexData" << endl;
+  miString fimexname;
+  double lat,lon;
+  miString fimexmodel = request->getFimexModel();
+  miString fimexstyle = request->getFimexStyle();
+  miString fimexrun   = request->getFimexRun();
+  request->getFimexLocation(lat,lon,fimexname);
+
+  SessionOptions options;
+  vector<ParId> inlist, outlist;
+  // the style (for plot)
+  diaStyle = session->getStyle(fimexstyle,SessionManager::ADD_TO_FIMEX_TAB);
+
+  // the style index - needed to find parameters according to our model which
+  // is probably unknown in tsDiagrams
+  int styleIndex = session->getStyleIndex(fimexstyle,SessionManager::ADD_TO_FIMEX_TAB);
+
+
+  //  Run=0; run is not used in the function at all!
+  bool retryGetShowOptions = false;
+
+  session->getShowOption(options, styleIndex, fimexmodel, 0);
+
+
+  if (!options.numModels()) {
+    cerr << "empty model list in options in the retry" << endl;
+    return false;
+  }
+
+  if (theData)
+    delete theData;
+
+  // fetch data
+  theData = new ptDiagramData(setup.wsymbols);
+
+  unsigned long readtime;
+
+  for (int i = 0; i < options.numModels(); i++) {
+    inlist = options.paramVector(i);
+
+    theData->fetchDataFromFimex(data->getFimexStream(fimexmodel,fimexrun), lat, lon, fimexname, inlist, outlist);
+  }
+
+  // Find any missing params
+
+  if (outlist.size())
+    theData->makeParameters(outlist, true);
+
+
+  prepareKlimaData(inlist);
+
+
+  return true;
+
+}
+
+
+
+
+
+
+
+
 

@@ -42,6 +42,10 @@
 #include <tsData/ptParameterDefinition.h>
 #include <tsData/WdbStream.h>
 #include <tsData/KlimaStream.h>
+#include <tsData/FimexStream.h>
+#include <tsData/FimexTools.h>
+
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #define MAXDATASETS 50
 #define MAXMODELSINSTREAM 100
@@ -118,16 +122,27 @@ struct  DsInfo {
   std::vector<miutil::miString> txtList[MAXMODELSINSTREAM]; // info texts
 };
 
+struct FimexInfo {
+  std::string streamname; // name of stream (filename)
+  std::string model;   // short name (index)
+  std::string sType;      // streamtype (netcdf, etc)
+  pets::FimexStream* dataStream; // the data
+  std::string run;
+};
+
 class DatafileColl
 {
 private:
   miutil::miString collectName;          // file collection name
-  std::vector<DsInfo>   datastreams;    // List of datafiles
+  std::vector<DsInfo>    datastreams;     // List of datafiles
+  std::vector<FimexInfo> fimexStreams;    // List of fimex datastreams
   pets::WdbStream*       wdbStream;      // the wdb data stream
   pets::KlimaStream*     klimaStream;    // the klima database from an url interface
   std::vector<ExtStation> stations;   // List of stations
   std::vector<miutil::miString> datasetname;  // name of dataset
   std::map<miutil::miString,miPosition> pos_info; // all positions ordered by name....
+  std::map< std::string, std::vector<pets::FimexParameter> > fimexParameters;
+
   int numStationsDS[MAXDATASETS];// number of positions in each dataset
   //vector<miutil::miString> priorStations;// names of prioritized stations
   float tolerance;               // 10000*degrees
@@ -135,6 +150,11 @@ private:
   ParameterDefinition parDef;
   bool verbose;
   bool streams_opened;
+
+
+  pets::FimexPoslist fimexpositions;
+
+
 
   unsigned long _modtime(miutil::miString&); // get file modification time
   void _filestat(miutil::miString&, struct stat&); // get file stats
@@ -146,6 +166,8 @@ private:
   void openKlimaStream();
   void closeKlimaStream();
 
+  void initialiseFimexPositions();
+  void initialiseFimexParameters();
   bool wdbStreamIsOpen;
 
 protected:
@@ -218,10 +240,19 @@ public:
   std::vector<std::string> getWdbParameterNames() const { return wdbStream->getWdbParameterNames(); }
   pets::WdbStream::BoundaryBox getWdbGeometry();
   pets::WdbStream*  getWdbStream() { return wdbStream;}
+
+  // klima -----------------------
+
   pets::KlimaStream* getKlimaStream() { return klimaStream;}
-
-
   pets::KlimaStation getNearestKlimaStation(miCoordinates& pos) { return klimaStream->getNearestKlimaStation(pos);}
+
+
+  // fimex -------------------------
+
+  //std::set<std::string> getFimexModels(std::string style);
+  std::vector<miutil::miString> getFimexTimes(std::string model);
+
+  pets::FimexStream* getFimexStream(std::string model, std::string run);
 
 
 };
