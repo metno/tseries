@@ -144,6 +144,8 @@ void WdbBookmarkTools::addFolder(string folder,bool ignoreFromSave)
 
 void WdbBookmarkTools::write(string filename)
 {
+
+  cerr << "writing bookmarks to " << filename << endl;
   ofstream out(filename.c_str());
   if(!out) {
     cerr << "Unable to write stationlist to " << filename << endl;
@@ -187,6 +189,11 @@ std::string WdbBookmarkTools::createRecordName(float f,char pos, char neg)
   ost << abs(deg) << "° " << abs(min) << "\' " << ( deg >=0 ? pos : neg );
   return ost.str();
 }
+
+
+
+
+
 
 
 

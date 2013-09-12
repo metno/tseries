@@ -63,7 +63,8 @@ private:
   QPushButton*   filterB;
   QPushButton*   observationB;
   QPushButton *  cacheQueryButton;
-  QPushButton *  addBookmarkButton;
+  QPushButton *  addWdbBookmarkButton;
+  QPushButton *  addFimexBookmarkButton;
   QLabel*        connectStatus;
   QLabel*        obsInfo;
   QMovie*        busyLabel;
@@ -98,8 +99,9 @@ public:
   void setObsInfo(QString s);
   miutil::miString coordinateString() const { return wdbtab->coordinateString(); }
 
-  void writeBookmarks() { wdbtab->writeBookmarks();}
-
+  void writeBookmarks();
+  void setTab(int idx);
+  int getTab() { return tabs->currentIndex(); }
 
   miutil::miString getTimecontrolLog() { return timecontrol->getTimecontrolLog(); }
   void setTimeControlFromLog(miutil::miString t) { timecontrol->setTimecontrolFromlLog(t); }
@@ -125,7 +127,11 @@ public:
 
   void setFimexModels(const QStringList& newModels){ fimextab->setModels(newModels);    }
   void setFimexRuns(const QStringList& newRuns)    { fimextab->setRuns(newRuns);        }
+  std::vector<std::string> getFimexPositions()     { return fimextab->getPoslist();     }
+  void changeFimexPosition( QString newpos) { fimextab->changePosition(newpos);}
 
+  std::string getFimexExpanded() const { return fimextab->getExpandedDirs(); }
+  bool restoreFimexFromLog(std::string mod, std::string sty, std::string expanded);
 
 signals:
   void changestyle(const QString&);
@@ -151,7 +157,7 @@ signals:
   void changeFimexModel(const QString& );
   void changeFimexRun(  const QString& );
   void changeFimexCoordinates(float lon, float lat,QString name);
-
+  void changeFimexPoslist();
 
 
 

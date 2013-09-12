@@ -57,9 +57,11 @@
 
 
 const miutil::miString DATASET_TSERIES= "T-series ";
+const miutil::miString DATASET_FIMEX=   "T-series Fimex";
 const miutil::miString TARGETS_TSERIES= "TARGETS_TSERIES";
 const miutil::miString IMG_STD_TSERIES= "IMG_STD_TSERIES";
 const miutil::miString IMG_FIN_TSERIES= "IMG_FIN_TSERIES";
+const miutil::miString IMG_NEW_TSERIES= "IMG_NEW_TSERIES";
 const miutil::miString IMG_ICON_TSERIES= "IMG_ICON_TSERIES";
 const miutil::miString NOMODEL_TSERIES= "NONE";
 const miutil::miString TS_MINE        = " -- ";
@@ -69,7 +71,7 @@ class qtsWork: public QWidget
   Q_OBJECT
 
 public:
-  enum SelectionType{SELECT_BY_STATION,SELECT_BY_COORDINATES};
+  enum SelectionType{SELECT_BY_STATION,SELECT_BY_WDB, SELECT_BY_FIMEX};
 
 private:
   qtsSidebar*    sidebar;
@@ -122,7 +124,7 @@ public:
   std::set<miutil::miString> Filter() const {return filter;}
   std::set<miutil::miString> fullPosList();
   std::set<miutil::miString> createFilter(bool orig=false);
-
+  miMessage getFimexStationList();
   miMessage getStationList();
   miutil::miString  model() const {return request.model();}
   miutil::miString  lastList() { return (filterOn ? TS_MINE : "" ) + request.model();}
@@ -143,6 +145,7 @@ public:
 
   void setObservationStartTime(miutil::miTime st) {show->setObservationStartTime(st); refresh(true);}
   miutil::miTime getObservationStartTime() const { return show->getObservationStartTime(); }
+
 
 
   public slots:
@@ -182,7 +185,7 @@ public:
   void refreshStations();
   void selectionTypeChanged();
   void coordinatesChanged();
-
+  void fimexPoslistChanged();
 
 };
 #endif

@@ -278,7 +278,8 @@ bool tsSetup::read(const string& f, string s)
   lookup["HOME"] = path.home;
 
   files.filter = path.home + "/.tseries/tseries.filter";
-  files.bookmarks=path.home + "/.tseries/bookmarks.def";
+  files.wdbBookmarks=path.home + "/.tseries/bookmarks.wdb";
+  files.fimexBookmarks=path.home + "/.tseries/bookmarks.fimex";
 
   if(!readsetup(f))
     if(!readsetup( path.home+"/.tseries/tseries.ctl"))
@@ -568,6 +569,8 @@ void tsSetup::setFiles(string& key, string& content)
     setup(files.weatherSymbols,content);
   else if(key == "STDIMAGE")
     setup(files.std_image,content);
+  else if(key == "NEWIMAGE")
+    setup(files.new_station_image,content);
   else if(key == "FINIMAGE")
     setup(files.fin_image,content);
   else if(key == "ICONIMAGE")
@@ -576,8 +579,10 @@ void tsSetup::setFiles(string& key, string& content)
     setup(files.baseFilter,content);
   else if(key == "COMMONBOOKMARKS")
     setup(files.commonBookmarks,content);
-  else if(key == "BOOKMARKS")
-    setup(files.bookmarks,content);
+  else if(key == "WDBBOOKMARKS")
+    setup(files.wdbBookmarks,content);
+  else if(key == "FIMEXBOOKMARKS")
+      setup(files.fimexBookmarks,content);
   else
     warn(key,wKEY);
 }

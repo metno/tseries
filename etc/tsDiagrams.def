@@ -762,7 +762,7 @@ PARAM=TANM,x,x,x
 
 # lightweight meteogram fimex
 [FIMEX::DIAGRAM]
-NAME=Meteogram-lett
+NAME=Meteogram-mini
 STYLEFILE=/disk1/local/tseries/fimex/share/tseries/5.3/style/style.meteogram
 
 [LEGALMODELS]
@@ -772,12 +772,6 @@ MODEL=OBS
 [MODELINDEPENDENT]
 PARAM=TT,x,x,x
 PARAM=MSLP,x,x,x
-PARAM=RR,x,x,x
-PARAM=CL,x,x,x
-PARAM=CM,x,x,x
-PARAM=CH,x,x,x
-PARAM=FG,x,x,x
-PARAM=RRAC,x,x,x
 
 [ADD]
 

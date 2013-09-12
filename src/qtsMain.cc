@@ -58,10 +58,10 @@ const miString thisTM = "MARKEDTIME";
 const miString dianaTM = "DIANATIME";
 
 qtsMain::qtsMain(miString l) :
-    lang(l), QMainWindow()
+            lang(l), QMainWindow()
 
 {
-// Added to avoid unnessecary updates when connected to diana
+  // Added to avoid unnessecary updates when connected to diana
   // and diana is in automatic update mode
   currentTime = miTime::nowTime();
 
@@ -92,6 +92,8 @@ qtsMain::qtsMain(miString l) :
   connect(work, SIGNAL(selectionTypeChanged()), this,
       SLOT(selectionTypeChanged()));
   connect(work, SIGNAL(coordinatesChanged()), this, SLOT(coordinatesChanged()));
+
+  connect(work, SIGNAL(fimexPoslistChanged()), this, SLOT(fimexPoslistChanged()));
 
   // milliseconds
   int updatetimeout = (1000 * 60) * 2;
@@ -149,7 +151,7 @@ void qtsMain::makeFileMenu()
   observationStartAct = new QAction(tr("Change Observation start date"), this);
   connect(observationStartAct, SIGNAL(triggered()), this,
       SLOT( changeObservationStart() ));
-   menu_file->addAction(observationStartAct);
+  menu_file->addAction(observationStartAct);
 
 
   // -------------------
@@ -538,7 +540,13 @@ void qtsMain::togglePositions(bool isOn)
     m.command = qmstrings::showpositions;
   else
     m.command = qmstrings::hidepositions;
-  m.description = DATASET_TSERIES + work->lastList();
+
+
+  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX){
+    m.description = DATASET_FIMEX;
+  } else {
+    m.description = DATASET_TSERIES + work->lastList();
+  }
   pluginB->sendMessage(m);
 }
 
@@ -623,13 +631,24 @@ void qtsMain::sendImage(const miString name, const QImage& image)
 
 void qtsMain::refreshDianaStations()
 {
+
   if (!dianaconnected || !sposition)
     return;
+
+  miString prevModel = currentModel;
+
+
+  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX){
+    sendNewPoslist();
+    sendNamePolicy();
+    disablePoslist(prevModel);
+    enableCurrentPoslist();
+    return;
+  }
 
   if (currentModel == work->lastList())
     return;
 
-  miString prevModel = currentModel;
   currentModel = work->lastList();
 
   if (!sendModels.count(currentModel))
@@ -660,13 +679,16 @@ void qtsMain::enableCurrentPoslist()
     return;
   miMessage m;
   m.command = qmstrings::showpositions;
-  m.description = DATASET_TSERIES + currentModel;
+  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX){
+    m.description = DATASET_FIMEX;
+  } else {
+    m.description = DATASET_TSERIES + currentModel;
+  }
   pluginB->sendMessage(m);
 }
 
 void qtsMain::sendNewPoslist()
 {
-  cerr << "sendNewPosList" << endl;
   sendModels.insert(currentModel);
   if (!dianaconnected)
     return;
@@ -692,6 +714,19 @@ void qtsMain::sendTarget()
   pluginB->sendMessage(m2);
 }
 
+
+void qtsMain::clearFimexList()
+{
+  if (!dianaconnected)
+    return;
+
+  miMessage m;
+  m.command = qmstrings::hidepositions;
+  m.description = DATASET_FIMEX;
+  pluginB->sendMessage(m);
+}
+
+
 void qtsMain::clearTarget()
 {
   if (!dianaconnected)
@@ -712,15 +747,17 @@ void qtsMain::processConnect()
   if (pluginB->clientTypeExist(s.server.client)) {
     dianaconnected = true;
 
-    cout << ttc::color(ttc::Blue) << "< CONNECTING TO: " << s.server.client
+    cerr << ttc::color(ttc::Blue) << "< CONNECTING TO: " << s.server.client
         << " > " << ttc::reset << endl;
 
     QImage sImage(s.files.std_image.c_str());
     QImage fImage(s.files.fin_image.c_str());
     QImage iImage(s.files.icon_image.c_str());
+    QImage nImage(s.files.new_station_image.c_str());
 
-    sendImage(IMG_STD_TSERIES, sImage);
-    sendImage(IMG_FIN_TSERIES, fImage);
+    sendImage(IMG_STD_TSERIES,  sImage);
+    sendImage(IMG_FIN_TSERIES,  fImage);
+    sendImage(IMG_NEW_TSERIES,  nImage);
     sendImage(IMG_ICON_TSERIES, iImage);
 
     sendNamePolicy();
@@ -767,7 +804,7 @@ void qtsMain::sendNamePolicy()
 
 void qtsMain::processLetter(const miMessage& letter)
 {
-//#ifdef DEBUG
+  #ifdef DEBUG
   cerr <<"Command: "<<letter.command<<"  ";
   cerr <<endl;
   cerr <<" Description: "<<letter.description<<"  ";
@@ -777,12 +814,12 @@ void qtsMain::processLetter(const miMessage& letter)
   cerr <<" Common: "<<letter.common<<"  ";
   cerr <<endl;
   for (int i=0;i<letter.data.size();i++)
-  if (letter.data[i].length()<80)
-  cerr <<" data["<<i<<"]:"<<letter.data[i]<<endl;;
+    if (letter.data[i].length()<80)
+      cerr <<" data["<<i<<"]:"<<letter.data[i]<<endl;;
   cerr <<" From: "<<letter.from<<endl;
   cerr <<"To: "<<letter.to<<endl;
 
-//#endif
+  #endif
   if (letter.command == qmstrings::removeclient) {
     tsSetup s;
     if (letter.common.find(s.server.client.c_str()) != string::npos)
@@ -886,11 +923,11 @@ void qtsMain::changeObservationStart()
   PopupCalendar * calendar = new PopupCalendar(this,qstart);
 
   if (calendar->exec()) {
-     qstart=calendar->result();
-     qstart.getDate(&year,&month,&day);
-     start.setTime(year,month,day,0,0,0);
-     work->setObservationStartTime(start);
-   }
+    qstart=calendar->result();
+    qstart.getDate(&year,&month,&day);
+    start.setTime(year,month,day,0,0,0);
+    work->setObservationStartTime(start);
+  }
 
 }
 
@@ -996,12 +1033,17 @@ void qtsMain::toggleLang(QAction* action)
 
 void qtsMain::selectionTypeChanged()
 {
-  if (work->getSelectionType() == qtsWork::SELECT_BY_COORDINATES) {
+  if (work->getSelectionType() == qtsWork::SELECT_BY_WDB) {
     togglePositions(false);
     sendTarget();
+    clearFimexList();
+  } else if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
+    clearTarget();
+    togglePositions(true);
   } else {
     togglePositions(true);
     clearTarget();
+    clearFimexList();
   }
 }
 
@@ -1009,4 +1051,14 @@ void qtsMain::coordinatesChanged()
 {
   sendTarget();
 }
+
+
+void qtsMain::fimexPoslistChanged()
+{
+  refreshDianaStations();
+}
+
+
+
+
 

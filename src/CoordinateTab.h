@@ -55,6 +55,9 @@
 
 class CoordinateTab : public QWidget {
   Q_OBJECT
+public:
+  enum TabType { WDBTAB, FIMEXTAB };
+
 private:
   QComboBox   * modell;     // list of models
   QComboBox   * stylel;     // list of styles (meteogram etc.)
@@ -63,13 +66,16 @@ private:
   QTreeView   * bookmarks;
   QPushButton * cacheQueryButton;
 
+  TabType tabtype;
+
   CoordinateManager * latitude;
   CoordinateManager * longitude;
   bool                activeCacheRequest;
   WdbBookmarkTools    bookmarkTools;
   QStandardItemModel* model;
+  std::string         variableBookmarkfile;
 public:
-  CoordinateTab(QWidget*);
+  CoordinateTab(QWidget*,CoordinateTab::TabType ttype);
 
   QString setStyles(const QStringList& qlist);
   void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat);
@@ -78,6 +84,11 @@ public:
   void setActiveCacheRequest(bool b) { activeCacheRequest=b;}
   bool getActiveCacheRequest() const { return activeCacheRequest;}
   void writeBookmarks();
+  std::vector<std::string> getPoslist();
+  bool findPosition(QString newpos, QModelIndex& idx);
+
+  std::string getExpandedDirs();
+  void setExpandedDirs(std::string);
 
 
 private slots:
@@ -86,7 +97,7 @@ private slots:
   void changeModel(const QString&);
   void changeRun(const QString&);
   void bookmarkClicked(QModelIndex idx);
-
+  void poslistChanged(const QModelIndex &);
 
 public slots:
   void setCoordinates(float lon, float lat, QString name="");
@@ -101,12 +112,15 @@ public slots:
   void setModels(const QStringList& newmodels);
   void setRuns(const QStringList& newmodels);
   void addBookmarkFolder();
+  void changePosition(QString);
+
 
   signals:
     void changestyle(const QString&);
     void changemodel(const QString&);
     void changerun(const QString&);
     void changeCoordinates(float lon, float lat,QString name);
+    void changePoslist();
 
 };
 

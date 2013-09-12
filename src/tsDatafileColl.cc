@@ -663,7 +663,7 @@ void DatafileColl::initialiseFimexPositions()
   }
 
   try {
-    fimexpositions.addFile(setup.files.bookmarks);
+    fimexpositions.addFile(setup.files.fimexBookmarks);
   } catch (exception &e){
     cerr << "Exception caught from fimex position initialization: " << e.what() << endl;
   }

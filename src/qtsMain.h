@@ -179,7 +179,7 @@ private slots:
   void processConnect();
   void sendTarget();
   void clearTarget();
-
+  void clearFimexList();
   void showHelp();
   void cleanConnection();
 
@@ -191,6 +191,7 @@ private slots:
 
   void selectionTypeChanged();
   void coordinatesChanged();
+  void fimexPoslistChanged();
 
 public:
   qtsMain(miutil::miString l);

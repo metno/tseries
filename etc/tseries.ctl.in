@@ -56,9 +56,11 @@ Configure=$(Home)/.tseries/tseries.conf
 WeatherSymbols=$(Etc)/symbols.def
 stdImage=$(Images)/ts_station.xpm
 finImage=$(Images)/ts_find.xpm
+newImage=$(Images)/ts_new_station.xpm
 iconImage=$(Prefix)/share/pixmaps/tseries.png
 baseFilter=$(Etc)/tseries.filter
-bookmarks=$(Home)/.tseries/bookmarks.def
+wdbBookmarks=$(Home)/.tseries/bookmarks.wdb
+fimexBookmarks=$(Home)/.tseries/bookmarks.fimex
 commonBookmarks=$(Etc)/tseries-bookmarks.common
 
 [VNN]

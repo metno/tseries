@@ -131,11 +131,13 @@ public:
     std::string configure;
     std::string weatherSymbols;
     std::string std_image;
+    std::string new_station_image;
     std::string fin_image;
     std::string icon_image;
     std::string filter;
     std::string baseFilter;
-    std::string bookmarks;
+    std::string wdbBookmarks;
+    std::string fimexBookmarks;
     std::string commonBookmarks;
   };
 

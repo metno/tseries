@@ -50,8 +50,9 @@
 
 using namespace std;
 
-CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
+CoordinateTab::CoordinateTab(QWidget* parent, CoordinateTab::TabType ttype)   : QWidget(parent)
 {
+  tabtype = ttype;
   //QPixmap list_add_pix(list_add_xpm);
 
 
@@ -59,10 +60,10 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   modell    = new QComboBox(this);
   runl      = new QComboBox(this);
   stylel    = new QComboBox(this);
-//  bookmarkl = new QComboBox(this);
+  //  bookmarkl = new QComboBox(this);
 
-//  addBookmarkButton =  new QPushButton(list_add_pix,"",this);
-// addBookmarkButton->setMaximumWidth(list_add_pix.width());
+  //  addBookmarkButton =  new QPushButton(list_add_pix,"",this);
+  // addBookmarkButton->setMaximumWidth(list_add_pix.width());
 
   connect(stylel,SIGNAL(activated(const QString&)),    this, SIGNAL(changestyle(const QString&)));
   connect(modell,SIGNAL(activated(const QString&)),    this, SLOT(changeModel(const QString&)));
@@ -87,10 +88,16 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   model->setHorizontalHeaderLabels ( head );
   tsSetup setup;
 
+  variableBookmarkfile = (tabtype == FIMEXTAB ? setup.files.fimexBookmarks : setup.files.wdbBookmarks);
+
+
+
+
+
   bookmarkTools.setMaxRecords(setup.wdb.maxRecord);
   bookmarkTools.setModel(model);
   bookmarkTools.addFolder("TRASH",true);
-  bookmarkTools.read(setup.files.bookmarks,false);
+  bookmarkTools.read(variableBookmarkfile,false);
   bookmarkTools.read(setup.files.commonBookmarks,true);
   bookmarkTools.addFolder("RECORD",true);
   bookmarks->setModel(model);
@@ -99,7 +106,10 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   bookmarks->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
   connect(bookmarks, SIGNAL(activated(QModelIndex)), this, SLOT(bookmarkClicked(QModelIndex)));
-  connect(bookmarks, SIGNAL(clicked(QModelIndex)), this, SLOT(bookmarkClicked(QModelIndex)));
+  connect(bookmarks, SIGNAL(clicked(QModelIndex)),         this, SLOT(bookmarkClicked(QModelIndex)));
+  connect(bookmarks, SIGNAL(expanded(const QModelIndex &)),this, SLOT(poslistChanged(const QModelIndex &)));
+  connect(bookmarks, SIGNAL(collapsed(const QModelIndex &)),this, SLOT(poslistChanged(const QModelIndex &)));
+
   // layout -------------------------------
 
 
@@ -250,8 +260,7 @@ void CoordinateTab::setRun(const QString nrun)
 
 void CoordinateTab::writeBookmarks()
 {
-  tsSetup setup;
-  bookmarkTools.write(setup.files.bookmarks);
+  bookmarkTools.write(variableBookmarkfile);
 
 }
 
@@ -304,6 +313,44 @@ void CoordinateTab::changeRun(const QString& s)
 }
 
 
+bool CoordinateTab::findPosition(QString newpos, QModelIndex& found_idx)
+{
+  unsigned int num_rows = model->rowCount();
+
+  for (unsigned int row=0; row <num_rows; row++ ) {
+    QModelIndex idx = model->index(row,0);
+    if(bookmarks->isExpanded(idx)) {
+      QStandardItem * item = model->itemFromIndex(idx);
+      if(item) {
+        unsigned int num_item_rows=item->rowCount();
+        for(unsigned int item_row=0;item_row < num_item_rows;item_row++) {
+          QStandardItem * child = item->child(item_row,0);
+
+          if(child) {
+            if(newpos==child->text()){
+              found_idx=model->indexFromItem(child);
+              return true;
+            }
+          }
+        }
+      }
+
+    }
+
+  }
+  return false;
+}
+
+void CoordinateTab::changePosition(QString newpos)
+{
+  QModelIndex idx;
+  if(findPosition(newpos,idx)) {
+    bookmarks->setCurrentIndex(idx);
+    bookmarkClicked(idx);
+  }
+
+}
+
 
 void CoordinateTab::bookmarkClicked(QModelIndex idx)
 {
@@ -329,6 +376,85 @@ void CoordinateTab::addBookmarkFolder()
   bookmarkTools.addFolder("NEW",false);
 }
 
+void CoordinateTab::poslistChanged(const QModelIndex &)
+{
+  emit changePoslist();
+}
 
+std::string CoordinateTab::getExpandedDirs()
+{
+  ostringstream ost;
+  cerr << "getExpandedDirs" << endl;
+  unsigned int num_rows = model->rowCount();
+  std::string delimiter="";
+   for (unsigned int row=0; row <num_rows; row++ ) {
+     QModelIndex idx = model->index(row,0);
+     if(bookmarks->isExpanded(idx)) {
+       QStandardItem * item = model->itemFromIndex(idx);
+       if(item) {
+         ost <<   delimiter << item->text().toStdString();
+         delimiter = ",";
+
+       }
+     }
+   }
+   return ost.str();
+}
+
+
+void CoordinateTab::setExpandedDirs(std::string e)
+{
+  vector<string> exdirs;
+  boost::split(exdirs,e, boost::algorithm::is_any_of(",") );
+
+  for(int i=0; i< exdirs.size();i++) {
+    QString dir = QString::fromStdString(exdirs[i]);
+    QList<QStandardItem *> items = model->findItems(dir);
+    if(!items.isEmpty()) {
+      QModelIndex idx= model->indexFromItem(items.front());
+      bookmarks->expand(idx);
+    }
+  }
+}
+
+
+
+
+
+vector<string> CoordinateTab::getPoslist()
+{
+
+  set<QString> positionfilter;
+  vector<string> activePositions;
+  unsigned int num_rows = model->rowCount();
+
+  for (unsigned int row=0; row <num_rows; row++ ) {
+    QModelIndex idx = model->index(row,0);
+    if(bookmarks->isExpanded(idx)) {
+      QStandardItem * item = model->itemFromIndex(idx);
+      if(item) {
+        unsigned int num_item_rows=item->rowCount();
+        for(unsigned int item_row=0;item_row < num_item_rows;item_row++) {
+          QStandardItem * child = item->child(item_row,0);
+
+          if(child) {
+            QVariant var =child->data();
+            QString  coor=var.toString();
+            QString  name=child->text();
+
+            if( !positionfilter.count(name)) {
+              positionfilter.insert(name); // avoid doublets
+              ostringstream ost;
+              ost << name.toStdString() << ":" << coor.toStdString();
+              activePositions.push_back(ost.str());
+            }
+          }
+        }
+      }
+
+    }
+  }
+  return activePositions;
+}
 
 
