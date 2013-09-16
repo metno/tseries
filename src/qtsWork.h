@@ -53,6 +53,8 @@
 #include <puDatatypes/miCoordinates.h>
 #include <puTools/miString.h>
 
+#include <string>
+#include <vector>
 #include <set>
 
 
@@ -62,6 +64,7 @@ const miutil::miString TARGETS_TSERIES= "TARGETS_TSERIES";
 const miutil::miString IMG_STD_TSERIES= "IMG_STD_TSERIES";
 const miutil::miString IMG_FIN_TSERIES= "IMG_FIN_TSERIES";
 const miutil::miString IMG_NEW_TSERIES= "IMG_NEW_TSERIES";
+const miutil::miString IMG_ACTIVE_TSERIES= "IMG_ACTIVE_TSERIES";
 const miutil::miString IMG_ICON_TSERIES= "IMG_ICON_TSERIES";
 const miutil::miString NOMODEL_TSERIES= "NONE";
 const miutil::miString TS_MINE        = " -- ";
@@ -180,12 +183,14 @@ public:
   void changeFimexRun(const QString&);
   void changeFimexCoordinates(float lon, float lat, QString name);
   void makeFimexModels(QString& activeStyle);
+  void newFimexPoslist();
 
   signals:
   void refreshStations();
   void selectionTypeChanged();
   void coordinatesChanged();
   void fimexPoslistChanged();
+  void fimexPositionChanged(const QString&);
 
 };
 #endif

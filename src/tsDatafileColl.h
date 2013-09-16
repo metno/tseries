@@ -152,7 +152,7 @@ private:
   bool streams_opened;
 
 
-  pets::FimexPoslist fimexpositions;
+
 
 
 

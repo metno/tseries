@@ -52,6 +52,7 @@ using namespace std;
 
 CoordinateTab::CoordinateTab(QWidget* parent, CoordinateTab::TabType ttype)   : QWidget(parent)
 {
+  recordingPositions=false;
   tabtype = ttype;
   //QPixmap list_add_pix(list_add_xpm);
 
@@ -89,9 +90,6 @@ CoordinateTab::CoordinateTab(QWidget* parent, CoordinateTab::TabType ttype)   : 
   tsSetup setup;
 
   variableBookmarkfile = (tabtype == FIMEXTAB ? setup.files.fimexBookmarks : setup.files.wdbBookmarks);
-
-
-
 
 
   bookmarkTools.setMaxRecords(setup.wdb.maxRecord);
@@ -161,6 +159,7 @@ void CoordinateTab::setWdbGeometry(int minLon, int maxLon, int minLat, int maxLa
 
 void CoordinateTab::setCoordinates(float lon, float lat, QString name)
 {
+ 
   float oldlat=latitude->getValue();
   float oldlon=longitude->getValue();
 
@@ -177,11 +176,21 @@ void CoordinateTab::setCoordinates(float lon, float lat, QString name)
         << bookmarkTools.createRecordName(lat,'N','S');
 
     name.fromLatin1(ost.str().c_str());
-  } else {
+  } 
+  
+  if(tabtype==WDBTAB) {
     bookmarkTools.addRecord(lon,lat,name.toStdString());
     emit changeCoordinates(lon,lat,name);
   }
-
+    
+  if(tabtype==FIMEXTAB)
+    if(recordingPositions) {
+      bookmarkTools.addRecord(lon,lat,name.toStdString());
+      emit changePoslist();
+    }
+    else {
+      emit changeCoordinates(lon,lat,name);
+    }
 }
 
 void CoordinateTab::setLatRange(int min, int max)
@@ -456,5 +465,28 @@ vector<string> CoordinateTab::getPoslist()
   }
   return activePositions;
 }
+
+
+
+void CoordinateTab::recordToggled(bool rec)
+{
+  recordingPositions=rec;
+
+
+  QModelIndex recordIdx= bookmarkTools.getRecordFolderIndex();
+
+  if(recordingPositions) {
+    bookmarks->expand(recordIdx);
+    return;
+  }
+
+  bookmarks->collapse(recordIdx);
+
+  emit newPoslist();
+
+}
+
+
+
 
 

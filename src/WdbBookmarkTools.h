@@ -63,6 +63,10 @@ public:
   void setMaxRecords(int m) { maxRecords=m;}
   std::string createRecordName(float f,char pos, char neg);
   QStandardItem * createFolder(std::string folder,bool ignoreFromSave);
+  std::vector<std::string> getAllBookmarks();
+  QModelIndex getRecordFolderIndex()  { return folders["RECORD"];}
+
+
 };
 
 #endif

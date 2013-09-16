@@ -122,6 +122,7 @@ private:
   miutil::miTime        currentTime;
   std::set<miutil::miString> sendModels;
 
+
   void timerEvent(QTimerEvent*);
   int updateTimer;
 
@@ -151,6 +152,10 @@ private:
   void disablePoslist(miutil::miString);
   void enableCurrentPoslist();
   void sendNewPoslist();
+
+  std::string lastFimexPosition;
+
+
 protected:
  void closeEvent ( QCloseEvent * );
 
@@ -192,7 +197,7 @@ private slots:
   void selectionTypeChanged();
   void coordinatesChanged();
   void fimexPoslistChanged();
-
+  void fimexPositionChanged(const QString&);
 public:
   qtsMain(miutil::miString l);
 

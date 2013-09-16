@@ -74,6 +74,7 @@ private:
   WdbBookmarkTools    bookmarkTools;
   QStandardItemModel* model;
   std::string         variableBookmarkfile;
+  bool recordingPositions;
 public:
   CoordinateTab(QWidget*,CoordinateTab::TabType ttype);
 
@@ -89,6 +90,7 @@ public:
 
   std::string getExpandedDirs();
   void setExpandedDirs(std::string);
+  std::vector<std::string> allFimexPositions() {return  bookmarkTools.getAllBookmarks();}
 
 
 private slots:
@@ -113,6 +115,7 @@ public slots:
   void setRuns(const QStringList& newmodels);
   void addBookmarkFolder();
   void changePosition(QString);
+  void recordToggled(bool);
 
 
   signals:
@@ -121,6 +124,8 @@ public slots:
     void changerun(const QString&);
     void changeCoordinates(float lon, float lat,QString name);
     void changePoslist();
+    void newPoslist();
+
 
 };
 

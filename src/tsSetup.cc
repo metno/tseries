@@ -575,6 +575,8 @@ void tsSetup::setFiles(string& key, string& content)
     setup(files.fin_image,content);
   else if(key == "ICONIMAGE")
     setup(files.icon_image,content);
+  else if(key == "ACTIVEIMAGE")
+     setup(files.active_image,content);
   else if(key == "BASEFILTER")
     setup(files.baseFilter,content);
   else if(key == "COMMONBOOKMARKS")

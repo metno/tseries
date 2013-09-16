@@ -39,6 +39,7 @@
 #include <string>
 #include "WdbCacheThread.h"
 #include <QSplitter>
+#include <tsData/FimexStream.h>
 
 using namespace std;
 using namespace miutil;
@@ -120,7 +121,7 @@ qtsWork::qtsWork(QWidget* parent)
   connect(sidebar,SIGNAL(changeFimexStyle(const QString&)), this,SLOT(changeFimexStyle(const QString& )));
   connect(sidebar,SIGNAL(changeFimexRun(const QString&)),   this,SLOT(changeFimexRun(  const QString& )));
   connect(sidebar,SIGNAL(changeFimexCoordinates(float, float,QString)),this,SLOT(changeFimexCoordinates(float,float,QString)));
-
+  connect(sidebar,SIGNAL( newFimexPoslist() ),   this,SLOT( newFimexPoslist() ));
 
   Initialise(); // the none gui stuff...
 
@@ -381,7 +382,8 @@ void qtsWork::changeModel(const QString& qstr)
 
 void qtsWork::changePositions(const miString& pos)
 {
-  if(selectionType != SELECT_BY_WDB) return;
+
+  if(selectionType == SELECT_BY_STATION) return;
 
   vector<miString> vcoor = pos.split(":");
   if(vcoor.size() < 2) return;
@@ -989,10 +991,19 @@ void qtsWork::changeFimexCoordinates(float lon, float lat,QString name)
     checkObsPosition(cor);
     refresh(true);
   }
- // emit coordinatesChanged();
+  emit fimexPositionChanged(name);
 
 }
+void qtsWork::newFimexPoslist()
+{
 
+  vector<string> newfimexposlist = sidebar->allFimexPositions();
+
+  pets::FimexStream::setCommonPoslistFromStringlist(newfimexposlist);
+
+
+
+}
 
 
 

@@ -39,6 +39,7 @@
 #include "view-refresh.xpm"
 #include "list-add.xpm"
 #include "synop.xpm"
+#include "media-record.xpm"
 
 #include <iostream>
 
@@ -48,7 +49,7 @@ using namespace std;
 qtsSidebar::qtsSidebar()
   : QWidget()
 {
-
+  fimexRexordToggled = false;
   tsSetup s;
 
   tabs       = new QTabWidget(this);
@@ -80,8 +81,7 @@ qtsSidebar::qtsSidebar()
   connect(fimextab,SIGNAL(changerun(   const QString&)), this, SIGNAL(changeFimexRun(  const QString& )));
   connect(fimextab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeFimexCoordinates(float,float,QString)));
   connect(fimextab,SIGNAL(changePoslist()), this, SIGNAL(changeFimexPoslist()));
-
-
+  connect(fimextab,SIGNAL(newPoslist()), this, SIGNAL(newFimexPoslist()));
 
 
   QString dbname= s.wdb.host.c_str();
@@ -90,7 +90,7 @@ qtsSidebar::qtsSidebar()
 
 
   stationIdx = tabs->addTab(stationtab,tr("Stations"));
-  wdbIdx     = tabs->addTab(wdbtab,dbname);
+  wdbIdx     = tabs->addTab(wdbtab,dbname);fimexIdx;
   fimexIdx   = tabs->addTab(fimextab,"Fields");
 
   connect(tabs,SIGNAL(currentChanged(int)), this,SLOT(tabChanged(int)));
@@ -115,6 +115,8 @@ qtsSidebar::qtsSidebar()
   QPixmap filter_pix(ts_filter_xpm);
   QPixmap refresh_pix(view_refresh_xpm);
   QPixmap add_pix(list_add_xpm);
+  QPixmap record_pix(media_record_xpm);
+
 
   pluginB = new ClientButton(s.server.name.c_str(),
 			     s.server.command.c_str(),
@@ -122,7 +124,7 @@ qtsSidebar::qtsSidebar()
   pluginB->useLabel(true);
 
   observationB = new QPushButton(synop_pix,"",this);
-  observationB->setMaximumWidth(synop_pix.width());
+  observationB->setMaximumWidth(synop_pix.width());fimexIdx;
   observationB->setCheckable(true);
   observationB->setToolTip(  tr("enable/disable observations") );
 
@@ -149,6 +151,10 @@ qtsSidebar::qtsSidebar()
   connect(addFimexBookmarkButton,SIGNAL(clicked()),fimextab, SLOT(addBookmarkFolder()));
 
 
+  recordFimexButton =  new QPushButton(record_pix, "",this);
+  recordFimexButton->setCheckable(true);
+  connect(recordFimexButton,SIGNAL(toggled(bool)),fimextab, SLOT(recordToggled(bool)));
+  connect(recordFimexButton,SIGNAL(toggled(bool)),this, SLOT(recordToggled(bool)));
 
   cacheQueryButton  =  new QPushButton(refresh_pix, "",this);
   connect(cacheQueryButton,SIGNAL(clicked()),    this, SLOT(chacheQueryActivated()));
@@ -175,6 +181,7 @@ qtsSidebar::qtsSidebar()
   QHBoxLayout * blayout = new QHBoxLayout();
   blayout->addWidget(addWdbBookmarkButton);
   blayout->addWidget(addFimexBookmarkButton);
+  blayout->addWidget(recordFimexButton);
   blayout->addWidget(cacheQueryButton);
   blayout->addWidget(connectStatus);
   blayout->addStretch(2);
@@ -186,16 +193,26 @@ qtsSidebar::qtsSidebar()
 
   addWdbBookmarkButton->hide();
   addFimexBookmarkButton->hide();
+  recordFimexButton->hide();
 
   cacheQueryButton->hide();
+}
+
+void qtsSidebar::recordToggled(bool record)
+{
+  fimexRexordToggled = record;
+  if(record)
+    setObsInfo("<b><font color=red>Recording Positions</font></b>");
+  else
+    setObsInfo("");
 }
 
 
 void qtsSidebar::setTab(int tabIdx)
 {
-  if(tabIdx < tabs->count() && tabIdx >= 0 )
+  if(tabIdx < tabs->count() && tabIdx >= 0 ) {
     tabs->setCurrentIndex(tabIdx);
-
+  }
 }
 
 void qtsSidebar::setCoordinates(float lon, float lat)
@@ -203,8 +220,6 @@ void qtsSidebar::setCoordinates(float lon, float lat)
   if(actualIndex==wdbIdx) {
     wdbtab->setCoordinates(lon, lat);
   } else {
-
-
     fimextab->setCoordinates(lon, lat);
   }
 }
@@ -268,22 +283,32 @@ QString  qtsSidebar::fillList(const vector<miutil::miString>& v, const StationTa
 
 void qtsSidebar::tabChanged(int idx)
 {
+
   actualIndex=idx;
   if(idx==wdbIdx){
     addWdbBookmarkButton->show();
-    addFimexBookmarkButton->hide();
     cacheQueryButton->show();
+    addFimexBookmarkButton->hide();
+    recordFimexButton->hide();
+    setObsInfo("");
     emit changetype(tsRequest::WDBSTREAM);
+
   } else if (idx==stationIdx) {
     addWdbBookmarkButton->hide();
     addFimexBookmarkButton->hide();
     cacheQueryButton->hide();
+    recordFimexButton->hide();
+    setObsInfo("");
+
     emit changetype(tsRequest::HDFSTREAM);
   } else if (idx==fimexIdx) {
     addFimexBookmarkButton->show();
+    recordFimexButton->show();
     addWdbBookmarkButton->hide();
     cacheQueryButton->hide();
+    recordToggled(fimexRexordToggled);
     emit changetype(tsRequest::FIMEXSTREAM);
+
   }
 }
 

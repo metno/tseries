@@ -95,6 +95,8 @@ qtsMain::qtsMain(miString l) :
 
   connect(work, SIGNAL(fimexPoslistChanged()), this, SLOT(fimexPoslistChanged()));
 
+  connect(work,SIGNAL(fimexPositionChanged(const QString&)), this, SLOT(fimexPositionChanged(const QString&)));
+
   // milliseconds
   int updatetimeout = (1000 * 60) * 2;
 
@@ -754,11 +756,14 @@ void qtsMain::processConnect()
     QImage fImage(s.files.fin_image.c_str());
     QImage iImage(s.files.icon_image.c_str());
     QImage nImage(s.files.new_station_image.c_str());
+    QImage aImage(s.files.active_image.c_str());
 
     sendImage(IMG_STD_TSERIES,  sImage);
     sendImage(IMG_FIN_TSERIES,  fImage);
     sendImage(IMG_NEW_TSERIES,  nImage);
     sendImage(IMG_ICON_TSERIES, iImage);
+    sendImage(IMG_ACTIVE_TSERIES, aImage);
+
 
     sendNamePolicy();
     selectionTypeChanged();
@@ -1057,6 +1062,38 @@ void qtsMain::fimexPoslistChanged()
 {
   refreshDianaStations();
 }
+
+
+
+void qtsMain::fimexPositionChanged(const QString& qname)
+{
+  if (!dianaconnected)
+     return;
+
+  std::string name = qname.toStdString();
+
+   miMessage m;
+
+   m.command = qmstrings::changeimageandtext;
+   m.common = DATASET_FIMEX;
+   m.description = "name:image";
+
+   ostringstream ost,nst;
+   ost << name << ":" << IMG_ACTIVE_TSERIES;
+   m.data.push_back(ost.str());
+   if(!lastFimexPosition.empty()) {
+     nst <<  lastFimexPosition << ":" << IMG_STD_TSERIES;
+     m.data.push_back(nst.str());
+   }
+   lastFimexPosition = name;
+
+   pluginB->sendMessage(m);
+}
+
+
+
+
+
 
 
 

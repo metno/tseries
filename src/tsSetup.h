@@ -134,6 +134,7 @@ public:
     std::string new_station_image;
     std::string fin_image;
     std::string icon_image;
+    std::string active_image;
     std::string filter;
     std::string baseFilter;
     std::string wdbBookmarks;

@@ -48,6 +48,7 @@
 #include "CoordinateTab.h"
 
 #include <vector>
+#include <string>
 #include <puTools/miString.h>
 #include <qUtilities/ClientButton.h>
 
@@ -65,6 +66,7 @@ private:
   QPushButton *  cacheQueryButton;
   QPushButton *  addWdbBookmarkButton;
   QPushButton *  addFimexBookmarkButton;
+  QPushButton *  recordFimexButton;
   QLabel*        connectStatus;
   QLabel*        obsInfo;
   QMovie*        busyLabel;
@@ -73,16 +75,19 @@ private:
   CoordinateTab* fimextab;
   int wdbIdx, stationIdx,fimexIdx;
   int actualIndex;
+  bool fimexRexordToggled;
 
 
 private slots:
   void tabChanged(int);
   void chacheQueryActivated();
+  void recordToggled(bool record);
 
 public slots:
   void searchStation(const QString&);
   void newTimeRange(int,int);
   void currentStationChanged ( QListWidgetItem * current, QListWidgetItem * previous );
+
 public:
   qtsSidebar();
 
@@ -127,8 +132,16 @@ public:
 
   void setFimexModels(const QStringList& newModels){ fimextab->setModels(newModels);    }
   void setFimexRuns(const QStringList& newRuns)    { fimextab->setRuns(newRuns);        }
+
+  // visible positions (for diana)
   std::vector<std::string> getFimexPositions()     { return fimextab->getPoslist();     }
+
+  // all positions (refresh interpolation)
+  std::vector<std::string> allFimexPositions() { return fimextab->allFimexPositions();     }
+
   void changeFimexPosition( QString newpos) { fimextab->changePosition(newpos);}
+
+
 
   std::string getFimexExpanded() const { return fimextab->getExpandedDirs(); }
   bool restoreFimexFromLog(std::string mod, std::string sty, std::string expanded);
@@ -158,7 +171,7 @@ signals:
   void changeFimexRun(  const QString& );
   void changeFimexCoordinates(float lon, float lat,QString name);
   void changeFimexPoslist();
-
+  void newFimexPoslist();
 
 
 

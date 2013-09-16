@@ -113,7 +113,7 @@ int DatafileColl::addStream(const miString name, const miString desc,
           << fpar.size() << " known parameters " << endl;
       fimexStreams.push_back(finfo);
 
-      fimexStreams.back().dataStream = new pets::FimexStream(name, desc, streamtype,fpar,fimexpositions);
+      fimexStreams.back().dataStream = new pets::FimexStream(name, desc, streamtype,fpar);
 
     } else {
 
@@ -652,9 +652,8 @@ pets::WdbStream::BoundaryBox DatafileColl::getWdbGeometry()
 
 void DatafileColl::initialiseFimexPositions()
 {
-
+  pets::FimexPoslist fimexpositions;
   tsSetup setup;
-  fimexpositions.clear();
 
   try {
     fimexpositions.addFile(setup.files.commonBookmarks);
@@ -668,6 +667,7 @@ void DatafileColl::initialiseFimexPositions()
     cerr << "Exception caught from fimex position initialization: " << e.what() << endl;
   }
 
+  pets::FimexStream::setCommonPoslist(fimexpositions);
 }
 
 void DatafileColl::initialiseFimexParameters()

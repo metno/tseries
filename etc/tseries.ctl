@@ -58,6 +58,7 @@ stdImage=$(Images)/ts_station.xpm
 finImage=$(Images)/ts_find.xpm
 newImage=$(Images)/ts_new_station.xpm
 iconImage=$(Prefix)/share/pixmaps/tseries.png
+activeImage=$(Images)/ts_active.xpm
 baseFilter=$(Etc)/tseries.filter
 wdbBookmarks=$(Home)/.tseries/bookmarks.wdb
 fimexBookmarks=$(Home)/.tseries/bookmarks.fimex

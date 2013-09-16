@@ -39,6 +39,8 @@ dist_pixmaps_DATA= \
 	share/pixmaps/tseries.png               \
 	share/pixmaps/ts_find.xpm               \
 	share/pixmaps/ts_station.xpm            \
+	share/pixmaps/ts_active.xpm             \
+	share/pixmaps/ts_new_station.xpm        \
 	share/pixmaps/weather_01.png            \
 	share/pixmaps/weather_02.png            \
 	share/pixmaps/weather_03.png            \

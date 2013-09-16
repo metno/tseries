@@ -81,7 +81,7 @@ void WdbBookmarkTools::addLine(string line,bool ignoreFromSave, bool reverse)
       // old folder found - use it as the parent
       folder+=( col ? "." : "") + words[col];
       if(folders.count(folder)) {
-	parentItem = model->itemFromIndex ( folders[folder] );
+        parentItem = model->itemFromIndex ( folders[folder] );
 
       } else {
         // create a new folder
@@ -103,16 +103,16 @@ QStandardItem * WdbBookmarkTools::createFolder(string folder,bool ignoreFromSave
   QStandardItem *childItem = new QStandardItem(folder.c_str());
 
   if(folder=="RECORD") {
-     childItem->setIcon(recordIcon);
-   } else if ( folder =="TRASH") {
-       childItem->setIcon(trashIcon);
-   } else {
+    childItem->setIcon(recordIcon);
+  } else if ( folder =="TRASH") {
+    childItem->setIcon(trashIcon);
+  } else {
 
-     if(ignoreFromSave)
-       childItem->setIcon(metnoIcon);
-     else
-       childItem->setIcon(directoryIcon);
-   }
+    if(ignoreFromSave)
+      childItem->setIcon(metnoIcon);
+    else
+      childItem->setIcon(directoryIcon);
+  }
 
   if(ignoreFromSave){
     childItem->setEditable(false);
@@ -193,18 +193,14 @@ std::string WdbBookmarkTools::createRecordName(float f,char pos, char neg)
 
 
 
-
-
-
-
 void WdbBookmarkTools::addRecord(float lon,float lat,std::string name)
 {
 
   ostringstream ost;
   ost << "RECORD.";
-   if(name.empty()) {
-     ost << createRecordName(lon,'E','W') << " " << createRecordName(lat,'N','S');
-   } else
+  if(name.empty()) {
+    ost << createRecordName(lon,'E','W') << " " << createRecordName(lat,'N','S');
+  } else
     ost << name;
 
 
@@ -227,5 +223,38 @@ void WdbBookmarkTools::cutRecord()
   item->setRowCount(maxRecords);
 
 }
+
+std::vector<std::string> WdbBookmarkTools::getAllBookmarks()
+{
+  std::vector<std::string> allBookmarks;
+
+
+  QStandardItem *parentItem = model->invisibleRootItem();
+  if(parentItem->hasChildren()) {
+
+    for(int i=0;i<parentItem->rowCount();i++) {
+      QStandardItem* item = parentItem->child(i);
+      if(!item->hasChildren()) continue;
+      string dirname= item->text().toStdString();
+      if(dirname=="TRASH") continue;
+
+      for(int i=0;i<item->rowCount();i++) {
+        QStandardItem* child = item->child(i);
+        QVariant var         = child->data();
+        QString  coor        = var.toString();
+        QString  name        = child->text();
+        ostringstream ost;
+        if(name.isEmpty() || coor.isEmpty()) continue;
+        ost << name.toStdString() << "|" << coor.toStdString();
+        allBookmarks.push_back(ost.str());
+      }
+    }
+  }
+  return allBookmarks;
+
+}
+
+
+
 
 
