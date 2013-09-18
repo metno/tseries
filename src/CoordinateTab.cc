@@ -137,6 +137,11 @@ CoordinateTab::CoordinateTab(QWidget* parent, CoordinateTab::TabType ttype)   : 
   connect( delAction,   SIGNAL( triggered() ) , this, SLOT( remove()));
 
 
+  bookmarks->addAction(cutAction);
+  bookmarks->addAction(copyAction);
+  bookmarks->addAction(pasteAction);
+  bookmarks->addAction(delAction);
+
 
 
   cutAction->setEnabled(true);
@@ -536,6 +541,7 @@ void CoordinateTab::cut()
 
   bookmarkTools.copySelected(selectedIndexes);
   bookmarkTools.removeSelected(selectedIndexes);
+  emit changePoslist();
 }
 
 
@@ -545,6 +551,7 @@ void CoordinateTab::remove()
   QModelIndexList selectedIndexes = selections->selectedIndexes();
 
   bookmarkTools.removeSelected(selectedIndexes);
+  emit changePoslist();
 }
 
 

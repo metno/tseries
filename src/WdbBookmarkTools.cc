@@ -259,22 +259,33 @@ void WdbBookmarkTools::copySelected(QModelIndexList indexlist)
 
     QModelIndex index = indexlist.at(i);
     QStandardItem* child = model->itemFromIndex(index);
+
     string itemstr = stringFromItem(child);
-    buffer.push_back(itemstr);
+
+    if(!itemstr.empty())
+      buffer.push_back(itemstr);
 
   }
 }
 
 void WdbBookmarkTools::removeSelected(QModelIndexList indexlist)
 {
+  if(indexlist.isEmpty())
+    return;
 
-  for(unsigned int i=0;i<indexlist.size();i++) {
-      QModelIndex index = indexlist.at(i);
+  QModelIndexList::iterator itr=indexlist.end();
+
+  while(1) {
+      itr--;
+      QModelIndex index = *itr;
       QStandardItem* child = model->itemFromIndex(index);
-      QStandardItem* parent = child->parent();
-      int row = child->row();
-      cerr << "remove row: " << row << endl;
-      parent->removeRow(row);
+      if(child->isDragEnabled()) {
+        QStandardItem* parent = child->parent();
+        int row = child->row();
+        parent->removeRow(row);
+      }
+      if(itr==indexlist.begin())
+        break;
   }
 }
 
@@ -283,16 +294,20 @@ void WdbBookmarkTools::removeSelected(QModelIndexList indexlist)
 void WdbBookmarkTools::paste(QModelIndex index)
 {
   QStandardItem* child = model->itemFromIndex(index);
-  QStandardItem* parent = child->parent();
-  if(parent==model->invisibleRootItem()) {
-    cerr << "this is a directory!!!!" << endl;
-
+  QStandardItem* parent;
+  int row=0;
+  if(!child->isDragEnabled()) {
+    parent=child;
+  } else {
+     parent = child->parent();
+     row = child->row();
   }
-  int row = child->row();
+
   for(int i=0;i<buffer.size();i++) {
     QStandardItem* newItem= itemFromString(buffer[i]);
     parent->insertRow(row+i,newItem);
   }
+
 }
 
 QStandardItem* WdbBookmarkTools::itemFromString(std::string line)
