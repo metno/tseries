@@ -89,6 +89,9 @@ qtsSidebar::qtsSidebar()
 
 
 
+
+
+
   stationIdx = tabs->addTab(stationtab,tr("Stations"));
   wdbIdx     = tabs->addTab(wdbtab,dbname);fimexIdx;
   fimexIdx   = tabs->addTab(fimextab,"Fields");
@@ -291,6 +294,8 @@ void qtsSidebar::tabChanged(int idx)
     addFimexBookmarkButton->hide();
     recordFimexButton->hide();
     setObsInfo("");
+    targetB->show();
+    filterB->hide();
     emit changetype(tsRequest::WDBSTREAM);
 
   } else if (idx==stationIdx) {
@@ -298,6 +303,8 @@ void qtsSidebar::tabChanged(int idx)
     addFimexBookmarkButton->hide();
     cacheQueryButton->hide();
     recordFimexButton->hide();
+    targetB->show();
+    filterB->show();
     setObsInfo("");
 
     emit changetype(tsRequest::HDFSTREAM);
@@ -306,6 +313,8 @@ void qtsSidebar::tabChanged(int idx)
     recordFimexButton->show();
     addWdbBookmarkButton->hide();
     cacheQueryButton->hide();
+    targetB->hide();
+    filterB->hide();
     recordToggled(fimexRexordToggled);
     emit changetype(tsRequest::FIMEXSTREAM);
 

@@ -383,7 +383,7 @@ void qtsWork::changeModel(const QString& qstr)
 void qtsWork::changePositions(const miString& pos)
 {
 
-  if(selectionType == SELECT_BY_STATION) return;
+  if(selectionType == SELECT_BY_STATION  ) return;
 
   vector<miString> vcoor = pos.split(":");
   if(vcoor.size() < 2) return;

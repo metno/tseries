@@ -4,8 +4,28 @@
 <context>
     <name>CoordinateTab</name>
     <message>
-        <location filename="../src/CoordinateTab.cc" line="84"/>
+        <location filename="../src/CoordinateTab.cc" line="87"/>
         <source>Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/CoordinateTab.cc" line="123"/>
+        <source>C&amp;ut...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/CoordinateTab.cc" line="124"/>
+        <source>&amp;Copy...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/CoordinateTab.cc" line="125"/>
+        <source>&amp;Paste...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/CoordinateTab.cc" line="126"/>
+        <source>&amp;Delete...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -313,22 +333,22 @@ met.no 2002</translation>
 <context>
     <name>qtsSidebar</name>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="129"/>
+        <location filename="../src/qtsSidebar.cc" line="132"/>
         <source>enable/disable observations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="135"/>
+        <location filename="../src/qtsSidebar.cc" line="138"/>
         <source>Show position (DIANA)</source>
         <translation type="unfinished">Montrer position</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="141"/>
+        <location filename="../src/qtsSidebar.cc" line="144"/>
         <source>Position filter</source>
         <translation type="unfinished">Position du filtre</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="92"/>
+        <location filename="../src/qtsSidebar.cc" line="95"/>
         <source>Stations</source>
         <translation type="unfinished"></translation>
     </message>

@@ -47,9 +47,11 @@
 #include <QTreeView>
 #include <QString>
 #include <QStandardItemModel>
+#include <QAction>
 #include "WdbBookmarkTools.h"
 #include "CoordinateManager.h"
 #include <puTools/miString.h>
+
 #include <vector>
 
 
@@ -58,6 +60,7 @@ class CoordinateTab : public QWidget {
 public:
   enum TabType { WDBTAB, FIMEXTAB };
 
+
 private:
   QComboBox   * modell;     // list of models
   QComboBox   * stylel;     // list of styles (meteogram etc.)
@@ -65,6 +68,10 @@ private:
 
   QTreeView   * bookmarks;
   QPushButton * cacheQueryButton;
+  QAction     * cutAction;
+  QAction     * pasteAction;
+  QAction     * copyAction;
+  QAction     * delAction;
 
   TabType tabtype;
 
@@ -75,6 +82,7 @@ private:
   QStandardItemModel* model;
   std::string         variableBookmarkfile;
   bool recordingPositions;
+  bool addToRecord;
 public:
   CoordinateTab(QWidget*,CoordinateTab::TabType ttype);
 
@@ -100,6 +108,11 @@ private slots:
   void changeRun(const QString&);
   void bookmarkClicked(QModelIndex idx);
   void poslistChanged(const QModelIndex &);
+  void showContextMenu(const QPoint& pos);
+  void cut();
+  void copy();
+  void paste();
+  void remove();
 
 public slots:
   void setCoordinates(float lon, float lat, QString name="");

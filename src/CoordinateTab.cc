@@ -38,7 +38,9 @@
 #include <iostream>
 #include <QPixmap>
 #include "tsSetup.h"
-
+#include <QMenu>
+#include <QEvent>
+#include <QtGui>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/split.hpp>
@@ -53,6 +55,7 @@ using namespace std;
 CoordinateTab::CoordinateTab(QWidget* parent, CoordinateTab::TabType ttype)   : QWidget(parent)
 {
   recordingPositions=false;
+  addToRecord=false;
   tabtype = ttype;
   //QPixmap list_add_pix(list_add_xpm);
 
@@ -85,6 +88,12 @@ CoordinateTab::CoordinateTab(QWidget* parent, CoordinateTab::TabType ttype)   : 
 
   bookmarks = new QTreeView(this);
   bookmarks->setMinimumHeight(1);
+  bookmarks->setContextMenuPolicy(Qt::CustomContextMenu);
+
+  connect(bookmarks,SIGNAL( customContextMenuRequested ( const QPoint &)), this, SLOT(showContextMenu(const QPoint& )));
+
+
+
   model     = new QStandardItemModel();
   model->setHorizontalHeaderLabels ( head );
   tsSetup setup;
@@ -103,10 +112,36 @@ CoordinateTab::CoordinateTab(QWidget* parent, CoordinateTab::TabType ttype)   : 
   bookmarks->setDragDropMode(QAbstractItemView::InternalMove);
   bookmarks->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-  connect(bookmarks, SIGNAL(activated(QModelIndex)), this, SLOT(bookmarkClicked(QModelIndex)));
+  connect(bookmarks, SIGNAL(activated(QModelIndex)),       this, SLOT(bookmarkClicked(QModelIndex)));
   connect(bookmarks, SIGNAL(clicked(QModelIndex)),         this, SLOT(bookmarkClicked(QModelIndex)));
   connect(bookmarks, SIGNAL(expanded(const QModelIndex &)),this, SLOT(poslistChanged(const QModelIndex &)));
   connect(bookmarks, SIGNAL(collapsed(const QModelIndex &)),this, SLOT(poslistChanged(const QModelIndex &)));
+
+
+
+
+  cutAction   = new QAction(tr("C&ut..."),  this);
+  copyAction  = new QAction(tr("&Copy..."),  this);
+  pasteAction = new QAction(tr("&Paste..."), this);
+  delAction   = new QAction(tr("&Delete..."), this);
+
+  cutAction->setShortcut(   QKeySequence::Cut    );
+  copyAction->setShortcut(  QKeySequence::Copy   );
+  pasteAction->setShortcut( QKeySequence::Paste  );
+  delAction->setShortcut(   QKeySequence::Delete );
+
+
+  connect( cutAction,   SIGNAL( triggered() ) , this, SLOT( cut()  ) );
+  connect( copyAction,  SIGNAL( triggered() ) , this, SLOT( copy() ) );
+  connect( pasteAction, SIGNAL( triggered() ) , this, SLOT( paste()) );
+  connect( delAction,   SIGNAL( triggered() ) , this, SLOT( remove()));
+
+
+
+
+  cutAction->setEnabled(true);
+  copyAction->setEnabled(true);
+  pasteAction->setEnabled(true);
 
   // layout -------------------------------
 
@@ -159,7 +194,7 @@ void CoordinateTab::setWdbGeometry(int minLon, int maxLon, int minLat, int maxLa
 
 void CoordinateTab::setCoordinates(float lon, float lat, QString name)
 {
- 
+
   float oldlat=latitude->getValue();
   float oldlon=longitude->getValue();
 
@@ -177,20 +212,24 @@ void CoordinateTab::setCoordinates(float lon, float lat, QString name)
 
     name.fromLatin1(ost.str().c_str());
   } 
-  
+
   if(tabtype==WDBTAB) {
     bookmarkTools.addRecord(lon,lat,name.toStdString());
     emit changeCoordinates(lon,lat,name);
   }
-    
-  if(tabtype==FIMEXTAB)
+
+  if(tabtype==FIMEXTAB){
     if(recordingPositions) {
-      bookmarkTools.addRecord(lon,lat,name.toStdString());
-      emit changePoslist();
+      if(addToRecord) {
+        bookmarkTools.addRecord(lon,lat,name.toStdString());
+        emit changePoslist();
+      }
+    } else {
+      if(!name.isEmpty())
+        emit changeCoordinates(lon,lat,name);
     }
-    else {
-      emit changeCoordinates(lon,lat,name);
-    }
+  }
+  addToRecord=true;
 }
 
 void CoordinateTab::setLatRange(int min, int max)
@@ -377,6 +416,9 @@ void CoordinateTab::bookmarkClicked(QModelIndex idx)
   float lat= atof(c[0].c_str());
   float lon= atof(c[1].c_str());
 
+  if(tabtype==FIMEXTAB)
+    addToRecord=false;
+
   setCoordinates(lon,lat,name);
 }
 
@@ -396,18 +438,18 @@ std::string CoordinateTab::getExpandedDirs()
   cerr << "getExpandedDirs" << endl;
   unsigned int num_rows = model->rowCount();
   std::string delimiter="";
-   for (unsigned int row=0; row <num_rows; row++ ) {
-     QModelIndex idx = model->index(row,0);
-     if(bookmarks->isExpanded(idx)) {
-       QStandardItem * item = model->itemFromIndex(idx);
-       if(item) {
-         ost <<   delimiter << item->text().toStdString();
-         delimiter = ",";
+  for (unsigned int row=0; row <num_rows; row++ ) {
+    QModelIndex idx = model->index(row,0);
+    if(bookmarks->isExpanded(idx)) {
+      QStandardItem * item = model->itemFromIndex(idx);
+      if(item) {
+        ost <<   delimiter << item->text().toStdString();
+        delimiter = ",";
 
-       }
-     }
-   }
-   return ost.str();
+      }
+    }
+  }
+  return ost.str();
 }
 
 
@@ -485,6 +527,61 @@ void CoordinateTab::recordToggled(bool rec)
   emit newPoslist();
 
 }
+
+
+void CoordinateTab::cut()
+{
+  QItemSelectionModel* selections = bookmarks->selectionModel ();
+  QModelIndexList selectedIndexes = selections->selectedIndexes();
+
+  bookmarkTools.copySelected(selectedIndexes);
+  bookmarkTools.removeSelected(selectedIndexes);
+}
+
+
+void CoordinateTab::remove()
+{
+  QItemSelectionModel* selections = bookmarks->selectionModel ();
+  QModelIndexList selectedIndexes = selections->selectedIndexes();
+
+  bookmarkTools.removeSelected(selectedIndexes);
+}
+
+
+void CoordinateTab::copy()
+{
+  QItemSelectionModel* selections = bookmarks->selectionModel ();
+  QModelIndexList selectedIndexes = selections->selectedIndexes();
+
+  bookmarkTools.copySelected(selectedIndexes);
+}
+
+
+void CoordinateTab::paste()
+{
+  QModelIndex index = bookmarks->currentIndex();
+  bookmarkTools.paste(index);
+}
+
+
+void CoordinateTab::showContextMenu(const QPoint& pos)
+{
+  cerr << __FUNCTION__ << endl;
+  QPoint globalPos = mapToGlobal(pos);
+
+  QMenu pmenu;
+
+
+  pmenu.addAction(cutAction);
+  pmenu.addAction(copyAction);
+  pmenu.addAction(pasteAction);
+  pmenu.addAction(delAction);
+
+  pmenu.exec(globalPos);
+
+
+}
+
 
 
 

@@ -36,7 +36,9 @@
 #include <QStandardItem>
 #include <QString>
 #include <QIcon>
+#include <QItemSelectionModel>
 #include <set>
+#include <vector>
 
 
 class WdbBookmarkTools {
@@ -50,6 +52,7 @@ private:
   QIcon trashIcon;
   int record;
   int maxRecords;
+  std::vector<std::string> buffer;
 
 public:
   WdbBookmarkTools();
@@ -65,7 +68,11 @@ public:
   QStandardItem * createFolder(std::string folder,bool ignoreFromSave);
   std::vector<std::string> getAllBookmarks();
   QModelIndex getRecordFolderIndex()  { return folders["RECORD"];}
-
+  void copySelected(QModelIndexList);
+  void removeSelected(QModelIndexList);
+  void paste(QModelIndex);
+  QStandardItem* itemFromString(std::string line);
+  std::string stringFromItem(QStandardItem* item);
 
 };
 

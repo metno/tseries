@@ -1,0 +1,679 @@
+nrk.	Longyearbyen	|	15.28	:	78.15
+nrk.	Andøya	|	16.09	:	69.18
+nrk.	Bardufoss	|	18.32	:	69.04
+nrk.	Tromsø	|	18.54	:	69.39
+nrk.	Ørsta-Volda	|	6.04	:	62.11
+nrk.	Nordreisa	|	21.01	:	69.44
+nrk.	Kautokeino	|	23.02	:	68.60
+nrk.	Alta	|	23.21	:	69.59
+nrk.	Hammerfest	|	23.40	:	70.40
+nrk.	Karasjok	|	25.30	:	69.28
+nrk.	Helnes fyr	|	26.14	:	71.04
+nrk.	Kirkenes	|	29.54	:	69.44
+nrk.	Vardø	|	31.05	:	70.22
+nrk.	Brønnøysund	|	12.13	:	65.27
+nrk.	Mosjøen	|	13.13	:	65.47
+nrk.	Mo i Rana	|	14.19	:	66.22
+nrk.	Bodø	|	14.24	:	67.15
+nrk.	Harstad	|	16.33	:	68.48
+nrk.	Narvik	|	17.30	:	68.28
+nrk.	Saltdal	|	15.18	:	66.58
+nrk.	Sletnes fyr	|	28.13	:	71.05
+nrk.	Svolvær	|	14.40	:	68.15
+nrk.	Ålesund	|	6.07	:	62.34
+nrk.	Molde	|	7.16	:	62.45
+nrk.	Tafjord	|	7.25	:	62.14
+nrk.	Kristiansund	|	7.50	:	63.06
+nrk.	Ørlandet	|	9.36	:	63.42
+nrk.	Oppdal	|	9.42	:	62.36
+nrk.	Trondheim	|	10.27	:	63.25
+nrk.	Steinkjer	|	11.30	:	64.00
+nrk.	Rørvik	|	11.09	:	64.50
+nrk.	Røros	|	11.23	:	62.34
+nrk.	Ytterøyane	|	4.41	:	61.34
+nrk.	Hellisøy	|	4.43	:	60.45
+nrk.	Bergen	|	5.20	:	60.23
+nrk.	Takle	|	5.23	:	61.02
+nrk.	Stryn	|	6.34	:	61.55
+nrk.	Førde	|	5.55	:	61.28
+nrk.	Voss	|	6.25	:	60.38
+nrk.	Finse	|	7.30	:	60.36
+nrk.	Geilo	|	8.12	:	60.31
+nrk.	Nesbyen	|	9.08	:	60.34
+nrk.	Lillehammer	|	10.29	:	61.05
+nrk.	Gardermoen	|	11.04	:	60.11
+nrk.	Drevsjø	|	12.03	:	61.53
+nrk.	Haugesund	|	5.13	:	59.21
+nrk.	Stavanger	|	5.38	:	58.53
+nrk.	Sauda	|	6.22	:	59.39
+nrk.	Beitostølen	|	8.56	:	61.14
+nrk.	Sirdal	|	6.51	:	58.53
+nrk.	Hovden	|	7.22	:	59.33
+nrk.	Byglandsfjor	|	7.48	:	58.40
+nrk.	Kristiansand	|	8.04	:	58.12
+nrk.	Tveitsund	|	8.31	:	59.02
+nrk.	Risør	|	9.13	:	58.43
+nrk.	Kongsberg	|	9.39	:	59.40
+nrk.	Oslo	|	10.43	:	59.57
+nrk.	Prestebakke	|	11.32	:	58.60
+nrk.	Drammen	|	10.17	:	59.45
+nrk.	Hønefoss	|	10.17	:	60.11
+nrk.	Kongsvinger	|	12.00	:	60.11
+nrk.	Larvik	|	10.02	:	59.03
+nrk.	Odda	|	6.33	:	60.04
+nrk.	Otta	|	9.33	:	61.46
+nrk.	Stord	|	5.29	:	59.47
+nrk.	Tjøme	|	10.25	:	59.05
+nrk.	Fredrikstad	|	10.57	:	59.13
+nrk.	Arendal	|	8.46	:	58.28
+nrk.	Hamar	|	11.05	:	60.50
+nrk.	Elverum	|	11.33	:	60.50
+nrk.	Gjøvik	|	10.46	:	60.48
+nrk.	Sunndalsøra	|	8.40	:	62.40
+nrk.	Åndalsnes	|	7.45	:	62.35
+nrk.	Måløy	|	5.10	:	61.57
+nrk.	Utsira	|	4.53	:	59.18
+nrk.	Lista	|	6.34	:	58.07
+nrk.	Oksøy	|	8.03	:	58.04
+nrk.	Ferder fyr	|	10.32	:	59.02
+nrk.	Stockholm	|	18.00	:	59.21
+nrk.	Helsingfors	|	25.00	:	60.15
+nrk.	London	|	-0.27	:	51.30
+nrk.	Reykjavik	|	-21.54	:	64.06
+nrk.	København	|	12.36	:	55.36
+nrk.	Brussel	|	4.30	:	50.54
+nrk.	Paris	|	2.24	:	48.42
+nrk.	Nice	|	7.12	:	43.39
+nrk.	Madrid	|	-3.36	:	40.27
+nrk.	Malaga	|	-4.30	:	36.42
+nrk.	Lisboa	|	-9.06	:	38.48
+nrk.	Berlin	|	13.24	:	52.30
+nrk.	Warszawa	|	21.00	:	52.09
+nrk.	Budapest	|	19.11	:	47.26
+nrk.	Roma	|	12.15	:	41.48
+nrk.	Athen	|	22.38	:	38.37
+nrk.	Kypros	|	33.38	:	34.53
+nrk.	Moskva	|	37.33	:	55.45
+nrk.	Las Palmas	|	-15.25	:	28.06
+nrk.	Tunis	|	10.15	:	36.48
+nrk.	Alicante	|	-0.30	:	38.22
+nrk.	Dublin	|	-6.25	:	53.43
+nrk.	Fagernes	|	9.14	:	60.59
+nrk.	Koppang	|	11.08	:	61.35
+nrk.	Nelaug	|	8.38	:	58.39
+nrk.	Sogndal	|	7.13	:	61.15
+nrk.	Trysil	|	12.27	:	61.30
+nrk.	Honningsvåg	|	25.59	:	71.01
+nrk.	Eidsvoll	|	11.12	:	60.13
+nrk.	Asker	|	10.25	:	59.50
+nrk.	Bjørkelangen	|	11.35	:	59.53
+nrk.	Moss	|	10.38	:	59.30
+nrk.	Drøbak	|	10.35	:	59.40
+nrk.	Rakkestad	|	11.21	:	59.27
+nrk.	Askim	|	11.09	:	59.36
+nrk.	Haukeliseter	|	7.13	:	59.49
+nrk.	Seljord	|	8.36	:	59.29
+nrk.	Skien	|	9.35	:	59.12
+nrk.	Kragerø	|	9.25	:	58.53
+nrk.	Horten	|	10.29	:	59.25
+nrk.	Halden	|	11.23	:	59.08
+nrk.	Strømtangen fyr	|	10.50	:	59.09
+nrk.	Sarpsborg	|	11.10	:	59.15
+nrk.	Finnsnes	|	17.59	:	69.14
+nrk.	Lerdal	|	7.29	:	61.06
+nrk.	Glomfjord	|	13.59	:	66.48
+nrk.	Hattfjelldal	|	14.00	:	65.36
+nrk.	Hitra	|	8.40	:	63.32
+nrk.	Flekkefjord	|	6.40	:	58.18
+nrk.	Mandal	|	7.28	:	58.02
+nrk.	Tynset	|	10.44	:	62.16
+nrk.	Sognefjell	|	8.00	:	61.34
+nrk.	Florø	|	5.02	:	61.35
+nrk.	Mongstad	|	5.02	:	60.49
+nrk.	Hjelmeland	|	6.12	:	59.13
+nrk.	Egersund	|	6.00	:	58.30
+nrk.	Grong	|	12.22	:	64.28
+nrk.	Bjorli	|	8.12	:	62.15
+nrk.	Namsos lufthavn	|	11.35	:	64.28
+nrk.	Sandvika	|	10.32	:	59.53
+nrk.	Tønsberg	|	10.27	:	59.16
+nrk.	Fokstua	|	9.17	:	62.07
+nrk.	Rjukan	|	8.37	:	59.52
+nrk.	Rindal	|	9.12	:	63.04
+nrk.	Vadsø	|	29.51	:	70.04
+nrk.	Gøteborg	|	12.00	:	57.42
+nrk.	Amsterdam	|	4.48	:	52.18
+nrk.	Wien	|	16.33	:	48.06
+nrk.	Praha	|	14.24	:	50.10
+nrk.	Geneve	|	6.06	:	46.15
+nrk.	BARCELONA	|	2.05	:	41.27
+nrk.	Istanbul	|	28.49	:	40.58
+nrk.	KRETA	|	25.11	:	35.20
+nrk.	RODOS	|	28.05	:	36.24
+nrk.	Varna	|	27.55	:	43.12
+nrk.	PALMA DE MALLORCA	|	2.37	:	39.33
+nrk.	Tenerife	|	-16.31	:	28.17
+nrk.	MALTA	|	14.29	:	35.51
+nrk.	ANTALYA	|	30.44	:	36.42
+nrk.	Sletta	|	4.00	:	59.30
+nrk.	IVALO	|	27.25	:	68.37
+nrk.	Sodankyla	|	26.39	:	67.22
+nrk.	Rovaniemi	|	25.50	:	66.34
+nrk.	Luleå	|	22.13	:	65.55
+nrk.	Kiruna	|	20.13	:	67.51
+nrk.	Karesuando	|	22.30	:	68.27
+nrk.	JOKKMOKK	|	19.39	:	66.38
+nrk.	Bø i Vesterålen	|	14.28	:	68.38
+nrk.	KATTERJAKK	|	18.10	:	68.25
+nrk.	KILPISJARVI	|	20.47	:	69.03
+nrk.	Vilhelmina	|	16.50	:	64.35
+nrk.	Østersund	|	14.30	:	63.20
+nrk.	Gallivarre	|	20.39	:	67.09
+nrk.	Umeå	|	20.17	:	63.48
+nrk.	SUNDSVALL	|	17.27	:	62.32
+nrk.	Arjeplog	|	17.52	:	66.02
+nrk.	Tysfjord	|	16.25	:	68.05
+nrk.	Snåsa	|	12.22	:	64.15
+nrk.	Inari	|	27.25	:	68.37
+nrk.	UTSJOK	|	27.02	:	69.45
+nrk.	Pajala	|	23.24	:	67.13
+nrk.	Lovozero	|	35.02	:	68.00
+nrk.	KANDALAKSJA	|	32.21	:	67.09
+nrk.	TARNA	|	15.06	:	65.49
+nrk.	Murmansk	|	33.03	:	68.58
+nrk.	Oulo	|	25.22	:	64.56
+nrk.	HIRTSHALS	|	10.00	:	57.36
+nrk.	FREDRIKSHAVN	|	10.31	:	57.24
+nrk.	STRØMSTAD	|	11.00	:	58.54
+nrk.	KIEL-HOLTENAU	|	10.09	:	54.23
+nrk.	Block 16/8	|	2.30	:	58.23
+nrk.	GULLFAKS	|	2.18	:	61.12
+nrk.	HEIDRUN	|	7.18	:	65.18
+nrk.	Stad hav	|	4.20	:	62.30
+nrk.	Dubrovnik	|	18.16	:	42.34
+nrk.	Notodden	|	9.15	:	59.34
+nrk.	Rustefjelbma	|	28.12	:	70.24
+nrk.	Mehamn	|	27.50	:	71.02
+nrk.	Nyrud	|	29.15	:	69.10
+nrk.	Storslett	|	21.11	:	69.24
+nrk.	Røst	|	12.05	:	67.30
+nrk.	Tingvoll-Hanem	|	8.18	:	62.51
+nrk.	Torsvåg fyr	|	19.30	:	70.15
+nrk.	Vega-Vallsjo	|	11.51	:	65.42
+nrk.	Fruholmen Fyr VIND	|	24.00	:	71.06
+nrk.	Sletnes Fyr VIND	|	28.14	:	71.05
+nrk.	Sihcajavri VIND	|	23.32	:	68.45
+nrk.	Torsvåg Fyr VIND	|	19.30	:	70.15
+nrk.	Andøya VIND	|	16.09	:	69.18
+nrk.	Myken VIND	|	12.29	:	66.46
+nrk.	Vega-Vallsjø VIND	|	11.51	:	65.42
+nrk.	Helligvær VIND	|	13.54	:	67.24
+nrk.	Røst VIND	|	12.05	:	67.30
+nrk.	Smøla	|	8.00	:	63.28
+nrk.	Gjerde	|	7.16	:	61.38
+nrk.	Øystese	|	6.12	:	60.23
+nrk.	Moi	|	6.36	:	58.30
+nrk.	Rysstad	|	7.32	:	59.06
+nrk.	Sollihøgda	|	10.24	:	59.54
+nrk.	Hol	|	8.12	:	60.37
+nrk.	Uvdal	|	8.48	:	60.15
+nrk.	ALVDAL	|	10.42	:	62.08
+nrk.	Lom	|	8.34	:	61.50
+nrk.	Foldal	|	10.00	:	62.08
+nrk.	ARKANGELSK	|	40.44	:	64.30
+nrk.	HEMSEDAL	|	8.34	:	60.51
+nrk.	Trollheimen	|	9.00	:	62.44
+nrk.	Rondane	|	9.45	:	61.55
+nrk.	DOVREFJELL	|	9.30	:	62.20
+nrk.	NEDALSHYTTA	|	12.07	:	62.59
+nrk.	SALTFJELLET	|	15.28	:	66.44
+nrk.	PERSKOGEN E78	|	20.48	:	69.12
+nrk.	Lyngør fyr	|	9.09	:	58.38
+nrk.	TENNEVOLL	|	17.49	:	68.45
+nrk.	Nittedal	|	10.54	:	60.03
+nrk.	Lillestrøm By	|	11.03	:	59.57
+nrk.	Årnes	|	11.29	:	60.08
+nrk.	KOLBOTN	|	10.49	:	59.49
+nrk.	Hvaler	|	10.55	:	59.02
+nrk.	Storlien	|	12.10	:	63.20
+nrk.	Karlstad	|	13.27	:	59.27
+nrk.	Falun	|	15.40	:	60.37
+nrk.	Beograd	|	20.18	:	44.48
+nrk.	Kiev	|	30.27	:	50.24
+nrk.	Sulitjelma	|	16.00	:	67.05
+nrk.	SKAGERRAK	|	9.00	:	58.00
+nrk.	INDRE SKAGERRAK	|	10.30	:	58.12
+nrk.	Sleipner	|	1.54	:	58.22
+nrk.	HALTENBANKEN	|	9.00	:	64.30
+nrk.	67.50N 11.50E	|	11.30	:	67.30
+nrk.	GOLIATFELTET	|	22.19	:	71.17
+nrk.	SNØHVITFELTET	|	20.00	:	71.30
+nrk.	71.70N 30.00E	|	30.00	:	71.42
+nrk.	Hustadvika	|	6.42	:	63.05
+nrk.	Folla	|	10.10	:	64.32
+nrk.	Ølen	|	5.46	:	59.35
+nrk.	Etne	|	5.56	:	59.40
+nrk.	Kjøpsvik	|	16.22	:	68.06
+nrk.	Banak	|	24.59	:	70.04
+nrk.	Bjørnholt	|	10.41	:	60.04
+nrk.	Breisundet	|	5.41	:	62.32
+nrk.	Grosbeak	|	3.40	:	61.10
+nrk.	70:36N 21:54E	|	21.57	:	70.36
+nrk.	Ekofisk_os	|	3.13	:	56.33
+nrk.	Gullfaks C	|	2.16	:	61.13
+nrk.	Heidrun_os	|	7.19	:	65.19
+nrk.	Valhall	|	3.24	:	56.16
+nrk.	ORMEN LANGE	|	5.23	:	63.19
+nrk.	B11	|	4.33	:	55.28
+nrk.	Block 7344/10	|	44.10	:	73.08
+nrk.	55.00 N   5.50 W	|	-5.30	:	55.00
+nrk.	Block 6934/4	|	34.00	:	69.30
+nrk.	Blokk 25-1 Storklakken	|	2.14	:	59.47
+nrk.	Block 34/5	|	2.35	:	61.35
+nrk.	Block 34/7	|	2.06	:	61.19
+nrk.	Draupne	|	2.11	:	58.55
+nrk.	Hywind 5909N 0500E	|	5.00	:	59.09
+nrk.	Troll B	|	3.30	:	60.47
+nrk.	Balder 25-10	|	2.18	:	59.11
+nrk.	Block 6608/12	|	8.50	:	66.08
+nrk.	Block 6609/3	|	9.53	:	66.56
+nrk.	Block 6407/9	|	7.47	:	64.21
+nrk.	57.58N 08.36E	|	8.36	:	57.58
+nrk.	GJØA	|	3.54	:	61.20
+nrk.	WestOfHolmengraa	|	4.18	:	60.51
+nrk.	Block 7324/3	|	24.26	:	73.33
+nrk.	Gro	|	3.56	:	66.08
+nrk.	Block 6406/5	|	7.30	:	64.38
+nrk.	Kp100	|	5.38	:	57.26
+nrk.	Block 7219/3	|	19.40	:	72.53
+nrk.	Block 25/5	|	2.38	:	59.43
+nrk.	Block 25/6	|	2.53	:	59.41
+nrk.	Block 2/1	|	3.10	:	56.52
+nrk.	Idemitsu	|	3.13	:	61.21
+nrk.	Block 7325/7	|	25.00	:	73.25
+nrk.	Block 7218/9	|	18.46	:	72.21
+nrk.	Ula field	|	2.51	:	57.07
+nrk.	Block 7220/11	|	20.30	:	72.08
+nrk.	StorStrommen	|	11.51	:	54.59
+nrk.	Falster S Landfall	|	11.58	:	54.33
+nrk.	Warnemynde landfall	|	12.06	:	54.12
+nrk.	Block 6506/12	|	6.47	:	65.01
+nrk.	Oselvar	|	2.40	:	56.56
+nrk.	Block 7217/11	|	17.30	:	72.10
+nrk.	Skarv	|	7.39	:	65.42
+nrk.	5459N_0454E	|	4.54	:	54.59
+nrk.	57.09N 05.41E	|	5.41	:	57.09
+nrk.	56.34N 03.38E	|	3.38	:	56.34
+nrk.	UK28-3	|	0.30	:	56.57
+nrk.	Block 7140/10	|	40.07	:	71.00
+nrk.	Block 6935/8	|	35.25	:	69.21
+nrk.	Dalsnuten	|	3.33	:	66.35
+nrk.	Eydehavn	|	8.52	:	58.30
+nrk.	73_30N 21_31E	|	21.31	:	73.30
+nrk.	JERUSALEM	|	35.13	:	31.52
+nrk.	60.63N 18.66E	|	18.39	:	60.38
+nrk.	Taipei	|	121.30	:	25.03
+nrk.	PANAMA	|	-79.31	:	8.58
+nrk.	CALGARY	|	-114.01	:	51.07
+nrk.	HOUSTON	|	-95.21	:	29.58
+nrk.	DENVER	|	-104.52	:	39.47
+nrk.	Bogota	|	-74.09	:	4.42
+nrk.	STANLEY	|	-57.51	:	-51.42
+nrk.	SEOUL	|	126.56	:	37.30
+nrk.	Antanarivo	|	47.29	:	-18.48
+nrk.	Maputo	|	32.34	:	-25.55
+nrk.	KAMPALA	|	32.37	:	0.19
+nrk.	KINSHASA	|	15.15	:	-4.22
+nrk.	Bukavu	|	28.55	:	-2.28
+nrk.	DAR ES SALAAM	|	39.12	:	-6.52
+nrk.	Kano	|	8.32	:	12.03
+nrk.	LAGOS	|	3.21	:	6.33
+nrk.	MONROVIA	|	-10.45	:	6.20
+nrk.	ADDIS ABEBA	|	38.45	:	9.02
+nrk.	Niamey	|	2.10	:	13.29
+nrk.	RABAT	|	-6.46	:	34.03
+nrk.	Natal	|	-35.13	:	-5.48
+nrk.	Manaus	|	-60.02	:	-3.07
+nrk.	BRASILIA	|	-47.56	:	-15.47
+nrk.	PERTH	|	115.52	:	-31.55
+nrk.	MEKKA	|	39.46	:	21.26
+nrk.	AUCKLAND	|	174.48	:	-37.01
+nrk.	Suva	|	178.15	:	-18.05
+nrk.	Darwin	|	130.52	:	-12.24
+nrk.	HAVANA	|	-82.24	:	22.59
+nrk.	DELHI	|	77.12	:	28.35
+nrk.	HANOI	|	105.48	:	21.01
+nrk.	KARACHI	|	66.59	:	24.48
+nrk.	KUALA LUMPUR	|	101.39	:	3.06
+nrk.	5334N 0422W	|	-4.23	:	53.35
+nrk.	BEIJING	|	116.17	:	39.56
+nrk.	Block 7928/8	|	28.22	:	79.26
+nrk.	Block 6407/12	|	7.50	:	64.08
+nrk.	TOKYO	|	139.46	:	35.41
+nrk.	HONG KONG	|	114.10	:	22.18
+nrk.	RANGOON	|	96.10	:	16.46
+nrk.	BANGKOK	|	100.34	:	13.44
+nrk.	MANILA	|	121.01	:	14.31
+nrk.	BRISBANE	|	153.06	:	-27.23
+nrk.	SYDNEY	|	151.12	:	-33.51
+nrk.	Block 35/5	|	4.30	:	61.38
+nrk.	Block 35/9	|	3.43	:	61.20
+nrk.	WELLINGTON	|	174.48	:	-41.20
+nrk.	GUATEMALA	|	-90.31	:	14.35
+nrk.	LA PAZ	|	-68.11	:	-16.31
+nrk.	Block 6204/9	|	4.50	:	62.20
+nrk.	BUENOS AIRES	|	-58.29	:	-34.35
+nrk.	SANTIAGO	|	-70.41	:	-33.26
+nrk.	LIMA	|	-77.07	:	-12.00
+nrk.	RIO DE JANEIRO	|	-43.10	:	-22.54
+nrk.	CARACAS	|	-66.53	:	10.30
+nrk.	LOS ANGELES	|	-118.24	:	33.56
+nrk.	Block 7125/9	|	25.40	:	71.20
+nrk.	WASHINGTON	|	-77.27	:	38.57
+nrk.	BANKENE UTENF TROMS	|	16.00	:	70.30
+nrk.	SKLINNABANKEN (S)	|	10.00	:	65.20
+nrk.	Block 6510/7	|	10.00	:	65.20
+nrk.	Block 7016/4	|	16.00	:	70.30
+nrk.	36-22	|	0.12	:	55.17
+nrk.	VANCOUVER	|	-123.10	:	49.11
+nrk.	TORONTO	|	-79.38	:	43.40
+nrk.	MONTREAL	|	-73.45	:	45.28
+nrk.	MEXICO CITY	|	-99.12	:	19.24
+nrk.	Block 13/5	|	8.30	:	57.38
+nrk.	MIAMI	|	-80.17	:	25.49
+nrk.	SEATTLE	|	-122.18	:	47.27
+nrk.	NEW YORK	|	-73.54	:	40.46
+nrk.	NAIROBI	|	36.49	:	-1.19
+nrk.	Kairo	|	31.20	:	30.07
+nrk.	Boknafjorden - Hav	|	4.37	:	59.07
+nrk.	Block 9/2	|	4.30	:	57.52
+nrk.	JOHANNESBURG	|	28.14	:	-26.08
+nrk.	Block 35/1	|	3.03	:	61.52
+nrk.	CAPE TOWN	|	18.36	:	-33.59
+nrk.	DAKAR	|	-17.30	:	14.44
+nrk.	Block 35/3	|	3.50	:	61.52
+nrk.	Bremnesfjorden	|	7.42	:	63.05
+nrk.	6546N 0429E	|	4.29	:	65.46
+nrk.	6441N_0544E	|	5.44	:	64.41
+nrk.	Block 6507/8	|	7.25	:	65.17
+nrk.	Block 15/6	|	1.50	:	58.40
+nrk.	KONGSVINGER	|	12.00	:	60.11
+nrk.	58.61N 4.74E	|	4.44	:	58.37
+nrk.	DOUALA	|	9.44	:	4.00
+nrk.	59.42N 4.27E	|	4.16	:	59.25
+nrk.	60.00N 4.15E	|	4.09	:	60.00
+nrk.	6059N_0358E	|	3.58	:	60.59
+nrk.	6132N_0405E	|	4.05	:	61.32
+nrk.	6256N_0554E	|	5.53	:	62.56
+nrk.	6255N_0649E	|	6.49	:	62.55
+nrk.	Nyhamna	|	6.50	:	62.55
+nrk.	Block 6305/8	|	5.30	:	63.23
+nrk.	LUANDA	|	13.14	:	-8.51
+nrk.	Leirvik-fjord	|	5.34	:	59.46
+nrk.	Block 6204/11	|	4.30	:	62.08
+nrk.	Block 6406/10	|	6.10	:	64.08
+nrk.	Block 7119/12	|	19.50	:	71.08
+nrk.	Block 7220/8	|	20.30	:	72.22
+nrk.	TRIPOLI	|	13.05	:	32.42
+nrk.	Kvitfjell-Russi	|	10.08	:	61.28
+nrk.	Kvitfjell-Start	|	10.08	:	61.28
+nrk.	Kvitfjell-Bunn	|	10.10	:	61.28
+nrk.	Block 6604/2	|	4.34	:	66.47
+nrk.	Åsgard B	|	6.47	:	65.07
+nrk.	Soeragapet	|	6.00	:	58.24
+nrk.	Block 2/8	|	3.30	:	56.23
+nrk.	Polarbase Hammerfest	|	23.40	:	70.38
+nrk.	Kittiwake	|	0.31	:	57.28
+nrk.	Runde	|	5.33	:	62.26
+nrk.	KF	|	8.00	:	58.01
+nrk.	CHICAGO	|	-87.45	:	41.47
+nrk.	Utvær	|	4.26	:	61.02
+nrk.	Troll A	|	3.44	:	60.39
+nrk.	Block 35/7	|	3.13	:	61.21
+nrk.	Block 12/1	|	7.10	:	57.52
+nrk.	Skrapen	|	6.18	:	62.49
+nrk.	Oelen	|	5.48	:	59.36
+nrk.	Block 31/8	|	3.30	:	60.23
+nrk.	Block 6607/12	|	7.50	:	66.08
+nrk.	Hamar II	|	11.06	:	60.48
+nrk.	Block 6506/6	|	6.50	:	65.38
+nrk.	Block 6407/5	|	7.30	:	64.38
+nrk.	BJORLI	|	8.12	:	62.15
+nrk.	Block 16/2	|	2.30	:	58.52
+nrk.	BILLUND	|	9.10	:	55.44
+nrk.	MADEIRA__ND/OJ	|	-17.00	:	32.48
+nrk.	AZORENE	|	-28.43	:	38.31
+nrk.	TALLINN	|	24.35	:	59.23
+nrk.	KRAKOW	|	19.48	:	50.05
+nrk.	SPLIT/MARJAN	|	16.26	:	43.31
+nrk.	Prirazlomnaya field	|	57.17	:	69.16
+nrk.	Hyme feltet	|	7.33	:	64.22
+nrk.	Gudrun	|	1.44	:	58.50
+nrk.	Sletta_SeaDrill	|	5.00	:	59.03
+nrk.	Block 6304/10	|	4.10	:	63.08
+nrk.	Block 6508/1	|	8.10	:	65.53
+nrk.	Block 6608/11	|	8.31	:	66.14
+nrk.	Njord A	|	7.12	:	64.16
+nrk.	Block 9/4	|	4.10	:	57.38
+nrk.	Block 34/8	|	2.27	:	61.22
+nrk.	Block 6507/10	|	7.10	:	65.08
+nrk.	Block 6813/3	|	13.50	:	68.53
+nrk.	Block 7124/4	|	24.10	:	71.38
+nrk.	Block 7018/7	|	18.10	:	70.22
+nrk.	6954N 3427E	|	34.27	:	69.54
+nrk.	Zapffe	|	21.44	:	71.16
+nrk.	Block 7141/8	|	41.30	:	71.15
+nrk.	Soervaer	|	21.56	:	70.38
+nrk.	55.00N 5.25W	|	-5.40	:	55.00
+nrk.	60.43N 05.11E	|	5.07	:	60.26
+nrk.	Block 15/7	|	1.10	:	58.23
+nrk.	Block 33/12	|	1.55	:	61.01
+nrk.	Block 7/12	|	2.50	:	57.08
+nrk.	Block 7220/7	|	20.10	:	72.22
+nrk.	Block 7220/5	|	20.30	:	72.38
+nrk.	Block 6203/12	|	3.50	:	62.08
+nrk.	Block 32/5	|	4.30	:	60.38
+nrk.	test	|	0.00	:	62.00
+nrk.	61.41N 04.51E	|	4.50	:	61.41
+nrk.	Havn Kvaerner Stord	|	5.30	:	59.45
+nrk.	Zidane	|	7.03	:	65.15
+nrk.	Brønn Maria	|	7.00	:	65.35
+nrk.	Block 34/10	|	2.10	:	61.08
+nrk.	Block 27/5	|	4.30	:	59.38
+nrk.	Block 30/6	|	2.43	:	60.32
+nrk.	Block 34/3	|	2.50	:	61.52
+nrk.	UK 29-2	|	1.14	:	56.53
+nrk.	Marstein	|	4.50	:	60.00
+nrk.	Block 31/3	|	3.50	:	60.52
+nrk.	Block 6407/3	|	7.50	:	64.53
+nrk.	Block 7228/1	|	28.19	:	72.51
+nrk.	55.40N 05.08W	|	-5.05	:	55.24
+nrk.	17N_27W	|	-27.00	:	17.00
+nrk.	13N_20W	|	-20.00	:	13.00
+nrk.	Sesam Well	|	7.42	:	65.36
+nrk.	Block 6201/11	|	1.30	:	62.08
+nrk.	Holmengraa	|	4.20	:	60.51
+nrk.	Block 15/5	|	1.30	:	58.38
+nrk.	Block 25/8	|	2.30	:	59.23
+nrk.	Block 7417/9	|	17.50	:	74.22
+nrk.	Block 33/6	|	1.50	:	61.38
+nrk.	60_30N 02E	|	2.00	:	60.30
+nrk.	Balder	|	2.23	:	59.11
+nrk.	5324N 0342W	|	-3.42	:	53.25
+nrk.	Block 35/2	|	3.30	:	61.52
+nrk.	UK 15/22	|	0.18	:	58.15
+nrk.	Block 7323/10	|	23.10	:	73.08
+nrk.	Asha Noor	|	2.16	:	58.55
+nrk.	Block 6602/4	|	2.10	:	66.38
+nrk.	Block 7120/6	|	20.50	:	71.38
+nrk.	7344N_4343E	|	43.26	:	73.05
+nrk.	40:56 38:23	|	38.23	:	40.56
+nrk.	5921N 1032E	|	59.21	:	10.33
+nrk.	60.28N 25.53E	|	25.32	:	60.17
+nrk.	60.16N 25.38E	|	25.23	:	60.10
+nrk.	5919N 0239E	|	2.23	:	59.12
+nrk.	5946N 0238E	|	2.23	:	59.27
+nrk.	5927N 0245E	|	2.27	:	59.16
+nrk.	Jette	|	2.22	:	59.24
+nrk.	Troll	|	3.33	:	60.49
+nrk.	60:18 N 01:57 E	|	1.57	:	60.02
+nrk.	Ulvetanna	|	4.01	:	56.39
+nrk.	Block 30/9	|	2.50	:	60.23
+nrk.	Block 7231/5	|	31.30	:	72.37
+nrk.	Block 25/9	|	2.50	:	59.14
+nrk.	Block 24/9	|	1.50	:	59.22
+nrk.	TOGI field	|	3.23	:	60.20
+nrk.	Frigg Field	|	2.24	:	59.58
+nrk.	66.17 N  10.06 E	|	10.04	:	66.10
+nrk.	DRAUGEN	|	7.46	:	64.21
+nrk.	Block 33/9	|	1.50	:	61.23
+nrk.	Oseberg syd	|	2.48	:	60.23
+nrk.	Alta	|	23.18	:	69.58
+nrk.	Kirkenes	|	30.03	:	69.43
+nrk.	Ålesund	|	6.13	:	62.28
+nrk.	Tingvoll	|	8.20	:	62.91
+nrk.	TEST BERGEN NABO	|	5.20	:	60.23
+nrk.	Block 15/9	|	1.52	:	58.16
+nrk.	Snorre B	|	2.13	:	61.31
+nrk.	Las Palmas	|	-15.25	:	28.06
+nrk.	Alicante	|	-0.30	:	38.22
+nrk.	Block 6305/10	|	5.15	:	63.10
+nrk.	LOK.26	|	6.00	:	64.00
+nrk.	STOREGGA	|	5.00	:	63.00
+nrk.	Block 7/11	|	2.18	:	57.08
+nrk.	5420N_1104W	|	-11.04	:	54.20
+nrk.	Harald/Siri field	|	4.00	:	56.30
+nrk.	45:23 N 30:57 E	|	30.59	:	45.23
+nrk.	Brage	|	3.03	:	60.33
+nrk.	Block 34/6	|	2.50	:	61.37
+nrk.	Offshore Esbjerg	|	8.07	:	55.22
+nrk.	6032N 0450E	|	4.50	:	60.32
+nrk.	74:20N 62:00E	|	62.00	:	74.20
+nrk.	Block 6506/11	|	6.30	:	65.08
+nrk.	Block 17/2	|	3.03	:	58.52
+nrk.	N59_2 E05_2	|	5.02	:	59.02
+nrk.	ALGER	|	3.13	:	36.04
+nrk.	Block 7344/1	|	44.10	:	73.53
+nrk.	54_26N 07_40E	|	7.41	:	54.26
+nrk.	Corrib	|	-11.09	:	54.33
+nrk.	40:13N 26:26E	|	26.26	:	40.13
+nrk.	40:58N 29:00E	|	29.00	:	40.58
+nrk.	41:20N 29:15E	|	29.15	:	41.20
+nrk.	7630N 6707E	|	67.07	:	76.03
+nrk.	41:00N 38:25E	|	38.25	:	41.00
+nrk.	60:29N 25:54E	|	25.32	:	60.17
+nrk.	7615N 6830E	|	68.30	:	76.15
+nrk.	7750N 6835E	|	68.35	:	77.50
+nrk.	59.44N 26.95E	|	26.57	:	59.26
+nrk.	59.70N 26.61E	|	26.37	:	59.42
+nrk.	Block 7117/11	|	17.30	:	71.08
+nrk.	45:32 N 31:23 E	|	31.23	:	45.32
+nrk.	59:95N 26:10E	|	26.06	:	59.57
+nrk.	Dombås	|	9.07	:	62.04
+nrk.	Fet I Eidfjord	|	7.17	:	60.24
+nrk.	Folldal	|	10.00	:	62.08
+nrk.	Forollhogna	|	10.49	:	62.41
+nrk.	Gran	|	10.32	:	60.21
+nrk.	Halmstad	|	12.50	:	56.39
+nrk.	Hamar-Stavsberg	|	11.04	:	60.49
+nrk.	Hanestad i Rendalen	|	10.53	:	61.50
+nrk.	Helligvær	|	13.54	:	67.24
+nrk.	Karlskrona	|	15.35	:	56.12
+nrk.	Kristianstad	|	14.09	:	56.02
+nrk.	Leksvik	|	10.37	:	63.40
+nrk.	Lindesnes fyr	|	7.03	:	57.59
+nrk.	Nordli-Holand	|	13.43	:	64.27
+nrk.	Oskarshamn	|	16.26	:	57.16
+nrk.	Overhalla	|	12.01	:	64.32
+nrk.	Skellefteå	|	20.57	:	64.45
+nrk.	Stavsro	|	8.43	:	59.50
+nrk.	Venabygdsfjellet	|	10.10	:	61.42
+nrk.	Vikersund	|	10.00	:	59.54
+nrk.	Ytre Enebakk	|	11.02	:	59.44
+nrk.	Rørvik	|	11.14	:	64.52
+nrk.	Stavanger	|	5.44	:	58.57
+nrk.	Ørland	|	9.36	:	63.42
+nrk.	Oseberg aust	|	2.56	:	60.42
+nrk.	Kristiansand	|	8.00	:	58.09
+nrk.	Sortland	|	15.25	:	68.42
+nrk.	Ørje	|	11.40	:	59.29
+nrk.	Son	|	10.41	:	59.32
+nrk.	Ski	|	10.50	:	59.43
+nrk.	Fagerstrand	|	10.36	:	59.44
+nrk.	Stryn Sentrum	|	6.43	:	61.54
+nrk.	Block 7017/2	|	17.41	:	70.50
+nrk.	7010N 1530E	|	15.30	:	70.10
+nrk.	6925N 1315E	|	13.15	:	69.25
+nrk.	6850N 1120E	|	11.20	:	68.50
+nrk.	6810N 1010E	|	10.10	:	68.10
+nrk.	Block 26/5	|	3.38	:	59.40
+nrk.	60.27N 25.53E	|	25.32	:	60.16
+nrk.	UK 38/27	|	2.23	:	55.00
+nrk.	Block 8/5	|	3.30	:	57.38
+nrk.	SVOLVÆR LUFTHAVN	|	14.40	:	68.15
+nrk.	FLORØ LUFTHAVN	|	5.02	:	61.35
+nrk.	Block 6204/2	|	4.33	:	62.58
+nrk.	Block 16/3	|	2.50	:	58.52
+nrk.	6336N_0659E	|	6.59	:	63.36
+nrk.	Block 6204/10	|	4.10	:	62.08
+nrk.	Block 16/10	|	2.10	:	58.08
+nrk.	Block 16/4	|	2.10	:	58.38
+nrk.	65.25N 11.57E	|	11.57	:	65.25
+nrk.	Block 7218/11	|	18.30	:	72.08
+nrk.	Eldfisk	|	3.13	:	56.25
+nrk.	RØSTBANKEN	|	12.30	:	68.30
+nrk.	Block 35/11	|	3.34	:	61.02
+nrk.	Ekofisk	|	3.12	:	56.30
+nrk.	59.67N 03.64E	|	3.39	:	59.40
+nrk.	38:00N 24:10E	|	24.10	:	38.00
+nrk.	38:19N 23:52E	|	23.52	:	38.19
+nrk.	Block 6406/6	|	6.50	:	64.38
+nrk.	Block 8/11	|	3.30	:	57.08
+nrk.	Block 7/4	|	2.10	:	57.38
+nrk.	Onyx South	|	6.59	:	64.25
+nrk.	Block 6407/4	|	7.10	:	64.38
+nrk.	70:30N 15:20E	|	15.20	:	70.30
+nrk.	67:00N 10:30E	|	10.30	:	67.00
+nrk.	Block 6508/5	|	8.30	:	65.38
+nrk.	Kristin T. Est	|	-22.14	:	58.08
+nrk.	Block 25/11	|	2.33	:	59.14
+nrk.	Block 35/12	|	3.44	:	61.05
+nrk.	EKOFISK II	|	3.13	:	56.31
+nrk.	59:57N 26:06E	|	26.06	:	59.57
+nrk.	Las_Palmas	|	-15.30	:	27.25
+nrk.	Benin	|	5.47	:	-2.40
+nrk.	Block 7016/2-1	|	16.34	:	70.51
+nrk.	27:25N 15:30W	|	-15.30	:	27.25
+nrk.	Block 6608/10	|	8.07	:	66.10
+nrk.	Block 25/4	|	2.10	:	59.38
+nrk.	Block 7120/1	|	20.10	:	71.53
+nrk.	Block 7219/1	|	19.10	:	72.52
+nrk.	5923N 1035E	|	10.35	:	59.23
+nrk.	UK 22/23	|	1.30	:	57.15
+nrk.	Block 7322/8	|	22.22	:	73.27
+nrk.	Block 16/5	|	2.30	:	58.38
+nrk.	Norne	|	8.05	:	66.02
+nrk.	Block 7221/2	|	21.22	:	72.45
+nrk.	LOK.28	|	7.00	:	65.00
+nrk.	Block 7226/4	|	26.10	:	72.38
+nrk.	Grane field	|	2.29	:	59.10
+nrk.	Huldra	|	2.39	:	60.51
+nrk.	Block 15/12	|	1.59	:	58.12
+nrk.	Kristin	|	6.33	:	64.60
+nrk.	Heimdal	|	2.14	:	59.34
+nrk.	Kvitebjørn	|	2.30	:	61.05
+nrk.	Oseberg	|	2.50	:	60.30
+nrk.	Oseberg C	|	2.46	:	60.37
+nrk.	Sleipner B	|	1.43	:	58.25
+nrk.	Snorre A	|	2.09	:	61.27
+nrk.	Statfjord A	|	1.51	:	61.15
+nrk.	Statfjord B	|	1.50	:	61.12
+nrk.	Troll C	|	3.37	:	60.53
+nrk.	Veslefrikk A	|	2.54	:	60.47
+nrk.	Veslefrikk B	|	2.54	:	60.47
+nrk.	Visund	|	2.27	:	61.22
+nrk.	Block 7322/1	|	22.00	:	73.50
+nrk.	Block 16/1	|	2.10	:	58.52
+nrk.	Block 6407/8	|	7.33	:	64.21
+nrk.	Block 6507/12	|	7.45	:	65.05
+nrk.	Frigg	|	2.06	:	59.54

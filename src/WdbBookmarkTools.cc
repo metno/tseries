@@ -239,14 +239,10 @@ std::vector<std::string> WdbBookmarkTools::getAllBookmarks()
       if(dirname=="TRASH") continue;
 
       for(int i=0;i<item->rowCount();i++) {
-        QStandardItem* child = item->child(i);
-        QVariant var         = child->data();
-        QString  coor        = var.toString();
-        QString  name        = child->text();
-        ostringstream ost;
-        if(name.isEmpty() || coor.isEmpty()) continue;
-        ost << name.toStdString() << "|" << coor.toStdString();
-        allBookmarks.push_back(ost.str());
+        string newbookmark = stringFromItem(item->child(i));
+
+        if(newbookmark.empty()) continue;
+        allBookmarks.push_back(newbookmark);
       }
     }
   }
@@ -256,5 +252,70 @@ std::vector<std::string> WdbBookmarkTools::getAllBookmarks()
 
 
 
+void WdbBookmarkTools::copySelected(QModelIndexList indexlist)
+{
+  buffer.clear();
+  for(unsigned int i=0;i<indexlist.size();i++) {
+
+    QModelIndex index = indexlist.at(i);
+    QStandardItem* child = model->itemFromIndex(index);
+    string itemstr = stringFromItem(child);
+    buffer.push_back(itemstr);
+
+  }
+}
+
+void WdbBookmarkTools::removeSelected(QModelIndexList indexlist)
+{
+
+  for(unsigned int i=0;i<indexlist.size();i++) {
+      QModelIndex index = indexlist.at(i);
+      QStandardItem* child = model->itemFromIndex(index);
+      QStandardItem* parent = child->parent();
+      int row = child->row();
+      cerr << "remove row: " << row << endl;
+      parent->removeRow(row);
+  }
+}
 
 
+
+void WdbBookmarkTools::paste(QModelIndex index)
+{
+  QStandardItem* child = model->itemFromIndex(index);
+  QStandardItem* parent = child->parent();
+  if(parent==model->invisibleRootItem()) {
+    cerr << "this is a directory!!!!" << endl;
+
+  }
+  int row = child->row();
+  for(int i=0;i<buffer.size();i++) {
+    QStandardItem* newItem= itemFromString(buffer[i]);
+    parent->insertRow(row+i,newItem);
+  }
+}
+
+QStandardItem* WdbBookmarkTools::itemFromString(std::string line)
+{
+  vector<string> words;
+  boost::split( words, line, boost::is_any_of("|") );
+  if(words.size() < 2 ) return 0;
+  string data  = words[1];
+  string token = words[0];
+
+  QStandardItem *item  = new QStandardItem(token.c_str());
+  item->setData(data.c_str());
+  item->setDropEnabled(false);
+  return item;
+}
+
+std::string WdbBookmarkTools::stringFromItem(QStandardItem* item)
+{
+  QVariant var         = item->data();
+  QString  coor        = var.toString();
+  QString  name        = item->text();
+  ostringstream ost;
+  if(name.isEmpty() || coor.isEmpty()) return "";
+  ost << name.toStdString() << "|" << coor.toStdString();
+  return ost.str();
+}
