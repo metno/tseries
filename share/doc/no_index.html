@@ -20,7 +20,7 @@
       <li><a href="#ACCELERATORS">Liste over kortkommandoer</a>
       <li><a href="#FILTER">Posisjonsfilter</a>
       <li><a href="#WDB">Wdb forbindelse</a>
-     <li><a href="news.html">Nyheter</a>
+      <li><a href="#FIMEX">Fimex</a>
     </ul>
 
     <p>
@@ -175,14 +175,106 @@
       Alle Posisjoner som velges blir registert i <i>RECORD</i> katalogen. Bare dra en posisjon derifra til en privat katalog og
       gi den ett nytt navn hvis du vil ta vare på et nytt sted.
 
+ <hr>
 
+    <a NAME="FIMEX"></a><h3>Interpolasjon via Fimex</h3>
+    <p>
+      F.o.m. versjon 6.0 er <i>tseries</i> istand til å interpolere data direkte i NetCDF felter via fimex. 
+    <br>
+    De nye NetCDF lesningene ligger i en egen flik som heter fields, siden den leser og interpolerer direkte i felter
+    <br>
+
+<h4>Interpolasjon</h4>
+
+For å lage et Meteogram trengs det ni parameter (U,V,TT,CH,CL osv). Hvis man
+bruker de vanlige 66 tidspunker blir det altså 594 FELTER for å lese et enkelt meteogram.
+Et felt skal hentes fra disk og pakkes ut siden de er komprimert. Etterpå skal det interpoleres.
+Det kan ta 40 sekunder for å interpolere et diagram, men saken er at interpolasjonen i seg selv 
+er så raskt at det ikke gjør noen forskjell om man interpolerer et diagram eller 2000.
+Derfor interpoleres alle steder som er definert med en gang dataene er forespurt, dvs 
+brukereb må vente opptil 40 sekunder (av og til kun 20) i starten, men
+etter det er ventetiden borte siden tseries har alle diagrammer i minne.
+<p>
+
+
+
+
+<h4>Redigere steder</h4>
+I systemet finnes kataloger og steder, akkurat som i WDB fliken.
+Stedene kan redigeres fritt av brukeren:
+<ul>
+    <li>Man kan lage nye kataloger ved å trykke på pluss.
+    <li> Man kan dra steder rundt omkring i katalogene, og gi dem nye navn.
+    <li> Man kan bruke høyre klikk for å få ett "Copy,Paste,Cut,Delete"  meny.
+    <li> Man kan bruke standard redigeringstaster "CTRL-C", "CTRL-X", "CTRL-V" og "Delete".
+    <li> Man kan markere steder med musen eller Piltastene+SHIFT.
+    <li> Man kan markere flere steder via  SHIFT eller CTRL.
+</ul>
+
+<h4>Kobling mot diana</h4>
+Når man kobler tseries mot diana i "field" modus vises kun de stedene i diana som er synlig i tseries også. Dvs hvis
+man lukker en katalog, så blir stedene som er i den usynlig i diana. Med dette kan brukeren modelere hva som skal vises
+i kartet.
+<p>
+På kartet vises en grønn ring rundt det stedet som dere ser på.
+<p>
+
+
+<h4>Lagring av steder</h4>
+Egne kataloger lagres ved avslutting, felles kataloger (med gammel met.no logo) kan dere rote i, men
+de lagres ikke, de vil komme tilbake som de var fra før, når dere starte på nytt. Kataloger som er
+tomme slettes automatisk ved avslutting.
+Stedene lagres i en fil som heter ~/.tseries/bookmarks.fimex
+den kan dere redigere direkte hvis dere har lyst til å legge til en  liste med steder fra en annen kilde.
+Dere kan f.eks. dele slike filer med kolleger, hvis noen har laget noe lurt. Hvis noen har laget noe veldig
+lurt, så kan vi legge det inn i felleslisten.
+NB: alle tseries instanser deler samme fil. Dvs hvis du har tre tseries oppe samtidig, så vil
+filen overskrives hver gang en tseries avslutter. Har du endringer kun i tseries A og avslutter du
+tseries-B etterpå, så er dine endringene overskrevet.
+
+
+
+<h4>Lage nye steder:</h4>
+En interpolasjon er dyrt, det å klikke direkte i kart ville koste 40s hver gang.
+Pga dette finnes det en "Opptaksmodus", den lille røde knappen nederst.<br>
+Når "Opptaksmodus" er aktiv hentes det ikke data i det hele tatt. Da er fokuset på å lage nye
+steder.
+
+<h5> Arbeidsflyt for å lage nye steder i tseries</h5>
+
+<ul>
+    <li>Koble diana med tseries-6.0
+    <li>Velg "Opptaksmodus"
+    <li>Klikk i diana kartet der du vil ha nye steder
+    <li>De nye stedene dukker opp i katalogen "RECORDS" og som punkt i kartet
+    <li>Flytt steder, gi dem nye navn osv. evt. slett dem igjen
+    <li>Slå av "Opptaksmodus"
+</ul>
+
+<p>
+
+Tseries vil ikke gjøre noe med dem så lenge man fortsetter å se på diagrammer av steder som 
+allerede er interpolert. Først når en klikker på et nytt sted, som tseries ikke har data for, vil
+den interpolere hele listen på nytt (40s ventetid), men da er alle stedene klart. De nye stedene kan
+brukes med en gang i alle modeller. Når man starter tseries på nytt, brukes de nye steder i interpolasjonen
+som alle andre også, da er de rett å slett med.
+<p>
+<B>NB!:</B><i> Opptakskatalogen tar kun in 20 steder. Når man forlater opptaksmodus blir katalogen RECORD
+automatisk stengt. Man kan åpne den igjen og bruke stedene direkte der. RECORD katalogen
+tømmes ved avslutting - det er et temporært område. Andre kataloger har ingen begrensning.</i>
+
+
+<h4>Lesning</h4>
+Tseries leser kun det som trengs for å lage det diagrammet som du velger.
+Men hvis du velger et annet diagram for ditt modell, som kanskje inneholder
+flere parameter, så hentes kun de dataene som mangler, ikke flere.
 
     <hr>
     <a NAME="ACCELERATORS"></a><h3>Liste over kortkommandoer</h3>
     <p>
-    <table BORDER = 2>
+    <table BORDER = 1 cellspacing=0 cellpadding=4>
 	<tr>
-	  <th ALIGN = CENTER COLSPAN = 2> Generelle kortkommandoer
+	  <th ALIGN = CENTER COLSPAN = 2 bgcolor="#22c9bf"> Generelle kortkommandoer
 	<tr>
 	  <th ALIGN = LEFT> Brukerveiledning 
 	  <td ALIGN = CENTER> <b>F1</b>
@@ -195,6 +287,23 @@
 	<tr>
 	  <th ALIGN = LEFT> Avslutt
 	  <td ALIGN = CENTER> <b>Ctrl-Q</b>
+	<tr>
+	  <th ALIGN = CENTER COLSPAN = 2 bgcolor="#22c9bf" > Fimex kortkommandoer
+	<tr>
+	  <th ALIGN = LEFT> Kopier Sted
+	  <td ALIGN = CENTER> <b>Ctrl-C</b>
+	<tr>
+	  <th ALIGN = LEFT> Klipp ut Sted
+	  <td ALIGN = CENTER> <b>Ctrl-X</b>
+	<tr>
+	  <th ALIGN = LEFT> Sett in Sted
+	  <td ALIGN = CENTER> <b>Ctrl-V</b>
+	<tr>
+	  <th ALIGN = LEFT> Slett Sted
+	  <td ALIGN = CENTER> <b>Del</b>
+
+
+
     </table>
     
     
