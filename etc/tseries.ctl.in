@@ -551,40 +551,26 @@ PreferredDiagram=Meteogram
 InitialOpen=0
 
 
-
-
 DataFile=$(Adata)/AROME_Norway25_00_DEF.nc
-DataDescription=AROME
+DataDescription=AROME-PP
 DataType=netcdf
-Contents=x,x,AROME,x
+Contents=x,x,AROME-PP,x
  
 DataFile=$(Adata)/AROME_Norway25_06_DEF.nc
-DataDescription=AROME
+DataDescription=AROME-PP
 DataType=netcdf
-Contents=x,x,AROME,x
+Contents=x,x,AROME-PP,x
  
 DataFile=$(Adata)/AROME_Norway25_12_DEF.nc
-DataDescription=AROME
+DataDescription=AROME-PP
 DataType=netcdf
-Contents=x,x,AROME,x
+Contents=x,x,AROME-PP,x
 
 DataFile=$(Adata)/AROME_Norway25_18_DEF.nc
-DataDescription=AROME
+DataDescription=AROME-PP
 DataType=netcdf
-Contents=x,x,AROME,x
+Contents=x,x,AROME-PP,x
  
-
-
-CollectionName=Langtid
-PreferredDiagram=Meteogram
-InitialOpen=0
-
-
-DataFile=/opdata/nwparc/eps25/eps25_lqqt_probandltf_2013082612Z.nc
-DataDescription=LANGTID
-DataType=netcdf
-Contents=x,x,LANGTID,00
-
 
 
 # -------------------------------------------------

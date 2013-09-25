@@ -3,7 +3,7 @@
 ECMWF=Ecmwf
 Nordic_4km=Nordic 4km
 Nordic_4km_resid=Nordic 4km resid
-AROME-Norway=Arome-Norway (test)
+AROME-Norway=Arome-Norway
 HARMONIE_2.5km=Arome-Arctic
 WAM=Wam 50km
 WAM_10km=Wam 10km
@@ -29,7 +29,7 @@ HIREPS_S=Hireps S
 HIREPS_K=Hireps K
 ALADEPS=Aladeps
 ECEPS=Ec eps
-AROME=AROME
+AROME-PP=AROME-PP
 
 # Standard meteogram
 [DIAGRAM]
@@ -730,7 +730,7 @@ NAME=Meteogram
 STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.meteogram
 
 [LEGALMODELS]
-MODEL=AROME
+MODEL=AROME-PP
 MODEL=OBS
 
 [MODELINDEPENDENT]
@@ -742,10 +742,10 @@ PARAM=WVFD,x,x,x
 PARAM=TT,x,x,x
 PARAM=MSLP,x,x,x
 PARAM=RR,x,x,x
+PARAM=FG,x,x,x
 PARAM=CL,x,x,x
 PARAM=CM,x,x,x
 PARAM=CH,x,x,x
-PARAM=FG,x,x,x
 PARAM=CC,x,x,x
 PARAM=RRAC,x,x,x
 PARAM=TT_O,x,x,x
@@ -760,18 +760,4 @@ PARAM=TANM,x,x,x
 
 [ADD]
 
-# lightweight meteogram fimex
-[FIMEX::DIAGRAM]
-NAME=Meteogram-mini
-STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.meteogram
-
-[LEGALMODELS]
-MODEL=AROME
-MODEL=OBS
-
-[MODELINDEPENDENT]
-PARAM=TT,x,x,x
-PARAM=MSLP,x,x,x
-
-[ADD]
 

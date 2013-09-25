@@ -42,10 +42,10 @@ day=-2
 
 <Path>
 
-Etc= $(Sysconfdir)/tseries/5.3
-Images=$(Prefix)/share/pixmaps/tseries/5.3/
-Doc=$(Prefix)/share/doc/tseries-5.3
-Lang=$(Prefix)/share/tseries/5.3/lang
+Etc= $(Sysconfdir)/tseries/6.0
+Images=$(Prefix)/share/pixmaps/tseries/6.0/
+Doc=$(Prefix)/share/doc/tseries-6.0
+Lang=$(Prefix)/share/tseries/6.0/lang
 
 #------------------
 
@@ -551,40 +551,26 @@ PreferredDiagram=Meteogram
 InitialOpen=0
 
 
-
-
 DataFile=$(Adata)/AROME_Norway25_00_DEF.nc
-DataDescription=AROME
+DataDescription=AROME-PP
 DataType=netcdf
-Contents=x,x,AROME,x
+Contents=x,x,AROME-PP,x
  
 DataFile=$(Adata)/AROME_Norway25_06_DEF.nc
-DataDescription=AROME
+DataDescription=AROME-PP
 DataType=netcdf
-Contents=x,x,AROME,x
+Contents=x,x,AROME-PP,x
  
 DataFile=$(Adata)/AROME_Norway25_12_DEF.nc
-DataDescription=AROME
+DataDescription=AROME-PP
 DataType=netcdf
-Contents=x,x,AROME,x
+Contents=x,x,AROME-PP,x
 
 DataFile=$(Adata)/AROME_Norway25_18_DEF.nc
-DataDescription=AROME
+DataDescription=AROME-PP
 DataType=netcdf
-Contents=x,x,AROME,x
+Contents=x,x,AROME-PP,x
  
-
-
-CollectionName=Langtid
-PreferredDiagram=Meteogram
-InitialOpen=0
-
-
-DataFile=/opdata/nwparc/eps25/eps25_lqqt_probandltf_2013082612Z.nc
-DataDescription=LANGTID
-DataType=netcdf
-Contents=x,x,LANGTID,00
-
 
 
 # -------------------------------------------------
