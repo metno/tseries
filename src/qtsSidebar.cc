@@ -33,6 +33,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
+
+
 #include "tsSetup.h"
 #include "ts_find.xpm"
 #include "ts_filter.xpm"
@@ -89,7 +91,7 @@ qtsSidebar::qtsSidebar()
 
 
 
-
+//  progress = new QProgressBar(this);
 
 
   stationIdx = tabs->addTab(stationtab,tr("Stations"));
@@ -171,6 +173,7 @@ qtsSidebar::qtsSidebar()
 
   vlayout->addWidget(timecontrol);
 
+ // vlayout->addWidget(progress);
   vlayout->addWidget(obsInfo);
 
   // Buttons -------------------
@@ -197,8 +200,17 @@ qtsSidebar::qtsSidebar()
   addWdbBookmarkButton->hide();
   addFimexBookmarkButton->hide();
   recordFimexButton->hide();
+//  progress->hide();
 
   cacheQueryButton->hide();
+
+//  progressthread = new pets::ProgressThread(progress);
+//  progressthread->exec();
+
+
+
+
+
 }
 
 void qtsSidebar::recordToggled(bool record)
@@ -330,6 +342,16 @@ void qtsSidebar::enableWdb(bool has_wdb)
   tabs->setTabEnabled(wdbtabindex,has_wdb);
 }
 
+
+void qtsSidebar::enableFimex(bool has_fimex)
+{
+  fimextab->setEnabled(has_fimex);
+  int fimextabindex =  tabs->indexOf(fimextab);
+  tabs->setTabEnabled(fimextabindex,has_fimex);
+}
+
+
+
 void qtsSidebar::enableBusyLabel(bool enable)
 {
   if(enable) {
@@ -340,6 +362,8 @@ void qtsSidebar::enableBusyLabel(bool enable)
   }
 
 }
+
+
 
 
 bool qtsSidebar::restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miString run,miutil::miString posname)

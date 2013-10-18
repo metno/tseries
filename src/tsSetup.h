@@ -145,6 +145,7 @@ public:
   struct fimexstruct {
     std::vector<std::string>  parameters; // parsed in tsData
     std::set<std::string>     streamtypes;
+    std::vector<std::string>  filters;
   };
 
 

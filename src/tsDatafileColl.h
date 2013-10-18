@@ -141,7 +141,6 @@ private:
   std::vector<ExtStation> stations;   // List of stations
   std::vector<miutil::miString> datasetname;  // name of dataset
   std::map<miutil::miString,miPosition> pos_info; // all positions ordered by name....
-  std::map< std::string, std::vector<pets::FimexParameter> > fimexParameters;
 
   int numStationsDS[MAXDATASETS];// number of positions in each dataset
   //vector<miutil::miString> priorStations;// names of prioritized stations
@@ -150,6 +149,7 @@ private:
   ParameterDefinition parDef;
   bool verbose;
   bool streams_opened;
+  bool fimex_streams_opened;  // at least one open fimexstream required to enable fimex
 
 
 
@@ -169,6 +169,7 @@ private:
   void initialiseFimexPositions();
   void initialiseFimexParameters();
   bool wdbStreamIsOpen;
+
 
 protected:
   bool findpos(const miutil::miString& name, int& idx);
@@ -253,7 +254,7 @@ public:
   std::vector<miutil::miString> getFimexTimes(std::string model);
 
   pets::FimexStream* getFimexStream(std::string model, std::string run);
-
+  bool has_fimex_stream() const { return fimex_streams_opened;}
 
 };
 

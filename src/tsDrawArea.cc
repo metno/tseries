@@ -524,7 +524,6 @@ bool tsDrawArea::prepareWdbData()
 
 bool tsDrawArea::prepareFimexData()
 {
-  cerr << "tsDrawArea::prepareFimexData" << endl;
   miString fimexname;
   double lat,lon;
   miString fimexmodel = request->getFimexModel();

@@ -98,9 +98,10 @@ private:
   bool filterOn;
   bool latlonInDecimal;
   bool has_wdb_stream;
+  bool has_fimex_stream;
 
   void Initialise();
-  void refresh(bool readData = false);
+
   void makeStationList(bool  = false);
   bool makeStyleList();
   bool makeModelList(const miutil::miString&);
@@ -118,7 +119,7 @@ public:
 
   void collectLog();
   void restoreLog();
-
+  void refresh(bool readData = false);
   void changeStyle(const miutil::miString&);
   void changeModel(const miutil::miString&);
   void changeStation(const miutil::miString&);

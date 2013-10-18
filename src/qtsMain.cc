@@ -44,6 +44,7 @@
 #include <qUtilities/QLetterCommands.h>
 #include <puTools/ttycols.h>
 #include <puTools/miDate.h>
+#include <tsData/FimexStream.h>
 
 #include <iomanip>
 #include <iostream>
@@ -149,6 +150,13 @@ void qtsMain::makeFileMenu()
   connect(filterParametersAct, SIGNAL(triggered()), this,
       SLOT( manageParameterFilter() ));
   menu_file->addAction(filterParametersAct);
+
+
+  filterFimexAct = new QAction(tr("Change Fimex filter"), this);
+    connect(filterFimexAct, SIGNAL(triggered()), this,
+        SLOT( manageFimexFilter() ));
+    menu_file->addAction(filterFimexAct);
+
 
   observationStartAct = new QAction(tr("Change Observation start date"), this);
   connect(observationStartAct, SIGNAL(triggered()), this,
@@ -949,6 +957,27 @@ void qtsMain::manageParameterFilter()
     work->setKlimaBlackList(blacklist);
   }
 }
+
+
+void qtsMain::manageFimexFilter()
+{
+  set<string>    fimexParameterFilter = pets::FimexStream::getParameterFilter();
+  vector<string> allFimexParameters   = pets::FimexStream::getAllParameters();
+
+  ParameterFilterDialog * filterdialog = new ParameterFilterDialog(fimexParameterFilter,allFimexParameters, this);
+
+  if (filterdialog->exec()) {
+    fimexParameterFilter=filterdialog->result();
+    pets::FimexStream::setParameterFilter(fimexParameterFilter);
+    work->refresh(true);
+  }
+}
+
+
+
+
+
+
 
 void qtsMain::manageFilter()
 {

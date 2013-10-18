@@ -516,6 +516,11 @@ void tsSetup::setFimex(string& key, string& content)
       for(unsigned int i=0; i < tmpTypes.size();i++) {
         fimex.streamtypes.insert(tmpTypes[i]);
       }
+    } else if (key == "FimexFilters"){
+      vector<string> tmpPar = tokenize(content,":");
+      for(unsigned int i=0; i < tmpPar.size();i++) {
+        fimex.filters.push_back(tmpPar[i]);
+      }
     }
 }
 

@@ -91,6 +91,7 @@ private:
   QAction * fontAct;
   QAction * lockHoursToModelAct;
   QAction * filterParametersAct;
+  QAction * filterFimexAct;
   QAction * observationStartAct;
   QAction * showGridLinesAct;
 
@@ -190,6 +191,7 @@ private slots:
 
   void manageFilter();
   void manageParameterFilter();
+  void manageFimexFilter();
   void changeObservationStart();
   void chooseFont();
   void findLanguages();

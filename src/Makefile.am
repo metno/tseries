@@ -33,8 +33,9 @@ qt_sources=                \
 	CoordinateManager.cc \
 	WdbBookmarkTools.cc  \
 	ParameterFilterDialog.cc \
-	PopupCalendar.cc
-
+	PopupCalendar.cc 
+#\	ProgressThread.cc
+	
 # headers ( for distribution )  -----
 
 header_sources=             \

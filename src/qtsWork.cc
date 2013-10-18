@@ -615,11 +615,14 @@ void qtsWork::restoreLog()
   request.restoreWdbFromLog(mo,st,lat,lon,miTime(run),posname);
   sidebar->restoreWdbFromLog(mo,st,lat,lon,run,posname);
 
-  miString fimexmodel,fimexstyle,fimexexpand;
+  miString fimexmodel,fimexstyle,fimexexpand,fimexfilter;
 
   c.get("FIMEXMODEL",fimexmodel);
   c.get("FIMEXSTYLE",fimexstyle);
   c.get("FIMEXEXPANDEDDIRS",fimexexpand);
+  c.get("FIMEXFILTER",fimexfilter);
+
+  pets::FimexStream::setParameterFilterFromString(fimexfilter);
 
   sidebar->restoreFimexFromLog(fimexmodel,fimexstyle,fimexexpand);
   if(!fimexmodel.empty())
@@ -657,6 +660,8 @@ void qtsWork::collectLog()
   c.set("FIMEXMODEL",request.getFimexModel());
   c.set("FIMEXSTYLE",request.getFimexStyle());
   c.set("FIMEXEXPANDEDDIRS",sidebar->getFimexExpanded());
+
+  c.set("FIMEXFILTER",pets::FimexStream::getParameterFilterAsString());
 
 
 
@@ -939,6 +944,9 @@ void   qtsWork::cacheRequestDone()
 
 void qtsWork::makeFimexModels(QString& activeStyle)
 {
+//  if(!has_fimex_stream)
+//    return;
+
   miString st;
   qStr2miStr(activeStyle,st);
 

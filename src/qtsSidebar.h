@@ -40,6 +40,7 @@
 #include <QLabel>
 #include <QMovie>
 #include <QPixmap>
+//#include "ProgressThread.h"
 
 #include "qtsTimeControl.h"
 #include "tsRequest.h"
@@ -57,22 +58,25 @@ class qtsSidebar : public QWidget
   Q_OBJECT
 private:
 
-  QTabWidget  *  tabs;
-  TimeControl *  timecontrol;
-  ClientButton*  pluginB;
-  QPushButton*   targetB;
-  QPushButton*   filterB;
-  QPushButton*   observationB;
-  QPushButton *  cacheQueryButton;
-  QPushButton *  addWdbBookmarkButton;
-  QPushButton *  addFimexBookmarkButton;
-  QPushButton *  recordFimexButton;
-  QLabel*        connectStatus;
-  QLabel*        obsInfo;
-  QMovie*        busyLabel;
-  StationTab*    stationtab;
-  CoordinateTab* wdbtab;
-  CoordinateTab* fimextab;
+  QTabWidget  *   tabs;
+  TimeControl *   timecontrol;
+  ClientButton*   pluginB;
+  QPushButton*    targetB;
+  QPushButton*    filterB;
+  QPushButton*    observationB;
+  QPushButton *   cacheQueryButton;
+  QPushButton *   addWdbBookmarkButton;
+  QPushButton *   addFimexBookmarkButton;
+  QPushButton *   recordFimexButton;
+  QLabel*         connectStatus;
+  QLabel*         obsInfo;
+  QMovie*         busyLabel;
+  StationTab*     stationtab;
+  CoordinateTab*  wdbtab;
+  CoordinateTab*  fimextab;
+ // QProgressBar*   progress;
+  //ProgressThread* progressthread;
+
   int wdbIdx, stationIdx,fimexIdx;
   int actualIndex;
   bool fimexRexordToggled;
@@ -129,6 +133,8 @@ public:
 
 
   // Fimex
+
+  void enableFimex(bool);
 
   void setFimexModels(const QStringList& newModels){ fimextab->setModels(newModels);    }
   void setFimexRuns(const QStringList& newRuns)    { fimextab->setRuns(newRuns);        }

@@ -63,7 +63,8 @@ bool Union(const dataset& d1, const dataset& d2, dataset& result)
 }
 
 DatafileColl::DatafileColl() :
-                tolerance(1000.0), verbose(false), streams_opened(false), wdbStream(NULL)
+                tolerance(1000.0), verbose(false), streams_opened(false), fimex_streams_opened(false),
+                wdbStream(NULL)
 {
   openWdbStream();
   openKlimaStream();
@@ -104,16 +105,10 @@ int DatafileColl::addStream(const miString name, const miString desc,
       finfo.model      = desc;
       finfo.sType      = streamtype;
 
-      vector<pets::FimexParameter> fpar;
-
-      if(fimexParameters.count(streamtype)) {
-        fpar = fimexParameters[streamtype];
-      }
-      cerr << "Added to fimexstreams" << name << " as " << streamtype << " with "
-          << fpar.size() << " known parameters " << endl;
+      cerr << "Added to fimexstreams" << name << " as " << streamtype << endl;
       fimexStreams.push_back(finfo);
 
-      fimexStreams.back().dataStream = new pets::FimexStream(name, desc, streamtype,fpar);
+      fimexStreams.back().dataStream = new pets::FimexStream(name, desc, streamtype);
 
     } else {
 
@@ -673,16 +668,20 @@ void DatafileColl::initialiseFimexPositions()
 void DatafileColl::initialiseFimexParameters()
 {
   tsSetup setup;
-  fimexParameters.clear();
+  vector<pets::FimexParameter> fimexparameter;
   for(unsigned int i=0;i< setup.fimex.parameters.size();i++) {
     pets::FimexParameter par;
     try {
       par.setFromString(setup.fimex.parameters[i]);
-      fimexParameters[par.streamtype].push_back(par);
+      fimexparameter.push_back(par);
     } catch ( exception& e) {
       cerr << e.what() << endl;
     }
   }
+  cerr << "Setting " << fimexparameter.size() << " Parameters to fimex" << endl;
+  pets::FimexStream::setFimexParameters(fimexparameter);
+  pets::FimexStream::addToAllParameters(setup.fimex.filters);
+
 }
 
 
@@ -698,7 +697,8 @@ vector<miString> DatafileColl::getFimexTimes(std::string model)
       try {
 
         boost::posix_time::ptime time = fimexStreams[i].dataStream->getReferencetime();
-
+        if(fimexStreams[i].dataStream->isOpen())
+          fimex_streams_opened=true;
         std::string stime = boost::posix_time::to_simple_string(time);
 
         fimexStreams[i].run = stime;
