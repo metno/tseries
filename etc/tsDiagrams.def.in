@@ -38,6 +38,7 @@ STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=AROME-Norway
+MODEL=HARMONIE_2.5km
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=ECMWF
@@ -134,6 +135,7 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram
 
 [LEGALMODELS]
 MODEL=AROME-Norway
+MODEL=HARMONIE_2.5km
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=ECMWF
@@ -177,6 +179,7 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.meteogram_ff
 
 [LEGALMODELS]
 MODEL=AROME-Norway
+MODEL=HARMONIE_2.5km
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=ECMWF
@@ -221,6 +224,7 @@ STYLEFILE= @prefix@/share/tseries/@PVERSION@/style/style.snow_meteogram
 
 [LEGALMODELS]
 MODEL=AROME-Norway
+MODEL=HARMONIE_2.5km
 MODEL=HIRLAM.12km
 MODEL=HIRLAM.8km
 MODEL=UM.4km
