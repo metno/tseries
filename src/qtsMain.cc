@@ -46,6 +46,7 @@
 #include <puTools/miDate.h>
 #include <tsData/FimexStream.h>
 
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <map>
