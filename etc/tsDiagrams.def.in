@@ -1,5 +1,5 @@
 [MODELS]
-
+T2M_PP=T2M_PP
 ECMWF=Ecmwf
 Nordic_4km=Nordic 4km
 Nordic_4km_resid=Nordic 4km resid
@@ -737,6 +737,15 @@ STYLEFILE=@prefix@/share/tseries/@PVERSION@/style/style.meteogram
 MODEL=AROME-PP
 MODEL=OBS
 
+
+
+[MODELSPECIFIC]
+MODEL=T2M_PP
+PARAM=TTPP,x,x,x
+[END]
+
+
+
 [MODELINDEPENDENT]
 PARAM=UU,x,x,x
 PARAM=VV,x,x,x
@@ -765,3 +774,77 @@ PARAM=TANM,x,x,x
 [ADD]
 
 
+
+
+# Standard meteogram fimex
+[FIMEX::DIAGRAM]
+NAME=S-Meteogram
+STYLEFILE=/home/juergens/job/meteogram/fimex/style/style.meteogram
+
+[LEGALMODELS]
+MODEL=AROME-PP
+MODEL=OBS
+
+
+[MODELSPECIFIC]
+MODEL=T2M_PP
+PARAM=TTPP,x,x,x
+[END]
+
+
+[MODELINDEPENDENT]
+PARAM=UU,x,x,x
+PARAM=VV,x,x,x
+PARAM=FF,x,x,x
+PARAM=DD,x,x,x
+PARAM=WVFD,x,x,x
+PARAM=TT,x,x,x
+PARAM=MSLP,x,x,x
+PARAM=RR,x,x,x
+PARAM=FG,x,x,x
+PARAM=CL,x,x,x
+PARAM=CM,x,x,x
+PARAM=CH,x,x,x
+PARAM=CC,x,x,x
+PARAM=RRAC,x,x,x
+PARAM=TT_O,x,x,x
+PARAM=MSLP_O,x,x,x
+PARAM=QNH_O,x,x,x
+PARAM=DD_O,x,x,x
+PARAM=FF_O,x,x,x
+PARAM=RR_O,x,x,x
+PARAM=TAM,x,x,x
+PARAM=TAXM,x,x,x
+PARAM=TANM,x,x,x
+PARAM=WW,x,x,x
+
+[ADD]
+
+
+
+# Standard accumlated precipitation
+[FIMEX::DIAGRAM]
+NAME=Acummprecip
+STYLEFILE=/home/juergens/job/meteogram/fimex/style/style.accumprecip
+
+[LEGALMODELS]
+MODEL=AROME-PP
+MODEL=OBS
+
+
+[MODELSPECIFIC]
+MODEL=T2M_PP
+PARAM=TTPP,x,x,x
+[END]
+
+
+
+
+[MODELINDEPENDENT]
+PARAM=RRAC,x,x,x
+PARAM=RR_O,x,x,x
+PARAM=RR,x,x,x
+PARAM=TT,x,x,x
+PARAM=TT_O,x,x,x
+
+[ADD]

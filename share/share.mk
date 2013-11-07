@@ -94,5 +94,6 @@ dist_style_DATA = \
 	share/style/style.glameps_z500           \
 	share/style/style.glameps_t2m            \
 	share/style/style.glameps_rr             \
-	share/style/style.glameps_ff
+	share/style/style.glameps_ff             \
+	share/style/style.accumprecip
 

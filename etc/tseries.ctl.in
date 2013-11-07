@@ -551,25 +551,16 @@ PreferredDiagram=Meteogram
 InitialOpen=0
 
 
-DataFile=$(Adata)/AROME_Norway25_00_DEF.nc
+DataFile=$(Adata)/arome_norway_default2_5km_20??????_??.nc
 DataDescription=AROME-PP
 DataType=netcdf
 Contents=x,x,AROME-PP,x
  
-DataFile=$(Adata)/AROME_Norway25_06_DEF.nc
-DataDescription=AROME-PP
-DataType=netcdf
-Contents=x,x,AROME-PP,x
- 
-DataFile=$(Adata)/AROME_Norway25_12_DEF.nc
-DataDescription=AROME-PP
-DataType=netcdf
-Contents=x,x,AROME-PP,x
 
-DataFile=$(Adata)/AROME_Norway25_18_DEF.nc
-DataDescription=AROME-PP
+DataFile=$(Adata)/t2m500yrKF??.nc
+DataDescription=T2M_PP
 DataType=netcdf
-Contents=x,x,AROME-PP,x
+Contents=x,x,T2M_PP,x
  
 
 
@@ -645,7 +636,7 @@ TAXM,0,x,OBS,x=TAXM
 <fimexParameters>
 # PETSPAR   = TYPE | fimexname                | Unit | extradim1 start1 len1 | extradim2 ...
 
-MSLP,x,x,x = netcdf | air_pressure_at_sea_level         | hPa     
+MSLP,x,x,x = netcdf | air_pressure_at_sea_level         | hPa   
 TT,x,x,x   = netcdf | air_temperature_2m                | Celsius
 UU,x,x,x   = netcdf | x_wind_10m                        | kt
 VV,x,x,x   = netcdf | y_wind_10m                        | kt
@@ -654,5 +645,6 @@ CL,x,x,x   = netcdf | low_type_cloud_area_fraction      | 0.01
 CM,x,x,x   = netcdf | medium_type_cloud_area_fraction   | 0.01
 CH,x,x,x   = netcdf | high_type_cloud_area_fraction     | 0.01
 RRAC,x,x,x = netcdf | precipitation_amount_acc          | kg/m^2
-
+# Postprocessed temperature - alias...
+TTPP,x,x,x = netcdf | air_temperature_2m                | Celsius
 
