@@ -729,6 +729,15 @@ void qtsWork::updateStreams()
       data.makeStationList();
 
   }
+
+
+  if(data.updateFimexStreams(request.getFimexModel())) {
+    vector<miString> times = data.getFimexTimes(request.getFimexModel());
+    sidebar->fillList(times,StationTab::CMFIMEXRUN);
+  }
+
+
+
 }
 
 void qtsWork::filterToggled(bool f)

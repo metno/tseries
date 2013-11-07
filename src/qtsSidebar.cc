@@ -34,7 +34,6 @@
 #include <QVBoxLayout>
 
 
-
 #include "tsSetup.h"
 #include "ts_find.xpm"
 #include "ts_filter.xpm"
@@ -282,6 +281,7 @@ QString  qtsSidebar::fillList(const vector<miutil::miString>& v, const StationTa
   }
 
   if(l==StationTab::CMFIMEXRUN) {
+      qSort(qlist.begin(), qlist.end(), qGreater<QString>());
       fimextab->setRuns(qlist);
       return QString("");
     }

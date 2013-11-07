@@ -130,12 +130,24 @@ struct FimexInfo {
   std::string run;
 };
 
+
+struct FimexFileindex {
+  std::string glob_string;
+  std::set<std::string> known_files;
+  std::vector<std::string> findNewFiles();
+  std::string model;
+  std::string sType;
+};
+
+
 class DatafileColl
 {
 private:
   miutil::miString collectName;          // file collection name
   std::vector<DsInfo>    datastreams;     // List of datafiles
   std::vector<FimexInfo> fimexStreams;    // List of fimex datastreams
+  std::vector<FimexFileindex> fimexFileindex;  // list of known files (to check if new ones popped up)
+
   pets::WdbStream*       wdbStream;      // the wdb data stream
   pets::KlimaStream*     klimaStream;    // the klima database from an url interface
   std::vector<ExtStation> stations;   // List of stations
@@ -152,9 +164,7 @@ private:
   bool fimex_streams_opened;  // at least one open fimexstream required to enable fimex
 
 
-
-
-
+  bool createFimexStreams(FimexFileindex& findex);
 
   unsigned long _modtime(miutil::miString&); // get file modification time
   void _filestat(miutil::miString&, struct stat&); // get file stats
@@ -255,7 +265,8 @@ public:
 
   pets::FimexStream* getFimexStream(std::string model, std::string run);
   bool has_fimex_stream() const { return fimex_streams_opened;}
-
+  // returns true if the currentModel has an update (reloads the active runtime list in the GUI)
+  bool updateFimexStreams(std::string currentModel);
 };
 
 #endif

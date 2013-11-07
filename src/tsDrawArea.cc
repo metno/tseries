@@ -42,9 +42,9 @@ using namespace std;
 using namespace miutil;
 
 tsDrawArea::tsDrawArea(tsRequest* tsr, DatafileColl* tsd, SessionManager* ses) :
-                    request(tsr), data(tsd), session(ses), diagram(0), theData(0), width(1), height(
-                        1), pixwidth(1), pixheight(1), Initialised(false), hardcopy(false), hardcopystarted(
-                            false), showGridLines(true)
+                        request(tsr), data(tsd), session(ses), diagram(0), theData(0), width(1), height(
+                            1), pixwidth(1), pixheight(1), Initialised(false), hardcopy(false), hardcopystarted(
+                                false), showGridLines(true)
 {
   minProg = 0;
   maxProg = 300;
@@ -229,12 +229,12 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
     miTime lastTime=  theData->timelineEnd();
 
     for (int j = 0; j < inlist.size(); j++) {
-           ParId obsTmp = inlist[j];
-           obsTmp.model = "OBS";
-           if(allObservations.count(obsTmp))
-             continue;
-           allObservations.insert(obsTmp);
-           obsParameters.push_back(obsTmp);
+      ParId obsTmp = inlist[j];
+      obsTmp.model = "OBS";
+      if(allObservations.count(obsTmp))
+        continue;
+      allObservations.insert(obsTmp);
+      obsParameters.push_back(obsTmp);
     }
 
 
@@ -560,12 +560,28 @@ bool tsDrawArea::prepareFimexData()
 
   unsigned long readtime;
 
+  theData->Erase();
+
   for (int i = 0; i < options.numModels(); i++) {
     inlist = options.paramVector(i);
 
-    theData->fetchDataFromFimex(data->getFimexStream(fimexmodel,fimexrun), lat, lon, fimexname, inlist, outlist);
-  }
+    set<string> doublettblocker;
+    for (unsigned j=0; j<inlist.size();j++) {
+      if(doublettblocker.count(inlist[j].toString()))
+        inlist.erase(inlist.begin(),inlist.begin()+j);
+      else
+        doublettblocker.insert(inlist[j].toString());
+    }
 
+    try {
+
+      pets::FimexStream* currentStream = data->getFimexStream(inlist[0].model,fimexrun);
+      theData->fetchDataFromFimex(currentStream, lat, lon, fimexname, inlist, outlist);
+
+    } catch (exception& e) {
+      cerr << "Exception: " <<  e.what() << endl;
+    }
+  }
   // Find any missing params
 
   if (outlist.size())

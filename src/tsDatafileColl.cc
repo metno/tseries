@@ -31,7 +31,8 @@
 #include "tsDatafileColl.h"
 #include <tsData/ptHDFFile.h>
 #include <tsData/ptAsciiStream.h>
-
+#include <glob.h>
+#include <string>
 #include "tsSetup.h"
 
 
@@ -42,6 +43,30 @@
 
 using namespace std;
 using namespace miutil;
+
+
+
+
+vector<string> FimexFileindex::findNewFiles()
+{
+  glob_t glob_result;
+
+  glob(glob_string.c_str(),GLOB_NOMAGIC,NULL,&glob_result);
+  vector<string> result;
+  for(unsigned int i=0;i<glob_result.gl_pathc;++i){
+    string filename= string(glob_result.gl_pathv[i]);
+    if(known_files.count(filename))
+      continue;
+    known_files.insert(filename);
+    result.push_back(filename);
+  }
+  globfree(&glob_result);
+  return result;
+}
+
+
+
+
 
 bool Union(const dataset& d1, const dataset& d2)
 {
@@ -63,8 +88,8 @@ bool Union(const dataset& d1, const dataset& d2, dataset& result)
 }
 
 DatafileColl::DatafileColl() :
-                tolerance(1000.0), verbose(false), streams_opened(false), fimex_streams_opened(false),
-                wdbStream(NULL)
+                    tolerance(1000.0), verbose(false), streams_opened(false), fimex_streams_opened(false),
+                    wdbStream(NULL)
 {
   openWdbStream();
   openKlimaStream();
@@ -91,6 +116,8 @@ int DatafileColl::addDataset(miString name)
   return -1;
 }
 
+
+
 int DatafileColl::addStream(const miString name, const miString desc,
     const miString streamtype, const int dset, const int numindset,
     const miString sparid)
@@ -100,15 +127,13 @@ int DatafileColl::addStream(const miString name, const miString desc,
   if (dset < (signed int) datasetname.size()) {
 
     if(setup.fimex.streamtypes.count(streamtype)) {
-      FimexInfo finfo;
-      finfo.streamname = name;
-      finfo.model      = desc;
-      finfo.sType      = streamtype;
 
-      cerr << "Added to fimexstreams" << name << " as " << streamtype << endl;
-      fimexStreams.push_back(finfo);
-
-      fimexStreams.back().dataStream = new pets::FimexStream(name, desc, streamtype);
+      FimexFileindex   findex;
+      findex.model        = desc;
+      findex.sType        = streamtype;
+      findex.glob_string  = name;
+      fimexFileindex.push_back(findex);
+      createFimexStreams(fimexFileindex.back());
 
     } else {
 
@@ -246,11 +271,11 @@ void DatafileColl::closeStreams()
   }
 
   for (unsigned int i = 0; i < fimexStreams.size(); i++) {
-      if (fimexStreams[i].dataStream ) {
-        delete fimexStreams[i].dataStream;
-        fimexStreams[i].dataStream=NULL;
-      }
+    if (fimexStreams[i].dataStream ) {
+      delete fimexStreams[i].dataStream;
+      fimexStreams[i].dataStream=NULL;
     }
+  }
 
 
 
@@ -480,7 +505,7 @@ map<miString, miString> DatafileColl::getPositions(const miString mod)
   for (i = 0; i < n; i++) {
     if (Union(ds, stations[i].d)) {
       result[stations[i].station.Name()] = miString(stations[i].station.lat())
-                      + ":" + miString(stations[i].station.lon());
+                          + ":" + miString(stations[i].station.lon());
     }
   }
   return result;
@@ -566,7 +591,7 @@ void DatafileColl::closeKlimaStream()
     delete klimaStream;
   } catch (exception& e) {
     cerr << " Exception caught while trying to delete klimaStream " << e.what()
-                    << endl;
+                        << endl;
   }
   klimaStream = NULL;
 
@@ -588,7 +613,7 @@ void DatafileColl::openWdbStream()
 
   } catch (exception& e) {
     cerr << " Exception caught while trying to open WdbStream " << e.what()
-                    << endl;
+                        << endl;
   }
 }
 
@@ -598,7 +623,7 @@ void DatafileColl::closeWdbStream()
     delete wdbStream;
   } catch (exception& e) {
     cerr << " Exception caught while trying to delete WdbStream " << e.what()
-                    << endl;
+                        << endl;
   }
   wdbStream = NULL;
 
@@ -696,14 +721,15 @@ vector<miString> DatafileColl::getFimexTimes(std::string model)
 
       try {
 
-        boost::posix_time::ptime time = fimexStreams[i].dataStream->getReferencetime();
-        if(fimexStreams[i].dataStream->isOpen())
-          fimex_streams_opened=true;
-        std::string stime = boost::posix_time::to_simple_string(time);
+        if(fimexStreams[i].run == "") {
+          boost::posix_time::ptime time = fimexStreams[i].dataStream->getReferencetime();
+          if(fimexStreams[i].dataStream->isOpen())
+            fimex_streams_opened=true;
+          std::string stime = boost::posix_time::to_simple_string(time);
 
-        fimexStreams[i].run = stime;
-
-        runtimes.push_back(stime);
+          fimexStreams[i].run = stime;
+        }
+        runtimes.push_back( fimexStreams[i].run);
       } catch (exception & e ) {
         cerr << e.what() << endl;
       }
@@ -717,9 +743,15 @@ vector<miString> DatafileColl::getFimexTimes(std::string model)
 pets::FimexStream* DatafileColl::getFimexStream(std::string model, std::string run)
 {
   for ( int i = 0; i< fimexStreams.size();i++) {
-     if( model == fimexStreams[i].model && run == fimexStreams[i].run) {
-       return fimexStreams[i].dataStream;
-     }
+    if( model == fimexStreams[i].model ) {
+      if(fimexStreams[i].run.empty()) {
+        getFimexTimes(model);
+
+      }
+      if(run == fimexStreams[i].run) {
+        return fimexStreams[i].dataStream;
+      }
+    }
   }
 
   ostringstream ost;
@@ -727,6 +759,47 @@ pets::FimexStream* DatafileColl::getFimexStream(std::string model, std::string r
   throw pets::FimexstreamException(ost.str());
 
 }
+
+
+bool DatafileColl::updateFimexStreams(std::string currentModel)
+{
+  if(!fimex_streams_opened)
+    return false;
+
+  bool currentModelUpdated=false;
+  // Just if the model matches the current model, we have to update
+  // the active runtimes list in the sidebar...
+  for(unsigned int i=0; i<fimexFileindex.size(); i++) {
+    if(createFimexStreams(fimexFileindex[i])) {
+      if(fimexFileindex[i].model == currentModel)
+       currentModelUpdated = true;
+    }
+  }
+  return currentModelUpdated;
+}
+
+
+
+
+bool DatafileColl::createFimexStreams(FimexFileindex& findex)
+{
+
+  FimexInfo finfo;
+  finfo.model      = findex.model;
+  finfo.sType      = findex.sType;
+  vector<string> streamfilenames = findex.findNewFiles();
+
+  for( unsigned int i=0; i< streamfilenames.size();i++) {
+    finfo.streamname = streamfilenames[i];
+    cerr << "Added to fimexstreams" << finfo.streamname << " as " << finfo.sType << endl;
+    fimexStreams.push_back(finfo);
+
+    fimexStreams.back().dataStream = new pets::FimexStream(finfo.streamname, finfo.model, finfo.sType);
+  }
+  return bool ( streamfilenames.size());
+
+}
+
 
 
 
