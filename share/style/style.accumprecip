@@ -311,7 +311,7 @@ fillPattern= DIAGRIGHT
 label=       TRUE
 unit=        TRUE
 color=       DARK_BLUE
-font=        SUBSCRIPT
+font=        NORMAL
 histogramstart= 0
 histogramstop=  10
 [ADD]
@@ -333,7 +333,7 @@ fillPattern=     DIAGLEFT
 label=           true
 unit=            false
 color=           DARK_GREEN
-font=            SUBSCRIPT
+font=            NORMAL
 histogramstart=  0
 histogramstop=   10
 [ADD]

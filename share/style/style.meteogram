@@ -273,8 +273,7 @@ patternInColour=TRUE
 [NEW]
 type=LINE
 yaid=0
-parameter=TT,0,x,x
-
+parameter=TT,x,x,x
 text=T2m [°C]
 lineWidth=2
 colorbyvalue=    TRUE
@@ -283,6 +282,21 @@ colorlist=       BLUE,RED
 linePattern=FULL
 patternInColour=TRUE
 [ADD]
+
+
+[NEW]
+type=LINE
+yaid=0
+parameter=TTPP,x,T2M_PP,x,x
+text=T2m pp [°C]
+lineWidth=2
+colorbyvalue=    TRUE
+datalimits=      -100,0,100
+colorlist=       BLUE,RED
+linePattern=DOTTED
+patternInColour=TRUE
+[ADD]
+
 
 [NEW]
 type=LINE
