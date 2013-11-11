@@ -1,3 +1,19 @@
+tseries (6.1.1-1) unstable; urgency=low
+
+  * setup file change - fixed arome norway for vtk
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Mon, 11 Nov 2013 08:01:48 +0100
+
+tseries (6.1.0-1) unstable; urgency=low
+
+  * added glob based fimex stream reader
+  * added automatic read of new fimex files
+  * added fimex mix of different streams
+  * added t2m from hirlam500m to meteogram
+  * added new style accumprecip
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Fri, 08 Nov 2013 10:28:48 +0100
+
 tseries (6.0.2-1) unstable; urgency=low
 
   * fixed crash-with-empty-fimex bug

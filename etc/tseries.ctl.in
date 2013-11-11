@@ -550,19 +550,25 @@ CollectionName=FimexData
 PreferredDiagram=Meteogram
 InitialOpen=0
 
+[VTK]
+DataFile=$(Adata)/vtk/AROME_Norway25_vtk_20??????T??Z.nc
+DataDescription=AROME-PP
+DataType=netcdf
+Contents=x,x,AROME-PP,x
 
+[VNN:VA:VV:FOU:OFFLINE]
 DataFile=$(Adata)/arome_norway_default2_5km_20??????_??.nc
 DataDescription=AROME-PP
 DataType=netcdf
 Contents=x,x,AROME-PP,x
- 
+
 
 DataFile=$(Adata)/t2m500yrKF??.nc
 DataDescription=T2M_PP
 DataType=netcdf
 Contents=x,x,T2M_PP,x
  
-
+[]
 
 # -------------------------------------------------
 
