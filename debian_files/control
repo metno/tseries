@@ -8,7 +8,7 @@ Standards-Version: 3.7.2
 
 Package: tseries-@METNO_VERSION@
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, tseriesconfig-@METNO_VERSION@
 Provides: tseries
 Description: Meteorological time series viewer
  This program shows time series from hdf4 and ASCII input.

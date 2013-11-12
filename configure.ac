@@ -3,7 +3,7 @@
 #
 
 AC_PREREQ(2.59)
-AC_INIT([tseries], [6.1.1], [diana@met.no])
+AC_INIT([tseries], [6.2.0], [diana@met.no])
 
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -73,8 +73,6 @@ AC_CONFIG_FILES([
 	bin/tseries
 	Makefile
 	src/Makefile
-	etc/tseries.ctl
-	etc/tsDiagrams.def
 	share/applications/metno-tseries.desktop
 ])
 

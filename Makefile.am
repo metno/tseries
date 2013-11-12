@@ -11,17 +11,17 @@ tseriesbindir= $(bindir)
 dist_tseriesbin_SCRIPTS= bin/tseries
 
 
-etctseriesdir = $(sysconfdir)/tseries/$(PVERSION)
-
 
 if ENABLE_SMHI
 
-include smhi/etc/etc.mk
+# include smhi/etc/etc.mk
+# all setup is now seperated into https://svn.met.no/tseries/config
+# consider to establish an extra branch for SMHI specific stuff there
+#
 
 else
 
 include share/share.mk
-include etc/etc.mk
 
 endif # ENABLE_SMHI
 

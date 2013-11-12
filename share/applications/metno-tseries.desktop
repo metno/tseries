@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=Tseries-6.1
-GenericName=Tseries-6.1
+Name=Tseries-6.2
+GenericName=Tseries-6.2
 Comment=Tidsserie visning
-Exec=tseries-6.1
-Icon=tseries-6.1
+Exec=tseries-6.2
+Icon=tseries-6.2
 MimeType=;
 ServiceTypes=
 Terminal=false
