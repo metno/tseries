@@ -293,7 +293,7 @@ bool readSetup(const miutil::miString& setupfile, const miutil::miString& site,
     return false;
   }
 
-  session.readSessions(setup.files.defs, verbose);
+  session.readSessions(setup.files.defs,setup.path.styles, verbose);
 
   for (unsigned int i = 0; i < setup.streams.size(); i++) {
     data.addDataset(setup.streams[i].collectionName);

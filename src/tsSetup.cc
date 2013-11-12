@@ -708,6 +708,8 @@ void tsSetup::setPath(string& key, string& content)
 {
   if(key == "WORK" )
     setup(path.work,content);
+  else if(key == "STYLES")
+    setup(path.styles,content);
   else if(key == "IMAGES" )
     setup(path.images,content);
   else if(key == "ETC" )

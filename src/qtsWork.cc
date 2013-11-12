@@ -151,7 +151,7 @@ qtsWork::qtsWork(QWidget* parent)
 
 void qtsWork::Initialise()
 {
-  session.readSessions(setup.files.defs);
+  session.readSessions(setup.files.defs,setup.path.styles);
 
   maxWDBreadTime = setup.wdb.readtime;
 

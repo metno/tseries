@@ -158,6 +158,7 @@ public:
 
   /// Struct containing path-names
   struct ptstruct {
+    std::string styles;
     std::string work;
     std::string images;
     std::string etc;

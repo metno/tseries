@@ -107,8 +107,7 @@ public:
       std::vector<miutil::miString>& runname);
   
   // read diagram-sessions from file
-  void readSessions(const miutil::miString& fname,
-		    bool verbose = false);
+  void readSessions(const miutil::miString& fname,const miutil::miString& stylepath, bool verbose = false);
   // for test-purposes
   void makeTestSessions();
 };

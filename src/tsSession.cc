@@ -240,8 +240,8 @@ bool SessionManager::checkEnvironment(miString& t)
   return true;
 }
 
-void SessionManager::readSessions(const miString& fname,
-    bool verbose){
+void SessionManager::readSessions(const miString& fname,const miString& stylepath, bool verbose)
+{
   const int f_models= 1;
   const int f_diagram= 2;
   const int f_legalmodels= 3;
@@ -261,7 +261,8 @@ void SessionManager::readSessions(const miString& fname,
   int nums= 0;
   int status= 0;
 
-  cerr << "Reading diagramdefinitions from:" << fname << endl;
+  cerr << "Reading diagramdefinitions from: " << fname << endl;
+  cerr << "Reading styles from: " << stylepath << endl;
   sfile.open(fname.c_str());
   if (sfile.bad()){
     cerr << "SessionManager::readSessions. Can't open file: " << fname << endl;
@@ -369,7 +370,7 @@ void SessionManager::readSessions(const miString& fname,
     }
     else if (keyw=="STYLEFILE") {
       // name of file containing pets style-definition
-      sdata.stylefile= argu;
+      sdata.stylefile= stylepath + "/" + argu;
     }
     // model
     else if (keyw=="MODEL"){
