@@ -183,7 +183,7 @@ public:
   void changeFimexStyle(const QString&);
   void changeFimexRun(const QString&);
   void changeFimexCoordinates(float lon, float lat, QString name);
-  void makeFimexModels(QString& activeStyle);
+  void makeFimexModels(const QString& activeStyle);
   void newFimexPoslist();
 
   signals:

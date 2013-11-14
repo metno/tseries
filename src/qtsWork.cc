@@ -951,7 +951,7 @@ void   qtsWork::cacheRequestDone()
 /// FIMEX --------------------------------------------
 //
 
-void qtsWork::makeFimexModels(QString& activeStyle)
+void qtsWork::makeFimexModels(const QString& activeStyle)
 {
 //  if(!has_fimex_stream)
 //    return;
@@ -995,6 +995,12 @@ void qtsWork::changeFimexRun(const QString& nrun)
 
 void qtsWork::changeFimexStyle(const QString& nsty)
 {
+  try {
+    makeFimexModels(nsty);
+  } catch (exception& e) {
+    cerr << "Exception while trying to make new modellist" << e.what() << endl;
+  }
+
   if(request.setFimexStyle(nsty.toStdString()))
     refresh(true);
 }
