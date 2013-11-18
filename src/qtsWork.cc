@@ -444,8 +444,9 @@ void qtsWork::changeStation(const miString& st)
   miCoordinates cor=p.Coordinates();
   checkObsPosition(cor);
 
-  if(!request.setPos(st)) {
-    miString ST = st.upcase();
+
+    if(!request.setPos(st)) {
+    miString ST = miutil::to_upper_latin1(st);
 
     if(!request.setPos(ST))
       return;

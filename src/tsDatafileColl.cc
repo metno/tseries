@@ -355,8 +355,10 @@ void DatafileColl::makeStationList()
         nums = 0;
         while (datastreams[i].dataStream->getStationSeq(nums, st)) {
           // force upcase on all stations
-          miString uppername= to_upper(st.Name());
+        // miString uppername= to_upper(st.Name());
+          miString uppername = miutil::to_upper_latin1(st.Name());
           st.setName(uppername);
+
           // Check if station already exists
           exists = findpos(st.Name(), posidx);
           if (posidx == ns)
@@ -557,7 +559,6 @@ bool DatafileColl::findpos(const miString& name, int& idx)
 {
   miString pname;
   int n = stations.size(), min = 0, max = n - 1, p;
-
   while (!(max < min)) {
     p = (min + max) / 2;
     pname = stations[p].station.Name();

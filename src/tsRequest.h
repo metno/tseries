@@ -71,6 +71,7 @@ private:
 public:
   tsRequest() : run_(-1), wdbReadTime(0), streamtype(tsRequest::HDFSTREAM), wdbStyle("Meteogram"), fimexStyle("Meteogram") {}
 
+
   bool setModel(const miutil::miString& i) {              return setString(i,mod_); }
   bool setPos(  const miutil::miString& i) { posname_= i; return setString(i,pos_); }
   bool setPos(  const miutil::miString& n1, const miutil::miString& n2) { posname_= n2; return setString(n1,pos_); }

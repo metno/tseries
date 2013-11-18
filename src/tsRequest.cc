@@ -32,13 +32,16 @@
 
 using namespace std;
 using namespace miutil;
+#include <boost/algorithm/string.hpp>
 
 bool tsRequest::setString(const miString& i, miString& o)
 {
   if(o == i) return false;
   o = i;
   return true;
+
 }
+
 
 bool tsRequest::setRun(int i)
 {
