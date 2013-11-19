@@ -625,11 +625,16 @@ void qtsWork::restoreLog()
 
   pets::FimexStream::setParameterFilterFromString(fimexfilter);
 
-  sidebar->restoreFimexFromLog(fimexmodel,fimexstyle,fimexexpand);
   if(!fimexmodel.empty())
-    request.setFimexModel(fimexmodel);
+     request.setFimexModel(fimexmodel);
   if(!fimexstyle.empty())
-    request.setFimexStyle(fimexstyle);
+     request.setFimexStyle(fimexstyle);
+
+  QString qstyle(fimexstyle.c_str());
+  changeFimexStyle(qstyle);
+
+  sidebar->restoreFimexFromLog(fimexmodel,fimexstyle,fimexexpand);
+
 }
 
 
