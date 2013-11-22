@@ -33,6 +33,7 @@
 #include <tsData/ptAsciiStream.h>
 #include <glob.h>
 #include <string>
+#include <sstream>
 #include "tsSetup.h"
 
 
@@ -435,6 +436,7 @@ int DatafileColl::getNumPositions(int dset)
   else
     return 0;
 }
+
 miPosition DatafileColl::getPositionInfo(miString name)
 {
   if (pos_info.count(name))
@@ -720,20 +722,28 @@ vector<miString> DatafileColl::getFimexTimes(std::string model)
     if( model == fimexStreams[i].model) {
       cerr << "Trying to read from Fimex file " << fimexStreams[i].streamname << endl;
 
-      try {
 
-        if(fimexStreams[i].run == "") {
-          boost::posix_time::ptime time = fimexStreams[i].dataStream->getReferencetime();
+      if(fimexStreams[i].run == "") {
+
+
+        try {
+            boost::posix_time::ptime time = fimexStreams[i].dataStream->getReferencetime();
+            std::string stime = boost::posix_time::to_simple_string(time);
+            fimexStreams[i].run = stime;
+          } catch (exception & e) {
+            cerr << e.what() << endl;
+            ostringstream ost;
+            ost << model << "_" << i;
+            fimexStreams[i].run = ost.str();
+
+          }
+
           if(fimexStreams[i].dataStream->isOpen())
             fimex_streams_opened=true;
-          std::string stime = boost::posix_time::to_simple_string(time);
 
-          fimexStreams[i].run = stime;
         }
         runtimes.push_back( fimexStreams[i].run);
-      } catch (exception & e ) {
-        cerr << e.what() << endl;
-      }
+
     }
   }
 
