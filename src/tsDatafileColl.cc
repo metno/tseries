@@ -35,6 +35,7 @@
 #include <string>
 #include <sstream>
 #include "tsSetup.h"
+#include <boost/algorithm/string/find.hpp>
 
 
 #ifdef GRIBSTREAM
@@ -732,9 +733,18 @@ vector<miString> DatafileColl::getFimexTimes(std::string model)
             fimexStreams[i].run = stime;
           } catch (exception & e) {
             cerr << e.what() << endl;
-            ostringstream ost;
-            ost << model << "_" << i;
-            fimexStreams[i].run = ost.str();
+            cerr << "using streamname instead of runtime to identify model" << endl;
+            string streamname =  fimexStreams[i].streamname;
+            int n = streamname.rfind("/");
+            int p = streamname.rfind(".");
+
+             if( p>n && p <streamname.size())
+               streamname.erase(p,streamname.size()-p);
+
+             if(n>0 && n < streamname.size() )
+               streamname.erase(0,n+1);
+
+             fimexStreams[i].run = streamname;
 
           }
 
