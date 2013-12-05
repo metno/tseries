@@ -67,7 +67,7 @@ public:
   // return name of model
   const miutil::miString& getmodelname(const int);
   const std::vector<ParId>& paramVector(const int idx);
-
+  const std::vector<ParId>  distinctParamVector(const int idx);
   // add a new parameter to a model
   bool addParam(const ParId parid, const int idx);
 

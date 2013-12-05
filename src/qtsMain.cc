@@ -102,8 +102,8 @@ qtsMain::qtsMain(miString l) :
   // milliseconds
   int updatetimeout = (1000 * 60) * 2;
 
-  updateTimer = startTimer(updatetimeout);
-
+  updateTimer   = startTimer(updatetimeout);
+  progressTimer = startTimer(500);
 }
 
 void qtsMain::makeMenuBar()
@@ -905,12 +905,16 @@ void qtsMain::initHelp()
 
 void qtsMain::timerEvent(QTimerEvent* e)
 {
-
   if (e->timerId() == updateTimer)
     if (work) {
       work->updateStreams();
       setTimemark(miTime::nowTime());
     }
+
+  if (e->timerId() == progressTimer)
+    if(work)
+      work->updateProgress();
+
 
 }
 

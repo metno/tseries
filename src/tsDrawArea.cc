@@ -41,10 +41,10 @@ using namespace d_print;
 using namespace std;
 using namespace miutil;
 
-tsDrawArea::tsDrawArea(tsRequest* tsr, DatafileColl* tsd, SessionManager* ses) :
-                        request(tsr), data(tsd), session(ses), diagram(0), theData(0), width(1), height(
-                            1), pixwidth(1), pixheight(1), Initialised(false), hardcopy(false), hardcopystarted(
-                                false), showGridLines(true)
+tsDrawArea::tsDrawArea(tsRequest* tsr, DatafileColl* tsd, SessionManager* ses, QObject* parent) :
+                                    request(tsr), data(tsd), session(ses), diagram(0), theData(0), width(1), height(
+                                        1), pixwidth(1), pixheight(1), hardcopy(false), hardcopystarted(
+                                            false), showGridLines(true), QObject(parent), forceSequentialRead(false)
 {
   minProg = 0;
   maxProg = 300;
@@ -54,27 +54,19 @@ tsDrawArea::tsDrawArea(tsRequest* tsr, DatafileColl* tsd, SessionManager* ses) :
   observationStartTime = miTime::nowTime();
   observationStartTime.addHour(-(setup.klima.maxObservationLength));
 
+  glText* gltext = new glTextQtTexture();
+  gltext->testDefineFonts();
+  FM.addFontCollection(gltext, XFONTSET);
+  FM.setFontColl(XFONTSET);
+  datathread = new pets::PrepareDataThread(this);
+  connect (datathread, SIGNAL(post_dataLoad(bool)), this , SLOT(dataLoad_finished(bool)));
+
 }
 
 void tsDrawArea::prepare(bool readData)
 {
-  if (!Initialised) {
-    //cout << "Preparing FONTS, display:" << FM.display_name() << endl;
+  readData=true;
 
-    /*
-     glText* gltext= new glTextX(FM.display_name());
-     gltext->testDefineFonts();
-     FM.addFontCollection(gltext, XFONTSET);
-     FM.setFontColl(XFONTSET);
-     */
-
-    glText* gltext = new glTextQtTexture();
-    gltext->testDefineFonts();
-    FM.addFontCollection(gltext, XFONTSET);
-    FM.setFontColl(XFONTSET);
-
-    Initialised = true;
-  }
   if (readData) {
     if (!prepareData()) {
       cerr << "tsDrawArea Warning: prepareData failed" << endl;
@@ -88,10 +80,8 @@ void tsDrawArea::prepare(bool readData)
       }
     }
   }
-  if (!prepareDiagram()) {
-    cerr << "tsDrawArea Warning:  prepareDiagram failed" << endl;
-  }
 
+  prepareDiagram();
 
 }
 
@@ -113,7 +103,6 @@ void tsDrawArea::setViewport(int w, int h, float pw, float ph)
 
 bool tsDrawArea::prepareData()
 {
-
   if (request->type() == tsRequest::WDBSTREAM)
     return prepareWdbData();
 
@@ -143,11 +132,6 @@ bool tsDrawArea::prepareData()
 
   theData = new ptDiagramData(setup.wsymbols);
 
-  //  cerr << "RUN:" << request->run() << endl;
-  //  cerr << "POS:" << request->pos() << endl;
-  //  cerr << "STYLE:" << request->style() << endl;
-  //  cerr << "MODEL:" << request->model() << endl;
-
   // fetch data
 
   for (i = 0; i < options.numModels(); i++) {
@@ -159,9 +143,6 @@ bool tsDrawArea::prepareData()
       modid.run = (request->run() > -1) ? request->run() : R_UNDEF;
       numstreams = data->findModel(modid.model, modid.run, streamidx, 10);
 
-      if (numstreams < 1)
-        cerr << "tsDrawArea::prepareData, found " << numstreams
-        << " matching streams for model " << modid.model << endl;
 
       if (numstreams > 0) {
         datafound = false;
@@ -209,7 +190,6 @@ bool tsDrawArea::prepareData()
     }
   }
 
-  //   cerr << *theData << endl;
   return true;
 }
 
@@ -248,10 +228,9 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
   }
 
   tmpLength = theData->timeLineLengthInHours();
-  if (tmpLength != totalLength)
+  //if (tmpLength != totalLength)
     lengthChanged=true;
   totalLength = tmpLength;
-
   return true;
 }
 
@@ -261,23 +240,21 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
 
 
 
-bool tsDrawArea::prepareDiagram()
+void tsDrawArea::prepareDiagram()
 {
-  //  if(request->type()==tsRequest::WDBSTREAM)
-  //    cout << " prepareWdbDiagram " << endl;
 
   if (!theData) {
-    cerr << "tsDrawArea::prepareDiagram(): !theData" << endl;
-    return (false);
+    cerr << "tsDrawArea::prepareDiagram(): !theData  - prepareDiagram failed  " << endl;
+    return;
   }
   if (diagram)
     delete diagram;
   diagram = new ptDiagram(&diaStyle,showGridLines);
 
   if (!diagram->attachData(theData)) {
-    cerr << "tsDrawArea::prepareDiagram(): !diagram->attachData(theData)"
+    cerr << "tsDrawArea::prepareDiagram(): !diagram->attachData(theData) - prepareDiagram failed "
         << endl;
-    return (false);
+    return;
   }
 
   // this is the place to change the station name
@@ -289,10 +266,8 @@ bool tsDrawArea::prepareDiagram()
 
   ptColor bgColor;
   if (!diagram->makeDefaultPlotElements(&bgColor)) {
-    cerr
-    << "tsDrawArea::prepareDiagram(): !diagram->makeDefaultPlotElements(&bgColor)"
-    << endl;
-    return false;
+    cerr << "tsDrawArea::prepareDiagram(): !diagram->makeDefaultPlotElements(&bgColor) - prepareDiagram failed" << endl;
+    return;
   }
 
   diagram->setViewport(width, height, glwidth, glheight);
@@ -328,7 +303,6 @@ bool tsDrawArea::prepareDiagram()
     }
   }
 
-  return true;
 }
 
 void tsDrawArea::setTimemark(miTime nt, miString name)
@@ -401,40 +375,39 @@ void tsDrawArea::plot()
   glFlush();
 }
 
-void tsDrawArea::startHardcopy(const printOptions& po, bool delay_creation)
+void tsDrawArea::startHardcopy()
 {
   if (!diagram)
     return;
 
-  if (hardcopy) {
-    // if hardcopy in progress, and same filename: make new page
-    if (po.fname == printoptions.fname) {
-      diagram->startPSnewpage();
-      return;
-    }
-    // different filename: end current output and start a new
-    endHardcopy();
-  }
+  //  if (hardcopy) {
+  //    // if hardcopy in progress, and same filename: make new page
+  //    if (po.fname == printoptions.fname) {
+  //      diagram->startPSnewpage();
+  //      return;
+  //    }
+  //    // different filename: end current output and start a new
+  //    endHardcopy();
+  //  }
   hardcopy = true;
-  printoptions = po;
 
-  if (delay_creation)
-    hardcopystarted = false;
-  else {
-    hardcopystarted = true;
+  // if (delay_creation)
+  //   hardcopystarted = false;
+  // else {
+  hardcopystarted = true;
 
-    oco = diagram->getColour();
-    ico = (printoptions.colop == incolour);
+  oco = diagram->getColour();
+  ico = (printoptions.colop == incolour);
 
-    if (oco != ico)
-      diagram->toggleColour(ico);
+  if (oco != ico)
+    diagram->toggleColour(ico);
 
-    bool ila = (printoptions.orientation == ori_landscape);
-    bool eps = printoptions.doEPS;
+  bool ila = (printoptions.orientation == ori_landscape);
+  bool eps = printoptions.doEPS;
 
-    diagram->startPSoutput(printoptions.fname, ico, ila, eps);
-    hardcopystarted = true;
-  }
+  diagram->startPSoutput(printoptions.fname, ico, ila, eps);
+  hardcopystarted = true;
+  //  }
 }
 
 void tsDrawArea::endHardcopy()
@@ -524,12 +497,16 @@ bool tsDrawArea::prepareWdbData()
 
 bool tsDrawArea::prepareFimexData()
 {
+
   miString fimexname;
   double lat,lon;
   miString fimexmodel = request->getFimexModel();
   miString fimexstyle = request->getFimexStyle();
   miString fimexrun   = request->getFimexRun();
-  request->getFimexLocation(lat,lon,fimexname);
+  if(!request->getFimexLocation(lat,lon,fimexname)) {
+    cerr << "Empty position - dropping interpolation" << endl;
+    return false;
+  }
 
   SessionOptions options;
   vector<ParId> inlist, outlist;
@@ -562,41 +539,137 @@ bool tsDrawArea::prepareFimexData()
 
   theData->Erase();
 
+  // precheck - is something missing in the cache?
+
+  bool cacheIsComplete=true;
+  bool hasAtLeastOneParameter=false;
+  pets::FimexStream* currentStream=0;
   for (int i = 0; i < options.numModels(); i++) {
-    inlist = options.paramVector(i);
-
-    set<string> doublettblocker;
-    for (unsigned j=0; j<inlist.size();j++) {
-      if(doublettblocker.count(inlist[j].toString()))
-        inlist.erase(inlist.begin(),inlist.begin()+j);
-      else
-        doublettblocker.insert(inlist[j].toString());
-    }
-
+    inlist = options.distinctParamVector(i);
+    if(inlist.empty())
+      continue;
+    hasAtLeastOneParameter=true;
     try {
+    currentStream = data->getFimexStream(inlist[0].model,fimexrun);
+    if(currentStream)
+      if(!currentStream->hasCompleteDataset(fimexname,lat,lon,inlist)) {
+        cacheIsComplete = false;
+        break;
+      }
 
-      pets::FimexStream* currentStream = data->getFimexStream(inlist[0].model,fimexrun);
-      theData->fetchDataFromFimex(currentStream, lat, lon, fimexname, inlist, outlist);
-
-    } catch (exception& e) {
-      cerr << "Exception: " <<  e.what() << endl;
+    } catch (exception& e){
+      currentStream=0;
     }
+
   }
-  // Find any missing params
 
-  if (outlist.size())
-    theData->makeParameters(outlist, true);
-
-
-  prepareKlimaData(inlist);
+  if(!hasAtLeastOneParameter)
+    return false;
 
 
+  if(!cacheIsComplete) {
+    // read from file - push to the cache
+    if(currentStream) {
+      try {
+        readFimexData(currentStream, lat, lon, fimexname, inlist, outlist,false);
+      } catch (exception& e) {
+       cerr << e.what() << endl;
+      }
+    }
+
+  }  else {
+
+    // cache is complete - everything is read sequential
+
+
+    for (int i = 0; i < options.numModels(); i++) {
+      inlist = options.distinctParamVector(i);
+
+
+      if(inlist.empty())
+        continue;
+      try {
+
+        pets::FimexStream* currentStream = data->getFimexStream(inlist[0].model,fimexrun);
+
+        if(readFimexData(currentStream, lat, lon, fimexname, inlist, outlist, true))
+          theData->fetchDataFromFimex(currentStream, lat, lon, fimexname, inlist, outlist);
+
+      } catch (exception& e) {
+        cerr <<  e.what() << endl;
+      }
+    }
+    // Find any missing params
+
+    if (outlist.size())
+      theData->makeParameters(outlist, true);
+
+
+    prepareKlimaData(inlist);
+  }
   return true;
 
 }
 
+bool tsDrawArea::readFimexData(pets::FimexStream* fimex, double lat, double lon, miutil::miString stationname,
+    std::vector<ParId>& inpars, std::vector<ParId>& outpars, bool sequential_read)
+{
+
+  for(unsigned int i=0;i<inpars.size();i++) {
+    if(pets::FimexStream::isFiltered(inpars[i].alias)) {
+      inpars.erase(inpars.begin()+i);
+      i--;
+    }
+  }
+
+  //cleanDataStructure_();
+  // find station and read in data block
 
 
+  // we already got the data in cache - just take them and paint - no extra thread needed
+  if(sequential_read)  {
+    try {
+
+      if (!fimex->readData(stationname,lat,lon,inpars,outpars)) {
+        return false;
+      }
+
+
+    } catch(exception& e) {
+      cerr << "FIMEX::READDATA FAILED: " << e.what() << endl;
+      return false;
+    }
+  } else  {
+
+    // There are missing data! Reading might take some time - we put this in another
+    // thread - to avoid that the main gui thread is froxen. We cannot paint anything yet.
+    // Painting will be done by forced reititeration and sequential cache read when the thread is
+    // finished
+
+    if(datathread->isRunning())
+      return false;
+
+    threadedLoadRequest = dataloadrequest;
+
+    datathread->setFimexParameters(fimex,stationname.c_str(),lat,lon,inpars,outpars);
+    datathread->start();
+
+    emit dataread_started();
+    return false;
+  }
+
+  return true;
+}
+
+
+
+
+void tsDrawArea::dataLoad_finished(bool read_success)
+{
+  forceSequentialRead = read_success;
+  emit dataread_ended();
+  emit post_dataLoad(threadedLoadRequest);
+}
 
 
 

@@ -41,26 +41,53 @@ qtsShow::qtsShow(const QGLFormat fmt,
 		 tsRequest* tsr,
 		 DatafileColl* tsd,
 		 SessionManager* ses)
-  : QGLWidget(fmt), plotw(1), ploth(1), drawArea(tsr,tsd,ses), initialised(false)
+  : QGLWidget(fmt), plotw(1), ploth(1), initialised(false)
 {
+  drawArea = new tsDrawArea(tsr,tsd,ses,this);
+
+
+  connect(drawArea,SIGNAL(post_dataLoad(tsDrawArea::DataloadRequest)),this,SLOT(post_dataLoad(tsDrawArea::DataloadRequest)));
+
+  connect(drawArea,SIGNAL(dataread_started()),this, SIGNAL(dataread_started()));
+  connect(drawArea,SIGNAL(dataread_ended())  ,this, SIGNAL(dataread_ended()));
+
 }
 
 
 void qtsShow::paintGL()
 {
+
   static int paintw=0, painth=0;
   if ( paintw != plotw || painth != ploth ){
     glViewport( 0, 0, plotw, ploth );
     paintw= plotw;
     painth= ploth;
   }
-
-  drawArea.prepare(false);
-  drawArea.plot();
+  drawArea->setDataloadRequest(tsDrawArea::dataload_paintGL);
+  drawArea->prepare(false);
+  drawArea->plot();
 
   swapBuffers();
-
 }
+
+
+void qtsShow::post_dataLoad(tsDrawArea::DataloadRequest dlRequest)
+{
+  switch(dlRequest) {
+  case tsDrawArea::dataload_paintGL:
+    paintGL();
+    break;
+  case tsDrawArea::dataload_refresh:
+    refresh(false);
+    break;
+  case tsDrawArea::dataload_hardcopy:
+    post_hardcopy();
+    break;
+  }
+}
+
+
+
 
 //  Set up the OpenGL rendering state
 void qtsShow::initializeGL()
@@ -91,23 +118,25 @@ void qtsShow::resizeGL( int w, int h )
     ph = gl_height/float(ploth);
   }
 
-  drawArea.setViewport(w,h,pw,ph);
+  drawArea->setViewport(w,h,pw,ph);
 }
 
 void qtsShow::refresh(bool readData)
 {
   if (!initialised) return;
-  makeCurrent(); // set current OpenGL context
-  drawArea.prepare(readData);
+
+  makeCurrent();
+  drawArea->setDataloadRequest(tsDrawArea::dataload_refresh);
+  drawArea->prepare(false);
+
   updateGL();
 
-  if(drawArea.newLength()) {
+  if(drawArea->newLength()) {
     int totall, fcastl;
-    drawArea.getMaxIntervall(totall,fcastl);
-    drawArea.resetNewLength();
+    drawArea->getMaxIntervall(totall,fcastl);
+    drawArea->resetNewLength();
     emit newTimeRange(totall,fcastl);
   }
-
 
   emit refreshFinished();
 }
@@ -115,23 +144,34 @@ void qtsShow::refresh(bool readData)
 
 void qtsShow::hardcopy(const printOptions& p)
 {
-  makeCurrent(); // set current OpenGL context
-  drawArea.prepare();
-
-  drawArea.startHardcopy(p);
-  updateGL();
-  drawArea.endHardcopy();
+    if (!initialised) return;
+    drawArea->setPrintOptions(p);
+    post_hardcopy();
 }
+
+
+void qtsShow::post_hardcopy()
+{
+  makeCurrent(); // set current OpenGL context
+  drawArea->setDataloadRequest(tsDrawArea::dataload_hardcopy);
+  drawArea->prepare(true);
+  drawArea->startHardcopy();
+  updateGL();
+  drawArea->endHardcopy();
+}
+
+
+
 
 void qtsShow::setTimemark(miTime tim, miString nam)
 {
-  drawArea.setTimemark(tim,nam);
+  drawArea->setTimemark(tim,nam);
   refresh(false);
 }
 
 void qtsShow::clearTimemarks(miString nam)
 {
-  drawArea.clearTimemarks(nam);
+  drawArea->clearTimemarks(nam);
   refresh(false);
 }
 

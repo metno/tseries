@@ -45,10 +45,17 @@
 #include <puTools/miTime.h>
 #include <tsData/ptWeatherParameter.h>
 
+#include "PrepareDataThread.h"
+
+
 #include <map>
 #include <vector>
+#include <QObject>
 
-class tsDrawArea {
+class tsDrawArea : public QObject{
+Q_OBJECT
+public:
+  enum DataloadRequest { dataload_paintGL, dataload_refresh, dataload_hardcopy };
 
 private:
   tsRequest     * request;
@@ -60,6 +67,9 @@ private:
   ptDiagramData * theData;
   ptStyle         diaStyle;
   printOptions    printoptions;
+  pets::PrepareDataThread * datathread;
+  DataloadRequest dataloadrequest;
+  DataloadRequest threadedLoadRequest;
 
   int width;
   int height;
@@ -67,7 +77,6 @@ private:
   float glheight;
   float pixwidth;
   float pixheight;
-  bool  Initialised;
   bool  hardcopy;
   bool  hardcopystarted;
   bool  oco; // original
@@ -80,25 +89,29 @@ private:
   std::map<miutil::miString,miutil::miTime> timemarks;
   void useTimemarks();
   bool prepareData();
-  bool prepareDiagram();
+  void prepareDiagram();
   bool prepareKlimaData(std::vector<ParId>&);
   bool prepareFimexData();
   bool prepareWdbData();
   bool showGridLines;
   int  maxProg;
   int  minProg;
+  bool forceSequentialRead;
+
+  bool readFimexData(pets::FimexStream* fimex, double lat, double lon, miutil::miString stationname,
+      std::vector<ParId>& inpars, std::vector<ParId>& outpars, bool sequential_read);
+
 
 public:
-  tsDrawArea( tsRequest* tsr, DatafileColl* tsd, SessionManager* ses);
+  tsDrawArea( tsRequest* tsr, DatafileColl* tsd, SessionManager* ses, QObject* parent=0);
 
   void prepare(bool readData = true);
 
   void setShowGridLines(bool s){showGridLines=s;}
-
+  void setPrintOptions(const printOptions& po) { printoptions = po;}
   void setViewport(int w, int h,float,float);
 
-  void startHardcopy(const printOptions&,
-		     bool delay_creation= true);
+  void startHardcopy();
   void endHardcopy();
 
   void getTimeRange(int & t, int& f) { t=totalLength; f=forecastLength; }
@@ -120,6 +133,17 @@ public:
 
   void setProgintervall(int mi,int ma)
   {minProg=mi; maxProg=ma;}
+
+  void setDataloadRequest(tsDrawArea::DataloadRequest lrequest) { dataloadrequest = lrequest; }
+
+
+signals:
+  void post_dataLoad(tsDrawArea::DataloadRequest);
+  void dataread_started();
+  void dataread_ended();
+
+public slots:
+  void dataLoad_finished(bool);
 
 };
 

@@ -93,7 +93,7 @@ private:
   std::set<miutil::miString>          filter;
 
 
-
+  bool reading_data;
   bool activeRefresh;
   bool filterOn;
   bool latlonInDecimal;
@@ -124,6 +124,8 @@ public:
   void changeModel(const miutil::miString&);
   void changeStation(const miutil::miString&);
   void changeRun(const miutil::miString&);
+  void updateProgress();
+
 
   std::set<miutil::miString> Filter() const {return filter;}
   std::set<miutil::miString> fullPosList();
@@ -185,6 +187,8 @@ public:
   void changeFimexCoordinates(float lon, float lat, QString name);
   void makeFimexModels(const QString& activeStyle);
   void newFimexPoslist();
+  void dataread_started();
+  void dataread_ended();
 
   signals:
   void refreshStations();

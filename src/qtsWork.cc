@@ -65,7 +65,7 @@ qtsWork::qtsWork(QWidget* parent)
   fmt.setDoubleBuffer(true);
   fmt.setDirectRendering(false);
 
-
+  reading_data=false;
 
   QSplitter   * splitter = new QSplitter(this);
   QHBoxLayout * hlayout  = new QHBoxLayout(this);
@@ -77,9 +77,12 @@ qtsWork::qtsWork(QWidget* parent)
 
   connect (show,SIGNAL(refreshFinished()),this,SLOT(refreshFinished()));
 
+  connect (show,SIGNAL(dataread_started()),this,SLOT(dataread_started()));
+  connect (show,SIGNAL(dataread_ended()),this,SLOT(dataread_ended()));
+
 
   //sidebar->setMinimumWidth(170);
-  //  sidebar->setMaximumWidth(255);
+  //sidebar->setMaximumWidth(255);
 
 
   connect( sidebar, SIGNAL( minmaxProg(int,int)),
@@ -513,7 +516,7 @@ void qtsWork::changeRun(const miString& st)
 
 void qtsWork::refresh(bool readData)
 {
-  QApplication::setOverrideCursor( Qt::WaitCursor );
+ // QApplication::setOverrideCursor( Qt::WaitCursor );
   if (activeRefresh){
     show->refresh(readData);
   }
@@ -531,7 +534,7 @@ void qtsWork::refresh(bool readData)
     checkPosition(request.posname());
   }
 
-  QApplication::restoreOverrideCursor();
+//  QApplication::restoreOverrideCursor();
 }
 
 
@@ -1033,6 +1036,37 @@ void qtsWork::newFimexPoslist()
 
 
 }
+
+void qtsWork::dataread_started()
+{
+  cerr << "DATAREAD STARTED" << endl;
+  reading_data = true;
+
+}
+
+void qtsWork::dataread_ended()
+{
+  reading_data = false;
+  sidebar->endProgress();
+}
+
+
+
+
+void qtsWork::updateProgress()
+{
+
+  if(reading_data) {
+    int newprogress = pets::FimexStream::getProgress();
+    if (newprogress > 0 && newprogress < 100) {
+      string progressText= pets::FimexStream::getProgressMessage();
+
+      sidebar->setProgress(newprogress,progressText);
+    }
+  }
+
+}
+
 
 
 

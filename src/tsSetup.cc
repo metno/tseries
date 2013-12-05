@@ -33,6 +33,7 @@
 #include <fstream>
 #include <puMet/symbolMaker.h>
 #include <boost/algorithm/string.hpp>
+#include <config.h>
 
 using namespace std;
 using namespace boost;
@@ -74,6 +75,7 @@ tsSetup::tsSetup() : sec(PUBLIC) , line(0)
     loglevel.data="WARN";
     loglevel.diagram="WARN";
     loglevel.tseries="WARN";
+
   }
 }
 
@@ -121,7 +123,7 @@ string tsSetup::inSection()
     return  ", in <wdbparameter>";
   case WDBVECTORFUNCTIONS:
     return  ", in <wdbVectorFunctions>";
-  case FIMEX:
+  case INFIMEX:
     return ", in <fimex>";
   case FIMEXPARAMETER:
     return ", in <fimexparameter>";
@@ -210,7 +212,7 @@ void tsSetup::fetchSection(string token)
   else if( find_first(token,"FIMEXPARAMETER"))
     sec = FIMEXPARAMETER;
   else if (find_first(token,"FIMEX"))
-    sec = FIMEX;
+    sec = INFIMEX;
   else
     warn(token,wSECTION);
 
@@ -281,13 +283,16 @@ bool tsSetup::read(const string& f, string s)
   files.wdbBookmarks=path.home + "/.tseries/bookmarks.wdb";
   files.fimexBookmarks=path.home + "/.tseries/bookmarks.fimex";
 
+  string package_version=PVERSION;
+
   if(!readsetup(f))
     if(!readsetup( path.home+"/.tseries/tseries.ctl"))
-      if(!readsetup("/etc/tseries/tseries.ctl"))
-        if(!readsetup("/usr/local/etc/tseries/tseries.ctl")) {
-          cerr << "NO setup found!" << endl;
-          return false;
-        }
+      if(!readsetup("/etc/tseries/"+package_version+"/tseries.ctl" ))
+        if(!readsetup("/etc/tseries/tseries.ctl"))
+          if(!readsetup("/usr/local/etc/tseries/tseries.ctl")) {
+            cerr << "NO setup found!" << endl;
+            return false;
+          }
   return true;
 }
 
@@ -416,7 +421,7 @@ void tsSetup::setSimpleToken(string token)
     return;
   }
 
-  bool upper=(sec != WDBPARAMETER && sec != KLIMAPARAMETER && sec != KLIMANORMAL && sec != FIMEX && sec != FIMEXPARAMETER);
+  bool upper=(sec != WDBPARAMETER && sec != KLIMAPARAMETER && sec != KLIMANORMAL && sec != INFIMEX && sec != FIMEXPARAMETER);
 
   string content,key;
 
@@ -475,7 +480,7 @@ void tsSetup::setSimpleToken(string token)
   case WDBPARAMETER:
     setWdbParameter(key,content);
     break;
-  case FIMEX:
+  case INFIMEX:
     setFimex(key,content);
     break;
   case FIMEXPARAMETER:

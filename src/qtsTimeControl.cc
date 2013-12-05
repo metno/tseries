@@ -105,13 +105,20 @@ void TimeControl::setTimecontrolFromlLog(  miutil::miString logString)
 
 void TimeControl::setLengthSlider(int v)
 {
+  cerr << "set stop slider with value " << v << endl;
   stopSlider->setValue(v);
 }
 
 void TimeControl::setStartSlider(int v)
 {
-  if(v < startSlider->minimum() || v > startSlider->maximum())
+  cerr << "set start slider with value " << v << endl;
+
+  if(v < startSlider->minimum() || v > startSlider->maximum()) {
+    cerr << v << " is not between " << startSlider->minimum() << " and " << startSlider->maximum() << endl;
+
     return;
+
+  }
   startSlider->setValue(v);
 }
 

@@ -44,6 +44,7 @@
 
 #include <iostream>
 
+
 using namespace miutil;
 using namespace std;
 
@@ -89,9 +90,15 @@ qtsSidebar::qtsSidebar()
   dbname.truncate( dbname.indexOf(".") );
 
 
+  progressHeader = new QLabel(this);
+  progressHeader->hide();
 
-//  progress = new QProgressBar(this);
-
+  progress = new QProgressBar(this);
+  progress->setRange(0,100);
+  progress->setTextVisible(true);
+  QFont progressfont=progress->font();
+  progressfont.setPointSize(progressfont.pointSize()-3);
+  progress->setFont(progressfont);
 
   stationIdx = tabs->addTab(stationtab,tr("Stations"));
   wdbIdx     = tabs->addTab(wdbtab,dbname);fimexIdx;
@@ -109,6 +116,9 @@ qtsSidebar::qtsSidebar()
   obsInfo = new QLabel(this);
   obsInfo->setFrameStyle(QFrame::Panel | QFrame::Sunken);
   obsInfo->hide();
+  QFont obsfont=obsInfo->font();
+  obsfont.setPointSize(obsfont.pointSize()-3);
+  obsInfo->setFont(obsfont);
 
 
   // connectbuttons are hosted here... but are used and
@@ -171,8 +181,8 @@ qtsSidebar::qtsSidebar()
   vlayout->addWidget(tabs);
 
   vlayout->addWidget(timecontrol);
-
- // vlayout->addWidget(progress);
+  vlayout->addWidget(progressHeader);
+  vlayout->addWidget(progress);
   vlayout->addWidget(obsInfo);
 
   // Buttons -------------------
@@ -199,16 +209,9 @@ qtsSidebar::qtsSidebar()
   addWdbBookmarkButton->hide();
   addFimexBookmarkButton->hide();
   recordFimexButton->hide();
-//  progress->hide();
+  progress->hide();
 
   cacheQueryButton->hide();
-
-//  progressthread = new pets::ProgressThread(progress);
-//  progressthread->exec();
-
-
-
-
 
 }
 
@@ -352,6 +355,7 @@ void qtsSidebar::enableFimex(bool has_fimex)
 
 
 
+
 void qtsSidebar::enableBusyLabel(bool enable)
 {
   if(enable) {
@@ -430,7 +434,30 @@ void qtsSidebar::writeBookmarks()
     fimextab->writeBookmarks();
 }
 
+void qtsSidebar::setProgress(int progr, std::string text)
+{
 
+  QString txt(text.c_str());
+
+  progressHeader->setText(QString("<b>Leser Data for:  %1</b>").arg(txt.section(':',0,0)));
+  progressHeader->show();
+
+
+  progress->show();
+  progress->setValue(progr);
+
+  progress->setFormat(txt.section(':',1,1));
+
+
+}
+
+void qtsSidebar::endProgress()
+{
+  progress->reset();
+  progress->hide();
+  progressHeader->hide();
+
+}
 
 
 

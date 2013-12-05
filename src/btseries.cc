@@ -60,7 +60,8 @@ void startHardcopy(const printOptions priop)
 {
   if (verbose)
     cout << "- startHardcopy" << endl;
-  drawarea->startHardcopy(priop, false);
+  drawarea->setPrintOptions(priop);
+  drawarea->startHardcopy();
   hardcopy_started = true;
 }
 

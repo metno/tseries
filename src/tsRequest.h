@@ -114,9 +114,9 @@ public:
   miutil::miString getFimexModel()   const { return fimexModel; }
   miutil::miString getFimexStyle()   const { return fimexStyle; }
   miutil::miString getFimexRun()      const { return fimexRun; }
-  void getFimexLocation(double& lat, double& lon, miutil::miString& name);
+  bool getFimexLocation(double& lat, double& lon, miutil::miString& name);
 
-
+  std::string getFimexInfo();
 
 
   friend std::ostream& operator<<(std::ostream&, const tsRequest&);

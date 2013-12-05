@@ -40,7 +40,7 @@
 #include <QLabel>
 #include <QMovie>
 #include <QPixmap>
-//#include "ProgressThread.h"
+#include <QProgressBar>
 
 #include "qtsTimeControl.h"
 #include "tsRequest.h"
@@ -70,12 +70,13 @@ private:
   QPushButton *   recordFimexButton;
   QLabel*         connectStatus;
   QLabel*         obsInfo;
+  QLabel*         progressHeader;
   QMovie*         busyLabel;
+
   StationTab*     stationtab;
   CoordinateTab*  wdbtab;
   CoordinateTab*  fimextab;
- // QProgressBar*   progress;
-  //ProgressThread* progressthread;
+  QProgressBar*   progress;
 
   int wdbIdx, stationIdx,fimexIdx;
   int actualIndex;
@@ -147,7 +148,8 @@ public:
 
   void changeFimexPosition( QString newpos) { fimextab->changePosition(newpos);}
 
-
+  void setProgress(int progr, std::string text);
+  void endProgress();
 
   std::string getFimexExpanded() const { return fimextab->getExpandedDirs(); }
   bool restoreFimexFromLog(std::string mod, std::string sty, std::string expanded);

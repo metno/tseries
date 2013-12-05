@@ -39,10 +39,11 @@
 
 class qtsShow : public QGLWidget {
   Q_OBJECT
+
 private:
   int plotw;
   int ploth;
-  tsDrawArea drawArea;
+  tsDrawArea* drawArea;
   bool initialised;
 
 protected:
@@ -52,24 +53,28 @@ protected:
 
 
 public:
-  qtsShow(const QGLFormat fmt,
-	  tsRequest*,DatafileColl*, SessionManager*);
+  qtsShow(const QGLFormat fmt, tsRequest*,DatafileColl*, SessionManager*);
 
   void refresh(bool readData = false);
   void hardcopy(const printOptions&);
+  void post_hardcopy();
   void setTimemark(miutil::miTime,miutil::miString="");
   void clearTimemarks(miutil::miString="");
-  void setProgintervall(int mi,int ma) { drawArea.setProgintervall(mi,ma);}
-  void setShowObservations(bool showObs) {drawArea.setShowObservations(showObs);}
-  void getTimeRange(int& t,int& f) { drawArea.getTimeRange(t,f);}
-  void setObservationStartTime(miutil::miTime st) {drawArea.setObservationStartTime(st);}
-  miutil::miTime getObservationStartTime() const { return drawArea.getObservationStartTime(); }
-  void setShowGridLines( bool s ){ drawArea.setShowGridLines(s); }
+  void setProgintervall(int mi,int ma) { drawArea->setProgintervall(mi,ma);}
+  void setShowObservations(bool showObs) {drawArea->setShowObservations(showObs);}
+  void getTimeRange(int& t,int& f) { drawArea->getTimeRange(t,f);}
+  void setObservationStartTime(miutil::miTime st) {drawArea->setObservationStartTime(st);}
+  miutil::miTime getObservationStartTime() const { return drawArea->getObservationStartTime(); }
+  void setShowGridLines( bool s ){ drawArea->setShowGridLines(s); }
 
+public slots:
+  void post_dataLoad(tsDrawArea::DataloadRequest);
 
 signals:
   void refreshFinished();
   void newTimeRange(int total, int fcast);
+  void dataread_started();
+  void dataread_ended();
 };
 
 #endif

@@ -29,6 +29,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include "tsSessionOptions.h"
+#include <set>
 
 #define SO_MAX_MODELS 20
 
@@ -54,6 +55,22 @@ const vector<ParId>& SessionOptions::paramVector(const int idx)
 {
   return (idxOk(idx) ? mdata[idx].parameters : emptyvec );
 }
+
+const vector<ParId> SessionOptions::distinctParamVector(const int idx)
+{
+  if(!idxOk(idx))
+    return emptyvec;
+  vector<ParId> inlist=mdata[idx].parameters;
+  set<string> doublettblocker;
+  for (unsigned j=0; j<inlist.size();j++) {
+    if(doublettblocker.count(inlist[j].toString()))
+      inlist.erase(inlist.begin(),inlist.begin()+j);
+    else
+      doublettblocker.insert(inlist[j].toString());
+  }
+  return inlist;
+}
+
 
 int SessionOptions::addModel(const Model mid, const miString name)
 {

@@ -11,11 +11,11 @@ cc_sources=                 \
 	tsDatafileColl.cc   \
 	tsSetup.cc          \
 	tsRequest.cc        \
-	tsDrawArea.cc       \
 	tsConfigure.cc      \
 	diPrintOptions.cc   
 
-
+common_sources = tsDrawArea.cc  PrepareDataThread.cc        
+common_moc_sources = $(common_sources:.cc=.moc.cc)
 
 # Qt sources ------------------------
 
@@ -33,20 +33,21 @@ qt_sources=                \
 	CoordinateManager.cc \
 	WdbBookmarkTools.cc  \
 	ParameterFilterDialog.cc \
-	PopupCalendar.cc 
-#\	ProgressThread.cc
+	PopupCalendar.cc  
 	
+
 # headers ( for distribution )  -----
 
 header_sources=             \
 	$(cc_sources:.cc=.h)\
 	$(qt_sources:.cc=.h)\
+	$(common_sources:.cc=.h) \
 	diImageIO.h         \
 	diPrintOptions.h
 
 
 # Generated Qt source code 
-moc_sources = $(qt_sources:.cc=.moc.cc)
+moc_sources = $(qt_sources:.cc=.moc.cc) $(common_moc_sources)
 %.moc.cc: %.h
 	$(MOC4) -o $@ $<
 
@@ -109,7 +110,7 @@ common_cppflags +=              \
 	$(PUDATATYPES_CPPFLAGS) \
 	$(QUTILITIES_CPPFLAGS)  \
 	$(QT4_CPPFLAGS)         \
-	$(FIMEX_CPPFLAGS)
+	$(FIMEX_CPPFLAGS) -DFIMEX 
 
 common_ldflags=                \
 	$(PETS2_LDFLAGS)       \
@@ -139,11 +140,12 @@ tseries_bin_SOURCES=        \
 	$(header_sources)   \
 	$(cc_sources)       \
 	$(qt_sources)       \
+	$(common_sources)   \
 	$(img_sources)      \
 	$(language_sources)
 
 nodist_tseries_bin_SOURCES = \
-	$(moc_sources)
+	$(moc_sources) 
 
 tseries_bin_CXXFLAGS= $(common_cppflags)
 tseries_bin_LDFLAGS=  $(common_ldflags)
@@ -156,7 +158,14 @@ btseries_SOURCES=         \
 	btseries.cc       \
 	diImageIO.cc      \
 	$(header_sources) \
+	$(common_sources) \
 	$(cc_sources)
+	
+nodist_btseries_SOURCES = \
+	$(common_moc_sources)
+
+	
+	
 
 btseries_CXXFLAGS= $(common_cppflags)
 btseries_LDFLAGS=  $(common_ldflags)
@@ -165,7 +174,8 @@ btseries_LDADD=    $(common_ldadd)
 
 # generated file must be cleaned afterwards...
 
-CLEANFILES = $(moc_sources) $(nodist_language_DATA)
+CLEANFILES = $(moc_sources) $(nodist_language_DATA) $(common_moc_sources)
+
 
 
 # Preserve timestamps under install --

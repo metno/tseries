@@ -1,10 +1,10 @@
 
-#ifndef PROGRESSTHREAD_H_
-#define PROGRESSTHREAD_H_
+#ifndef PREPAREDATATHREAD_H_
+#define PREPAREDATATHREAD_H_
 
 
 
-  /*
+/*
    $Id$
 
    Copyright (C) 2006 met.no
@@ -31,25 +31,38 @@
    You should have received a copy of the GNU General Public License
    along with Tseries; if not, write to the Free Software
    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-   */
+ */
 
 #include <QThread>
-#include <QProgressBar>
 #include <string>
+#include <tsData/FimexStream.h>
 
 
 namespace pets {
 
-class ProgressThread  : public QThread {
-  QProgressBar* progress;
+class PrepareDataThread  : public QThread {
+  Q_OBJECT
+private:
+
+  pets::FimexStream* fimex;
+  double latitude;
+  double longitude;
+  miutil::miString stationname;
+  std::vector<ParId> inpar;
+  std::vector<ParId> outpar;
 
 public:
-    ProgressThread(QProgressBar* p){progess=p;}
+  PrepareDataThread(QObject* parent=0) :  QThread (parent){}
+  void setFimexParameters(pets::FimexStream* f, std::string pl, float lat, float lon,  std::vector<ParId>& ip, std::vector<ParId>& op);
+  void run();
 
-    int exec();
-    void run() { exec(); }
+
+  signals:
+  void post_dataLoad(bool);
+
+
 
 };
 
 } /* namespace pets */
-#endif /* PROGRESSCACHE_H_ */
+#endif /* PREPAREDATATHREAD_H_ */

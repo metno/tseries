@@ -126,6 +126,7 @@ private:
 
   void timerEvent(QTimerEvent*);
   int updateTimer;
+  int progressTimer;
 
   bool tmark;
   bool snormal;
