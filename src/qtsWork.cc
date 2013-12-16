@@ -307,6 +307,7 @@ bool qtsWork::makeStyleList()
 
 bool qtsWork::makeModelList(const miString& st)
 {
+
   vector<miString>    modname;
   bool changed = false;
 
@@ -426,6 +427,8 @@ void qtsWork::changeStyle(const miString& st)
 
 void qtsWork::changeModel(const miString& st)
 {
+  std::map<miutil::miString,Model>::iterator itr = modelMap.begin();
+
   miString tmp = modelMap[st];
   QApplication::setOverrideCursor( Qt::WaitCursor );
   data.openStreams(tmp);
@@ -971,7 +974,7 @@ void qtsWork::makeFimexModels(const QString& activeStyle)
   vector<miString>    modname;
   bool changed = false;
 
-  int choice =  session.getModels(st, modelMap, modname,SessionManager::ADD_TO_FIMEX_TAB  );
+  int choice =  session.getModels(st, fimexModelMap, modname,SessionManager::ADD_TO_FIMEX_TAB  );
 
   if(choice < 0 )
     if(modname.size() > 1 )
