@@ -1,3 +1,9 @@
+tseries (6.3.1-1) unstable; urgency=low
+
+  * Fixed problem with missing runtimes in station  modus
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Mon, 16 Dec 2013 09:40:37 +0100
+
 tseries (6.3.0-1) unstable; urgency=low
 
   * enabled multithreaded reading of fimex streams
