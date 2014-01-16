@@ -53,6 +53,10 @@
 
 #include "tseries.xpm"
 
+#include <QDesktopServices>
+#include <QUrl>
+
+
 using namespace std;
 using namespace miutil;
 
@@ -84,8 +88,6 @@ qtsMain::qtsMain(miString l) :
   printer = new QPrinter(QPrinter::HighResolution);
 
   setWindowIcon(QPixmap(tseries_xpm));
-
-  initHelp();
 
   restoreLog();
   setRemoteParameters();
@@ -122,6 +124,13 @@ void qtsMain::makeHelpMenu()
   showHelpAct->setStatusTip(tr("Show manual"));
   connect(showHelpAct, SIGNAL(triggered()), this, SLOT( showHelp() ));
   menu_help->addAction(showHelpAct);
+
+
+  showNewsAct = new QAction(tr("News"), this);
+  showNewsAct->setStatusTip(tr("Show changelog"));
+  connect(showNewsAct, SIGNAL(triggered()), this, SLOT(showNews()));
+  menu_help->addAction(showNewsAct);
+
 
   aboutAct = new QAction(tr("About"), this);
   connect(aboutAct, SIGNAL(triggered()), this, SLOT( about() ));
@@ -861,47 +870,17 @@ void qtsMain::processLetter(const miMessage& letter)
 
 void qtsMain::showHelp()
 {
-  helpdialog->showdoc(0, "");
+ tsSetup setup;
+ QDesktopServices::openUrl(QUrl( setup.doc.docURL.c_str()));
 }
 
-void qtsMain::initHelp()
+void qtsMain::showNews()
 {
-  tsSetup s;
-
-  miString helpfile = s.path.doc + "/" + lang + "_" + s.doc.mainSource;
-  miString newsfile = s.path.doc + "/" + lang + "_" + s.doc.newsSource;
-
-  ifstream testhelpfile(helpfile.c_str());
-  ifstream testnewsfile(newsfile.c_str());
-
-  if (testhelpfile) {
-    helpfile = lang + "_" + s.doc.mainSource;
-    testhelpfile.close();
-  } else
-    helpfile = s.doc.mainSource;
-
-  if (testnewsfile) {
-    newsfile = lang + "_" + s.doc.newsSource;
-    testnewsfile.close();
-  } else
-    newsfile = s.doc.newsSource;
-
-  HelpDialog::Info info;
-  HelpDialog::Info::Source helpsource;
-  info.path = s.path.doc;
-  helpsource.source = helpfile;
-  helpsource.name = tr("Manual").toStdString();
-  helpsource.defaultlink = s.doc.mainLink;
-  info.src.push_back(helpsource);
-  helpsource.source = newsfile;
-  helpsource.name = tr("News").toStdString();
-  helpsource.defaultlink = s.doc.newsLink;
-  info.src.push_back(helpsource);
-
-  helpdialog = new HelpDialog(this, info);
-  helpdialog->hide();
-
+ tsSetup setup;
+ QDesktopServices::openUrl(QUrl( setup.doc.newsURL.c_str()));
 }
+
+
 
 void qtsMain::timerEvent(QTimerEvent* e)
 {

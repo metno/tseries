@@ -76,6 +76,9 @@ tsSetup::tsSetup() : sec(PUBLIC) , line(0)
     loglevel.diagram="WARN";
     loglevel.tseries="WARN";
 
+    doc.docURL  = "https://wiki.met.no/tseries/doc";
+    doc.newsURL = "https://wiki.met.no/tseries/news";
+
   }
 }
 
@@ -748,18 +751,10 @@ void tsSetup::setDiana(string& key, string& content)
 
 void tsSetup::setDoc(string& key, string& content)
 {
-  if(key == "MAINSOURCE" )
-    setup(doc.mainSource,content);
-  else if (key == "MAINNAME" )
-    setup(doc.mainName,content);
-  else if (key == "MAINLINK" )
-    setup(doc.mainLink,content);
-  else if (key == "NEWSSOURCE" )
-    setup(doc.newsSource,content);
-  else if (key == "NEWSNAME" )
-    setup(doc.newsName,content);
-  else if (key == "NEWSLINK" )
-    setup(doc.newsLink,content);
+  if(key == "DOCURL" )
+    setup(doc.docURL,content);
+  else if (key == "NEWSURL" )
+    setup(doc.newsURL,content);
   else
     warn(key,wKEY);
 }

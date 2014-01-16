@@ -186,12 +186,8 @@ public:
 
   /// Struct containing documentation path etc.
   struct dostruct {
-    std::string mainSource;
-    std::string mainName;
-    std::string mainLink;
-    std::string newsSource;
-    std::string newsName;
-    std::string newsLink;
+    std::string docURL;
+    std::string newsURL;
   };
 
   static std::vector<dsStruct> streams; ///< Data streams

@@ -48,7 +48,6 @@
 
 #include <coserver/ClientButton.h>
 #include <coserver/miMessage.h>
-#include <qUtilities/qtHelpDialog.h>
 
 #include "qtsWork.h"
 #include "qtsFilterManager.h"
@@ -70,6 +69,7 @@ private:
   // Menues
   QMenu   * menu_help;
   QAction * showHelpAct;
+  QAction * showNewsAct;
   QAction * aboutAct;
 
   QMenu   * menu_file;
@@ -114,7 +114,7 @@ private:
 
   bool dianaconnected;
 
-  HelpDialog* helpdialog;
+
 
   miMessage target;
 
@@ -145,7 +145,6 @@ private:
 
   void restoreLog();
   void sendImage(const miutil::miString, const QImage&);
-  void initHelp();
   void setRemoteParameters();
   void makeEPS(const miutil::miString&);
   void setTimemark(miutil::miTime);
@@ -188,6 +187,7 @@ private slots:
   void clearTarget();
   void clearFimexList();
   void showHelp();
+  void showNews();
   void cleanConnection();
 
   void manageFilter();
