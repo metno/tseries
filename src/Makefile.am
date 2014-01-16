@@ -34,7 +34,7 @@ qt_sources=                \
 	WdbBookmarkTools.cc  \
 	ParameterFilterDialog.cc \
 	PopupCalendar.cc  
-	
+
 
 # headers ( for distribution )  -----
 
@@ -109,6 +109,7 @@ common_cppflags +=              \
 	$(GLTEXT_CPPFLAGS)      \
 	$(PUDATATYPES_CPPFLAGS) \
 	$(QUTILITIES_CPPFLAGS)  \
+	$(COSERVER_CPPFLAGS)    \
 	$(QT4_CPPFLAGS)         \
 	$(FIMEX_CPPFLAGS) -DFIMEX 
 
@@ -118,9 +119,10 @@ common_ldflags=                \
 	$(GLTEXT_LDFLAGS)      \
 	$(PUDATATYPES_LDFLAGS) \
 	$(QUTILITIES_LDFLAGS)  \
+	$(COSERVER_LDFLAGS)    \
 	$(QT4_LDFLAGS)         \
 	$(XEXT_LDFLAGS) $(GLU_LDFLAGS) $(X11_LDFLAGS) \
-	$(FIMEX_LDFLAGS)
+	$(FIMEX_LDFLAGS) -DFIMEX 
 
 common_ldadd=               \
 	$(PETS2_LIBS)       \
@@ -128,9 +130,10 @@ common_ldadd=               \
 	$(GLTEXT_LIBS)      \
 	$(PUDATATYPES_LIBS) \
 	$(QUTILITIES_LIBS)  \
+	$(COSERVER_LIBS)    \
 	$(QT4_LIBS) \
 	$(XEXT_LIBS) $(GLU_LIBS) $(X11_LIBS) \
-	$(FIMEX_LIBS)
+	$(FIMEX_LIBS) 
 
 
 # building tseries ------------------
@@ -160,12 +163,10 @@ btseries_SOURCES=         \
 	$(header_sources) \
 	$(common_sources) \
 	$(cc_sources)
-	
+
 nodist_btseries_SOURCES = \
 	$(common_moc_sources)
 
-	
-	
 
 btseries_CXXFLAGS= $(common_cppflags)
 btseries_LDFLAGS=  $(common_ldflags)

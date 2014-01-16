@@ -247,7 +247,7 @@ met.no 2002</translation>
         <translation>Språk</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1063"/>
+        <location filename="../src/qtsMain.cc" line="1067"/>
         <source>Language Changed</source>
         <translation>Språk endret</translation>
     </message>
@@ -344,7 +344,7 @@ met.no 2002</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1064"/>
+        <location filename="../src/qtsMain.cc" line="1068"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation>T-series må startes på nytt for å sette språk til: [%1]</translation>
     </message>
@@ -352,22 +352,22 @@ met.no 2002</translation>
 <context>
     <name>qtsSidebar</name>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="133"/>
+        <location filename="../src/qtsSidebar.cc" line="143"/>
         <source>enable/disable observations</source>
         <translation>vis/skjul observasjoner</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="139"/>
+        <location filename="../src/qtsSidebar.cc" line="149"/>
         <source>Show position (DIANA)</source>
         <translation>Vis posisjon (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="145"/>
+        <location filename="../src/qtsSidebar.cc" line="155"/>
         <source>Position filter</source>
         <translation>Posisjonsfilter</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="96"/>
+        <location filename="../src/qtsSidebar.cc" line="103"/>
         <source>Stations</source>
         <translation>Stedsliste</translation>
     </message>

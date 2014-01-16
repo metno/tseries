@@ -46,8 +46,8 @@
 #include <QActionGroup>
 #include <QShortcut>
 
-#include <qUtilities/ClientButton.h>
-#include <qUtilities/miMessage.h>
+#include <coserver/ClientButton.h>
+#include <coserver/miMessage.h>
 #include <qUtilities/qtHelpDialog.h>
 
 #include "qtsWork.h"

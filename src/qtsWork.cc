@@ -31,7 +31,7 @@
 #include "qtsWork.h"
 #include "tsConfigure.h"
 
-#include <qUtilities/QLetterCommands.h>
+#include <coserver/QLetterCommands.h>
 #include <QApplication>
 
 #include <fstream>

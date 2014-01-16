@@ -243,7 +243,7 @@ Version: %1
 met.no 2002</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1063"/>
+        <location filename="../src/qtsMain.cc" line="1067"/>
         <source>Language Changed</source>
         <translation type="unfinished">Langue changée</translation>
     </message>
@@ -330,7 +330,7 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1064"/>
+        <location filename="../src/qtsMain.cc" line="1068"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>
@@ -338,22 +338,22 @@ met.no 2002</translation>
 <context>
     <name>qtsSidebar</name>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="133"/>
+        <location filename="../src/qtsSidebar.cc" line="143"/>
         <source>enable/disable observations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="139"/>
+        <location filename="../src/qtsSidebar.cc" line="149"/>
         <source>Show position (DIANA)</source>
         <translation type="unfinished">Montrer position</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="145"/>
+        <location filename="../src/qtsSidebar.cc" line="155"/>
         <source>Position filter</source>
         <translation type="unfinished">Position du filtre</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="96"/>
+        <location filename="../src/qtsSidebar.cc" line="103"/>
         <source>Stations</source>
         <translation type="unfinished"></translation>
     </message>

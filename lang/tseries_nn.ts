@@ -238,7 +238,7 @@ met.no 2002</translation>
         <translation type="unfinished">Språk</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1063"/>
+        <location filename="../src/qtsMain.cc" line="1067"/>
         <source>Language Changed</source>
         <translation type="unfinished">Språk endra</translation>
     </message>
@@ -330,7 +330,7 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1064"/>
+        <location filename="../src/qtsMain.cc" line="1068"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>
@@ -342,22 +342,22 @@ met.no 2002</translation>
         <translation type="obsolete">Vis posisjon (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="145"/>
+        <location filename="../src/qtsSidebar.cc" line="155"/>
         <source>Position filter</source>
         <translation type="unfinished">Posisjonsfilter</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="139"/>
+        <location filename="../src/qtsSidebar.cc" line="149"/>
         <source>Show position (DIANA)</source>
         <translation type="unfinished">Syn position (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="96"/>
+        <location filename="../src/qtsSidebar.cc" line="103"/>
         <source>Stations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="133"/>
+        <location filename="../src/qtsSidebar.cc" line="143"/>
         <source>enable/disable observations</source>
         <translation type="unfinished"></translation>
     </message>

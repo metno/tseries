@@ -41,7 +41,7 @@
 #include "config.h"
 #include "ParameterFilterDialog.h"
 #include "PopupCalendar.h"
-#include <qUtilities/QLetterCommands.h>
+#include <coserver/QLetterCommands.h>
 #include <puTools/ttycols.h>
 #include <puTools/miDate.h>
 #include <tsData/FimexStream.h>

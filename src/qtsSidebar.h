@@ -51,7 +51,7 @@
 #include <vector>
 #include <string>
 #include <puTools/miString.h>
-#include <qUtilities/ClientButton.h>
+#include <coserver/ClientButton.h>
 
 class qtsSidebar : public QWidget
 {

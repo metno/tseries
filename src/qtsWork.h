@@ -49,7 +49,7 @@
 
 
 #include <puTools/miString.h>
-#include <qUtilities/miMessage.h>
+#include <coserver/miMessage.h>
 #include <puDatatypes/miCoordinates.h>
 #include <puTools/miString.h>
 
