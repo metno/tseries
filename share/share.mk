@@ -1,30 +1,6 @@
 # Makefile to distribute tseries-setup into /share/tseries 
 
 
-mydocdir        = $(datarootdir)/doc/tseries-@PVERSION@
-dist_mydoc_DATA = \
-	share/doc/ts_station.xpm      \
-	share/doc/no_news.html	      \
-	share/doc/nn_index.html	      \
-	share/doc/copy.xpm	      \
-	share/doc/tseries.png	      \
-	share/doc/ts_find.xpm	      \
-	share/doc/tb_refresh.xpm      \
-	share/doc/connect.png	      \
-	share/doc/index.html	      \
-	share/doc/no_index.html	      \
-	share/doc/news.html	      \
-	share/doc/pil.png	      \
-	share/doc/ts_filter.xpm	      \
-	share/doc/delete.xpm	      \
-	share/doc/tseries.xpm	      \
-	share/doc/de_news.html	      \
-	share/doc/de_index.html	      \
-	share/doc/view-refresh.xpm    \
-	share/doc/busy.gif            \
-	share/doc/list-add.xpm
-
-
 # images to share/pixmaps ----------------------
 
 pixmapsbasedir= $(datarootdir)/pixmaps

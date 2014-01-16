@@ -108,7 +108,6 @@ common_cppflags +=              \
 	$(PUMET_CPPFLAGS)       \
 	$(GLTEXT_CPPFLAGS)      \
 	$(PUDATATYPES_CPPFLAGS) \
-	$(QUTILITIES_CPPFLAGS)  \
 	$(COSERVER_CPPFLAGS)    \
 	$(QT4_CPPFLAGS)         \
 	$(FIMEX_CPPFLAGS) -DFIMEX 
@@ -118,7 +117,6 @@ common_ldflags=                \
 	$(PUMET_LDFLAGS)       \
 	$(GLTEXT_LDFLAGS)      \
 	$(PUDATATYPES_LDFLAGS) \
-	$(QUTILITIES_LDFLAGS)  \
 	$(COSERVER_LDFLAGS)    \
 	$(QT4_LDFLAGS)         \
 	$(XEXT_LDFLAGS) $(GLU_LDFLAGS) $(X11_LDFLAGS) \
@@ -129,7 +127,6 @@ common_ldadd=               \
 	$(PUMET_LIBS)       \
 	$(GLTEXT_LIBS)      \
 	$(PUDATATYPES_LIBS) \
-	$(QUTILITIES_LIBS)  \
 	$(COSERVER_LIBS)    \
 	$(QT4_LIBS) \
 	$(XEXT_LIBS) $(GLU_LIBS) $(X11_LIBS) \
