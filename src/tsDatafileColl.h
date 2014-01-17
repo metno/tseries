@@ -128,6 +128,7 @@ struct FimexInfo {
   std::string sType;      // streamtype (netcdf, etc)
   pets::FimexStream* dataStream; // the data
   std::string run;
+  std::string configfile;
 };
 
 
@@ -137,6 +138,7 @@ struct FimexFileindex {
   std::vector<std::string> findNewFiles();
   std::string model;
   std::string sType;
+  std::string configfile;
 };
 
 
@@ -205,7 +207,8 @@ public:
   int  addStream(const miutil::miString,const miutil::miString,
 		 const miutil::miString,
 		 const int, const int,
-		 const miutil::miString= "x,x,x,x");
+		 const miutil::miString,
+		 const miutil::miString="");
   // opens streams containing this model
   bool openStreams(const miutil::miString mod);
   // opens one stream

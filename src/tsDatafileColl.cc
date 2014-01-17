@@ -122,7 +122,7 @@ int DatafileColl::addDataset(miString name)
 
 int DatafileColl::addStream(const miString name, const miString desc,
     const miString streamtype, const int dset, const int numindset,
-    const miString sparid)
+    const miString sparid, const miString fimexconfig)
 {
   tsSetup setup;
 
@@ -134,6 +134,7 @@ int DatafileColl::addStream(const miString name, const miString desc,
       findex.model        = desc;
       findex.sType        = streamtype;
       findex.glob_string  = name;
+      findex.configfile   = fimexconfig;
       fimexFileindex.push_back(findex);
       createFimexStreams(fimexFileindex.back());
 
@@ -808,6 +809,7 @@ bool DatafileColl::createFimexStreams(FimexFileindex& findex)
   FimexInfo finfo;
   finfo.model      = findex.model;
   finfo.sType      = findex.sType;
+  finfo.configfile = findex.configfile;
   vector<string> streamfilenames = findex.findNewFiles();
 
   for( unsigned int i=0; i< streamfilenames.size();i++) {

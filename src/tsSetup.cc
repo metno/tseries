@@ -32,6 +32,7 @@
 #include <iostream>
 #include <fstream>
 #include <puMet/symbolMaker.h>
+#include <puTools/miTime.h>
 #include <boost/algorithm/string.hpp>
 #include <config.h>
 
@@ -197,7 +198,7 @@ void tsSetup::fetchSection(string token)
   else if( find_first(token,"DIANA"))
     sec = DIANA;
   else if( find_first(token,"LOGLEVEL"))
-      sec = LOGLEVEL;
+    sec = LOGLEVEL;
   else if( find_first(token,"DOC"))
     sec = DOC;
   else if( find_first(token,"KLIMAPARAMETER"))
@@ -218,6 +219,19 @@ void tsSetup::fetchSection(string token)
     sec = INFIMEX;
   else
     warn(token,wSECTION);
+
+}
+
+
+std::string tsSetup::timetrans(std::string tstr)
+{
+  miutil::miTime now=miutil::miTime::nowTime();
+
+  std::string transtime = now.format(tstr);
+
+  cerr << "created time: " << transtime << endl;
+
+  return transtime;
 
 }
 
@@ -438,6 +452,11 @@ void tsSetup::setSimpleToken(string token)
   while(checkEnvironment(content))
     ;
 
+  if ( key == "NOWTIME") {
+    lookup[key] = timetrans(content);
+    return;
+  }
+
   lookup[key] = content;
 
   switch(sec) {
@@ -511,7 +530,7 @@ void tsSetup::setFimexParameter(string& token)
   if(find_first(token,"="))
     fimex.parameters.push_back(token);
   else {
-  // ... but don't let them crash us for that
+    // ... but don't let them crash us for that
     if(fimex.parameters.size())
       fimex.parameters.back() += token;
   }
@@ -519,17 +538,17 @@ void tsSetup::setFimexParameter(string& token)
 
 void tsSetup::setFimex(string& key, string& content)
 {
-    if(key == "FimexStreamTypes") {
-      vector<string> tmpTypes = tokenize(content,":");
-      for(unsigned int i=0; i < tmpTypes.size();i++) {
-        fimex.streamtypes.insert(tmpTypes[i]);
-      }
-    } else if (key == "FimexFilters"){
-      vector<string> tmpPar = tokenize(content,":");
-      for(unsigned int i=0; i < tmpPar.size();i++) {
-        fimex.filters.push_back(tmpPar[i]);
-      }
+  if(key == "FimexStreamTypes") {
+    vector<string> tmpTypes = tokenize(content,":");
+    for(unsigned int i=0; i < tmpTypes.size();i++) {
+      fimex.streamtypes.insert(tmpTypes[i]);
     }
+  } else if (key == "FimexFilters"){
+    vector<string> tmpPar = tokenize(content,":");
+    for(unsigned int i=0; i < tmpPar.size();i++) {
+      fimex.filters.push_back(tmpPar[i]);
+    }
+  }
 }
 
 
@@ -552,15 +571,15 @@ void tsSetup::setKlima(string& key, string& content)
 void tsSetup::setLoglevel(std::string& key, std::string& content)
 {
   if(key == "TSERIES" ){
-      setup(loglevel.tseries,content);
-    } else if(key == "DATA") {
-      setup(loglevel.data,content);
-    } else if(key == "DIAGRAM") {
-      setup(loglevel.diagram,content);
-    } else {
-      cerr << "warn here" << endl;
-      warn(key,wKEY);
-    }
+    setup(loglevel.tseries,content);
+  } else if(key == "DATA") {
+    setup(loglevel.data,content);
+  } else if(key == "DIAGRAM") {
+    setup(loglevel.diagram,content);
+  } else {
+    cerr << "warn here" << endl;
+    warn(key,wKEY);
+  }
 
 
 
@@ -589,7 +608,7 @@ void tsSetup::setFiles(string& key, string& content)
   else if(key == "ICONIMAGE")
     setup(files.icon_image,content);
   else if(key == "ACTIVEIMAGE")
-     setup(files.active_image,content);
+    setup(files.active_image,content);
   else if(key == "BASEFILTER")
     setup(files.baseFilter,content);
   else if(key == "COMMONBOOKMARKS")
@@ -597,7 +616,7 @@ void tsSetup::setFiles(string& key, string& content)
   else if(key == "WDBBOOKMARKS")
     setup(files.wdbBookmarks,content);
   else if(key == "FIMEXBOOKMARKS")
-      setup(files.fimexBookmarks,content);
+    setup(files.fimexBookmarks,content);
   else
     warn(key,wKEY);
 }
@@ -644,6 +663,9 @@ void tsSetup::setStreams(string& key, string& content)
     setup(streams[idx].data[ids].type,content);
   else if(key == "CONTENTS"){
     setup(streams[idx].data[ids].contents,content);
+  }
+  else if (key == "DATACONFIG") {
+    setup(streams[idx].data[ids].config,content);
   }
   else
     warn(key,wKEY);

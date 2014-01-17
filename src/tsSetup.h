@@ -76,6 +76,8 @@ public:
 
   std::string getenvAsString(std::string);
 
+  std::string getNowTimeAsString(std::string);
+
   // override with section:key=token
   void overrideToken(std::string token);
 
@@ -87,6 +89,7 @@ public:
     std::string  descript;
     std::string  type;
     std::string  contents;
+    std::string  config;
   };
 
   /// Struct containing datastreams
@@ -221,6 +224,9 @@ private:
   bool checkLookup(std::string&);
   bool checkEnvironment(std::string&);
   void stripComments(std::string&);
+
+  // change a string into a string containing nowtime
+  std::string timetrans(std::string);
 
   std::string inSection();
   bool splitToken(const std::string&,std::string&, std::string&,bool upper=true);

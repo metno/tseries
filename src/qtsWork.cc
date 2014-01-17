@@ -169,7 +169,8 @@ void qtsWork::Initialise()
           setup.streams[i].data[j].type,      // streamtype
           i, j,                               // dataset and
           // number in dataset
-          setup.streams[i].data[j].contents); // models/runs
+          setup.streams[i].data[j].contents, // models/runs
+          setup.streams[i].data[j].config);  // fimexconfigfile
     }
   }
 
