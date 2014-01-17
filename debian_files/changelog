@@ -1,3 +1,11 @@
+tseries (6.4.0-1) unstable; urgency=low
+
+  * Documentation moved to the web
+  * Added feature - fimex configfile
+  * Added feature - nowtime as formatted string available in setup
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Fri, 17 Jan 2014 13:31:50 +0100
+
 tseries (6.3.1-1) unstable; urgency=low
 
   * Fixed problem with missing runtimes in station  modus
