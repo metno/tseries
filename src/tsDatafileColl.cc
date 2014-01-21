@@ -35,7 +35,7 @@
 #include <string>
 #include <sstream>
 #include "tsSetup.h"
-#include <boost/algorithm/string/find.hpp>
+#include <boost/algorithm/string.hpp>
 
 
 #ifdef GRIBSTREAM
@@ -118,6 +118,14 @@ int DatafileColl::addDataset(miString name)
   return -1;
 }
 
+string DatafileColl::getCleanStreamType(string streamtype)
+{
+  int n = streamtype.find(":");
+  if( n > 0 && n <streamtype.size())
+    streamtype.erase(n,streamtype.size()-n);
+
+  return boost::trim_copy(streamtype);
+}
 
 
 int DatafileColl::addStream(const miString name, const miString desc,
@@ -126,9 +134,11 @@ int DatafileColl::addStream(const miString name, const miString desc,
 {
   tsSetup setup;
 
+  string cleanstreamtype= getCleanStreamType(streamtype);
+
   if (dset < (signed int) datasetname.size()) {
 
-    if(setup.fimex.streamtypes.count(streamtype)) {
+    if(setup.fimex.streamtypes.count(cleanstreamtype)) {
 
       FimexFileindex   findex;
       findex.model        = desc;

@@ -181,7 +181,7 @@ private:
   void initialiseFimexPositions();
   void initialiseFimexParameters();
   bool wdbStreamIsOpen;
-
+  std::string getCleanStreamType(std::string);
 
 protected:
   bool findpos(const miutil::miString& name, int& idx);
