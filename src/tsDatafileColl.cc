@@ -827,7 +827,7 @@ bool DatafileColl::createFimexStreams(FimexFileindex& findex)
     cerr << "Added to fimexstreams" << finfo.streamname << " as " << finfo.sType << endl;
     fimexStreams.push_back(finfo);
 
-    fimexStreams.back().dataStream = new pets::FimexStream(finfo.streamname, finfo.model, finfo.sType);
+    fimexStreams.back().dataStream = new pets::FimexStream(finfo.streamname, finfo.model, finfo.sType, finfo.configfile);
   }
   return bool ( streamfilenames.size());
 
