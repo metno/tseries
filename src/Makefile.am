@@ -29,11 +29,13 @@ qt_sources=                \
 	qtsTimeControl.cc  \
 	StationTab.cc      \
 	CoordinateTab.cc   \
+	FimexTab.cc        \
 	WdbCacheThread.cc  \
 	CoordinateManager.cc \
 	WdbBookmarkTools.cc  \
 	ParameterFilterDialog.cc \
-	PopupCalendar.cc  
+	PopupCalendar.cc  \
+	ClearLineEdit.cc
 
 
 # headers ( for distribution )  -----
@@ -98,7 +100,10 @@ img_sources=               \
 	media-record.xpm   \
 	metno.xpm          \
 	trashcan.xpm       \
-	synop.xpm
+	synop.xpm          \
+	expand.xpm         \
+	collapse.xpm       \
+	clear.xpm
 
 
 # Flags -----------------------------

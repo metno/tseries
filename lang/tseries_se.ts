@@ -4,28 +4,61 @@
 <context>
     <name>CoordinateTab</name>
     <message>
-        <location filename="../src/CoordinateTab.cc" line="87"/>
+        <location filename="../src/CoordinateTab.cc" line="80"/>
         <source>Bookmarks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CoordinateTab.cc" line="123"/>
+        <location filename="../src/CoordinateTab.cc" line="116"/>
         <source>C&amp;ut...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CoordinateTab.cc" line="124"/>
+        <location filename="../src/CoordinateTab.cc" line="117"/>
         <source>&amp;Copy...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CoordinateTab.cc" line="125"/>
+        <location filename="../src/CoordinateTab.cc" line="118"/>
         <source>&amp;Paste...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/CoordinateTab.cc" line="126"/>
+        <location filename="../src/CoordinateTab.cc" line="119"/>
         <source>&amp;Delete...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FimexTab</name>
+    <message>
+        <location filename="../src/FimexTab.cc" line="73"/>
+        <source>Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FimexTab.cc" line="118"/>
+        <source>C&amp;ut...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FimexTab.cc" line="119"/>
+        <source>&amp;Copy...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FimexTab.cc" line="120"/>
+        <source>&amp;Paste...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FimexTab.cc" line="121"/>
+        <source>&amp;Delete...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FimexTab.cc" line="159"/>
+        <source>Set Filter</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -342,22 +375,32 @@ met.no 2002</translation>
 <context>
     <name>qtsSidebar</name>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="143"/>
+        <location filename="../src/qtsSidebar.cc" line="149"/>
         <source>enable/disable observations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="149"/>
+        <location filename="../src/qtsSidebar.cc" line="155"/>
         <source>Show position (DIANA)</source>
         <translation type="unfinished">Visa position i Diana</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="155"/>
+        <location filename="../src/qtsSidebar.cc" line="161"/>
         <source>Position filter</source>
         <translation type="unfinished">Positionsfilter</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="103"/>
+        <location filename="../src/qtsSidebar.cc" line="180"/>
+        <source>expand all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtsSidebar.cc" line="182"/>
+        <source>collapse all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtsSidebar.cc" line="107"/>
         <source>Stations</source>
         <translation type="unfinished"></translation>
     </message>

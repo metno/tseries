@@ -1,12 +1,12 @@
 /*
- * CoordinateTab.h
+ * FimexTab.h
  *
  *  Created on: Mar 16, 2010
  *      Author: juergens
  */
 
-#ifndef COORDINATETAB_H_
-#define COORDINATETAB_H_
+#ifndef FIMEXTAB_H_
+#define FIMEXTAB_H_
 
 /*
  $Id$
@@ -47,15 +47,32 @@
 #include <QTreeView>
 #include <QString>
 #include <QStandardItemModel>
+#include <QSortFilterProxyModel>
 #include <QAction>
 #include "WdbBookmarkTools.h"
-#include "CoordinateManager.h"
 #include <puTools/miString.h>
+#include "ClearLineEdit.h"
 
 #include <vector>
 
 
-class CoordinateTab : public QWidget {
+
+class FilterProxyModel : public QSortFilterProxyModel {
+public:
+  FilterProxyModel(QObject* parent=0)  : QSortFilterProxyModel(parent) { }
+protected:
+  bool filterAcceptsRow(int row, const QModelIndex &parent) const;
+};
+
+
+
+
+
+
+
+
+
+class FimexTab : public QWidget {
   Q_OBJECT
 public:
 
@@ -71,16 +88,21 @@ private:
   QAction     * copyAction;
   QAction     * delAction;
 
-  CoordinateManager * latitude;
-  CoordinateManager * longitude;
+  ClearLineEdit   * filter;    // filter stations
+
   bool                activeCacheRequest;
   WdbBookmarkTools    bookmarkTools;
   QStandardItemModel* model;
+  FilterProxyModel*   proxyModel;
   std::string         variableBookmarkfile;
   bool recordingPositions;
   bool addToRecord;
+  float latitude;
+  float longitude;
+
+
 public:
-  CoordinateTab(QWidget*);
+  FimexTab(QWidget*);
 
   QString setStyles(const QStringList& qlist);
   void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat);
@@ -109,6 +131,7 @@ private slots:
   void copy();
   void paste();
   void remove();
+  void filterBookmarks(const QString&);
 
 public slots:
   void setCoordinates(float lon, float lat, QString name="");
@@ -116,15 +139,16 @@ public slots:
   void setStyle(QString style);
   void setRun(QString run);
 
-
-  void setLatRange(int min, int max);
-  void setLonRange(int min, int max);
-
   void setModels(const QStringList& newmodels);
   void setRuns(const QStringList& newmodels);
   void addBookmarkFolder();
   void changePosition(QString);
   void recordToggled(bool);
+
+
+  void expandAll();
+  void collapseAll();
+
 
 
   signals:
@@ -138,4 +162,11 @@ public slots:
 
 };
 
-#endif /* COORDINATETAB_H_ */
+
+// --------------------------------------------------------------
+
+
+
+
+
+#endif /* FIMEXTAB_H_ */

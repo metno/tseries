@@ -47,6 +47,7 @@
 
 #include "StationTab.h"
 #include "CoordinateTab.h"
+#include "FimexTab.h"
 
 #include <vector>
 #include <string>
@@ -68,6 +69,9 @@ private:
   QPushButton *   addWdbBookmarkButton;
   QPushButton *   addFimexBookmarkButton;
   QPushButton *   recordFimexButton;
+  QPushButton *   expandFimexButton;
+  QPushButton *   collapseFimexButton;
+
   QLabel*         connectStatus;
   QLabel*         obsInfo;
   QLabel*         progressHeader;
@@ -75,7 +79,7 @@ private:
 
   StationTab*     stationtab;
   CoordinateTab*  wdbtab;
-  CoordinateTab*  fimextab;
+  FimexTab*       fimextab;
   QProgressBar*   progress;
 
   int wdbIdx, stationIdx,fimexIdx;

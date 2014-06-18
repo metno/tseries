@@ -41,6 +41,10 @@
 #include "list-add.xpm"
 #include "synop.xpm"
 #include "media-record.xpm"
+#include "expand.xpm"
+#include "collapse.xpm"
+
+
 
 #include <iostream>
 
@@ -67,7 +71,7 @@ qtsSidebar::qtsSidebar()
 
   // The WDB Tabulator
 
-  wdbtab  = new CoordinateTab(this, CoordinateTab::WDBTAB);
+  wdbtab  = new CoordinateTab(this);
 
 
   connect(wdbtab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeWdbStyle(const QString& )));
@@ -76,7 +80,7 @@ qtsSidebar::qtsSidebar()
   connect(wdbtab,SIGNAL(changelevel( const QString&)), this, SIGNAL(changeWdbLevel(const QString& )));
   connect(wdbtab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeCoordinates(float,float,QString)));
 
-  fimextab = new CoordinateTab(this,CoordinateTab::FIMEXTAB);
+  fimextab = new FimexTab(this);
 
   connect(fimextab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeFimexStyle(const QString& )));
   connect(fimextab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeFimexModel(const QString& )));
@@ -130,6 +134,8 @@ qtsSidebar::qtsSidebar()
   QPixmap refresh_pix(view_refresh_xpm);
   QPixmap add_pix(list_add_xpm);
   QPixmap record_pix(media_record_xpm);
+  QPixmap expand_pix(expand_xpm);
+  QPixmap collapse_pix(collapse_xpm);
 
 
   pluginB = new ClientButton(s.server.name.c_str(),
@@ -170,6 +176,15 @@ qtsSidebar::qtsSidebar()
   connect(recordFimexButton,SIGNAL(toggled(bool)),fimextab, SLOT(recordToggled(bool)));
   connect(recordFimexButton,SIGNAL(toggled(bool)),this, SLOT(recordToggled(bool)));
 
+   expandFimexButton   = new QPushButton(expand_pix, "",this);
+   expandFimexButton->setToolTip(  tr("expand all") );
+   collapseFimexButton = new QPushButton(collapse_pix, "",this);
+   collapseFimexButton->setToolTip(  tr("collapse all") );
+
+   connect(expandFimexButton,SIGNAL(clicked()),fimextab, SLOT(expandAll()));
+   connect(collapseFimexButton,SIGNAL(clicked()),fimextab, SLOT(collapseAll()));
+
+
   cacheQueryButton  =  new QPushButton(refresh_pix, "",this);
   connect(cacheQueryButton,SIGNAL(clicked()),    this, SLOT(chacheQueryActivated()));
 
@@ -197,6 +212,9 @@ qtsSidebar::qtsSidebar()
   blayout->addWidget(addWdbBookmarkButton);
   blayout->addWidget(addFimexBookmarkButton);
   blayout->addWidget(recordFimexButton);
+
+  blayout->addWidget(collapseFimexButton);
+  blayout->addWidget(expandFimexButton);
   blayout->addWidget(cacheQueryButton);
   blayout->addWidget(connectStatus);
   blayout->addStretch(2);
@@ -209,6 +227,9 @@ qtsSidebar::qtsSidebar()
   addWdbBookmarkButton->hide();
   addFimexBookmarkButton->hide();
   recordFimexButton->hide();
+  collapseFimexButton->hide();
+  expandFimexButton->hide();
+
   progress->hide();
 
   cacheQueryButton->hide();
@@ -308,6 +329,8 @@ void qtsSidebar::tabChanged(int idx)
     cacheQueryButton->show();
     addFimexBookmarkButton->hide();
     recordFimexButton->hide();
+    collapseFimexButton->hide();
+    expandFimexButton->hide();
     setObsInfo("");
     targetB->show();
     filterB->hide();
@@ -316,6 +339,8 @@ void qtsSidebar::tabChanged(int idx)
   } else if (idx==stationIdx) {
     addWdbBookmarkButton->hide();
     addFimexBookmarkButton->hide();
+    collapseFimexButton->hide();
+    expandFimexButton->hide();
     cacheQueryButton->hide();
     recordFimexButton->hide();
     targetB->show();
@@ -326,6 +351,8 @@ void qtsSidebar::tabChanged(int idx)
   } else if (idx==fimexIdx) {
     addFimexBookmarkButton->show();
     recordFimexButton->show();
+    collapseFimexButton->show();
+    expandFimexButton->show();
     addWdbBookmarkButton->hide();
     cacheQueryButton->hide();
     targetB->hide();

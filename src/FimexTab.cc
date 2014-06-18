@@ -1,5 +1,5 @@
 /*
- * CoordinateTab.cc
+ * FimexTab.cc
  *
  *  Created on: Mar 16, 2010
  *      Author: juergens
@@ -34,7 +34,7 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 #include <QFont>
-#include "CoordinateTab.h"
+#include "FimexTab.h"
 #include <iostream>
 #include <QPixmap>
 #include "tsSetup.h"
@@ -52,10 +52,12 @@
 
 using namespace std;
 
-CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
+FimexTab::FimexTab(QWidget* parent)   : QWidget(parent)
 {
   recordingPositions=false;
   addToRecord=false;
+
+
 
   activeCacheRequest=false;
   modell    = new QComboBox(this);
@@ -66,15 +68,6 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   connect(modell,SIGNAL(activated(const QString&)),    this, SLOT(changeModel(const QString&)));
   connect(runl,SIGNAL(activated(const QString&)),      this, SLOT(changeRun(const QString&)));
 
-
-  longitude = new CoordinateManager(this,Qt::Horizontal,"Lon");
-  latitude  = new CoordinateManager(this,Qt::Vertical,  "Lat");
-
-  longitude->setRange(-180,180);
-  latitude->setRange(-90,90);
-
-  connect(longitude,SIGNAL(coordinatesChanged()),this,SLOT(coordinatesChanged()));
-  connect(latitude,SIGNAL(coordinatesChanged()),this,SLOT(coordinatesChanged()));
 
   QStringList head;
   head << tr("Bookmarks");
@@ -91,7 +84,7 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   model->setHorizontalHeaderLabels ( head );
   tsSetup setup;
 
-  variableBookmarkfile =  setup.files.wdbBookmarks;
+  variableBookmarkfile = setup.files.fimexBookmarks;
 
 
   bookmarkTools.setMaxRecords(setup.wdb.maxRecord);
@@ -100,7 +93,16 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   bookmarkTools.read(variableBookmarkfile,false);
   bookmarkTools.read(setup.files.commonBookmarks,true);
   bookmarkTools.addFolder("RECORD",true);
-  bookmarks->setModel(model);
+
+
+
+  proxyModel = new FilterProxyModel(this);
+  proxyModel->setSourceModel(model);
+  proxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+
+  bookmarks->setModel(proxyModel);
+
+
 
   bookmarks->setDragDropMode(QAbstractItemView::InternalMove);
   bookmarks->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -145,63 +147,43 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
 
 
   QVBoxLayout * vlayout     = new QVBoxLayout();  // main layout
-  QHBoxLayout * latHlayout  = new QHBoxLayout();  // Hor - lat layout amd lvl layout
-  QVBoxLayout * latVlayout  = new QVBoxLayout();  // Ver - lat label and slider
-  QHBoxLayout * lonHlayout  = new QHBoxLayout();  // Hor - lon label and slider
-  QHBoxLayout * editHlayout = new QHBoxLayout();  // Hor - lat/lon edit fields and labels
 
   vlayout->addWidget(stylel);
   vlayout->addWidget(modell);
   vlayout->addWidget(runl);
 
+  vlayout->addWidget(bookmarks,3);
 
-  latVlayout->addWidget(latitude->slider);
-  latVlayout->addWidget(latitude->sliderLabel);
+  filter = new ClearLineEdit(this);
+  connect(filter,SIGNAL(textChanged(const QString&)),this, SLOT(filterBookmarks(const QString&)));
+  filter->setPlaceholderText(tr("Set Filter"));
 
+  vlayout->addWidget(filter);
 
-  latHlayout->addLayout(latVlayout);
-
-
-  latHlayout->addWidget(bookmarks,3);
-
-  lonHlayout->addWidget(longitude->sliderLabel);
-  lonHlayout->addWidget(longitude->slider);
-  lonHlayout->setAlignment(Qt::AlignHCenter);
-
-
-  vlayout->addLayout(latHlayout);
-  vlayout->addLayout(lonHlayout);
-
-  editHlayout->addWidget(longitude->editLabel);
-  editHlayout->addWidget(longitude->edit);
-  editHlayout->addWidget(latitude->editLabel);
-  editHlayout->addWidget(latitude->edit);
-
-  vlayout->addLayout(editHlayout);
 
   setLayout(vlayout);
 
+
+
+}
+
+void FimexTab::filterBookmarks(const QString& text)
+{
+  proxyModel->setFilterFixedString(text);
 }
 
 
-void CoordinateTab::setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat)
-{
-  longitude->setRange( minLon, maxLon );
-  latitude->setRange(  minLat, maxLat );
-}
-
-void CoordinateTab::setCoordinates(float lon, float lat, QString name)
+void FimexTab::setCoordinates(float lon, float lat, QString name)
 {
 
-  float oldlat=latitude->getValue();
-  float oldlon=longitude->getValue();
 
-  if(fabs(oldlat -lat ) < 0.00001 )
-    if(fabs(oldlon -lon ) < 0.00001 )
+
+  if(fabs(latitude -lat ) < 0.00001 )
+    if(fabs(longitude -lon ) < 0.00001 )
       return;
 
-  longitude->setValue(lon);
-  latitude->setValue(lat);
+  longitude = lon;
+  latitude  = lat;
 
   if(name.isEmpty()) {
     ostringstream ost;
@@ -212,39 +194,35 @@ void CoordinateTab::setCoordinates(float lon, float lat, QString name)
   } 
 
 
-  bookmarkTools.addRecord(lon,lat,name.toStdString());
-  emit changeCoordinates(lon,lat,name);
+  if(recordingPositions) {
+    if(addToRecord) {
+      bookmarkTools.addRecord(lon,lat,name.toStdString());
+      emit changePoslist();
+    }
+  } else {
+    if(!name.isEmpty())
+      emit changeCoordinates(lon,lat,name);
+  }
+
   addToRecord=true;
 }
 
-void CoordinateTab::setLatRange(int min, int max)
+
+void FimexTab::coordinatesChanged()
 {
-  latitude->setRange(min,max);
+  bookmarkTools.addRecord(longitude,latitude,"");
+  emit changeCoordinates(longitude,latitude,"");
 }
 
-void CoordinateTab::setLonRange(int min, int max)
-{
-  longitude->setRange(min,max);
-}
-
-void CoordinateTab::coordinatesChanged()
-{
-  float lat=latitude->getValue();
-  float lon=longitude->getValue();
-  bookmarkTools.addRecord(lon,lat,"");
-  emit changeCoordinates(lon,lat,"");
-
-}
-
-miutil::miString CoordinateTab::coordinateString()
+miutil::miString FimexTab::coordinateString()
 {
   ostringstream ost;
-  ost <<  latitude->getValue() << ":" << longitude->getValue();
+  ost <<  latitude << ":" << longitude;
   return ost.str();
 }
 
 
-QString CoordinateTab::setStyles(const QStringList& qlist)
+QString FimexTab::setStyles(const QStringList& qlist)
 {
 
   QString cur = stylel->currentText();
@@ -261,14 +239,14 @@ QString CoordinateTab::setStyles(const QStringList& qlist)
 }
 
 
-void CoordinateTab::setStyle(const QString nstyle)
+void FimexTab::setStyle(const QString nstyle)
 {
   int idx = stylel->findText(nstyle);
   if( idx >= 0)
     stylel->setCurrentIndex(idx);
 }
 
-void CoordinateTab::setModel(const QString nmodel)
+void FimexTab::setModel(const QString nmodel)
 {
   int idx = modell->findText(nmodel);
   if( idx >= 0) {
@@ -278,7 +256,7 @@ void CoordinateTab::setModel(const QString nmodel)
   }
 }
 
-void CoordinateTab::setRun(const QString nrun)
+void FimexTab::setRun(const QString nrun)
 {
   QString newrun=nrun;
   int idx = runl->findText(nrun);
@@ -291,13 +269,13 @@ void CoordinateTab::setRun(const QString nrun)
   emit changerun(newrun);
 }
 
-void CoordinateTab::writeBookmarks()
+void FimexTab::writeBookmarks()
 {
   bookmarkTools.write(variableBookmarkfile);
 
 }
 
-void CoordinateTab::setModels(const QStringList& newmodels)
+void FimexTab::setModels(const QStringList& newmodels)
 {
   QString cur = modell->currentText();
 
@@ -317,7 +295,7 @@ void CoordinateTab::setModels(const QStringList& newmodels)
   }
 }
 
-void CoordinateTab::setRuns(const QStringList& newruns)
+void FimexTab::setRuns(const QStringList& newruns)
 {
   QString cur = runl->currentText();
 
@@ -333,27 +311,27 @@ void CoordinateTab::setRuns(const QStringList& newruns)
   if(cur != cur2)
     emit changerun(cur2);
 }
-void CoordinateTab::changeModel(const QString& s)
+void FimexTab::changeModel(const QString& s)
 {
   activeCacheRequest=false;
   emit changemodel(s);
 }
 
-void CoordinateTab::changeRun(const QString& s)
+void FimexTab::changeRun(const QString& s)
 {
   activeCacheRequest=false;
   emit changerun(s);
 }
 
 
-bool CoordinateTab::findPosition(QString newpos, QModelIndex& found_idx)
+bool FimexTab::findPosition(QString newpos, QModelIndex& found_idx)
 {
   unsigned int num_rows = model->rowCount();
 
   for (unsigned int row=0; row <num_rows; row++ ) {
     QModelIndex idx = model->index(row,0);
     if(bookmarks->isExpanded(idx)) {
-      QStandardItem * item = model->itemFromIndex(idx);
+      QStandardItem * item = model->itemFromIndex(proxyModel->mapToSource(idx));
       if(item) {
         unsigned int num_item_rows=item->rowCount();
         for(unsigned int item_row=0;item_row < num_item_rows;item_row++) {
@@ -361,7 +339,9 @@ bool CoordinateTab::findPosition(QString newpos, QModelIndex& found_idx)
 
           if(child) {
             if(newpos==child->text()){
+
               found_idx=model->indexFromItem(child);
+
               return true;
             }
           }
@@ -374,7 +354,7 @@ bool CoordinateTab::findPosition(QString newpos, QModelIndex& found_idx)
   return false;
 }
 
-void CoordinateTab::changePosition(QString newpos)
+void FimexTab::changePosition(QString newpos)
 {
   QModelIndex idx;
   if(findPosition(newpos,idx)) {
@@ -385,10 +365,13 @@ void CoordinateTab::changePosition(QString newpos)
 }
 
 
-void CoordinateTab::bookmarkClicked(QModelIndex idx)
+void FimexTab::bookmarkClicked(QModelIndex idx)
 {
-  QStandardItem* item=model->itemFromIndex(idx);
-  if(!item) return;
+  QStandardItem *item = model->itemFromIndex(proxyModel->mapToSource(idx));
+  if(!item) {
+    return;
+  }
+
   QVariant var =item->data();
   QString  coor=var.toString();
   QString  name=item->text();
@@ -402,29 +385,30 @@ void CoordinateTab::bookmarkClicked(QModelIndex idx)
   float lon= atof(c[1].c_str());
 
 
+  addToRecord=false;
+
   setCoordinates(lon,lat,name);
 }
 
-void CoordinateTab::addBookmarkFolder()
+void FimexTab::addBookmarkFolder()
 {
   bookmarkTools.addFolder("NEW",false);
 }
 
-void CoordinateTab::poslistChanged(const QModelIndex &)
+void FimexTab::poslistChanged(const QModelIndex &)
 {
   emit changePoslist();
 }
 
-std::string CoordinateTab::getExpandedDirs()
+std::string FimexTab::getExpandedDirs()
 {
   ostringstream ost;
-  cerr << "getExpandedDirs" << endl;
   unsigned int num_rows = model->rowCount();
   std::string delimiter="";
   for (unsigned int row=0; row <num_rows; row++ ) {
     QModelIndex idx = model->index(row,0);
     if(bookmarks->isExpanded(idx)) {
-      QStandardItem * item = model->itemFromIndex(idx);
+      QStandardItem * item = model->itemFromIndex(proxyModel->mapToSource(idx));
       if(item) {
         ost <<   delimiter << item->text().toStdString();
         delimiter = ",";
@@ -436,7 +420,7 @@ std::string CoordinateTab::getExpandedDirs()
 }
 
 
-void CoordinateTab::setExpandedDirs(std::string e)
+void FimexTab::setExpandedDirs(std::string e)
 {
   vector<string> exdirs;
   boost::split(exdirs,e, boost::algorithm::is_any_of(",") );
@@ -446,7 +430,7 @@ void CoordinateTab::setExpandedDirs(std::string e)
     QList<QStandardItem *> items = model->findItems(dir);
     if(!items.isEmpty()) {
       QModelIndex idx= model->indexFromItem(items.front());
-      bookmarks->expand(idx);
+      bookmarks->expand(proxyModel->mapToSource(idx));
     }
   }
 }
@@ -455,18 +439,18 @@ void CoordinateTab::setExpandedDirs(std::string e)
 
 
 
-vector<string> CoordinateTab::getPoslist()
+vector<string> FimexTab::getPoslist()
 {
-
   set<QString> positionfilter;
   vector<string> activePositions;
   unsigned int num_rows = model->rowCount();
 
   for (unsigned int row=0; row <num_rows; row++ ) {
-    QModelIndex idx = model->index(row,0);
+    QModelIndex idx = proxyModel->index(row,0);
     if(bookmarks->isExpanded(idx)) {
-      QStandardItem * item = model->itemFromIndex(idx);
+      QStandardItem * item = model->itemFromIndex(proxyModel->mapToSource(idx));
       if(item) {
+
         unsigned int num_item_rows=item->rowCount();
         for(unsigned int item_row=0;item_row < num_item_rows;item_row++) {
           QStandardItem * child = item->child(item_row,0);
@@ -493,7 +477,7 @@ vector<string> CoordinateTab::getPoslist()
 
 
 
-void CoordinateTab::recordToggled(bool rec)
+void FimexTab::recordToggled(bool rec)
 {
   recordingPositions=rec;
 
@@ -501,18 +485,18 @@ void CoordinateTab::recordToggled(bool rec)
   QModelIndex recordIdx= bookmarkTools.getRecordFolderIndex();
 
   if(recordingPositions) {
-    bookmarks->expand(recordIdx);
+    bookmarks->expand(proxyModel->mapFromSource(recordIdx));
     return;
   }
 
-  bookmarks->collapse(recordIdx);
+  bookmarks->collapse(proxyModel->mapFromSource(recordIdx));
 
   emit newPoslist();
 
 }
 
 
-void CoordinateTab::cut()
+void FimexTab::cut()
 {
   QItemSelectionModel* selections = bookmarks->selectionModel ();
   QModelIndexList selectedIndexes = selections->selectedIndexes();
@@ -523,7 +507,7 @@ void CoordinateTab::cut()
 }
 
 
-void CoordinateTab::remove()
+void FimexTab::remove()
 {
   QItemSelectionModel* selections = bookmarks->selectionModel ();
   QModelIndexList selectedIndexes = selections->selectedIndexes();
@@ -533,7 +517,7 @@ void CoordinateTab::remove()
 }
 
 
-void CoordinateTab::copy()
+void FimexTab::copy()
 {
   QItemSelectionModel* selections = bookmarks->selectionModel ();
   QModelIndexList selectedIndexes = selections->selectedIndexes();
@@ -542,14 +526,14 @@ void CoordinateTab::copy()
 }
 
 
-void CoordinateTab::paste()
+void FimexTab::paste()
 {
   QModelIndex index = bookmarks->currentIndex();
   bookmarkTools.paste(index);
 }
 
 
-void CoordinateTab::showContextMenu(const QPoint& pos)
+void FimexTab::showContextMenu(const QPoint& pos)
 {
   cerr << __FUNCTION__ << endl;
   QPoint globalPos = mapToGlobal(pos);
@@ -566,6 +550,43 @@ void CoordinateTab::showContextMenu(const QPoint& pos)
 
 
 }
+
+
+void FimexTab::expandAll()
+{
+  bookmarks->expandAll();
+  emit changePoslist();
+}
+
+void FimexTab::collapseAll()
+{
+  bookmarks->collapseAll();
+
+  emit changePoslist();
+}
+
+
+
+
+
+bool FilterProxyModel::filterAcceptsRow(int row, const QModelIndex &parent) const
+{
+  // accept highest level (region)
+  if (not parent.isValid())
+    return true;
+
+  const QRegExp& filter = filterRegExp();
+  const QString stationid = sourceModel()->data(parent.child(row, 0)).toString();
+  if (filter.indexIn(stationid) == 0) // match station id at start
+    return true;
+  const QString stationname = sourceModel()->data(parent.child(row, 1)).toString();
+  if (filter.indexIn(stationname) >= 0) // match station name anywhere
+    return true;
+  // do not match other columns
+  return false;
+}
+
+
 
 
 
