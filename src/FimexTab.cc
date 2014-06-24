@@ -170,14 +170,12 @@ FimexTab::FimexTab(QWidget* parent)   : QWidget(parent)
 void FimexTab::filterBookmarks(const QString& text)
 {
   proxyModel->setFilterFixedString(text);
+  emit changePoslist();
 }
 
 
 void FimexTab::setCoordinates(float lon, float lat, QString name)
 {
-
-
-
   if(fabs(latitude -lat ) < 0.00001 )
     if(fabs(longitude -lon ) < 0.00001 )
       return;
@@ -326,31 +324,34 @@ void FimexTab::changeRun(const QString& s)
 
 bool FimexTab::findPosition(QString newpos, QModelIndex& found_idx)
 {
-  unsigned int num_rows = model->rowCount();
+  cerr << "findPosition called with " << newpos.toStdString() << endl;
 
+  unsigned int num_rows = model->rowCount();
   for (unsigned int row=0; row <num_rows; row++ ) {
-    QModelIndex idx = model->index(row,0);
+    QModelIndex idx = proxyModel->index(row,0);
     if(bookmarks->isExpanded(idx)) {
+
       QStandardItem * item = model->itemFromIndex(proxyModel->mapToSource(idx));
       if(item) {
+
         unsigned int num_item_rows=item->rowCount();
         for(unsigned int item_row=0;item_row < num_item_rows;item_row++) {
           QStandardItem * child = item->child(item_row,0);
 
           if(child) {
-            if(newpos==child->text()){
 
+            QString  name=child->text();
+
+            if(name == newpos) {
               found_idx=model->indexFromItem(child);
-
               return true;
             }
           }
         }
       }
-
     }
-
   }
+
   return false;
 }
 
@@ -358,8 +359,8 @@ void FimexTab::changePosition(QString newpos)
 {
   QModelIndex idx;
   if(findPosition(newpos,idx)) {
-    bookmarks->setCurrentIndex(idx);
-    bookmarkClicked(idx);
+    bookmarks->setCurrentIndex(proxyModel->mapFromSource(idx));
+    bookmarkClicked(proxyModel->mapFromSource(idx));
   }
 
 }
@@ -444,6 +445,9 @@ vector<string> FimexTab::getPoslist()
   set<QString> positionfilter;
   vector<string> activePositions;
   unsigned int num_rows = model->rowCount();
+ 
+  const QRegExp & filterreg = proxyModel->filterRegExp();
+  bool noFilterApplied      = filter->text().isEmpty();
 
   for (unsigned int row=0; row <num_rows; row++ ) {
     QModelIndex idx = proxyModel->index(row,0);
@@ -456,15 +460,19 @@ vector<string> FimexTab::getPoslist()
           QStandardItem * child = item->child(item_row,0);
 
           if(child) {
+
             QVariant var =child->data();
             QString  coor=var.toString();
             QString  name=child->text();
 
-            if( !positionfilter.count(name)) {
-              positionfilter.insert(name); // avoid doublets
-              ostringstream ost;
-              ost << name.toStdString() << ":" << coor.toStdString();
-              activePositions.push_back(ost.str());
+
+            if (filterreg.indexIn(name) == 0 ||noFilterApplied ) {
+              if( !positionfilter.count(name)) {
+                positionfilter.insert(name); // avoid doublets
+                ostringstream ost;
+                ost << name.toStdString() << ":" << coor.toStdString();
+                activePositions.push_back(ost.str());
+              }
             }
           }
         }
@@ -567,21 +575,18 @@ void FimexTab::collapseAll()
 
 
 
-
-
 bool FilterProxyModel::filterAcceptsRow(int row, const QModelIndex &parent) const
 {
   // accept highest level (region)
   if (not parent.isValid())
     return true;
 
-  const QRegExp& filter = filterRegExp();
-  const QString stationid = sourceModel()->data(parent.child(row, 0)).toString();
-  if (filter.indexIn(stationid) == 0) // match station id at start
+  const QRegExp & filter = filterRegExp();
+  const QString stationname = sourceModel()->data(parent.child(row, 0)).toString();
+  if (filter.indexIn(stationname) == 0) {
     return true;
-  const QString stationname = sourceModel()->data(parent.child(row, 1)).toString();
-  if (filter.indexIn(stationname) >= 0) // match station name anywhere
-    return true;
+  }
+
   // do not match other columns
   return false;
 }
