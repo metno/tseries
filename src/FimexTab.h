@@ -74,7 +74,6 @@ protected:
 
 class FimexTab : public QWidget {
   Q_OBJECT
-public:
 
 private:
   QComboBox   * modell;     // list of models

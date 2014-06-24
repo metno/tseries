@@ -276,19 +276,21 @@ void WdbBookmarkTools::removeSelected(QModelIndexList indexlist)
   QModelIndexList::iterator itr=indexlist.end();
 
   while(1) {
-      itr--;
-      QModelIndex index = *itr;
-      QStandardItem* child = model->itemFromIndex(index);
+    itr--;
+    QModelIndex index = *itr;
+    QStandardItem* child = model->itemFromIndex(index);
+    if(child) {
       if(child->isDragEnabled()) {
-        QStandardItem* parent = child->parent();
-        int row = child->row();
-        parent->removeRow(row);
+	QStandardItem* parent = child->parent();
+	int row = child->row();
+	parent->removeRow(row);
       }
-      if(itr==indexlist.begin())
-        break;
+    }
+    if(itr==indexlist.begin())
+      break;
   }
+  
 }
-
 
 
 void WdbBookmarkTools::paste(QModelIndex index)
@@ -296,18 +298,19 @@ void WdbBookmarkTools::paste(QModelIndex index)
   QStandardItem* child = model->itemFromIndex(index);
   QStandardItem* parent;
   int row=0;
-  if(!child->isDragEnabled()) {
-    parent=child;
-  } else {
-     parent = child->parent();
-     row = child->row();
-  }
+  if(child) {
+    if(!child->isDragEnabled()) {
+      parent=child;
+    } else {
+      parent = child->parent();
+      row = child->row();
+    }
 
-  for(int i=0;i<buffer.size();i++) {
-    QStandardItem* newItem= itemFromString(buffer[i]);
-    parent->insertRow(row+i,newItem);
+    for(int i=0;i<buffer.size();i++) {
+      QStandardItem* newItem= itemFromString(buffer[i]);
+      parent->insertRow(row+i,newItem);
+    }
   }
-
 }
 
 QStandardItem* WdbBookmarkTools::itemFromString(std::string line)

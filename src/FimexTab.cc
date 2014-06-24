@@ -506,8 +506,10 @@ void FimexTab::recordToggled(bool rec)
 
 void FimexTab::cut()
 {
-  QItemSelectionModel* selections = bookmarks->selectionModel ();
-  QModelIndexList selectedIndexes = selections->selectedIndexes();
+  
+  QItemSelection selections = proxyModel->mapSelectionToSource(bookmarks->selectionModel()->selection());
+
+  QModelIndexList selectedIndexes = selections.indexes();
 
   bookmarkTools.copySelected(selectedIndexes);
   bookmarkTools.removeSelected(selectedIndexes);
@@ -517,8 +519,8 @@ void FimexTab::cut()
 
 void FimexTab::remove()
 {
-  QItemSelectionModel* selections = bookmarks->selectionModel ();
-  QModelIndexList selectedIndexes = selections->selectedIndexes();
+  QItemSelection selections = proxyModel->mapSelectionToSource(bookmarks->selectionModel()->selection());
+  QModelIndexList selectedIndexes = selections.indexes();
 
   bookmarkTools.removeSelected(selectedIndexes);
   emit changePoslist();
@@ -527,8 +529,8 @@ void FimexTab::remove()
 
 void FimexTab::copy()
 {
-  QItemSelectionModel* selections = bookmarks->selectionModel ();
-  QModelIndexList selectedIndexes = selections->selectedIndexes();
+  QItemSelection selections = proxyModel->mapSelectionToSource(bookmarks->selectionModel()->selection());
+  QModelIndexList selectedIndexes = selections.indexes();
 
   bookmarkTools.copySelected(selectedIndexes);
 }
@@ -537,7 +539,7 @@ void FimexTab::copy()
 void FimexTab::paste()
 {
   QModelIndex index = bookmarks->currentIndex();
-  bookmarkTools.paste(index);
+  bookmarkTools.paste(proxyModel->mapToSource(index));
 }
 
 
