@@ -64,7 +64,15 @@ ParameterFilterDialog::ParameterFilterDialog(std::set<std::string> originalFilte
   mainLayout->addLayout(buttonLayout);
 
 
+  set<string> doublettes;
+
   for ( unsigned int i=0; i<parameters.size();i++) {
+
+      if(doublettes.count(parameters[i]))
+        continue;
+
+      doublettes.insert(parameters[i]);
+
       bool isFiltered = filter.count(parameters[i]);
       QListWidgetItem* item = new QListWidgetItem(QString(parameters[i].c_str()));
       item->setCheckState( isFiltered ?   Qt::Checked : Qt::Unchecked);

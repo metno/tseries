@@ -112,6 +112,7 @@ public:
   void writeBookmarks();
   std::vector<std::string> getPoslist();
   bool findPosition(QString newpos, QModelIndex& idx);
+  void selectFirstPosition(); // find the first position i a filter
 
   std::string getExpandedDirs();
   void setExpandedDirs(std::string);

@@ -170,6 +170,7 @@ FimexTab::FimexTab(QWidget* parent)   : QWidget(parent)
 void FimexTab::filterBookmarks(const QString& text)
 {
   proxyModel->setFilterFixedString(text);
+  selectFirstPosition();
   emit changePoslist();
 }
 
@@ -436,16 +437,12 @@ void FimexTab::setExpandedDirs(std::string e)
   }
 }
 
-
-
-
-
 vector<string> FimexTab::getPoslist()
 {
   set<QString> positionfilter;
   vector<string> activePositions;
   unsigned int num_rows = model->rowCount();
- 
+
   const QRegExp & filterreg = proxyModel->filterRegExp();
   bool noFilterApplied      = filter->text().isEmpty();
 
@@ -506,7 +503,7 @@ void FimexTab::recordToggled(bool rec)
 
 void FimexTab::cut()
 {
-  
+
   QItemSelection selections = proxyModel->mapSelectionToSource(bookmarks->selectionModel()->selection());
 
   QModelIndexList selectedIndexes = selections.indexes();
@@ -592,6 +589,48 @@ bool FilterProxyModel::filterAcceptsRow(int row, const QModelIndex &parent) cons
   // do not match other columns
   return false;
 }
+
+
+
+
+void FimexTab::selectFirstPosition()
+{
+  if(filter->text().isEmpty())
+   return;
+
+  unsigned int num_rows = model->rowCount();
+
+  const QRegExp & filterreg = proxyModel->filterRegExp();
+
+  for (unsigned int row=0; row <num_rows; row++ ) {
+    QModelIndex idx = proxyModel->index(row,0);
+    if(bookmarks->isExpanded(idx)) {
+      QStandardItem * item = model->itemFromIndex(proxyModel->mapToSource(idx));
+      if(item) {
+
+        unsigned int num_item_rows=item->rowCount();
+        for(unsigned int item_row=0;item_row < num_item_rows;item_row++) {
+
+          QStandardItem * child = item->child(item_row,0);
+
+          if(child) {
+
+            QString  name=child->text();
+
+            if (filterreg.indexIn(name) == 0  ) {
+
+              changePosition(name);
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
 
 
 
