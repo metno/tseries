@@ -1,3 +1,47 @@
+tseries (6.5.3-1) unstable; urgency=low
+
+  * GFS timeline quick fix (test for basetimeline)
+  * LC_NUMERIC=C due to problems at VV
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Thu, 26 Jun 2014 10:26:53 +0200
+
+tseries (6.5.2-1) unstable; urgency=low
+
+  * removed LC_NUMERIC
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Tue, 24 Jun 2014 13:48:55 +0200
+
+tseries (6.5.1-1) unstable; urgency=low
+
+  * fixed fimextab cut and paste
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Tue, 24 Jun 2014 10:58:35 +0200
+
+tseries (6.5.0-1) unstable; urgency=low
+
+  * Changed fimextab
+  * added a stationfilter
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Tue, 24 Jun 2014 07:12:59 +0200
+
+tseries (6.4.2-2) unstable; urgency=low
+
+  * build with fimex 0.51
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Tue, 25 Feb 2014 10:16:23 +0100
+
+tseries (6.4.2-1) unstable; urgency=low
+
+  * Patch to put the fimex configure into the FimexStream constructor 
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Wed, 22 Jan 2014 13:50:04 +0100
+
+tseries (6.4.1-1) unstable; urgency=low
+
+  * Added degree of freedom to fimex input in tseries.ctl (parametertype)
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Tue, 21 Jan 2014 13:13:29 +0100
+
 tseries (6.4.0-1) unstable; urgency=low
 
   * Documentation moved to the web
