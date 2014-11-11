@@ -1,3 +1,9 @@
+tseries (6.6.0-1) unstable; urgency=low
+
+  * Adaption to search filter - setCurrent to first item in filter
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Tue, 21 Oct 2014 12:01:59 +0200
+
 tseries (6.5.3-1) unstable; urgency=low
 
   * GFS timeline quick fix (test for basetimeline)
