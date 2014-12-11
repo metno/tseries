@@ -121,8 +121,8 @@ public:
   struct klstruct {
     std::string    url;
     std::string    baseQuery;
-    int                 maxDistance;
-    int                 maxObservationLength;
+    int            maxDistance;
+    int            maxObservationLength;
     std::map<std::string,std::string> parameters; ///< translate parameters from klima
     std::map<std::string,std::string> normals;    ///< translate monthly normals from klima
   };
@@ -148,6 +148,7 @@ public:
   struct fimexstruct {
     std::vector<std::string>  parameters; // parsed in tsData
     std::set<std::string>     streamtypes;
+    std::string               externalPosService; // where to search for stations (Halo/yr...)
     std::vector<std::string>  filters;
   };
 

@@ -1,51 +1,74 @@
-/*
- * ClearLineEdit.cpp
- *
- *  Created on: Jun 18, 2014
- *      Author: juergens
- */
-/****************************************************************************
-**
-** Copyright (c) 2007 Trolltech ASA <info@trolltech.com>
-**
-** Use, modification and distribution is allowed without limitation,
-** warranty, liability or support of any kind.
-**
-****************************************************************************/
-
 #include "ClearLineEdit.h"
-#include <QToolButton>
+
 #include <QStyle>
+
 #include "clear.xpm"
+#include "search_small.xpm"
 
 ClearLineEdit::ClearLineEdit(QWidget *parent)
-    : QLineEdit(parent)
+: QLineEdit(parent)
 {
-    clearButton = new QToolButton(this);
-    QPixmap pixmap(clear_xpm);
-    clearButton->setIcon(QIcon(pixmap));
-    clearButton->setIconSize(pixmap.size());
-    clearButton->setCursor(Qt::ArrowCursor);
-    clearButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");
-    clearButton->hide();
-    connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
-    connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateCloseButton(const QString&)));
-    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    setStyleSheet(QString("QClearLineEdit { padding-right: %1px; } ").arg(clearButton->sizeHint().width() + frameWidth + 1));
-    QSize msz = minimumSizeHint();
-    setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
-                   qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));
+  QPixmap clearpixmap(clear_xpm);
+  QPixmap searchpixmap(search_small_xpm);
+
+  clearButton = new QToolButton(this);
+  clearButton->setIcon(QIcon(clearpixmap));
+  clearButton->setIconSize(clearpixmap.size());
+  clearButton->setCursor(Qt::ArrowCursor);
+  clearButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");
+  clearButton->setToolTip(  tr("clear search field") );
+  clearButton->hide();
+  connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
+
+  searchButton = new QToolButton(this);
+  searchButton->setIcon(QIcon(searchpixmap));
+  searchButton->setIconSize(searchpixmap.size());
+  searchButton->setCursor(Qt::ArrowCursor);
+  searchButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");
+  searchButton->setToolTip(  tr("search positions on the web") );
+  searchButton->hide();
+
+  connect(searchButton, SIGNAL(clicked()), this, SLOT( prepareSearch()));
+
+  int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
+
+  setStyleSheet(QString("QClearLineEdit { padding-right: %1px; } ").arg(clearButton->sizeHint().width() +
+      searchButton->sizeHint().width() + frameWidth + 1));
+  QSize msz = minimumSizeHint();
+  setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
+      qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));
+
+
+  connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateButtons(const QString&)));
+
 }
 
 void ClearLineEdit::resizeEvent(QResizeEvent *)
 {
-    QSize sz = clearButton->sizeHint();
-    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    clearButton->move(rect().right() - frameWidth - sz.width(),
-                      (rect().bottom() + 1 - sz.height())/2);
+  QSize csz = clearButton->sizeHint();
+  QSize hsz = searchButton->sizeHint();
+  int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
+
+  clearButton->move(rect().right() - frameWidth - csz.width(),
+      (rect().bottom() + 1 - csz.height())/2);
+
+  searchButton->move(rect().right() - frameWidth - hsz.width()  - csz.width(),
+        (rect().bottom() + 1 - hsz.height())/2);
+
 }
 
-void ClearLineEdit::updateCloseButton(const QString& text)
+void ClearLineEdit::updateButtons(const QString& text)
 {
-    clearButton->setVisible(!text.isEmpty());
+  clearButton->setVisible(!text.isEmpty());
+  searchButton->setVisible(!text.isEmpty());
 }
+
+
+void ClearLineEdit::prepareSearch()
+{
+ emit search(text());
+
+}
+
+
+

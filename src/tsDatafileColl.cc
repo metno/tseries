@@ -616,6 +616,7 @@ void DatafileColl::closeKlimaStream()
 
 void DatafileColl::openWdbStream()
 {
+  wdbStreamIsOpen=false;
   try {
 
     tsSetup setup;

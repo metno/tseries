@@ -704,10 +704,13 @@ miMessage qtsWork::target()
   if(myTarget.data.empty())
     myTarget.data.push_back(miString());
 
-  if(selectionType==SELECT_BY_STATION || selectionType == SELECT_BY_FIMEX) {
+  if( selectionType==SELECT_BY_STATION ) {
     po=request.posname();
     changeStation(po);
     co=myList[po];
+  } else if( selectionType== SELECT_BY_FIMEX ) {
+    co = sidebar->fimexCoordinateString();
+    cerr << "select by fimex : " << co  << endl;
   } else
     co = sidebar->coordinateString();
 

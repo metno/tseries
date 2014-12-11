@@ -35,7 +35,8 @@ qt_sources=                \
 	WdbBookmarkTools.cc  \
 	ParameterFilterDialog.cc \
 	PopupCalendar.cc  \
-	ClearLineEdit.cc
+	ClearLineEdit.cc  \
+	FetchStations.cc
 
 
 # headers ( for distribution )  -----
@@ -103,7 +104,9 @@ img_sources=               \
 	synop.xpm          \
 	expand.xpm         \
 	collapse.xpm       \
-	clear.xpm
+	clear.xpm          \
+	search_small.xpm   \
+	search_folder.xpm
 
 
 # Flags -----------------------------

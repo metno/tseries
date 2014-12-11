@@ -79,7 +79,7 @@ tsSetup::tsSetup() : sec(PUBLIC) , line(0)
 
     doc.docURL  = "https://wiki.met.no/tseries/doc";
     doc.newsURL = "https://wiki.met.no/tseries/news";
-
+    fimex.externalPosService = "http://halo-search.met.no/collection1/select?q=name:";
   }
 }
 
@@ -543,6 +543,8 @@ void tsSetup::setFimex(string& key, string& content)
     for(unsigned int i=0; i < tmpTypes.size();i++) {
       fimex.streamtypes.insert(tmpTypes[i]);
     }
+  } else if(key == "externalPositionService") {
+    setup(fimex.externalPosService,content);
   } else if (key == "FimexFilters"){
     vector<string> tmpPar = tokenize(content,":");
     for(unsigned int i=0; i < tmpPar.size();i++) {

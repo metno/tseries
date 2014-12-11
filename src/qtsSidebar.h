@@ -157,6 +157,8 @@ public:
 
   std::string getFimexExpanded() const { return fimextab->getExpandedDirs(); }
   bool restoreFimexFromLog(std::string mod, std::string sty, std::string expanded);
+  miutil::miString fimexCoordinateString() const { return fimextab->coordinateString(); }
+
 
 signals:
   void changestyle(const QString&);

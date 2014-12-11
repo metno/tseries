@@ -54,6 +54,17 @@ using namespace std;
 
 FimexTab::FimexTab(QWidget* parent)   : QWidget(parent)
 {
+
+  tsSetup setup;
+  fetchstations = new FetchStations(setup.fimex.externalPosService.c_str() );
+
+  connect(fetchstations,SIGNAL(searchResult(std::vector<std::string>)),this,
+      SLOT(searchResult(std::vector<std::string>)));
+
+
+
+
+
   recordingPositions=false;
   addToRecord=false;
 
@@ -82,7 +93,7 @@ FimexTab::FimexTab(QWidget* parent)   : QWidget(parent)
 
   model     = new QStandardItemModel();
   model->setHorizontalHeaderLabels ( head );
-  tsSetup setup;
+
 
   variableBookmarkfile = setup.files.fimexBookmarks;
 
@@ -90,11 +101,12 @@ FimexTab::FimexTab(QWidget* parent)   : QWidget(parent)
   bookmarkTools.setMaxRecords(setup.wdb.maxRecord);
   bookmarkTools.setModel(model);
   bookmarkTools.addFolder("TRASH",true);
+  bookmarkTools.addFolder("RECORD",true);
+  bookmarkTools.addFolder("SEARCH",true);
+
+
   bookmarkTools.read(variableBookmarkfile,false);
   bookmarkTools.read(setup.files.commonBookmarks,true);
-  bookmarkTools.addFolder("RECORD",true);
-
-
 
   proxyModel = new FilterProxyModel(this);
   proxyModel->setSourceModel(model);
@@ -156,6 +168,7 @@ FimexTab::FimexTab(QWidget* parent)   : QWidget(parent)
 
   filter = new ClearLineEdit(this);
   connect(filter,SIGNAL(textChanged(const QString&)),this, SLOT(filterBookmarks(const QString&)));
+  connect(filter,SIGNAL(search(QString)),this,SLOT(search(QString)));
   filter->setPlaceholderText(tr("Set Filter"));
 
   vlayout->addWidget(filter);
@@ -177,6 +190,9 @@ void FimexTab::filterBookmarks(const QString& text)
 
 void FimexTab::setCoordinates(float lon, float lat, QString name)
 {
+  cerr << "SET COORDINATES WITH VALUES: " << name.toStdString() << " " << lat << "  :  " << lon << endl;
+
+
   if(fabs(latitude -lat ) < 0.00001 )
     if(fabs(longitude -lon ) < 0.00001 )
       return;
@@ -325,7 +341,6 @@ void FimexTab::changeRun(const QString& s)
 
 bool FimexTab::findPosition(QString newpos, QModelIndex& found_idx)
 {
-  cerr << "findPosition called with " << newpos.toStdString() << endl;
 
   unsigned int num_rows = model->rowCount();
   for (unsigned int row=0; row <num_rows; row++ ) {
@@ -494,8 +509,6 @@ void FimexTab::recordToggled(bool rec)
     return;
   }
 
-  bookmarks->collapse(proxyModel->mapFromSource(recordIdx));
-
   emit newPoslist();
 
 }
@@ -631,8 +644,27 @@ void FimexTab::selectFirstPosition()
 
 
 
+void FimexTab::search(QString query)
+{
+  fetchstations->getData(query);
+
+}
 
 
+void FimexTab::searchResult(std::vector<std::string> stat)
+{
+  for(int i=0;i<stat.size();i++) {
+      bookmarkTools.addSearch(stat[i]);
+   }
+
+  addToRecord=false;
+  QModelIndex searchIdx= bookmarkTools.getSearchFolderIndex();
+
+  if(stat.size())
+    bookmarks->expand(proxyModel->mapFromSource(searchIdx));
+
+  emit newPoslist();
+}
 
 
 

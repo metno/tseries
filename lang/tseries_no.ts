@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="nb">
 <context>
+    <name>ClearLineEdit</name>
+    <message>
+        <location filename="../src/ClearLineEdit.cc" line="19"/>
+        <source>clear search field</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ClearLineEdit.cc" line="28"/>
+        <source>search positions on the web</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoordinateTab</name>
     <message>
         <location filename="../src/CoordinateTab.cc" line="80"/>
@@ -32,32 +45,32 @@
 <context>
     <name>FimexTab</name>
     <message>
-        <location filename="../src/FimexTab.cc" line="73"/>
+        <location filename="../src/FimexTab.cc" line="84"/>
         <source>Bookmarks</source>
         <translation type="unfinished">Bokmerker</translation>
     </message>
     <message>
-        <location filename="../src/FimexTab.cc" line="118"/>
+        <location filename="../src/FimexTab.cc" line="130"/>
         <source>C&amp;ut...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/FimexTab.cc" line="119"/>
+        <location filename="../src/FimexTab.cc" line="131"/>
         <source>&amp;Copy...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/FimexTab.cc" line="120"/>
+        <location filename="../src/FimexTab.cc" line="132"/>
         <source>&amp;Paste...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/FimexTab.cc" line="121"/>
+        <location filename="../src/FimexTab.cc" line="133"/>
         <source>&amp;Delete...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/FimexTab.cc" line="159"/>
+        <location filename="../src/FimexTab.cc" line="172"/>
         <source>Set Filter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -389,32 +402,32 @@ met.no 2002</translation>
 <context>
     <name>qtsSidebar</name>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="149"/>
+        <location filename="../src/qtsSidebar.cc" line="147"/>
         <source>enable/disable observations</source>
         <translation>vis/skjul observasjoner</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="155"/>
+        <location filename="../src/qtsSidebar.cc" line="153"/>
         <source>Show position (DIANA)</source>
         <translation>Vis posisjon (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="161"/>
+        <location filename="../src/qtsSidebar.cc" line="160"/>
         <source>Position filter</source>
         <translation>Posisjonsfilter</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="180"/>
+        <location filename="../src/qtsSidebar.cc" line="179"/>
         <source>expand all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="182"/>
+        <location filename="../src/qtsSidebar.cc" line="181"/>
         <source>collapse all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="107"/>
+        <location filename="../src/qtsSidebar.cc" line="105"/>
         <source>Stations</source>
         <translation>Stedsliste</translation>
     </message>

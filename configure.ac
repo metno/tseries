@@ -58,6 +58,7 @@ METNO_REQUIRE_QT4([
 	Core
 	OpenGL
 	Network
+	Xml
 ])
 
 

@@ -52,6 +52,7 @@
 #include "WdbBookmarkTools.h"
 #include <puTools/miString.h>
 #include "ClearLineEdit.h"
+#include "FetchStations.h"
 
 #include <vector>
 
@@ -88,6 +89,7 @@ private:
   QAction     * delAction;
 
   ClearLineEdit   * filter;    // filter stations
+  FetchStations   * fetchstations; // findstations on the web
 
   bool                activeCacheRequest;
   WdbBookmarkTools    bookmarkTools;
@@ -132,7 +134,7 @@ private slots:
   void paste();
   void remove();
   void filterBookmarks(const QString&);
-
+  void searchResult(std::vector<std::string>);
 public slots:
   void setCoordinates(float lon, float lat, QString name="");
   void setModel(QString model);
@@ -145,6 +147,7 @@ public slots:
   void changePosition(QString);
   void recordToggled(bool);
 
+  void search(QString);
 
   void expandAll();
   void collapseAll();

@@ -26,7 +26,7 @@
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ */
 #include "qtsSidebar.h"
 
 #include <QPixmap>
@@ -44,8 +44,6 @@
 #include "expand.xpm"
 #include "collapse.xpm"
 
-
-
 #include <iostream>
 
 
@@ -53,7 +51,7 @@ using namespace miutil;
 using namespace std;
 
 qtsSidebar::qtsSidebar()
-  : QWidget()
+: QWidget()
 {
   fimexRexordToggled = false;
   tsSetup s;
@@ -139,8 +137,8 @@ qtsSidebar::qtsSidebar()
 
 
   pluginB = new ClientButton(s.server.name.c_str(),
-			     s.server.command.c_str(),
-			     this);
+      s.server.command.c_str(),
+      this);
   pluginB->useLabel(true);
 
   observationB = new QPushButton(synop_pix,"",this);
@@ -153,6 +151,7 @@ qtsSidebar::qtsSidebar()
   targetB = new QPushButton(find_pix,"",this);
   targetB->setMaximumWidth(find_pix.width());
   targetB->setToolTip(tr("Show position (DIANA)") );
+
 
 
   filterB = new QPushButton(filter_pix,"",this);
@@ -176,13 +175,16 @@ qtsSidebar::qtsSidebar()
   connect(recordFimexButton,SIGNAL(toggled(bool)),fimextab, SLOT(recordToggled(bool)));
   connect(recordFimexButton,SIGNAL(toggled(bool)),this, SLOT(recordToggled(bool)));
 
-   expandFimexButton   = new QPushButton(expand_pix, "",this);
-   expandFimexButton->setToolTip(  tr("expand all") );
-   collapseFimexButton = new QPushButton(collapse_pix, "",this);
-   collapseFimexButton->setToolTip(  tr("collapse all") );
+  expandFimexButton   = new QPushButton(expand_pix, "",this);
+  expandFimexButton->setToolTip(  tr("expand all") );
+  collapseFimexButton = new QPushButton(collapse_pix, "",this);
+  collapseFimexButton->setToolTip(  tr("collapse all") );
 
-   connect(expandFimexButton,SIGNAL(clicked()),fimextab, SLOT(expandAll()));
-   connect(collapseFimexButton,SIGNAL(clicked()),fimextab, SLOT(collapseAll()));
+  connect(expandFimexButton,SIGNAL(clicked()),fimextab, SLOT(expandAll()));
+  connect(collapseFimexButton,SIGNAL(clicked()),fimextab, SLOT(collapseAll()));
+
+
+
 
 
   cacheQueryButton  =  new QPushButton(refresh_pix, "",this);
@@ -229,6 +231,7 @@ qtsSidebar::qtsSidebar()
   recordFimexButton->hide();
   collapseFimexButton->hide();
   expandFimexButton->hide();
+
 
   progress->hide();
 
@@ -281,11 +284,11 @@ void qtsSidebar::currentStationChanged ( QListWidgetItem * current, QListWidgetI
 
 void qtsSidebar::setObsInfo(QString s)
 {
-    obsInfo->setText(s);
-    if(s.isEmpty())
-      obsInfo->hide();
-    else
-      obsInfo->show();
+  obsInfo->setText(s);
+  if(s.isEmpty())
+    obsInfo->hide();
+  else
+    obsInfo->show();
 }
 
 
@@ -293,7 +296,7 @@ QString  qtsSidebar::fillList(const vector<miutil::miString>& v, const StationTa
 {
   QStringList qlist;
   for(unsigned int i=0;i<v.size();i++) {
-     qlist << v[i].c_str();
+    qlist << v[i].c_str();
   }
 
   if(l==StationTab::CMFIMEXSTYLE)
@@ -305,10 +308,10 @@ QString  qtsSidebar::fillList(const vector<miutil::miString>& v, const StationTa
   }
 
   if(l==StationTab::CMFIMEXRUN) {
-      qSort(qlist.begin(), qlist.end(), qGreater<QString>());
-      fimextab->setRuns(qlist);
-      return QString("");
-    }
+    qSort(qlist.begin(), qlist.end(), qGreater<QString>());
+    fimextab->setRuns(qlist);
+    return QString("");
+  }
 
   if(l==StationTab::CMWDBSTYLE)
     return wdbtab->setStyles(qlist);
@@ -355,7 +358,7 @@ void qtsSidebar::tabChanged(int idx)
     expandFimexButton->show();
     addWdbBookmarkButton->hide();
     cacheQueryButton->hide();
-    targetB->hide();
+    targetB->show();
     filterB->hide();
     recordToggled(fimexRexordToggled);
     emit changetype(tsRequest::FIMEXSTREAM);

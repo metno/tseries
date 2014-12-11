@@ -10,7 +10,7 @@
 #include "media-record.xpm"
 #include "metno.xpm"
 #include "trashcan.xpm"
-
+#include "search_folder.xpm"
 #include <QStringList>
 
 
@@ -25,6 +25,7 @@ WdbBookmarkTools::WdbBookmarkTools()
   recordIcon.addPixmap(QPixmap(media_record_xpm));
   metnoIcon.addPixmap(QPixmap(metno_xpm));
   trashIcon.addPixmap(QPixmap(trashcan_xpm));
+  searchIcon.addPixmap(QPixmap(search_folder_xpm));
 
 
 }
@@ -104,6 +105,8 @@ QStandardItem * WdbBookmarkTools::createFolder(string folder,bool ignoreFromSave
 
   if(folder=="RECORD") {
     childItem->setIcon(recordIcon);
+  } else if(folder=="SEARCH") {
+      childItem->setIcon(searchIcon);
   } else if ( folder =="TRASH") {
     childItem->setIcon(trashIcon);
   } else {
@@ -209,6 +212,16 @@ void WdbBookmarkTools::addRecord(float lon,float lat,std::string name)
   cutRecord();
 }
 
+void WdbBookmarkTools::addSearch(std::string searchPos)
+{
+    ostringstream ost;
+    ost << "SEARCH." << searchPos;
+
+    addLine(ost.str(),false,true);
+    cerr << "ADDING:   " << ost.str() << endl;
+   cutSearch();
+}
+
 
 void WdbBookmarkTools::cutRecord()
 {
@@ -223,6 +236,23 @@ void WdbBookmarkTools::cutRecord()
   item->setRowCount(maxRecords);
 
 }
+
+void WdbBookmarkTools::cutSearch()
+{
+  if(!folders.count("SEARCH")      ) return;
+
+  QStandardItem* item = model->itemFromIndex (folders ["SEARCH"]);
+
+  if(!item                          ) return;
+  if(!item->hasChildren()           ) return;
+  if( item->rowCount() < maxRecords ) return;
+
+  item->setRowCount(maxRecords);
+
+}
+
+
+
 
 std::vector<std::string> WdbBookmarkTools::getAllBookmarks()
 {
