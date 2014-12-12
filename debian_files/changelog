@@ -1,3 +1,10 @@
+tseries (6.7.0-1) unstable; urgency=low
+
+  * Added search in halo placedatabase
+  * Added target button in fimexdialog
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Fri, 12 Dec 2014 13:13:09 +0100
+
 tseries (6.6.0-1) unstable; urgency=low
 
   * Adaption to search filter - setCurrent to first item in filter
