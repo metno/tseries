@@ -116,7 +116,7 @@ private:
   void makeWdbModels();
 
 public:
-  qtsWork(QWidget*);
+  qtsWork(QWidget*, QString language);
 
   void collectLog();
   void restoreLog();

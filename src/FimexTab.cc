@@ -52,11 +52,11 @@
 
 using namespace std;
 
-FimexTab::FimexTab(QWidget* parent)   : QWidget(parent)
+FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
 {
 
   tsSetup setup;
-  fetchstations = new FetchStations(setup.fimex.externalPosService.c_str() );
+  fetchstations = new FetchStations(setup.fimex.externalPosService.c_str(), lang );
 
   connect(fetchstations,SIGNAL(searchResult(std::vector<std::string>)),this,
       SLOT(searchResult(std::vector<std::string>)));

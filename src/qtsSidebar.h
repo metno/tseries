@@ -98,7 +98,7 @@ public slots:
   void currentStationChanged ( QListWidgetItem * current, QListWidgetItem * previous );
 
 public:
-  qtsSidebar();
+  qtsSidebar(QString language);
 
   QString fillList(const std::vector<miutil::miString>& v, const StationTab::lEntry l);
   QString fillStations(const QStringList& s) { return stationtab->fillStations(s);}

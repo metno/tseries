@@ -75,7 +75,7 @@ qtsMain::qtsMain(miString l) :
   makeMenuBar();
   dianaconnected = false;
 
-  work = new qtsWork(this);
+  work = new qtsWork(this,lang.c_str());
   setCentralWidget(work);
 
   makeConnectButtons();

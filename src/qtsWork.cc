@@ -54,7 +54,7 @@ bool qStr2miStr(const QString& i, miString& o)
   return true;
 }
 
-qtsWork::qtsWork(QWidget* parent)
+qtsWork::qtsWork(QWidget* parent, QString language)
 : QWidget(parent) , activeRefresh(true)
 {
   selectionType   = SELECT_BY_STATION;
@@ -71,7 +71,7 @@ qtsWork::qtsWork(QWidget* parent)
   QHBoxLayout * hlayout  = new QHBoxLayout(this);
   oldModel = NOMODEL_TSERIES;
 
-  sidebar = new qtsSidebar();
+  sidebar = new qtsSidebar(language);
   show    = new qtsShow(fmt,&request,&data,&session);
 
 

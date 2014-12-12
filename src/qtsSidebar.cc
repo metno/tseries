@@ -50,7 +50,7 @@
 using namespace miutil;
 using namespace std;
 
-qtsSidebar::qtsSidebar()
+qtsSidebar::qtsSidebar(QString language)
 : QWidget()
 {
   fimexRexordToggled = false;
@@ -78,7 +78,7 @@ qtsSidebar::qtsSidebar()
   connect(wdbtab,SIGNAL(changelevel( const QString&)), this, SIGNAL(changeWdbLevel(const QString& )));
   connect(wdbtab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeCoordinates(float,float,QString)));
 
-  fimextab = new FimexTab(this);
+  fimextab = new FimexTab(this, language);
 
   connect(fimextab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeFimexStyle(const QString& )));
   connect(fimextab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeFimexModel(const QString& )));

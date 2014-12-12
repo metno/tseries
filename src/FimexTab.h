@@ -103,7 +103,7 @@ private:
 
 
 public:
-  FimexTab(QWidget*);
+  FimexTab(QWidget*,QString language);
 
   QString setStyles(const QStringList& qlist);
   void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat);

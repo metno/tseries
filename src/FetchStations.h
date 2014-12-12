@@ -13,9 +13,10 @@ class FetchStations : public QWidget {
 private:
   QNetworkAccessManager *manager;
   QString    base_url;
+  QString    feature_class_name;
 
 public:
-  FetchStations(QString baseurl);
+  FetchStations(QString baseurl, QString lang);
 
   void getData(QString name);
 
