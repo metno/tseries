@@ -93,9 +93,11 @@ bool imageIO::read_png(Image_data& img){
     fclose(fp);
     return false;
   }
-
-  //   if (setjmp(png_jmpbuf(png_ptr))){
-  if (setjmp(png_ptr->jmpbuf)){
+#ifdef linux
+  if (setjmp(png_jmpbuf(png_ptr))) {
+#else
+  if (setjmp(png_ptr->jmpbuf)) {
+#endif
     png_destroy_read_struct(&png_ptr, &info_ptr,
 			    &end_info);
     cerr << "read_png ERROR longjmp out of process" << endl;
@@ -202,8 +204,11 @@ bool imageIO::write_png(const Image_data& img){
     fclose(fp);
     return false;
   }
-
+#ifdef linux
+  if (setjmp(png_jmpbuf(png_ptr))) {
+#else
   if (setjmp(png_ptr->jmpbuf)) {
+#endif
     png_destroy_write_struct(&png_ptr, &info_ptr);
     cerr << "write_png ERROR longjmp out of process" << endl;
     fclose(fp);
