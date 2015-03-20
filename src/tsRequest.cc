@@ -27,7 +27,7 @@
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+ */
 #include "tsRequest.h"
 
 using namespace std;
@@ -57,12 +57,19 @@ ostream& operator<<(ostream& out, const tsRequest& rhs){
       << " : " <<  rhs.pos_
       << " : " <<  rhs.mod_
       << " "   <<  rhs.run_;
- return out;
+  return out;
 };
 
 miString tsRequest::file(const miString type) const
 {
+
   miString rst = mod_ + "_" + pos_;
+
+  if(streamtype == WDBSTREAM)
+    rst = wdbModel + "_" + wdbstationname;
+
+  if(streamtype == FIMEXSTREAM)
+    rst = fimexModel + "_" + fimexName;
 
   rst.replace(".","");
 
@@ -90,10 +97,10 @@ miString tsRequest::file(const miString type) const
 /// WDB
 bool tsRequest::setWdbPos(double lon,double lat)
 {
-    if( (fabs(lon-wdbLon) < 0.00001 ) && (fabs(lat-wdbLat) < 0.00001 )) return false;
-    wdbLat=lat;
-    wdbLon=lon;
-    return true;
+  if( (fabs(lon-wdbLon) < 0.00001 ) && (fabs(lat-wdbLat) < 0.00001 )) return false;
+  wdbLat=lat;
+  wdbLon=lon;
+  return true;
 }
 
 bool tsRequest::setWdbRun(miutil::miTime nrun)
