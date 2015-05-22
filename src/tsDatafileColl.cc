@@ -36,7 +36,8 @@
 #include <sstream>
 #include "tsSetup.h"
 #include <boost/algorithm/string.hpp>
-
+#include <boost/date_time/posix_time/posix_time_io.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #ifdef GRIBSTREAM
 #include <tsData/ptGribStream.h>
@@ -741,8 +742,15 @@ vector<miString> DatafileColl::getFimexTimes(std::string model)
 
         try {
             boost::posix_time::ptime time = fimexStreams[i].dataStream->getReferencetime();
-            std::string stime = boost::posix_time::to_simple_string(time);
-            fimexStreams[i].run = stime;
+            //std::string stime = boost::posix_time::to_simple_string(time);
+            ostringstream stime;
+
+            boost::posix_time::time_facet *facet = new boost::posix_time::time_facet("%Y-%m-%d %H:%M");
+            stime.imbue(locale(stime.getloc(), facet));
+            stime << time;
+
+
+            fimexStreams[i].run = stime.str();
           } catch (exception & e) {
             cerr << e.what() << endl;
             cerr << "using streamname instead of runtime to identify model" << endl;
