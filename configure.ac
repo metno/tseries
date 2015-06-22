@@ -3,7 +3,7 @@
 #
 
 AC_PREREQ(2.59)
-AC_INIT([tseries], [6.7.0], [diana@met.no])
+AC_INIT([tseries], [6.8.1], [diana@met.no])
 
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([m4])

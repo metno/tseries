@@ -1,3 +1,22 @@
+tseries (6.8.1-1) unstable; urgency=low
+
+  * Fix in case of undef data (fimex)
+  * Changed format for runtimes to ensure correct sorting
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Fri, 22 May 2015 12:12:30 +0200
+
+tseries (6.8.0-2) unstable; urgency=low
+
+  * New build with new tsData for ensemble precipitation support (fimex)
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Wed, 04 Mar 2015 13:42:47 +0100
+
+tseries (6.8.0-1) unstable; urgency=low
+
+  * added multidimensional arrays for eps processing in fimex stream
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Fri, 27 Feb 2015 13:39:08 +0100
+
 tseries (6.7.0-1) unstable; urgency=low
 
   * Added search in halo placedatabase
