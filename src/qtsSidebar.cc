@@ -56,41 +56,60 @@ qtsSidebar::qtsSidebar(QString language)
   fimexRexordToggled = false;
   tsSetup s;
 
+  wdbDisabled   = s.disabled.wdb;
+  fimexDisabled = s.disabled.fimex;
+  hdfDisabled   = s.disabled.hdf;
+
+
   tabs       = new QTabWidget(this);
 
   // The Station Tabulator
   stationtab = new StationTab(this);
 
-  connect(stationtab,SIGNAL(changestyle( const QString&)),  this, SIGNAL(changestyle(const QString& )));
-  connect(stationtab,SIGNAL(changemodel( const QString&)),  this, SIGNAL(changemodel(const QString& )));
-  connect(stationtab,SIGNAL(changerun(    const QString&)), this, SIGNAL(changerun(  const QString& )));
-  connect(stationtab,SIGNAL(changestation(const QString&)), this, SIGNAL(changestation(  const QString& )));
+  if(hdfDisabled) {
+    stationtab->hide();
+  } else {
 
+    connect(stationtab,SIGNAL(changestyle( const QString&)),  this, SIGNAL(changestyle(const QString& )));
+    connect(stationtab,SIGNAL(changemodel( const QString&)),  this, SIGNAL(changemodel(const QString& )));
+    connect(stationtab,SIGNAL(changerun(    const QString&)), this, SIGNAL(changerun(  const QString& )));
+    connect(stationtab,SIGNAL(changestation(const QString&)), this, SIGNAL(changestation(  const QString& )));
+    stationIdx = tabs->addTab(stationtab,tr("Stations"));
+  }
 
   // The WDB Tabulator
 
+
   wdbtab  = new CoordinateTab(this);
 
+  if(wdbDisabled) {
+    wdbtab->hide();
+  } else {
 
-  connect(wdbtab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeWdbStyle(const QString& )));
-  connect(wdbtab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeWdbModel(const QString& )));
-  connect(wdbtab,SIGNAL(changerun(   const QString&)), this, SIGNAL(changeWdbRun(  const QString& )));
-  connect(wdbtab,SIGNAL(changelevel( const QString&)), this, SIGNAL(changeWdbLevel(const QString& )));
-  connect(wdbtab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeCoordinates(float,float,QString)));
+    connect(wdbtab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeWdbStyle(const QString& )));
+    connect(wdbtab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeWdbModel(const QString& )));
+    connect(wdbtab,SIGNAL(changerun(   const QString&)), this, SIGNAL(changeWdbRun(  const QString& )));
+    connect(wdbtab,SIGNAL(changelevel( const QString&)), this, SIGNAL(changeWdbLevel(const QString& )));
+    connect(wdbtab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeCoordinates(float,float,QString)));
+    QString dbname= s.wdb.host.c_str();
+    dbname.truncate( dbname.indexOf(".") );
+    wdbIdx     = tabs->addTab(wdbtab,dbname);
+  }
+
 
   fimextab = new FimexTab(this, language);
+  if(fimexDisabled) {
+    fimextab->hide();
+  } else {
 
-  connect(fimextab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeFimexStyle(const QString& )));
-  connect(fimextab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeFimexModel(const QString& )));
-  connect(fimextab,SIGNAL(changerun(   const QString&)), this, SIGNAL(changeFimexRun(  const QString& )));
-  connect(fimextab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeFimexCoordinates(float,float,QString)));
-  connect(fimextab,SIGNAL(changePoslist()), this, SIGNAL(changeFimexPoslist()));
-  connect(fimextab,SIGNAL(newPoslist()), this, SIGNAL(newFimexPoslist()));
-
-
-  QString dbname= s.wdb.host.c_str();
-  dbname.truncate( dbname.indexOf(".") );
-
+    connect(fimextab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeFimexStyle(const QString& )));
+    connect(fimextab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeFimexModel(const QString& )));
+    connect(fimextab,SIGNAL(changerun(   const QString&)), this, SIGNAL(changeFimexRun(  const QString& )));
+    connect(fimextab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeFimexCoordinates(float,float,QString)));
+    connect(fimextab,SIGNAL(changePoslist()), this, SIGNAL(changeFimexPoslist()));
+    connect(fimextab,SIGNAL(newPoslist()), this, SIGNAL(newFimexPoslist()));
+    fimexIdx     = tabs->addTab(fimextab,"fields");
+  }
 
   progressHeader = new QLabel(this);
   progressHeader->hide();
@@ -101,10 +120,6 @@ qtsSidebar::qtsSidebar(QString language)
   QFont progressfont=progress->font();
   progressfont.setPointSize(progressfont.pointSize()-3);
   progress->setFont(progressfont);
-
-  stationIdx = tabs->addTab(stationtab,tr("Stations"));
-  wdbIdx     = tabs->addTab(wdbtab,dbname);fimexIdx;
-  fimexIdx   = tabs->addTab(fimextab,"Fields");
 
   connect(tabs,SIGNAL(currentChanged(int)), this,SLOT(tabChanged(int)));
 

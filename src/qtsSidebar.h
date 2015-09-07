@@ -85,6 +85,8 @@ private:
   int wdbIdx, stationIdx,fimexIdx;
   int actualIndex;
   bool fimexRexordToggled;
+  bool wdbDisabled,fimexDisabled,hdfDisabled;
+
 
 
 private slots:

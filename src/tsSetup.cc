@@ -53,6 +53,8 @@ bool                       tsSetup::Initialised = false;
 string                     tsSetup::lang;
 tsSetup::fimexstruct       tsSetup::fimex;
 tsSetup::logstruct         tsSetup::loglevel;
+tsSetup::disablestruct     tsSetup::disabled;
+
 
 symbolMaker tsSetup::wsymbols;
 
@@ -511,15 +513,31 @@ void tsSetup::setSimpleToken(string token)
   }
 }
 
+bool tsSetup::setBool(string token)
+{
+  to_upper(token);
+  trim(token);
+
+  return (token == "TRUE");
+}
+
 
 
 // DIRECT SET: INSERT NEW STUFF HERE!!!!--------------------------
+
 
 
 void tsSetup::setPublic(string& key, string& content)
 {
   if(key == "LANG")
     setup(lang,content);
+
+  if(key == "DISABLEWDB")
+    disabled.wdb = setBool(content);
+  if(key == "DISABLEHDF")
+    disabled.hdf = setBool(content);
+  if(key == "DISABLEFIMEX")
+    disabled.fimex = setBool(content);
 
 }
 

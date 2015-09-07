@@ -405,32 +405,32 @@ met.no 2002</translation>
 <context>
     <name>qtsSidebar</name>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="147"/>
+        <location filename="../src/qtsSidebar.cc" line="162"/>
         <source>enable/disable observations</source>
         <translation>Observationen</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="153"/>
+        <location filename="../src/qtsSidebar.cc" line="168"/>
         <source>Show position (DIANA)</source>
         <translation>Position anzeigen (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="160"/>
+        <location filename="../src/qtsSidebar.cc" line="175"/>
         <source>Position filter</source>
         <translation>Ortsfilter</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="179"/>
+        <location filename="../src/qtsSidebar.cc" line="194"/>
         <source>expand all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="181"/>
+        <location filename="../src/qtsSidebar.cc" line="196"/>
         <source>collapse all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="105"/>
+        <location filename="../src/qtsSidebar.cc" line="77"/>
         <source>Stations</source>
         <translation></translation>
     </message>

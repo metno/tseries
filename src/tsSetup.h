@@ -118,6 +118,13 @@ public:
   };
 
 
+  struct disablestruct {
+    bool hdf;
+    bool wdb;
+    bool fimex;
+    disablestruct() : hdf(false), wdb(false), fimex(false) {}
+  };
+
   struct klstruct {
     std::string    url;
     std::string    baseQuery;
@@ -208,6 +215,7 @@ public:
   static fimexstruct fimex;        /// fimex stuff
   static symbolMaker wsymbols;
   static logstruct   loglevel;
+  static disablestruct disabled;
 
 private:
   enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,WDB,WDBPARAMETER,WDBVECTORFUNCTIONS,
@@ -255,6 +263,8 @@ private:
   void setup(std::string&, const std::string&);
   void setup(int&,const std::string&);
   void setup(float&, const std::string&);
+  bool setBool(std::string);
+
 
 };
 
