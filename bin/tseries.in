@@ -26,6 +26,19 @@ if [ $region = "VA" ] ; then
     fi
 fi
 
+ 
+VGLTEST=`hostname -f | grep vglserver`
+
+if [ -n "$VGLTEST" ] ; then
+
+    region=VGL
+    echo "You are running on VGL - enjoy"
+
+fi
+
+
+
+
 mkdir -p $HOME/.tseries
 
 $bindir/tseries.bin-@PVERSION@ $@ -S $region -s $etcdir/tseries/@PVERSION@/tseries.ctl -T tseries
