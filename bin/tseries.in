@@ -7,6 +7,27 @@ etcdir=@sysconfdir@
 export LC_ALL=C
 export LC_NUMERIC=C
 
+LUSTRE_A=/lustre/storeA/project/metproduction/products
+LUSTRE_B=/lustre/storeB/project/metproduction/products
+LUSTREDATA=/opdata
+
+TEST_LUSTRE=`ls $LUSTRE_B 2>/dev/null`
+
+if [ -n "$TEST_LUSTRE" ] ; then
+    LUSTREDATA=$LUSTRE_B
+else 
+
+ TEST_LUSTRE=`ls $LUSTRE_A 2>/dev/null`
+  if [ -n "$TEST_LUSTRE" ] ; then
+    LUSTREDATA=$LUSTRE_A
+  fi
+
+fi
+
+export LUSTREDATA=$LUSTREDATA
+
+
+
 gw=`route | grep default | awk '{print $2}' `
 
 case "$gw" in
@@ -25,17 +46,6 @@ if [ $region = "VA" ] ; then
 	region="FOU"
     fi
 fi
-
- 
-VGLTEST=`hostname -f | grep vglserver`
-
-if [ -n "$VGLTEST" ] ; then
-
-    region=VGL
-    echo "You are running on VGL - enjoy"
-
-fi
-
 
 
 
