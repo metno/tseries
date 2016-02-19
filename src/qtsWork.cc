@@ -63,7 +63,7 @@ qtsWork::qtsWork(QWidget* parent, QString language)
   QGLFormat fmt;
   fmt.setOverlay(false);
   fmt.setDoubleBuffer(true);
-  fmt.setDirectRendering(false);
+
 
   reading_data=false;
 
