@@ -225,7 +225,7 @@
         <translation>Välj Font</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="466"/>
+        <location filename="../src/qtsMain.cc" line="470"/>
         <source>About T-series</source>
         <translation>Om T-series</translation>
     </message>
@@ -235,7 +235,7 @@
         <translation>Visa vald position (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="467"/>
+        <location filename="../src/qtsMain.cc" line="471"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -251,7 +251,7 @@ met.no 2002</translation>
         <translation>Språk</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1046"/>
+        <location filename="../src/qtsMain.cc" line="1058"/>
         <source>Language Changed</source>
         <translation>Språk ändrat</translation>
     </message>
@@ -336,12 +336,12 @@ met.no 2002</translation>
         <translation>Koppla tid till model</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="400"/>
+        <location filename="../src/qtsMain.cc" line="404"/>
         <source>Print Diagram</source>
         <translation> Skriv ut diagram</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1047"/>
+        <location filename="../src/qtsMain.cc" line="1059"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation>T-series måste startas på nytt för att valt språk ska gälla: [%1]</translation>
     </message>

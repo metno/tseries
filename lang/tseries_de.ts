@@ -261,7 +261,7 @@
         <translation>Schrifttype</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="466"/>
+        <location filename="../src/qtsMain.cc" line="470"/>
         <source>About T-series</source>
         <translation>Über T-series</translation>
     </message>
@@ -280,7 +280,7 @@ met.no 2002-2005</translation>
         <translation>Aktueller Ortsname (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="467"/>
+        <location filename="../src/qtsMain.cc" line="471"/>
         <source>T-series: Times series viewer
 Version: %1
 
@@ -295,7 +295,7 @@ met.no 2002</translation>
         <translation>Sprachen</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1046"/>
+        <location filename="../src/qtsMain.cc" line="1058"/>
         <source>Language Changed</source>
         <translation>Sprache gewechselt</translation>
     </message>
@@ -392,12 +392,12 @@ met.no 2002</translation>
         <translation>Zeit an modell knüpfen</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="400"/>
+        <location filename="../src/qtsMain.cc" line="404"/>
         <source>Print Diagram</source>
         <translation>Diagram drucken</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1047"/>
+        <location filename="../src/qtsMain.cc" line="1059"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation>tseries muss neu gestartet werden um die sprache zu : [%1] zu wechseln</translation>
     </message>

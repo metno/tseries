@@ -52,6 +52,7 @@
 #include <vector>
 #include <string>
 #include <puTools/miString.h>
+#include <coserver/ClientSelection.h>
 #include <coserver/ClientButton.h>
 
 class qtsSidebar : public QWidget
@@ -61,7 +62,7 @@ private:
 
   QTabWidget  *   tabs;
   TimeControl *   timecontrol;
-  ClientButton*   pluginB;
+  ClientSelection*   pluginB;
   QPushButton*    targetB;
   QPushButton*    filterB;
   QPushButton*    observationB;
@@ -109,7 +110,7 @@ public:
   QString station()               { return stationtab->station(); }
   void set(const miutil::miString& s,const  StationTab::lEntry c) {stationtab->set(s,c);}
 
-  ClientButton* pluginButton() const {return pluginB;}
+  ClientSelection* pluginButton() const {return pluginB;}
   QPushButton*  targetButton() const {return targetB;}
   void setStationInfo(QString s) { stationtab->setStationInfo(s); }
   void setObsInfo(QString s);

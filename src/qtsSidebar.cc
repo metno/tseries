@@ -150,11 +150,11 @@ qtsSidebar::qtsSidebar(QString language)
   QPixmap expand_pix(expand_xpm);
   QPixmap collapse_pix(collapse_xpm);
 
-
-  pluginB = new ClientButton(s.server.name.c_str(),
-      s.server.command.c_str(),
-      this);
-  pluginB->useLabel(true);
+  pluginB = new ClientSelection(QString::fromStdString(s.server.name.c_str()), this);
+  pluginB->client()->setServerCommand(QString::fromStdString(s.server.command.c_str()));
+  pluginB->setName(QString::fromStdString(s.server.name.c_str()));
+  const QRegExp instanceNamePattern("tseries(-[\\w\\d+-]+)?");
+  pluginB->setNamePattern(instanceNamePattern);
 
   observationB = new QPushButton(synop_pix,"",this);
   observationB->setMaximumWidth(synop_pix.width());fimexIdx;
@@ -238,7 +238,9 @@ qtsSidebar::qtsSidebar(QString language)
   blayout->addWidget(observationB);
   blayout->addWidget(filterB);
   blayout->addWidget(targetB);
-  blayout->addWidget(pluginB);
+  QToolButton* clientbutton = new QToolButton(this);
+  clientbutton->setDefaultAction(pluginB->getToolButtonAction());
+  blayout->addWidget(clientbutton);
   vlayout->addLayout(blayout);
 
   addWdbBookmarkButton->hide();

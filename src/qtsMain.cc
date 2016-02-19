@@ -85,7 +85,7 @@ qtsMain::qtsMain(miString l) :
   toggleLockHoursToModel(lockHoursToModel);
   toggleShowGridlines(showGridLines);
 
-  printer = new QPrinter(QPrinter::HighResolution);
+  printer = 0;
 
   setWindowIcon(QPixmap(tseries_xpm));
 
@@ -315,8 +315,8 @@ void qtsMain::makeConnectButtons()
 
   connect(pluginB, SIGNAL(receivedMessage(const miMessage&)),
       SLOT(processLetter(const miMessage&)));
-  connect(pluginB, SIGNAL(addressListChanged()), SLOT(processConnect()));
-  connect(pluginB, SIGNAL(connectionClosed()), SLOT(cleanConnection()));
+  connect(pluginB->client(), SIGNAL(addressListChanged()), SLOT(processConnect()));
+  connect(pluginB, SIGNAL(disconnected()), SLOT(cleanConnection()));
 }
 
 void qtsMain::closeEvent(QCloseEvent * e)
@@ -372,6 +372,10 @@ void qtsMain::raster()
 
 void qtsMain::print()
 {
+
+  if(!printer)
+    printer = new QPrinter(QPrinter::HighResolution);
+
   miString command;
 
 #ifdef linux
@@ -567,7 +571,7 @@ void qtsMain::togglePositions(bool isOn)
   } else {
     m.description = DATASET_TSERIES + work->lastList();
   }
-  pluginB->sendMessage(m);
+  sendLetter(m);
 }
 
 void qtsMain::toggleTimemark(bool isOn)
@@ -646,7 +650,7 @@ void qtsMain::sendImage(const miString name, const QImage& image)
   miString txt = ost.str();
   m.data.push_back(txt);
 
-  pluginB->sendMessage(m);
+  sendLetter(m);
 }
 
 void qtsMain::refreshDianaStations()
@@ -690,7 +694,7 @@ void qtsMain::disablePoslist(miString prev)
   miMessage m;
   m.command = qmstrings::hidepositions;
   m.description = DATASET_TSERIES + prev;
-  pluginB->sendMessage(m);
+  sendLetter(m);
 }
 
 void qtsMain::enableCurrentPoslist()
@@ -704,7 +708,7 @@ void qtsMain::enableCurrentPoslist()
   } else {
     m.description = DATASET_TSERIES + currentModel;
   }
-  pluginB->sendMessage(m);
+  sendLetter(m);
 }
 
 void qtsMain::sendNewPoslist()
@@ -716,7 +720,7 @@ void qtsMain::sendNewPoslist()
 
   m.common += (snormal ? "true" : "false");
   m.common += (sselect ? ":true" : ":false");
-  pluginB->sendMessage(m);
+  sendLetter(m);
 }
 
 void qtsMain::sendTarget()
@@ -727,11 +731,11 @@ void qtsMain::sendTarget()
   miMessage m, m2;
 
   m = work->target();
-  pluginB->sendMessage(m);
+  sendLetter(m);
 
   m2.command = qmstrings::showpositions;
   m2.description = TARGETS_TSERIES;
-  pluginB->sendMessage(m2);
+  sendLetter(m);
 }
 
 
@@ -743,7 +747,7 @@ void qtsMain::clearFimexList()
   miMessage m;
   m.command = qmstrings::hidepositions;
   m.description = DATASET_FIMEX;
-  pluginB->sendMessage(m);
+  sendLetter(m);
 }
 
 
@@ -755,7 +759,7 @@ void qtsMain::clearTarget()
   miMessage m;
   m.command = qmstrings::hidepositions;
   m.description = TARGETS_TSERIES;
-  pluginB->sendMessage(m);
+  sendLetter(m);
 }
 
 // called when client-list changes
@@ -764,7 +768,7 @@ void qtsMain::processConnect()
 {
   tsSetup s;
 
-  if (pluginB->clientTypeExist(s.server.client)) {
+   if (pluginB->client()->hasClientOfType(QString::fromStdString(s.server.client.c_str()))) { 
     dianaconnected = true;
 
     cerr << ttc::color(ttc::Blue) << "< CONNECTING TO: " << s.server.client
@@ -807,6 +811,14 @@ void qtsMain::setRemoteParameters()
   }
 }
 
+void qtsMain::sendLetter(miMessage& letter)
+{
+  miQMessage qmsg;
+  int from, to;
+  convert(letter, from, to, qmsg);
+  pluginB->sendMessage(qmsg);
+}
+
 void qtsMain::sendNamePolicy()
 {
   if (!dianaconnected)
@@ -819,7 +831,7 @@ void qtsMain::sendNamePolicy()
   m.data.push_back(snormal ? "true" : "false");
   m.data[0] += (sselect ? ":true" : ":false");
   m.data[0] += (sicon ? ":true" : ":false");
-  pluginB->sendMessage(m);
+  sendLetter(m);
 
 }
 
@@ -1099,8 +1111,7 @@ void qtsMain::fimexPositionChanged(const QString& qname)
      m.data.push_back(nst.str());
    }
    lastFimexPosition = name;
-
-   pluginB->sendMessage(m);
+   sendLetter(m);
 }
 
 

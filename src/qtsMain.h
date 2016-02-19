@@ -46,7 +46,7 @@
 #include <QActionGroup>
 #include <QShortcut>
 
-#include <coserver/ClientButton.h>
+#include <coserver/ClientSelection.h>
 #include <coserver/miMessage.h>
 
 #include "qtsWork.h"
@@ -109,7 +109,7 @@ private:
   printerManager pman;
   QPrinter   * printer;
 
-  ClientButton* pluginB;
+  ClientSelection* pluginB;
   QPushButton*  targetB;
 
   bool dianaconnected;
@@ -182,6 +182,7 @@ private slots:
   void toggleShowGridlines(bool);
 
   void processLetter(const miMessage&);
+  void sendLetter(miMessage&);
   void processConnect();
   void sendTarget();
   void clearTarget();
