@@ -127,7 +127,7 @@ common_ldflags=                \
 	$(PUDATATYPES_LDFLAGS) \
 	$(COSERVER_LDFLAGS)    \
 	$(QT4_LDFLAGS)         \
-	$(XEXT_LDFLAGS) $(GLU_LDFLAGS) $(X11_LDFLAGS) \
+	$(GLU_LDFLAGS) \
 	$(FIMEX_LDFLAGS) -DFIMEX 
 
 common_ldadd=               \
@@ -137,7 +137,7 @@ common_ldadd=               \
 	$(PUDATATYPES_LIBS) \
 	$(COSERVER_LIBS)    \
 	$(QT4_LIBS) \
-	$(XEXT_LIBS) $(GLU_LIBS) $(X11_LIBS) \
+	$(GLU_LIBS) \
 	$(FIMEX_LIBS) 
 
 

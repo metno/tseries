@@ -1,19 +1,18 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
-METNO_CONFIG = @METNO_CONFIG@
-METNO_SUFFIX = @METNO_SUFFIX@
+%:
+	dh $@ --parallel
 
-include /usr/share/metno-devscripts/metno_rules.mk
-
-do-configure:
+.PHONY: override_dh_auto_configure
+override_dh_auto_configure:
 	./autogen.sh
-	./configure --program-suffix=$(METNO_SUFFIX) \
+	./configure \
 	--prefix=/usr --sysconfdir=/etc --localstatedir=/var
-	touch $@
 
 .PHONY: override_dh_strip override_dh_auto_install
 override_dh_strip:
 	dh_strip --dbg-package=tseries-@METNO_VERSION@-dbg
+
 override_dh_auto_install:
 	dh_auto_install --destdir=debian/tseries-@METNO_VERSION@

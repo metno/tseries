@@ -1,11 +1,21 @@
-Source: tseries
+Source: tseries-@METNO_VERSION@
 Section: science
 Priority: extra
 Maintainer: Norwegian Meteorological Institute met.no <diana@met.no>
-Build-Depends: debhelper (>= 5), autotools-dev, autoconf, automake,
-  pkg-config, qt4-qmake, libqt4-dev, libqt4-opengl-dev, libhdf4-dev
-Build-Conflicts: autoconf2.13, automake1.4
-Standards-Version: 3.7.2
+Build-Depends: debhelper (>= 9),
+ autoconf (>=2.62), automake (>= 1.11), libtool (>= 2.4.2), pkg-config,
+ libqt4-dev, libqt4-opengl-dev, libgl1-mesa-dev, libglu1-mesa-dev,
+@metno_config_if .*precise.*
+@metno_config_else
+ libqt4-dev-bin,
+@metno_config_endif
+ metlibs-pets2-dev (>= 5.0.0),
+ metlibs-coserver-dev (>= 2.0.2-2),
+ metlibs-milogger-dev (>= 5.0.0),
+ libfimex-dev (>= 0.61.1),
+ libboost-dev, libboost-date-time-dev,
+ libhdf4-dev
+Standards-Version: 3.9.2
 
 Package: tseries-@METNO_VERSION@
 Architecture: any
