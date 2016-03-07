@@ -1,9 +1,15 @@
+tseries (6.9.3-1) unstable; urgency=low
+
+  * removed  setDirectRendering
+  * moved print-initialising from start to print() to avoid startup delay
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Fri, 19 Feb 2016 09:14:23 +0100
+
 tseries (6.9.2-1) unstable; urgency=low
 
-  * trimmed configure.ac
-  * updated debian_files/*
+  * added test for lustre-disk
 
- -- Alexander Bürger <alexander.buerger@met.no>  Thu, 25 Feb 2016 22:00:00 +0100
+ -- Juergen Schulze <juergen.schulze@met.no>  Tue, 09 Feb 2016 13:08:19 +0100
 
 tseries (6.9.1-1) unstable; urgency=low
 

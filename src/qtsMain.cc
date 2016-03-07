@@ -85,7 +85,7 @@ qtsMain::qtsMain(miString l) :
   toggleLockHoursToModel(lockHoursToModel);
   toggleShowGridlines(showGridLines);
 
-  printer = 0;
+  printer=0; 
 
   setWindowIcon(QPixmap(tseries_xpm));
 
@@ -377,6 +377,10 @@ void qtsMain::print()
     printer = new QPrinter(QPrinter::HighResolution);
 
   miString command;
+
+  if(!printer)
+    printer = new QPrinter(QPrinter::HighResolution);
+
 
 #ifdef linux
   command = "lpr -h -r -{hash}{numcopies} -P {printer} {filename}";

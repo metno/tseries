@@ -288,7 +288,7 @@ Version: %1
 met.no 2002</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1058"/>
+        <location filename="../src/qtsMain.cc" line="1050"/>
         <source>Language Changed</source>
         <translation type="unfinished">Langue changée</translation>
     </message>
@@ -380,7 +380,7 @@ met.no 2002</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1059"/>
+        <location filename="../src/qtsMain.cc" line="1051"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation type="unfinished"></translation>
     </message>

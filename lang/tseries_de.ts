@@ -295,7 +295,7 @@ met.no 2002</translation>
         <translation>Sprachen</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1058"/>
+        <location filename="../src/qtsMain.cc" line="1050"/>
         <source>Language Changed</source>
         <translation>Sprache gewechselt</translation>
     </message>
@@ -397,7 +397,7 @@ met.no 2002</translation>
         <translation>Diagram drucken</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1059"/>
+        <location filename="../src/qtsMain.cc" line="1051"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation>tseries muss neu gestartet werden um die sprache zu : [%1] zu wechseln</translation>
     </message>

@@ -292,7 +292,7 @@ met.no 2002</translation>
         <translation>Språk</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1058"/>
+        <location filename="../src/qtsMain.cc" line="1050"/>
         <source>Language Changed</source>
         <translation>Språk endret</translation>
     </message>
@@ -394,7 +394,7 @@ met.no 2002</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1059"/>
+        <location filename="../src/qtsMain.cc" line="1051"/>
         <source>tseries must be restarted to reset the language to: [%1] </source>
         <translation>T-series må startes på nytt for å sette språk til: [%1]</translation>
     </message>

@@ -7,45 +7,46 @@ etcdir=@sysconfdir@
 export LC_ALL=C
 export LC_NUMERIC=C
 
-LUSTRE_A=/lustre/storeA/project/metproduction/products
-LUSTRE_B=/lustre/storeB/project/metproduction/products
-LUSTREDATA=/opdata
 
-TEST_LUSTRE=`ls $LUSTRE_B 2>/dev/null`
+hasLUSTRE=`lsmod | grep lustre`
 
-if [ -n "$TEST_LUSTRE" ] ; then
-    LUSTREDATA=$LUSTRE_B
-else 
+if [ -n "$hasLUSTRE" ] ; then 
+ 
+ region="VGL"
 
- TEST_LUSTRE=`ls $LUSTRE_A 2>/dev/null`
-  if [ -n "$TEST_LUSTRE" ] ; then
-    LUSTREDATA=$LUSTRE_A
-  fi
+ LUSTREDATA=/lustre/storeB/project/metproduction/products
+
+ LUSTREDIRFILE=$HOME/.lustredir
+
+ if [ -f "$LUSTREDIRFILE" ] ; then
+     read LUSTREDATA < "$LUSTREDIRFILE"
+ fi
+
+else
+ LUSTREDATA=/opdata
+
+ gw=`route | grep default | awk '{print $2}' `
+
+ case "$gw" in
+     vpv*)   region="VV"  ;;
+     vnn*)   region="VNN" ;;
+     vtk*)   region="VTK" ;;
+     *)      region="VA"  ;;
+ esac
+
+
+ if [ $region = "VA" ] ; then
+
+     SUBNET=`/sbin/ifconfig eth0 | grep "inet addr" | cut -d. -f3`
+
+     if [ x"$SUBNET" = "x20" ] ; then
+	 region="FOU"
+     fi
+ fi
 
 fi
 
 export LUSTREDATA=$LUSTREDATA
-
-
-
-gw=`route | grep default | awk '{print $2}' `
-
-case "$gw" in
-    vpv*)   region="VV"  ;;
-    vnn*)   region="VNN" ;;
-    vtk*)   region="VTK" ;;
-       *)   region="VA"  ;;
-esac
-
-
-if [ $region = "VA" ] ; then
-
-    SUBNET=`/sbin/ifconfig eth0 | grep "inet addr" | cut -d. -f3`
-
-    if [ x"$SUBNET" = "x20" ] ; then
-	region="FOU"
-    fi
-fi
 
 
 
