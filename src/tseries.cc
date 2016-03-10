@@ -1,9 +1,7 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
-  Copyright (C) 2006 met.no
+  Copyright (C) 2006-2016 met.no
 
   Contact information:
   Norwegian Meteorological Institute
@@ -106,7 +104,11 @@ int main(int argc, char **argv)
   config.get("LANG",lang);
 
   if(cl.hasFlag('d')) {
+#if defined(METLIBS_PUTOOLS_VERSION_CURRENT_INT) && METLIBS_PUTOOLS_VERSION_CURRENT_INT >= METLIBS_PUTOOLS_VERSION_INT(5,1,4)
+    vector<string> overridetokens=cl.arg('d');
+#else
     vector<miString> overridetokens=cl.arg('d');
+#endif
     for(int i=0; i<overridetokens.size();i++)
       setup.overrideToken(overridetokens[i]);
   }
