@@ -91,6 +91,7 @@ private:
   bool prepareData();
   void prepareDiagram();
   bool prepareKlimaData(std::vector<ParId>&);
+  bool prepareMoraData(std::vector<ParId>&);
   bool prepareFimexData();
   bool prepareWdbData();
   bool showGridLines;

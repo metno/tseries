@@ -503,8 +503,12 @@ void qtsWork::checkObsPosition(miCoordinates cor)
   pets::KlimaStation s = data.getNearestKlimaStation(cor);
 
   if(!s.stationid) {
-    sidebar->setObsInfo("");
-    return;
+    // try mora station
+    pets::MoraStation s = data.getNearestMoraStation(cor);
+    if(s.name.empty()) {
+      sidebar->setObsInfo("");
+      return;
+    }
   }
   sidebar->setObsInfo(s.description().c_str());
 }

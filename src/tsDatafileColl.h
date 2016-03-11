@@ -42,6 +42,7 @@
 #include <tsData/ptParameterDefinition.h>
 #include <tsData/WdbStream.h>
 #include <tsData/KlimaStream.h>
+#include <tsData/SMHIMoraStream.h>
 #include <tsData/FimexStream.h>
 #include <tsData/FimexTools.h>
 
@@ -152,6 +153,7 @@ private:
 
   pets::WdbStream*       wdbStream;      // the wdb data stream
   pets::KlimaStream*     klimaStream;    // the klima database from an url interface
+  pets::MoraStream*      moraStream;     // the stream from SMHO observation database 'Mora'
   std::vector<ExtStation> stations;   // List of stations
   std::vector<miutil::miString> datasetname;  // name of dataset
   std::map<miutil::miString,miPosition> pos_info; // all positions ordered by name....
@@ -177,6 +179,9 @@ private:
 
   void openKlimaStream();
   void closeKlimaStream();
+  
+  void openMoraStream();
+  void closeMoraStream();
 
   void initialiseFimexPositions();
   void initialiseFimexParameters();
@@ -259,7 +264,10 @@ public:
 
   pets::KlimaStream* getKlimaStream() { return klimaStream;}
   pets::KlimaStation getNearestKlimaStation(miCoordinates& pos) { return klimaStream->getNearestKlimaStation(pos);}
-
+  
+  // SMHI mora --------------------
+  pets::MoraStream* getMoraStream() { return moraStream;}
+  pets::MoraStation getNearestMoraStation(miCoordinates& pos) { return moraStream->getNearestMoraStation(pos);}
 
   // fimex -------------------------
 

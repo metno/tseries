@@ -42,6 +42,7 @@ using namespace boost;
 vector<tsSetup::dsStruct>  tsSetup::streams;
 
 tsSetup::klstruct          tsSetup::klima;
+tsSetup::morastruct        tsSetup::mora;
 tsSetup::wdbstruct         tsSetup::wdb;
 tsSetup::fistruct          tsSetup::files;
 tsSetup::svstruct          tsSetup::server;
@@ -82,6 +83,7 @@ tsSetup::tsSetup() : sec(PUBLIC) , line(0)
     doc.docURL  = "https://wiki.met.no/tseries/doc";
     doc.newsURL = "https://wiki.met.no/tseries/news";
     fimex.externalPosService = "http://halo-search.met.no/collection1/select?q=name:";
+    fimex.xmlSyntax = "metno";
   }
 }
 
@@ -122,7 +124,13 @@ string tsSetup::inSection()
   case KLIMAPARAMETER:
     return ", in <klimaparameter>";
   case KLIMANORMAL:
-    return ", in <klimanormal>";
+    return ", in <klimanormal>"; 
+  case MORA:
+    return ", in <mora>";
+  case MORAPARAMETER:
+    return ", in <moraparameter>";
+  case MORANORMAL:
+    return ", in <moranormal>"; 
   case WDB:
     return ", in <wdb>";
   case WDBPARAMETER:
@@ -209,6 +217,12 @@ void tsSetup::fetchSection(string token)
     sec = KLIMANORMAL;
   else if( find_first(token,"KLIMA"))
     sec = KLIMA;
+  else if( find_first(token,"MORAPARAMETER"))
+    sec = MORAPARAMETER;
+  else if( find_first(token,"MORANORMAL"))
+    sec = MORANORMAL;
+  else if( find_first(token,"MORA"))
+    sec = MORA;
   else if( find_first(token,"WDBPARAMETER"))
     sec = WDBPARAMETER;
   else if ( find_first(token,"WDBVECTORFUNCTIONS"))
@@ -440,7 +454,7 @@ void tsSetup::setSimpleToken(string token)
     return;
   }
 
-  bool upper=(sec != WDBPARAMETER && sec != KLIMAPARAMETER && sec != KLIMANORMAL && sec != INFIMEX && sec != FIMEXPARAMETER);
+  bool upper=(sec != WDBPARAMETER && sec != KLIMAPARAMETER && sec != KLIMANORMAL && sec != MORAPARAMETER && sec != MORANORMAL && sec != INFIMEX && sec != FIMEXPARAMETER);
 
   string content,key;
 
@@ -491,6 +505,15 @@ void tsSetup::setSimpleToken(string token)
     break;
   case KLIMA:
     setKlima(key,content);
+    break;
+  case MORAPARAMETER:
+    setMoraParameter(key,content);
+    break;
+  case MORANORMAL:
+    setMoraNormal(key,content);
+    break;
+  case MORA:
+    setMora(key,content);
     break;
   case LOGLEVEL:
     setLoglevel(key,content);
@@ -563,6 +586,8 @@ void tsSetup::setFimex(string& key, string& content)
     }
   } else if(key == "externalPositionService") {
     setup(fimex.externalPosService,content);
+  } else if(key == "xmlSyntax") {
+    setup(fimex.xmlSyntax,content);
   } else if (key == "FimexFilters"){
     vector<string> tmpPar = tokenize(content,":");
     for(unsigned int i=0; i < tmpPar.size();i++) {
@@ -582,6 +607,26 @@ void tsSetup::setKlima(string& key, string& content)
     setup(klima.maxDistance,content);
   } else if(key == "MAXOBSERVATIONLENGTH") {
     setup(klima.maxObservationLength,content);
+  } else {
+    cerr << "warn here" << endl;
+    warn(key,wKEY);
+  }
+}
+
+void tsSetup::setMora(string& key, string& content)
+{
+  if(key == "URL" ){
+    setup(mora.url,content);
+  } else if(key == "MONTHNORMALREPORT") {
+    setup(mora.monthlynormalreport,content);
+  } else if(key == "STATIONREPORT") {
+    setup(mora.stationreport,content);
+  } else if(key == "DATAREPORT") {
+    setup(mora.datareport,content);    
+  } else if(key == "MAXDISTANCE") {
+    setup(mora.maxDistance,content);
+  } else if(key == "MAXOBSERVATIONLENGTH") {
+    setup(mora.maxObservationLength,content);
   } else {
     cerr << "warn here" << endl;
     warn(key,wKEY);
@@ -704,6 +749,15 @@ void tsSetup::setKlimaParameter(string& key, string& content)
 void tsSetup::setKlimaNormal(string& key, string& content)
 {
   klima.normals[key]=content;
+}
+
+void tsSetup::setMoraParameter(string& key, string& content)
+{
+  mora.parameters[key]=content;
+}
+void tsSetup::setMoraNormal(string& key, string& content)
+{
+  mora.normals[key]=content;
 }
 
 

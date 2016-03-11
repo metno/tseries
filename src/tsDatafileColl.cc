@@ -92,10 +92,11 @@ bool Union(const dataset& d1, const dataset& d2, dataset& result)
 
 DatafileColl::DatafileColl() :
                     tolerance(1000.0), verbose(false), streams_opened(false), fimex_streams_opened(false),
-                    wdbStream(NULL)
+                    wdbStream(NULL), klimaStream(NULL), moraStream(NULL)     // the stream from SMHO observation database 'Mora'
 {
   openWdbStream();
   openKlimaStream();
+  openMoraStream();
   initialiseFimexPositions();
   initialiseFimexParameters();
 
@@ -106,6 +107,7 @@ DatafileColl::~DatafileColl()
   closeStreams();
   closeWdbStream();
   closeKlimaStream();
+  closeMoraStream();
 }
 
 int DatafileColl::addDataset(miString name)
@@ -208,7 +210,12 @@ bool DatafileColl::openStream(const int idx)
     return false;
 
   datastreams[idx].numModels = 0;
-  delete datastreams[idx].dataStream;
+  if (datastreams[idx].sType == "MORA") {
+  }
+  else {
+    closeMoraStream();
+    delete datastreams[idx].dataStream;
+  }
   datastreams[idx].dataStream = 0;
 
   if (verbose)
@@ -225,6 +232,10 @@ bool DatafileColl::openStream(const int idx)
         new GribStream(datastreams[idx].streamname);
   }
 #endif
+  else if (datastreams[idx].sType == "MORA") {
+    openMoraStream();
+    datastreams[idx].dataStream = moraStream;
+  }
 
   if (datastreams[idx].sType != "CUSTOMER") {
     datastreams[idx].mtime = _modtime(datastreams[idx].streamname);
@@ -280,7 +291,11 @@ void DatafileColl::closeStreams()
   for (unsigned int i = 0; i < datastreams.size(); i++) {
     if (datastreams[i].dataStream && datastreams[i].streamOpen) {
       datastreams[i].streamOpen = false;
-      delete datastreams[i].dataStream;
+      if (datastreams[i].sType == "MORA") {
+        closeMoraStream();
+      } else {
+        delete datastreams[i].dataStream;
+      }
     }
   }
 
@@ -597,19 +612,45 @@ bool DatafileColl::findpos(const miString& name, int& idx)
 void DatafileColl::openKlimaStream()
 {
   tsSetup setup;
-  klimaStream = new pets::KlimaStream(setup.klima.url, setup.klima.parameters,
+  if (klimaStream == NULL)
+    klimaStream = new pets::KlimaStream(setup.klima.url, setup.klima.parameters,
       setup.klima.normals,setup.klima.maxDistance);
 }
 
 void DatafileColl::closeKlimaStream()
 {
   try {
-    delete klimaStream;
+    if (klimaStream != NULL)
+      delete klimaStream;
   } catch (exception& e) {
     cerr << " Exception caught while trying to delete klimaStream " << e.what()
                         << endl;
   }
   klimaStream = NULL;
+
+}
+
+/////// SMHI mora database -----------------------------
+
+void DatafileColl::openMoraStream()
+{
+  tsSetup setup;
+  if (moraStream == NULL)
+    moraStream = new pets::MoraStream(setup.mora.url, setup.mora.stationreport,
+      setup.mora.datareport, setup.mora.monthlynormalreport, setup.mora.parameters,
+      setup.mora.normals, setup.mora.maxDistance);
+}
+
+void DatafileColl::closeMoraStream()
+{
+  try {
+    if (moraStream != NULL)
+      delete moraStream;
+  } catch (exception& e) {
+    cerr << " Exception caught while trying to delete klimaStream " << e.what()
+                        << endl;
+  }
+  moraStream = NULL;
 
 }
 

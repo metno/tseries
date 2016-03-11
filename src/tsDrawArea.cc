@@ -181,8 +181,6 @@ bool tsDrawArea::prepareData()
               }
               theData->makeParameters(missingwp, true);
             }
-
-
             prepareKlimaData(inlist);
           }
         }
@@ -201,7 +199,43 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
   lengthChanged = (tmpLength != forecastLength);
   forecastLength= tmpLength;
 
+  if (showObservations) {
+    vector<ParId> obsParameters, unresolvedObs;
+    set<ParId> allObservations;
+    miTime lastTime=  theData->timelineEnd();
 
+    for (int j = 0; j < inlist.size(); j++) {
+      ParId obsTmp = inlist[j];
+      obsTmp.model = "OBS";
+      if(allObservations.count(obsTmp))
+        continue;
+      allObservations.insert(obsTmp);
+      obsParameters.push_back(obsTmp);
+    }
+
+
+    set<ParId>::iterator itr = allObservations.begin();
+
+    bool result = theData->fetchDataFromKlimaDB(data->getKlimaStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
+
+    if (unresolvedObs.size()) {
+      theData->makeParameters(unresolvedObs, true);
+    }
+  }
+
+  tmpLength = theData->timeLineLengthInHours();
+  //if (tmpLength != totalLength)
+    lengthChanged=true;
+  totalLength = tmpLength;
+  return true;
+}
+
+bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
+{
+  lengthChanged=false;
+  int tmpLength = theData->timeLineLengthInHours();
+  lengthChanged = (tmpLength != forecastLength);
+  forecastLength= tmpLength;
 
   if (showObservations) {
     vector<ParId> obsParameters, unresolvedObs;
@@ -220,7 +254,7 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
 
     set<ParId>::iterator itr = allObservations.begin();
 
-    theData->fetchDataFromKlimaDB(data->getKlimaStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
+    bool result = theData->fetchDataFromMoraDB(data->getMoraStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
 
     if (unresolvedObs.size()) {
       theData->makeParameters(unresolvedObs, true);
@@ -606,6 +640,9 @@ bool tsDrawArea::prepareFimexData()
 
 
     prepareKlimaData(inlist);
+    
+    prepareMoraData(inlist);
+  
   }
   return true;
 

@@ -133,6 +133,18 @@ public:
     std::map<std::string,std::string> parameters; ///< translate parameters from klima
     std::map<std::string,std::string> normals;    ///< translate monthly normals from klima
   };
+  
+  struct morastruct {
+    std::string    url;
+    std::string    baseQuery;
+    std::string    stationreport;
+    std::string    datareport;
+    std::string    monthlynormalreport; ///<  computed only for climate stations
+    int            maxDistance;
+    int            maxObservationLength;
+    std::map<std::string,std::string> parameters; ///< translate parameters from mora
+    std::map<std::string,std::string> normals;    ///< translate monthly normals from mora
+  };
 
 
   /// Struct containing filenames for tseries
@@ -156,6 +168,7 @@ public:
     std::vector<std::string>  parameters; // parsed in tsData
     std::set<std::string>     streamtypes;
     std::string               externalPosService; // where to search for stations (Halo/yr...)
+    std::string               xmlSyntax; // How to parse the result from externalPosService, default metno
     std::vector<std::string>  filters;
   };
 
@@ -211,6 +224,7 @@ public:
   static distruct diana;           ///< DIANA information
   static dostruct doc;             ///< Documentation locations
   static klstruct klima;           ///< url and info for klapp connection
+  static morastruct mora;           ///< url and info for klapp connection
   static std::string lang;    ///< Languages
   static fimexstruct fimex;        /// fimex stuff
   static symbolMaker wsymbols;
@@ -219,7 +233,7 @@ public:
 
 private:
   enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,WDB,WDBPARAMETER,WDBVECTORFUNCTIONS,
-    KLIMA,KLIMAPARAMETER,KLIMANORMAL,INFIMEX,FIMEXPARAMETER,LOGLEVEL} sec;
+    KLIMA,KLIMAPARAMETER,KLIMANORMAL,MORA,MORAPARAMETER,MORANORMAL,INFIMEX,FIMEXPARAMETER,LOGLEVEL} sec;
   enum warning { wKEY, wTOKEN, wSECTION, wFILE };
 
   std::map<std::string,std::string> lookup;
@@ -257,6 +271,10 @@ private:
   void setKlimaParameter(std::string&, std::string&);
   void setKlimaNormal(std::string&, std::string&);
   void setKlima(std::string&, std::string&);
+  void setMoraParameter(std::string&, std::string&);
+  void setMoraNormal(std::string&, std::string&);
+  void setMora(std::string&, std::string&);
+  
   void setFimex(std::string&, std::string&);
   void setFimexParameter(std::string&);
 

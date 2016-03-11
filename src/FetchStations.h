@@ -14,6 +14,7 @@ private:
   QNetworkAccessManager *manager;
   QString    base_url;
   QString    feature_class_name;
+  QString    search_name;
 
 public:
   FetchStations(QString baseurl, QString lang);
