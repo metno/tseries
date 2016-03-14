@@ -634,16 +634,15 @@ bool tsDrawArea::prepareFimexData()
       }
     }
     // Find any missing params
-
-    if (outlist.size())
-      theData->makeParameters(outlist, true);
-
-
+    
     prepareKlimaData(inlist);
     
     prepareMoraData(inlist);
+
+    if (outlist.size())
+      theData->makeParameters(outlist, true);
   
-  }
+  }  
   return true;
 
 }

@@ -37,6 +37,7 @@
 #include <sys/stat.h>
 
 #include <puTools/miString.h>
+#include <puTools/TimeFilter.h>
 
 #include <tsData/ptDataStream.h>
 #include <tsData/ptParameterDefinition.h>
@@ -140,6 +141,7 @@ struct FimexFileindex {
   std::string model;
   std::string sType;
   std::string configfile;
+  miutil::TimeFilter tf;
 };
 
 

@@ -47,13 +47,14 @@
 using namespace std;
 using namespace miutil;
 
-
+// Modify to use timefilter, se GridCollection::makeGridIOinstances() in GridCollection.cc.
 
 
 vector<string> FimexFileindex::findNewFiles()
 {
   glob_t glob_result;
-
+  // Init the filter with pattern and remove YYYY ....
+  tf.initFilter(glob_string, true);
   glob(glob_string.c_str(),GLOB_NOMAGIC,NULL,&glob_result);
   vector<string> result;
   for(unsigned int i=0;i<glob_result.gl_pathc;++i){
@@ -67,10 +68,6 @@ vector<string> FimexFileindex::findNewFiles()
   return result;
 }
 
-
-
-
-
 bool Union(const dataset& d1, const dataset& d2)
 {
   for (int i = 0; i < MAXDATASETS; i++)
@@ -78,7 +75,6 @@ bool Union(const dataset& d1, const dataset& d2)
       return true;
   return false;
 }
-
 
 bool Union(const dataset& d1, const dataset& d2, dataset& result)
 {
@@ -306,17 +302,7 @@ void DatafileColl::closeStreams()
     }
   }
 
-
-
 }
-
-
-
-
-
-
-
-
 
 bool DatafileColl::_isafile(const miString& name)
 {
@@ -725,7 +711,6 @@ pets::WdbStream::BoundaryBox DatafileColl::getWdbGeometry()
   return boundaries;
 }
 
-
 /////// FIMEX ------------------------------------------
 
 void DatafileColl::initialiseFimexPositions()
@@ -773,25 +758,37 @@ vector<miString> DatafileColl::getFimexTimes(std::string model)
   vector<miString> runtimes;
   cerr << "trying to find runtimes for model: " << model << endl;
 
-  for ( int i = 0; i< fimexStreams.size();i++) {
+  for ( size_t i = 0; i< fimexStreams.size();i++) {
     if( model == fimexStreams[i].model) {
       cerr << "Trying to read from Fimex file " << fimexStreams[i].streamname << endl;
 
-
       if(fimexStreams[i].run == "") {
 
-
         try {
-            boost::posix_time::ptime time = fimexStreams[i].dataStream->getReferencetime();
-            //std::string stime = boost::posix_time::to_simple_string(time);
-            ostringstream stime;
+            miTime refTime;
+            int index = -1;
+            // Find actual timefilter
+            for(size_t j=0; j<fimexFileindex.size(); j++) {
+              if (model == fimexFileindex[j].model) {
+                index = j;
+                break;
+              }
+            }
+            // Get refTime from filename..
+            if (index != -1 && fimexFileindex[index].tf.getTime(fimexStreams[i].streamname,refTime)) {
+              fimexStreams[i].run = refTime.isoTime(true,  false);
+              fimex_streams_opened = true;
+            } else {
+              // Get from the stream...
+              boost::posix_time::ptime time = fimexStreams[i].dataStream->getReferencetime();
+              //std::string stime = boost::posix_time::to_simple_string(time);
+              ostringstream stime;
 
-            boost::posix_time::time_facet *facet = new boost::posix_time::time_facet("%Y-%m-%d %H:%M");
-            stime.imbue(locale(stime.getloc(), facet));
-            stime << time;
-
-
-            fimexStreams[i].run = stime.str();
+              boost::posix_time::time_facet *facet = new boost::posix_time::time_facet("%Y-%m-%d %H:%M");
+              stime.imbue(locale(stime.getloc(), facet));
+              stime << time;           
+              fimexStreams[i].run = stime.str();
+            }
           } catch (exception & e) {
             cerr << e.what() << endl;
             cerr << "using streamname instead of runtime to identify model" << endl;
