@@ -32,6 +32,7 @@
 #include <tsData/ptHDFFile.h>
 #include <tsData/ptAsciiStream.h>
 #include <glob.h>
+#include <time.h>
 #include <string>
 #include <sstream>
 #include "tsSetup.h"
@@ -206,14 +207,13 @@ bool DatafileColl::openStream(const int idx)
     return false;
 
   datastreams[idx].numModels = 0;
-  if (datastreams[idx].sType == "MORA") {
-  }
-  else {
-    closeMoraStream();
+  // Dont reopen stream if type MORA
+  if (datastreams[idx].sType != "MORA") {
+ 
     delete datastreams[idx].dataStream;
+    datastreams[idx].dataStream = 0;
   }
-  datastreams[idx].dataStream = 0;
-
+ 
   if (verbose)
     cout << "About to open stream:" << datastreams[idx].streamname << endl;
 
@@ -234,7 +234,10 @@ bool DatafileColl::openStream(const int idx)
   }
 
   if (datastreams[idx].sType != "CUSTOMER") {
-    datastreams[idx].mtime = _modtime(datastreams[idx].streamname);
+    if (datastreams[idx].sType != "MORA") 
+      datastreams[idx].mtime = _modtime(datastreams[idx].streamname);
+    else
+      datastreams[idx].mtime = time(NULL);
     if (datastreams[idx].dataStream)
       datastreams[idx].streamOpen = datastreams[idx].dataStream->openStream(
           &ef);
@@ -339,7 +342,10 @@ bool DatafileColl::check(vector<int>& idx)
     for (unsigned int i = 0; i < datastreams.size(); i++) {
       if (!datastreams[i].streamOpen)
         continue;
-      mtime = _modtime(datastreams[i].streamname);
+      if (datastreams[i].sType != "MORA") 
+        mtime = _modtime(datastreams[i].streamname);
+      else
+        mtime = time(NULL);
       if (mtime > datastreams[i].mtime) {
         changed = true;
         idx.push_back(i);

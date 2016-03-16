@@ -444,7 +444,6 @@ void qtsWork::changeModel(const miString& st)
 
 void qtsWork::changeStation(const miString& st)
 {
-
   if(selectionType==SELECT_BY_STATION) {
 
   miPosition p=data.getPositionInfo(st);
@@ -459,6 +458,8 @@ void qtsWork::changeStation(const miString& st)
       return;
     }
     refresh(true);
+    // Set current station
+    sidebar->searchStation(QString::fromLatin1(st.c_str()));
 
   } else if (selectionType==SELECT_BY_FIMEX) {
     sidebar->changeFimexPosition(  QString::fromLatin1(st.c_str()));
@@ -504,11 +505,14 @@ void qtsWork::checkObsPosition(miCoordinates cor)
 
   if(!s.stationid) {
     // try mora station
-    pets::MoraStation s = data.getNearestMoraStation(cor);
+    pets::MoraStation s;
+    s = data.getNearestMoraStation(cor);
     if(s.name.empty()) {
       sidebar->setObsInfo("");
       return;
     }
+    sidebar->setObsInfo(s.description().c_str());
+    return; 
   }
   sidebar->setObsInfo(s.description().c_str());
 }
