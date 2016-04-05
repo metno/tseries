@@ -1,12 +1,4 @@
-
-#ifndef PREPAREDATATHREAD_H_
-#define PREPAREDATATHREAD_H_
-
-
-
 /*
-   $Id$
-
    Copyright (C) 2006 met.no
 
    Contact information:
@@ -33,17 +25,19 @@
    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifndef PREPAREDATATHREAD_H_
+#define PREPAREDATATHREAD_H_
+
 #include <QThread>
 #include <string>
 #include <tsData/FimexStream.h>
-
 
 namespace pets {
 
 class PrepareDataThread  : public QThread {
   Q_OBJECT
-private:
 
+private:
   pets::FimexStream* fimex;
   double latitude;
   double longitude;
@@ -56,13 +50,10 @@ public:
   void setFimexParameters(pets::FimexStream* f, std::string pl, float lat, float lon,  std::vector<ParId>& ip, std::vector<ParId>& op);
   void run();
 
-
-  signals:
+Q_SIGNALS:
   void post_dataLoad(bool);
-
-
-
 };
 
 } /* namespace pets */
+
 #endif /* PREPAREDATATHREAD_H_ */

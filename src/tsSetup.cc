@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -28,13 +26,20 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 #include "tsSetup.h"
-#include <iostream>
-#include <fstream>
+
 #include <puMet/symbolMaker.h>
 #include <puTools/miStringFunctions.h>
 #include <puTools/miTime.h>
+
 #include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/split.hpp>
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
 #include <config.h>
 
 using namespace std;
@@ -59,9 +64,6 @@ tsSetup::disablestruct     tsSetup::disabled;
 
 
 symbolMaker tsSetup::wsymbols;
-
-#include <boost/algorithm/string/split.hpp>
-
 
 
 tsSetup::tsSetup() : sec(PUBLIC) , line(0)

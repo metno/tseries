@@ -1,5 +1,5 @@
-#include <FetchStations.h>
-#include <tsSetup.h>
+#include "FetchStations.h"
+#include "tsSetup.h"
 #include <puTools/miStringFunctions.h>
 #include <iostream>
 #include <sstream>
@@ -31,7 +31,7 @@ void FetchStations::getData(QString name)
   search_name = name;
   QString url;
   tsSetup s;
-  
+
   if (s.fimex.xmlSyntax != "metno") {
     url = base_url;
   }
@@ -45,7 +45,7 @@ void FetchStations::getData(QString name)
 
 void FetchStations::replyFinished(QNetworkReply* reply)
 {
-  if(reply->error()) 
+  if(reply->error())
     return;
 
   QByteArray data = reply->readAll();
