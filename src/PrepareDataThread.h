@@ -47,7 +47,7 @@ private:
   pets::FimexStream* fimex;
   double latitude;
   double longitude;
-  miutil::miString stationname;
+  std::string stationname;
   std::vector<ParId> inpar;
   std::vector<ParId> outpar;
 

@@ -325,7 +325,7 @@ void tsDrawArea::prepareDiagram()
     pe = pe->next;
   }
   if (sev.size()) {
-    vector<miString> symbimages;
+    vector<std::string> symbimages;
     miString stmp;
     for (i = minsymb; i <= maxsymb; i++) {
       tmpSymbol = setup.wsymbols.getSymbol(i);

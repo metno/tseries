@@ -32,6 +32,7 @@
 #include <iostream>
 #include <fstream>
 #include <puMet/symbolMaker.h>
+#include <puTools/miStringFunctions.h>
 #include <puTools/miTime.h>
 #include <boost/algorithm/string.hpp>
 #include <config.h>

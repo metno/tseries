@@ -1,5 +1,6 @@
 #include <FetchStations.h>
 #include <tsSetup.h>
+#include <puTools/miStringFunctions.h>
 #include <iostream>
 #include <sstream>
 #include <QDomDocument>
