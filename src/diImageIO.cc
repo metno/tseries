@@ -29,6 +29,9 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include "diImageIO.h"
+
+#include <puTools/miStringFunctions.h>
+
 #include <png.h>
 
 #include <iostream>
@@ -40,9 +43,9 @@ using namespace std;
 
 bool imageIO::read_image(Image_data& img)
 {
-  if (img.filename.contains(".png"))
+  if (miutil::contains(img.filename, ".png"))
     return read_png(img);
-  else if (img.filename.contains(".xpm"))
+  else if (miutil::contains(img.filename, ".xpm"))
     return read_xpm(img);
 
   return false;
@@ -298,7 +301,7 @@ int chartoint__(const char c)
   return 0;
 }
 
-int hexToInt__(const miString& p){
+int hexToInt__(const std::string& p){
   int l= p.length(), res=0, fact=1;
   for (int i=l-1; i>=0; i--,fact*=15)
     res += chartoint__(p[i])*fact;
@@ -309,10 +312,10 @@ int hexToInt__(const miString& p){
 
 bool imageIO::imageFromXpmdata(const char** xd, Image_data& img){
   int xsize=-1,ysize,ncols,nchar;
-  vector<miString> vs;
-  miString buf= xd[0];
+  vector<std::string> vs;
+  std::string buf= xd[0];
 
-  vs= buf.split(" ");
+  vs= miutil::split(buf, " ");
   if (vs.size() < 4){
     cerr << "imageFromXpmdata ERROR too few elements:" << buf << endl;
     return false;
@@ -330,10 +333,10 @@ bool imageIO::imageFromXpmdata(const char** xd, Image_data& img){
     return false;
   }
 
-  map<miString,int> redmap;
-  map<miString,int> greenmap;
-  map<miString,int> bluemap;
-  map<miString,int> alphamap;
+  map<std::string,int> redmap;
+  map<std::string,int> greenmap;
+  map<std::string,int> bluemap;
+  map<std::string,int> alphamap;
 
   for (int i=0; i<ncols; i++){
     buf = xd[1+i];
@@ -343,9 +346,9 @@ bool imageIO::imageFromXpmdata(const char** xd, Image_data& img){
 	   << buf << endl;
       return false;
     }
-    miString key=    buf.substr(0,nchar);
-    miString colour= buf.substr(j+1,buf.length()-j-1);
-    colour.trim();
+    std::string key=    buf.substr(0,nchar);
+    std::string colour= buf.substr(j+1,buf.length()-j-1);
+    miutil::trim(colour);
     if (colour == "None"){
       redmap[key]  = 255;
       greenmap[key]= 255;
@@ -373,9 +376,9 @@ bool imageIO::imageFromXpmdata(const char** xd, Image_data& img){
   img.data= new unsigned char [img.width*img.height*img.nchannels];
   int pp= 0;
   for (int y=ysize-1; y>=0; y--){
-    miString line= xd[y+ncols+1];
+    std::string line= xd[y+ncols+1];
     for (int x=0; x<xsize*nchar; x+=nchar){
-      miString pixel= line.substr(x,nchar);
+      std::string pixel= line.substr(x,nchar);
       img.data[pp+0]= redmap[pixel];
       img.data[pp+1]= greenmap[pixel];
       img.data[pp+2]= bluemap[pixel];
@@ -401,11 +404,11 @@ bool imageIO::read_xpm(Image_data& img){
     return false;
   }
 
-  miString buf;
-  vector<miString> vs, vs2;
+  std::string buf;
+  vector<std::string> vs, vs2;
 
   while(getline(file,buf)){
-    buf.trim();
+    miutil::trim(buf);
     if (buf.length() == 0)
       continue;
     if (buf[0]!='\"')

@@ -29,6 +29,9 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include "diPrintOptions.h"
+
+#include <puTools/miStringFunctions.h>
+
 #include <fstream>
 #include <iostream>
 
@@ -37,9 +40,9 @@ using namespace miutil;
 using namespace std;
 
 vector<printerManager::printerExtra> printerManager::printers;
-map<miString,d_print::PageSize> printerManager::pages;
+map<std::string,d_print::PageSize> printerManager::pages;
 map<d_print::PageSize,d_print::PaperSize> printerManager::pagesizes;
-miString printerManager::pcommand;
+std::string printerManager::pcommand;
 
 /*
   MANUAL POSTSCRIPT-COMMANDS
@@ -153,28 +156,29 @@ printerManager::printerManager()
   }
 }
 
-bool printerManager::expandCommand(miString& com, const printOptions& po)
+bool printerManager::expandCommand(std::string& com, const printOptions& po)
 {
-  com.replace("{printer}",po.printer);
-  com.replace("{filename}",po.fname);
+  miutil::replace(com, "{printer}",po.printer);
+  miutil::replace(com, "{filename}",po.fname);
 #ifdef linux
   // current Debian linux version uses this # as start of comment !!!
-  com.replace("-{hash}",""); // setupParser is not fond of #'s
-  com.replace("{numcopies}","");
+  miutil::replace(com, "-{hash}",""); // setupParser is not fond of #'s
+  miutil::replace(com, "{numcopies}","");
 #else
-  com.replace("{hash}","#"); // setupParser is not fond of #'s
-  com.replace("{numcopies}",miString(po.numcopies));
+  miutil::replace(com, "{hash}","#"); // setupParser is not fond of #'s
+  miutil::replace(com, "{numcopies}",std::string(po.numcopies));
 #endif
   return true;
 }
 
 
-bool printerManager::readPrinterInfo(const miString fname)
+bool printerManager::readPrinterInfo(const std::string fname)
 {
   cerr << "Reading printerdef from:" << fname << endl;
   printers.clear();
 
-  if (!fname.exists()) return false;
+  if ((fname.empty()))
+    return false;
 
   // open filestream
   ifstream file(fname.c_str());
@@ -185,43 +189,43 @@ bool printerManager::readPrinterInfo(const miString fname)
   }
 
   int j=-1;
-  miString s;
+  std::string s;
   string comkey,com;
-  vector<miString> vs, vvs;
+  vector<std::string> vs, vvs;
   bool incom= false;
 
   while (getline(file,s)){
-    s.trim();
-    if (!s.exists() || s[0]=='#') continue;
+    miutil::trim(s);
+    if ((not !s.empty()) || s[0]=='#') continue;
 
     if (incom) { // reading command-lines
-      if (s.contains("}}")){ // end of command
 	if (j>=0) printers[j].commands[comkey]= com;
 	incom= false;
 	continue;
+      if (miutil::contains(s, "}}")){ // end of command
       }
       com += (s + "\n");
 
     } else {
-      if (s.contains("{{")){ // start of command
-	vs= s.split("=");
-	if (vs.size()>1){
-	  comkey= vs[0].upcase();
-	  com= "";
-	  incom= true;
-	}
-      } else if (s.contains("=")){ // start new printer
-	printers.push_back(printerExtra());
-	j++;
-	vs= s.split(",");
-	int n= vs.size();
-	for (int i=0; i<n; i++){
-	  if (vs[i].contains("=")){
-	    vvs= vs[i].split("=");
-	    if (vvs.size() > 1)
-	      printers[j].keys[vvs[0].upcase()]= vvs[1];
-	  }
-	}
+      if (miutil::contains(s, "{{")){ // start of command
+        vs= miutil::split(s, "=");
+        if (vs.size()>1){
+          comkey= miutil::to_upper(vs[0]);
+          com= "";
+          incom= true;
+        }
+      } else if (miutil::contains(s, "=")){ // start new printer
+        printers.push_back(printerExtra());
+        j++;
+        vs= miutil::split(s, ",");
+        int n= vs.size();
+        for (int i=0; i<n; i++){
+          if (miutil::contains(vs[i], "=")){
+            vvs= miutil::split(vs[i], "=");
+            if (vvs.size() > 1)
+              miutil::to_upper(printers[j].keys[vvs[0]]) = vvs[1];
+          }
+        }
       }
     }
   }
@@ -229,12 +233,12 @@ bool printerManager::readPrinterInfo(const miString fname)
   return true;
 }
 
-PageSize  printerManager::getPage(const miString s) // page from string
+PageSize  printerManager::getPage(const std::string s) // page from string
 {
   PageSize ps;
 
-  miString us= s.upcase();
-  us.trim();
+  std::string us= miutil::to_upper(s);
+  miutil::trim(us);
 
   if (pages.count(us)>0)
     ps= pages[us];

@@ -48,7 +48,7 @@
 #include <QLabel>
 
 #include <vector>
-#include <puTools/miString.h>
+#include <string>
 
 
 class StationTab : public QWidget {
@@ -72,7 +72,7 @@ public:
 
   QString current(const lEntry);
   QString station();
-  void set(const miutil::miString& s,const StationTab::lEntry c);
+  void set(const std::string& s,const StationTab::lEntry c);
   void setStationInfo(QString s) { pos_label->setText(s); }
 
 public slots:

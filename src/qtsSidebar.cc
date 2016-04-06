@@ -309,7 +309,7 @@ void qtsSidebar::setObsInfo(QString s)
 }
 
 
-QString  qtsSidebar::fillList(const vector<miutil::miString>& v, const StationTab::lEntry l)
+QString  qtsSidebar::fillList(const vector<std::string>& v, const StationTab::lEntry l)
 {
   QStringList qlist;
   for(unsigned int i=0;i<v.size();i++) {
@@ -417,7 +417,7 @@ void qtsSidebar::enableBusyLabel(bool enable)
 
 
 
-bool qtsSidebar::restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miString run,miutil::miString posname)
+bool qtsSidebar::restoreWdbFromLog(std::string mod, std::string sty, double lat, double lon, std::string run,std::string posname)
 {
   if(!wdbtab->isEnabled()) {
     cout << "WDB-tab disabled log information discarded" << endl;

@@ -37,7 +37,7 @@ using namespace std;
 using namespace miutil;
 
 const vector<ParId> emptyvec;
-const miString emptystr;
+const std::string emptystr;
 
 
 
@@ -46,7 +46,7 @@ Model SessionOptions::getmodel(const int idx)
   return (idxOk(idx) ? mdata[idx].model : M_UNDEF );
 }
 
-const miString& SessionOptions::getmodelname(const int idx)
+const std::string& SessionOptions::getmodelname(const int idx)
 {
   return (idxOk(idx) ? mdata[idx].modelname : emptystr );
 }
@@ -72,7 +72,7 @@ const vector<ParId> SessionOptions::distinctParamVector(const int idx)
 }
 
 
-int SessionOptions::addModel(const Model mid, const miString name)
+int SessionOptions::addModel(const Model mid, const std::string name)
 {
   if (numModels() < SO_MAX_MODELS){
     modeldata md;

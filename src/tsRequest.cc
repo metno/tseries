@@ -30,12 +30,15 @@
  */
 #include "tsRequest.h"
 
-using namespace std;
-using namespace miutil;
+#include <puTools/miStringFunctions.h>
+
 #include <boost/algorithm/string.hpp>
 #include <sstream>
 
-bool tsRequest::setString(const miString& i, miString& o)
+using namespace std;
+using namespace miutil;
+
+bool tsRequest::setString(const std::string& i, std::string& o)
 {
   if(o == i) return false;
   o = i;
@@ -60,10 +63,9 @@ ostream& operator<<(ostream& out, const tsRequest& rhs){
   return out;
 };
 
-miString tsRequest::file(const miString type) const
+std::string tsRequest::file(const std::string type) const
 {
-
-  miString rst = mod_ + "_" + pos_;
+  std::string rst = mod_ + "_" + pos_;
 
   if(streamtype == WDBSTREAM)
     rst = wdbModel + "_" + wdbstationname;
@@ -71,24 +73,24 @@ miString tsRequest::file(const miString type) const
   if(streamtype == FIMEXSTREAM)
     rst = fimexModel + "_" + fimexName;
 
-  rst.replace(".","");
+  miutil::replace(rst, ".","");
 
-  rst.replace(" ","_");
-  rst.replace("Ø","OE");
-  rst.replace("Å","AA");
-  rst.replace("Æ","AE");
-  rst.replace("Ü","UE");
-  rst.replace("Ö","OE");
-  rst.replace("Ä","AE");
+  miutil::replace(rst, " ","_");
+  miutil::replace(rst, "\xD8","OE");
+  miutil::replace(rst, "\xC5","AA");
+  miutil::replace(rst, "\xC6","AE");
+  miutil::replace(rst, "\xDC","UE");
+  miutil::replace(rst, "\xD6","OE");
+  miutil::replace(rst, "\xC4","AE");
 
-  rst.replace("ø","oe");
-  rst.replace("å","aa");
-  rst.replace("æ","ae");
-  rst.replace("ü","ue");
-  rst.replace("ö","oe");
-  rst.replace("ä","ae");
+  miutil::replace(rst, "\xF8","oe");
+  miutil::replace(rst, "\xE5","aa");
+  miutil::replace(rst, "\xE6","ae");
+  miutil::replace(rst, "\xFC","ue");
+  miutil::replace(rst, "\xF6","oe");
+  miutil::replace(rst, "\xE4","ae");
 
-  rst = rst.downcase();
+  rst = miutil::to_lower(rst);
 
   rst +="."+type;
   return rst;
@@ -118,7 +120,7 @@ void tsRequest::setType(tsRequest::Streamtype s)
 
 
 
-bool tsRequest::restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miTime run,miString posname)
+bool tsRequest::restoreWdbFromLog(std::string mod, std::string sty, double lat, double lon, miutil::miTime run,std::string posname)
 {
   setWdbPos(lon,lat);
   setWdbStationName(posname);
@@ -140,7 +142,7 @@ bool  tsRequest::setFimexLocation(double flat,double flon, std::string name)
   return true;
 }
 
-bool tsRequest::getFimexLocation(double& lat, double& lon, miutil::miString& name)
+bool tsRequest::getFimexLocation(double& lat, double& lon, std::string& name)
 {
   lat = fimexLat;
   lon = fimexLon;

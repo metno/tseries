@@ -31,90 +31,90 @@
 #ifndef _tsRequest_h
 #define _tsRequest_h
 
-#include <puTools/miString.h>
 #include <puTools/miTime.h>
+#include <string>
 
 class tsRequest {
 public:
   enum Streamtype {HDFSTREAM, WDBSTREAM,FIMEXSTREAM};
 
 private:
-  miutil::miString mod_;
+  std::string mod_;
   int              run_;
-  miutil::miString pos_;
-  miutil::miString sty_;
+  std::string pos_;
+  std::string sty_;
 
-  miutil::miString posname_;
+  std::string posname_;
 
   double            wdbLat;
   double            wdbLon;
   miutil::miTime    wdbRun;
-  miutil::miString  wdbStyle;
-  miutil::miString  wdbModel;
+  std::string  wdbStyle;
+  std::string  wdbModel;
   unsigned long     wdbReadTime;
   Streamtype        streamtype;
-  miutil::miString  wdbstationname;
+  std::string  wdbstationname;
 
 
   double            fimexLat;
   double            fimexLon;
-  miutil::miString  fimexModel;
-  miutil::miString  fimexStyle;
-  miutil::miString  fimexName;
-  miutil::miString  fimexRun;
+  std::string  fimexModel;
+  std::string  fimexStyle;
+  std::string  fimexName;
+  std::string  fimexRun;
 
 
 
 
-  bool setString(const miutil::miString&, miutil::miString&);
+  bool setString(const std::string&, std::string&);
 
 public:
   tsRequest() : run_(-1), wdbReadTime(0), streamtype(tsRequest::HDFSTREAM), wdbStyle("Meteogram"), fimexStyle("Meteogram") {}
 
 
-  bool setModel(const miutil::miString& i) {              return setString(i,mod_); }
-  bool setPos(  const miutil::miString& i) { posname_= i; return setString(i,pos_); }
-  bool setPos(  const miutil::miString& n1, const miutil::miString& n2) { posname_= n2; return setString(n1,pos_); }
-  bool setStyle(const miutil::miString& i) { return setString(i,sty_); }
+  bool setModel(const std::string& i) {              return setString(i,mod_); }
+  bool setPos(  const std::string& i) { posname_= i; return setString(i,pos_); }
+  bool setPos(  const std::string& n1, const std::string& n2) { posname_= n2; return setString(n1,pos_); }
+  bool setStyle(const std::string& i) { return setString(i,sty_); }
   void setType(tsRequest::Streamtype s);
   bool setRun(int);
 
   bool setWdbPos(double lon,double lat);
   bool setWdbRun(miutil::miTime nrun);
-  bool setWdbModel(miutil::miString nmod) { return setString(nmod,wdbModel);  }
-  bool setWdbStyle(miutil::miString nsty) { return setString(nsty,wdbStyle);  }
+  bool setWdbModel(std::string nmod) { return setString(nmod,wdbModel);  }
+  bool setWdbStyle(std::string nsty) { return setString(nsty,wdbStyle);  }
   void setWdbReadTime(unsigned long t)    { wdbReadTime =t; }
-  void setWdbStationName(miutil::miString nname) { wdbstationname=nname;}
+  void setWdbStationName(std::string nname) { wdbstationname=nname;}
 
 
-  bool restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miTime run, miutil::miString posname="");
+  bool restoreWdbFromLog(std::string mod, std::string sty, double lat, double lon, miutil::miTime run, std::string posname="");
 
   double           getWdbLat()      const { return wdbLat;      }
   double           getWdbLon()      const { return wdbLon;      }
   miutil::miTime   getWdbRun()      const { return wdbRun;      }
-  miutil::miString getWdbModel()    const { return wdbModel;    }
-  miutil::miString getWdbStyle()    const { return wdbStyle;    }
+  std::string getWdbModel()    const { return wdbModel;    }
+  std::string getWdbStyle()    const { return wdbStyle;    }
   unsigned int     getWdbReadTime() const { return wdbReadTime; }
-  miutil::miString getWdbStationName()const { return wdbstationname;}
+  std::string getWdbStationName()const { return wdbstationname;}
 
-  miutil::miString model()     const { return mod_;}
-  miutil::miString style()     const { return sty_;}
+  std::string model()     const { return mod_;}
+  std::string style()     const { return sty_;}
   int              run()       const { return run_;}
-  miutil::miString pos()       const { return pos_;}
-  miutil::miString posname()   const { return posname_;}
+  std::string pos()       const { return pos_;}
+  std::string posname()   const { return posname_;}
   tsRequest::Streamtype type() const { return streamtype;}
-  miutil::miString file(const miutil::miString type) const;
+  std::string file(const std::string type) const;
 
-  bool setFimexModel(miutil::miString nmod) { return setString(nmod,fimexModel);  }
-  bool setFimexStyle(miutil::miString nsty) { return setString(nsty,fimexStyle);  }
-  bool setFimexRun(  miutil::miString nrun) { return setString(nrun,fimexRun);    }
+  bool setFimexModel(std::string nmod) { return setString(nmod,fimexModel);  }
+  bool setFimexStyle(std::string nsty) { return setString(nsty,fimexStyle);  }
+  bool setFimexRun(  std::string nrun) { return setString(nrun,fimexRun);    }
   bool setFimexLocation(double flat,double flon, std::string name);
 
 
-  miutil::miString getFimexModel()   const { return fimexModel; }
-  miutil::miString getFimexStyle()   const { return fimexStyle; }
-  miutil::miString getFimexRun()      const { return fimexRun; }
-  bool getFimexLocation(double& lat, double& lon, miutil::miString& name);
+  std::string getFimexModel()   const { return fimexModel; }
+  std::string getFimexStyle()   const { return fimexStyle; }
+  std::string getFimexRun()      const { return fimexRun; }
+  bool getFimexLocation(double& lat, double& lon, std::string& name);
 
   std::string getFimexInfo();
 

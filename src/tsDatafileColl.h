@@ -36,7 +36,7 @@
 #include <set>
 #include <sys/stat.h>
 
-#include <puTools/miString.h>
+#include <string>
 #include <puTools/TimeFilter.h>
 
 #include <tsData/ptDataStream.h>
@@ -108,10 +108,10 @@ struct ExtStation {
 
 
 struct  DsInfo {
-  miutil::miString streamname;    // name of stream (filename)
-  miutil::miString descript;      // a short description
+  std::string streamname;    // name of stream (filename)
+  std::string descript;      // a short description
   DataStream *dataStream; // the datastream
-  miutil::miString    sType;      // the streamtype
+  std::string    sType;      // the streamtype
   int dataSet;            // dataset number to stream
   int numindset;          // number in dataset
   bool  streamOpen;       // true if stream open
@@ -121,7 +121,7 @@ struct  DsInfo {
   Model modelList[MAXMODELSINSTREAM];// model id
   Run   runList[MAXMODELSINSTREAM];  // run id
   int   idList[MAXMODELSINSTREAM];   // model production number
-  std::vector<miutil::miString> txtList[MAXMODELSINSTREAM]; // info texts
+  std::vector<std::string> txtList[MAXMODELSINSTREAM]; // info texts
 };
 
 struct FimexInfo {
@@ -148,7 +148,7 @@ struct FimexFileindex {
 class DatafileColl
 {
 private:
-  miutil::miString collectName;          // file collection name
+  std::string collectName;          // file collection name
   std::vector<DsInfo>    datastreams;     // List of datafiles
   std::vector<FimexInfo> fimexStreams;    // List of fimex datastreams
   std::vector<FimexFileindex> fimexFileindex;  // list of known files (to check if new ones popped up)
@@ -157,11 +157,10 @@ private:
   pets::KlimaStream*     klimaStream;    // the klima database from an url interface
   pets::MoraStream*      moraStream;     // the stream from SMHO observation database 'Mora'
   std::vector<ExtStation> stations;   // List of stations
-  std::vector<miutil::miString> datasetname;  // name of dataset
-  std::map<miutil::miString,miPosition> pos_info; // all positions ordered by name....
+  std::vector<std::string> datasetname;  // name of dataset
+  std::map<std::string,miPosition> pos_info; // all positions ordered by name....
 
   int numStationsDS[MAXDATASETS];// number of positions in each dataset
-  //vector<miutil::miString> priorStations;// names of prioritized stations
   float tolerance;               // 10000*degrees
   dataset customerds;            // datasets with customerinfo
   ParameterDefinition parDef;
@@ -172,9 +171,9 @@ private:
 
   bool createFimexStreams(FimexFileindex& findex);
 
-  unsigned long _modtime(miutil::miString&); // get file modification time
-  void _filestat(miutil::miString&, struct stat&); // get file stats
-  bool _isafile(const miutil::miString&); // check if stream is a file
+  unsigned long _modtime(std::string&); // get file modification time
+  void _filestat(std::string&, struct stat&); // get file stats
+  bool _isafile(const std::string&); // check if stream is a file
 
   void openWdbStream();
   void closeWdbStream();
@@ -191,7 +190,7 @@ private:
   std::string getCleanStreamType(std::string);
 
 protected:
-  bool findpos(const miutil::miString& name, int& idx);
+  bool findpos(const std::string& name, int& idx);
 
 public:
   DatafileColl();
@@ -205,19 +204,12 @@ public:
   void setObservationBlacklistFromString(std::string blist) { klimaStream->setObservationBlacklistFromString(blist);}
 
   // adds a new dataset
-  int  addDataset(miutil::miString);
-//   // name of station with priority=1
-//   bool addPriorStation(const miutil::miString);
-//   // check if name is prioritized
-//   bool isPriorStation(const miutil::miString);
+  int  addDataset(std::string);
   // adds file to collection, return index
-  int  addStream(const miutil::miString,const miutil::miString,
-		 const miutil::miString,
-		 const int, const int,
-		 const miutil::miString,
-		 const miutil::miString="");
+  int  addStream(const std::string,const std::string,
+      const std::string, const int, const int, const std::string, const std::string="");
   // opens streams containing this model
-  bool openStreams(const miutil::miString mod);
+  bool openStreams(const std::string mod);
   // opens one stream
   bool openStream(const int);
   // opens all streams in collection
@@ -229,23 +221,22 @@ public:
   // check if newer files on disk, return indexes
   bool check(std::vector<int>&);
   // returns name, desc, filesize, dataset and n_in_dataset for file
-  bool getStreamInfo(int,miutil::miString&,miutil::miString&,int&,int&,int&);
+  bool getStreamInfo(int,std::string&,std::string&,int&,int&,int&);
   // returns pointer to datastream object
   DataStream* getDataStream(int idx);
   // returns number of unique positions in dataset
   int getNumPositions(int dset =-1);
   // returns the miPosition for the place by name;
-  miPosition getPositionInfo(miutil::miString name);
+  miPosition getPositionInfo(std::string name);
   // returns info about position idx in dset
-  bool getPosition(int,int&,miutil::miString&,int&,
-		   float&,float&,int&);
+  bool getPosition(int,int&,std::string&,int&,float&,float&,int&);
   // returns info about position idx in dset
   bool getPosition(int dset, int &idx, ExtStation** es);
-  std::map<miutil::miString,miutil::miString> getPositions(const miutil::miString mod);
+  std::map<std::string,std::string> getPositions(const std::string mod);
   // get list of indices for files which contain data for a
   // specific model and run. Returns number of files found
   int findModel(const Model& mid, const Run& rid, int* idx, int max);
-  std::vector<miutil::miString> findRuns(const Model& mid);
+  std::vector<std::string> findRuns(const Model& mid);
 
   void setVerbose(bool v){verbose= v;}
   bool has_opened_streams() {
@@ -274,7 +265,7 @@ public:
   // fimex -------------------------
 
   //std::set<std::string> getFimexModels(std::string style);
-  std::vector<miutil::miString> getFimexTimes(std::string model);
+  std::vector<std::string> getFimexTimes(std::string model);
 
   pets::FimexStream* getFimexStream(std::string model, std::string run);
   bool has_fimex_stream() const { return fimex_streams_opened;}

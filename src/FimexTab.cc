@@ -49,6 +49,7 @@
 
 
 //#include "list-add.xpm"
+#include <sstream>
 
 using namespace std;
 
@@ -229,7 +230,7 @@ void FimexTab::coordinatesChanged()
   emit changeCoordinates(longitude,latitude,"");
 }
 
-miutil::miString FimexTab::coordinateString()
+std::string FimexTab::coordinateString()
 {
   ostringstream ost;
   ost <<  latitude << ":" << longitude;

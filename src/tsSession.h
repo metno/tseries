@@ -32,7 +32,6 @@
 #ifndef _SessionManager_h
 #define _SessionManager_h
 
-#include <puTools/miString.h>
 #include <puTools/miTime.h>
 
 #include <pets2/ptGlobals.h>
@@ -41,6 +40,8 @@
 
 #include <tsSessionOptions.h>
 #include <tsRequest.h>
+
+#include <string>
 #include <vector>
 #include <map>
 
@@ -56,7 +57,7 @@ public:
 private:
   ParameterDefinition pdef;
   struct modeldata{       // name of menu and id to models
-    miutil::miString modelname;
+    std::string modelname;
     Model modelid;
   };
   std::vector<modeldata> models;
@@ -66,8 +67,8 @@ private:
     std::vector<ParId> params; // the parameters
   };
   struct styledata{
-    miutil::miString stylename;      // name of style
-    miutil::miString stylefile;      // name of stylefile
+    std::string stylename;      // name of style
+    std::string stylefile;      // name of stylefile
     ptStyle  style;                  // pets-style
     bool modelchoice;                // whether there is a choice of models
     std::vector<int> modelidx;       // model indices for modelchoice
@@ -77,17 +78,17 @@ private:
   };
   std::vector<styledata> styles;
 
-  bool checkEnvironment(miutil::miString& t);
+  bool checkEnvironment(std::string& t);
 public:
 
   // get defined stylenames, return number of style
-  int getStyleTypes(std::vector<miutil::miString>& stylenam, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
+  int getStyleTypes(std::vector<std::string>& stylenam, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
   // get a PETS style by name
-  ptStyle& getStyle(const miutil::miString, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
+  ptStyle& getStyle(const std::string, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
   // get a PETS style by index
   ptStyle& getStyle(int idx);
   // get the PETS style index - WDBadd
-  int getStyleIndex(const miutil::miString name, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
+  int getStyleIndex(const std::string name, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
 
   // make a sessionoption with given style,model and run
   bool getShowOption(SessionOptions&, int, Model, Run);
@@ -95,19 +96,19 @@ public:
 
 
   // get a list of available models for a given styleindex
-  int getModels(const miutil::miString& s, 
-      std::map<miutil::miString,Model>& modid,
-      std::vector<miutil::miString>& modname,
+  int getModels(const std::string& s,
+      std::map<std::string,Model>& modid,
+      std::vector<std::string>& modname,
       SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
 
 
   // get a list of available runs for style/model
   int getRuns(const int sidx, const int midx,
       std::vector<Run>& runid,
-      std::vector<miutil::miString>& runname);
-  
+      std::vector<std::string>& runname);
+
   // read diagram-sessions from file
-  void readSessions(const miutil::miString& fname,const miutil::miString& stylepath, bool verbose = false);
+  void readSessions(const std::string& fname,const std::string& stylepath, bool verbose = false);
   // for test-purposes
   void makeTestSessions();
 };

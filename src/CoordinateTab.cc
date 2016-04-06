@@ -49,6 +49,7 @@
 
 
 //#include "list-add.xpm"
+#include <sstream>
 
 using namespace std;
 
@@ -236,7 +237,7 @@ void CoordinateTab::coordinatesChanged()
 
 }
 
-miutil::miString CoordinateTab::coordinateString()
+std::string CoordinateTab::coordinateString()
 {
   ostringstream ost;
   ost <<  latitude->getValue() << ":" << longitude->getValue();

@@ -50,8 +50,8 @@
 #include <QAction>
 #include "WdbBookmarkTools.h"
 #include "CoordinateManager.h"
-#include <puTools/miString.h>
 
+#include <string>
 #include <vector>
 
 
@@ -85,7 +85,7 @@ public:
   QString setStyles(const QStringList& qlist);
   void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat);
 
-  miutil::miString coordinateString();
+  std::string coordinateString();
   void setActiveCacheRequest(bool b) { activeCacheRequest=b;}
   bool getActiveCacheRequest() const { return activeCacheRequest;}
   void writeBookmarks();

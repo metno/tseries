@@ -47,27 +47,24 @@
 #include "tsSetup.h"
 #include "tsRequest.h"
 
-
-#include <puTools/miString.h>
 #include <coserver/miMessage.h>
 #include <puDatatypes/miCoordinates.h>
-#include <puTools/miString.h>
 
 #include <string>
 #include <vector>
 #include <set>
 
 
-const miutil::miString DATASET_TSERIES= "T-series ";
-const miutil::miString DATASET_FIMEX=   "T-series Fimex";
-const miutil::miString TARGETS_TSERIES= "TARGETS_TSERIES";
-const miutil::miString IMG_STD_TSERIES= "IMG_STD_TSERIES";
-const miutil::miString IMG_FIN_TSERIES= "IMG_FIN_TSERIES";
-const miutil::miString IMG_NEW_TSERIES= "IMG_NEW_TSERIES";
-const miutil::miString IMG_ACTIVE_TSERIES= "IMG_ACTIVE_TSERIES";
-const miutil::miString IMG_ICON_TSERIES= "IMG_ICON_TSERIES";
-const miutil::miString NOMODEL_TSERIES= "NONE";
-const miutil::miString TS_MINE        = " -- ";
+const std::string DATASET_TSERIES= "T-series ";
+const std::string DATASET_FIMEX=   "T-series Fimex";
+const std::string TARGETS_TSERIES= "TARGETS_TSERIES";
+const std::string IMG_STD_TSERIES= "IMG_STD_TSERIES";
+const std::string IMG_FIN_TSERIES= "IMG_FIN_TSERIES";
+const std::string IMG_NEW_TSERIES= "IMG_NEW_TSERIES";
+const std::string IMG_ACTIVE_TSERIES= "IMG_ACTIVE_TSERIES";
+const std::string IMG_ICON_TSERIES= "IMG_ICON_TSERIES";
+const std::string NOMODEL_TSERIES= "NONE";
+const std::string TS_MINE        = " -- ";
 
 class qtsWork: public QWidget
 {
@@ -85,13 +82,13 @@ private:
   tsRequest      request;
   SelectionType  selectionType;
   unsigned int   maxWDBreadTime;
-  miutil::miString               oldModel;
-  std::map<miutil::miString,Model>    modelMap;
-  std::map<miutil::miString,Model>    fimexModelMap;
+  std::string               oldModel;
+  std::map<std::string,Model>    modelMap;
+  std::map<std::string,Model>    fimexModelMap;
   std::vector<std::string>            myStations;
   miMessage              myTarget;
-  std::map<miutil::miString,miutil::miString> myList;
-  std::set<miutil::miString>          filter;
+  std::map<std::string,std::string> myList;
+  std::set<std::string>          filter;
 
 
   bool reading_data;
@@ -105,11 +102,11 @@ private:
 
   void makeStationList(bool  = false);
   bool makeStyleList();
-  bool makeModelList(const miutil::miString&);
-  bool makeRunList(const miutil::miString&);
-  bool makeRunList(const miutil::miString&,const miutil::miString&);
+  bool makeModelList(const std::string&);
+  bool makeRunList(const std::string&);
+  bool makeRunList(const std::string&,const std::string&);
   void restoreModelFromLog();
-  void checkPosition(miutil::miString st);
+  void checkPosition(std::string st);
   void checkObsPosition(miCoordinates cor);
 
   // WDB ------
@@ -121,27 +118,27 @@ public:
   void collectLog();
   void restoreLog();
   void refresh(bool readData = false);
-  void changeStyle(const miutil::miString&);
-  void changeModel(const miutil::miString&);
-  void changeStation(const miutil::miString&);
-  void changeRun(const miutil::miString&);
+  void changeStyle(const std::string&);
+  void changeModel(const std::string&);
+  void changeStation(const std::string&);
+  void changeRun(const std::string&);
   void updateProgress();
 
 
-  std::set<miutil::miString> Filter() const {return filter;}
-  std::set<miutil::miString> fullPosList();
-  std::set<miutil::miString> createFilter(bool orig=false);
+  std::set<std::string> Filter() const {return filter;}
+  std::set<std::string> fullPosList();
+  std::set<std::string> createFilter(bool orig=false);
   miMessage getFimexStationList();
   miMessage getStationList();
-  miutil::miString  model() const {return request.model();}
-  miutil::miString  lastList() { return (filterOn ? TS_MINE : "" ) + request.model();}
+  std::string  model() const {return request.model();}
+  std::string  lastList() { return (filterOn ? TS_MINE : "" ) + request.model();}
 
   miMessage target();
-  miutil::miString  file(const miutil::miString typ) const { return request.file(typ);}
+  std::string  file(const std::string typ) const { return request.file(typ);}
   qtsShow*  Show() {return show;}
   qtsSidebar* sideBar() const {return sidebar;}
 
-  void changePositions(const miutil::miString&);
+  void changePositions(const std::string&);
   SelectionType getSelectionType() const {return selectionType;};
   void toggleLockHoursToModel(bool lockHoursToModel) { if(sidebar) sidebar->toggleLockHoursToModel(lockHoursToModel);}
   void setShowGridLines( bool s ){ if(show) show->setShowGridLines(s); }
@@ -163,7 +160,7 @@ public:
   void changeRun(const QString&);
   void updateStreams();
   void filterToggled(bool);
-  void newFilter(const std::set<miutil::miString>&);
+  void newFilter(const std::set<std::string>&);
   void latlonInDecimalToggled(bool);
   void refreshFinished();
   //void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(true);}

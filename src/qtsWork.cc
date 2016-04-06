@@ -31,6 +31,7 @@
 #include "qtsWork.h"
 #include "tsConfigure.h"
 
+#include <puTools/miStringFunctions.h>
 #include <coserver/QLetterCommands.h>
 #include <QApplication>
 
@@ -44,7 +45,7 @@
 using namespace std;
 using namespace miutil;
 
-bool qStr2miStr(const QString& i, miString& o)
+bool qStr2miStr(const QString& i, std::string& o)
 {
   o="";
 
@@ -195,9 +196,9 @@ miMessage qtsWork::getStationList()
     return getFimexStationList();
 
 
-  miString f = ( filterOn ? TS_MINE : "");
-  miString iconname  = "tseries.png";
-  miString annotation = DATASET_TSERIES +f+ request.model() ;
+  std::string f = ( filterOn ? TS_MINE : "");
+  std::string iconname  = "tseries.png";
+  std::string annotation = DATASET_TSERIES +f+ request.model() ;
   miMessage m;
   m.command     = qmstrings::positions;
   m.commondesc  = "dataset:image:icon:annotation:normal:selected";
@@ -211,8 +212,8 @@ miMessage qtsWork::getStationList()
 miMessage qtsWork::getFimexStationList()
 {
 
-  miString iconname  = "tseries.png";
-  miString annotation = DATASET_FIMEX;
+  std::string iconname  = "tseries.png";
+  std::string annotation = DATASET_FIMEX;
   miMessage m;
   m.command     = qmstrings::positions;
   m.commondesc  = "dataset:image:icon:annotation:normal:selected";
@@ -226,9 +227,9 @@ miMessage qtsWork::getFimexStationList()
 
 
 
-set<miString> qtsWork::fullPosList()
+set<std::string> qtsWork::fullPosList()
 {
-  set<miString> slist;
+  set<std::string> slist;
   ExtStation **es = new ExtStation*;
 
   int posc = 0;
@@ -241,7 +242,7 @@ set<miString> qtsWork::fullPosList()
 
 void qtsWork::makeStationList(bool forced)
 {
-  if(!request.model().exists())
+  if(request.model().empty())
     restoreModelFromLog();
 
 
@@ -255,8 +256,8 @@ void qtsWork::makeStationList(bool forced)
   myStations.clear();
 
   myList = data.getPositions(request.model());
-  map<miString,miString>::iterator itr = myList.begin();
-  miString pos;
+  map<std::string,std::string>::iterator itr = myList.begin();
+  std::string pos;
   for (;itr!=myList.end();itr++) {
     pos = itr->first;
 
@@ -277,7 +278,7 @@ void qtsWork::makeStationList(bool forced)
 
 bool qtsWork::makeStyleList()
 {
-  vector<miString> stationStyles, wdbStyles, fimexStyles;
+  vector<std::string> stationStyles, wdbStyles, fimexStyles;
 
   session.getStyleTypes( stationStyles, SessionManager::ADD_TO_STATION_TAB);
   session.getStyleTypes( wdbStyles,     SessionManager::ADD_TO_WDB_TAB    );
@@ -290,7 +291,7 @@ bool qtsWork::makeStyleList()
 
   makeFimexModels(fstyle);
 
-  miString st;
+  std::string st;
   qStr2miStr(cstyle,st);
   bool changed = request.setStyle(st);
 
@@ -306,10 +307,10 @@ bool qtsWork::makeStyleList()
 
 }
 
-bool qtsWork::makeModelList(const miString& st)
+bool qtsWork::makeModelList(const std::string& st)
 {
 
-  vector<miString>    modname;
+  vector<std::string>    modname;
   bool changed = false;
 
   int choice =  session.getModels(st, modelMap, modname);
@@ -320,7 +321,7 @@ bool qtsWork::makeModelList(const miString& st)
 
   QString qtmp = sidebar->fillList(modname,StationTab::CMMODEL);
 
-  miString tmp;
+  std::string tmp;
   qStr2miStr(qtmp,tmp);
 
   tmp = modelMap[tmp];
@@ -333,20 +334,20 @@ bool qtsWork::makeModelList(const miString& st)
   return (makeRunList(tmp) || changed);
 }
 
-bool qtsWork::makeRunList(const miString& st)
+bool qtsWork::makeRunList(const std::string& st)
 {
-  vector <miString> runList;
+  vector <std::string> runList;
   runList = data.findRuns(st);
 
   QString qtmp = sidebar->fillList(runList,StationTab::CMRUN);
-  miString tmp;
+  std::string tmp;
   qStr2miStr(qtmp,tmp);
   return request.setRun(atoi(tmp.c_str()));
 }
 
-bool qtsWork::makeRunList(const miString& st,const miString& ru)
+bool qtsWork::makeRunList(const std::string& st,const std::string& ru)
 {
-  vector <miString> runList;
+  vector <std::string> runList;
   runList = data.findRuns(st);
 
   sidebar->fillList(runList,StationTab::CMRUN);
@@ -370,7 +371,7 @@ bool qtsWork::makeRunList(const miString& st,const miString& ru)
 
 void qtsWork::changeStyle(const QString& qstr)
 {
-  miString st;
+  std::string st;
   if(qStr2miStr(qstr,st))
     changeStyle(st);
 
@@ -379,18 +380,19 @@ void qtsWork::changeStyle(const QString& qstr)
 
 void qtsWork::changeModel(const QString& qstr)
 {
-  miString st;
+  std::string st;
   if(qStr2miStr(qstr,st))
     changeModel(st);
   makeStationList();
 }
 
-void qtsWork::changePositions(const miString& pos)
+void qtsWork::changePositions(const std::string& pos)
 {
 
-  if(selectionType == SELECT_BY_STATION  ) return;
+  if (selectionType == SELECT_BY_STATION)
+    return;
 
-  vector<miString> vcoor = pos.split(":");
+  vector<std::string> vcoor = miutil::split(pos, ":");
   if(vcoor.size() < 2) return;
   float lat = atof(vcoor[0].c_str());
   float lon = atof(vcoor[1].c_str());
@@ -402,7 +404,7 @@ void qtsWork::changeStation(const QString& qstr)
 {
   if(selectionType==SELECT_BY_WDB)
     return;
-    miString st;
+    std::string st;
     if(qStr2miStr(qstr,st))
       changeStation(st);
 
@@ -410,7 +412,7 @@ void qtsWork::changeStation(const QString& qstr)
 
 void qtsWork::changeRun(const QString& qstr)
 {
-  miString st;
+  std::string st;
   if(qStr2miStr(qstr,st))
     changeRun(st);
 }
@@ -418,7 +420,7 @@ void qtsWork::changeRun(const QString& qstr)
 
 ////// miString
 
-void qtsWork::changeStyle(const miString& st)
+void qtsWork::changeStyle(const std::string& st)
 {
   bool changed = request.setStyle(st);
 
@@ -426,11 +428,11 @@ void qtsWork::changeStyle(const miString& st)
     refresh(true);
 }
 
-void qtsWork::changeModel(const miString& st)
+void qtsWork::changeModel(const std::string& st)
 {
-  std::map<miutil::miString,Model>::iterator itr = modelMap.begin();
+  std::map<std::string,Model>::iterator itr = modelMap.begin();
 
-  miString tmp = modelMap[st];
+  std::string tmp = modelMap[st];
   QApplication::setOverrideCursor( Qt::WaitCursor );
   data.openStreams(tmp);
   QApplication::restoreOverrideCursor();
@@ -442,7 +444,7 @@ void qtsWork::changeModel(const miString& st)
   //}
 }
 
-void qtsWork::changeStation(const miString& st)
+void qtsWork::changeStation(const std::string& st)
 {
   if(selectionType==SELECT_BY_STATION) {
 
@@ -452,7 +454,7 @@ void qtsWork::changeStation(const miString& st)
 
 
     if(!request.setPos(st)) {
-    miString ST = miutil::to_upper_latin1(st);
+    std::string ST = miutil::to_upper_latin1(st);
 
     if(!request.setPos(ST))
       return;
@@ -469,7 +471,7 @@ void qtsWork::changeStation(const miString& st)
 
 }
 
-void qtsWork::checkPosition(miString name)
+void qtsWork::checkPosition(std::string name)
 {
   if(name.empty()) return;
   miPosition p=data.getPositionInfo(name);
@@ -520,7 +522,7 @@ void qtsWork::checkObsPosition(miCoordinates cor)
 
 
 
-void qtsWork::changeRun(const miString& st)
+void qtsWork::changeRun(const std::string& st)
 {
   if(request.setRun(atoi(st.c_str())))
     refresh(true);
@@ -553,7 +555,7 @@ void qtsWork::refresh(bool readData)
 void qtsWork::restoreLog()
 {
   tsConfigure c;
-  miString mo,po,st;
+  std::string mo,po,st;
   int ru;
 
   bool validR;
@@ -576,7 +578,7 @@ void qtsWork::restoreLog()
   sidebar->set(st,StationTab::CMSTYLE);
   changeStyle(st);
 
-  map<miString,std::string>::const_iterator itr = modelMap.begin();
+  map<std::string,std::string>::const_iterator itr = modelMap.begin();
   for(;itr!=modelMap.end();itr++)
     if(itr->second == mo) {
       sidebar->set(itr->first,StationTab::CMMODEL);
@@ -588,7 +590,7 @@ void qtsWork::restoreLog()
   data.openStreams(mo);
   QApplication::restoreOverrideCursor();
 
-  makeRunList(mo,miString(ru));
+  makeRunList(mo, miutil::from_number(ru));
 
   changeStation(po);
 
@@ -601,9 +603,9 @@ void qtsWork::restoreLog()
 
 
   float lat,lon;
-  miString run;
-  miString posname;
-  miString observationfilter;
+  std::string run;
+  std::string posname;
+  std::string observationfilter;
 
   c.get("OBSERVATIONFILTER",observationfilter);
   data.setObservationBlacklistFromString(observationfilter);
@@ -615,7 +617,7 @@ void qtsWork::restoreLog()
   c.get("WDBRUN",run);
   c.get("WDBPOSNAME",posname);
 
-  miString timecontrol;
+  std::string timecontrol;
   c.get("TIMECONTROL",timecontrol);
 
   sidebar->setTimeControlFromLog(timecontrol);
@@ -631,7 +633,7 @@ void qtsWork::restoreLog()
   request.restoreWdbFromLog(mo,st,lat,lon,miTime(run),posname);
   sidebar->restoreWdbFromLog(mo,st,lat,lon,run,posname);
 
-  miString fimexmodel,fimexstyle,fimexexpand,fimexfilter;
+  std::string fimexmodel,fimexstyle,fimexexpand,fimexfilter;
 
   c.get("FIMEXMODEL",fimexmodel);
   c.get("FIMEXSTYLE",fimexstyle);
@@ -698,7 +700,7 @@ void qtsWork::collectLog()
 void qtsWork::restoreModelFromLog()
 {
   tsConfigure c;
-  miString mo;
+  std::string mo;
   c.get("REQUESTMODEL",mo);
   request.setModel(mo);
 }
@@ -707,10 +709,10 @@ void qtsWork::restoreModelFromLog()
 
 miMessage qtsWork::target()
 {
-  miString t,po,co;
+  std::string t,po,co;
 
   if(myTarget.data.empty())
-    myTarget.data.push_back(miString());
+    myTarget.data.push_back(std::string());
 
   if( selectionType==SELECT_BY_STATION ) {
     po=request.posname();
@@ -739,7 +741,7 @@ void qtsWork::updateStreams()
 
     int size, dset, nindset;
 
-    miString filename, descrip;
+    std::string filename, descrip;
 
     for (unsigned int i=0; i<idx.size();i++){
       data.getStreamInfo(idx[i], filename, descrip, size, dset, nindset);
@@ -756,7 +758,7 @@ void qtsWork::updateStreams()
 
 
   if(data.updateFimexStreams(request.getFimexModel())) {
-    vector<miString> times = data.getFimexTimes(request.getFimexModel());
+    vector<std::string> times = data.getFimexTimes(request.getFimexModel());
     sidebar->fillList(times,StationTab::CMFIMEXRUN);
   }
 
@@ -778,12 +780,12 @@ void qtsWork::latlonInDecimalToggled(bool f)
 
 
 
-set<miString> qtsWork::createFilter(bool orig)
+set<std::string> qtsWork::createFilter(bool orig)
 {
   tsSetup s;
-  set<miString> fl;
+  set<std::string> fl;
 
-  miString fname =  s.files.baseFilter;
+  std::string fname =  s.files.baseFilter;
 
 
   if(!orig) {
@@ -807,7 +809,7 @@ set<miString> qtsWork::createFilter(bool orig)
 
 
 
-  miString token;
+  std::string token;
   while(in) {
     getline(in,token);
 
@@ -822,7 +824,7 @@ set<miString> qtsWork::createFilter(bool orig)
 }
 
 
-void qtsWork::newFilter(const set<miString>& f)
+void qtsWork::newFilter(const set<std::string>& f)
 {
   filter = f;
   if(filterOn)
@@ -839,7 +841,7 @@ void qtsWork::newFilter(const set<miString>& f)
 
   of << "# automatic generated file. Do not edit!" << endl;
 
-  set<miString>::iterator itr=filter.begin();
+  set<std::string>::iterator itr=filter.begin();
 
   for(;itr!=filter.end();itr++)
     of << *itr << endl;
@@ -980,10 +982,10 @@ void qtsWork::makeFimexModels(const QString& activeStyle)
 //  if(!has_fimex_stream)
 //    return;
 
-  miString st;
+  std::string st;
   qStr2miStr(activeStyle,st);
 
-  vector<miString>    modname;
+  vector<std::string>    modname;
   bool changed = false;
 
   int choice =  session.getModels(st, fimexModelMap, modname,SessionManager::ADD_TO_FIMEX_TAB  );
@@ -1002,7 +1004,7 @@ void qtsWork::changeFimexModel(const QString& newmodel)
 {
   request.setFimexModel(newmodel.toStdString());
 
-    vector<miString> times = data.getFimexTimes(newmodel.toStdString());
+    vector<std::string> times = data.getFimexTimes(newmodel.toStdString());
 
     sidebar->fillList(times,StationTab::CMFIMEXRUN);
 

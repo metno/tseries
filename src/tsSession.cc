@@ -31,6 +31,9 @@
 // sessionManager
 
 #include "tsSession.h"
+
+#include <puTools/miStringFunctions.h>
+
 #include <fstream>
 #include <iostream>
 
@@ -39,7 +42,7 @@ using namespace miutil;
 
 static ptStyle emptysty;
 
-int SessionManager::getStyleTypes(vector<miString>& stylename,DiagramTab tab)
+int SessionManager::getStyleTypes(vector<std::string>& stylename,DiagramTab tab)
 {
   if (styles.size()){
     for (unsigned int i=0; i<styles.size();i++){
@@ -52,13 +55,13 @@ int SessionManager::getStyleTypes(vector<miString>& stylename,DiagramTab tab)
 
 
 
-ptStyle& SessionManager::getStyle(const miString name,DiagramTab tab)
+ptStyle& SessionManager::getStyle(const std::string name,DiagramTab tab)
 {
   return getStyle( getStyleIndex(name, tab) );
 }
 
 
-int SessionManager::getStyleIndex(const miString name,DiagramTab tab)
+int SessionManager::getStyleIndex(const std::string name,DiagramTab tab)
 {
    for (unsigned int i=0; i<styles.size();i++)
     if(styles[i].diagramtab == tab)
@@ -78,9 +81,9 @@ ptStyle& SessionManager::getStyle(int idx){
   }
 }
 
-int SessionManager::getModels(const miString& stylename,
-    map<miString,Model>& modid,
-    vector<miString>& modname, DiagramTab tab){
+int SessionManager::getModels(const std::string& stylename,
+    map<std::string,Model>& modid,
+    vector<std::string>& modname, DiagramTab tab){
   int midx;
   int idx = -1;
   for (unsigned int i=0; i<styles.size();i++)
@@ -119,7 +122,7 @@ int SessionManager::getModels(const miString& stylename,
 
 int SessionManager::getRuns(const int sidx, const int midx,
     vector<Run>& runid,
-    vector<miString>& runname){
+    vector<std::string>& runname){
   runid.clear();
   runname.clear();
 
@@ -202,7 +205,7 @@ bool SessionManager::getShowOption(SessionOptions& opt,
     const tsRequest* req, SessionManager::DiagramTab tab )
 {
   int idx = -1;
-  miString stylename = req->style();
+  std::string stylename = req->style();
   Model mod = req->model();
   Run run = req->run();
 
@@ -214,9 +217,9 @@ bool SessionManager::getShowOption(SessionOptions& opt,
   return getShowOption(opt,idx,mod,run);
 }
 
-bool SessionManager::checkEnvironment(miString& t)
+bool SessionManager::checkEnvironment(std::string& t)
 {
-  if(!t.contains("${"))
+  if (!miutil::contains(t, "${"))
     return false;
 
   int start,stop;
@@ -229,18 +232,18 @@ bool SessionManager::checkEnvironment(miString& t)
     return false;
   }
 
-  miString s = t.substr(start, stop-start);
-  miString r = miString("${") + s + "}";
+  std::string s = t.substr(start, stop-start);
+  std::string r = std::string("${") + s + "}";
 
-  s = s.upcase();
+  s = miutil::to_upper(s);
 
-  miString n = getenv(s.c_str());
+  std::string n = getenv(s.c_str());
 
-  t.replace(r,n);
+  miutil::replace(t, r,n);
   return true;
 }
 
-void SessionManager::readSessions(const miString& fname,const miString& stylepath, bool verbose)
+void SessionManager::readSessions(const std::string& fname,const std::string& stylepath, bool verbose)
 {
   const int f_models= 1;
   const int f_diagram= 2;
@@ -249,8 +252,8 @@ void SessionManager::readSessions(const miString& fname,const miString& stylepat
   const int f_modelspecific= 5;
 
   ifstream sfile;
-  miString buf, keyw, argu;
-  vector<miString> parts;
+  std::string buf, keyw, argu;
+  vector<std::string> parts;
 
   ParId parid = ID_UNDEF;
   Model model= M_UNDEF;
@@ -278,18 +281,18 @@ void SessionManager::readSessions(const miString& fname,const miString& stylepat
   while (sfile.good()){
     //     sfile >> buf;
     getline(sfile,buf);
-    buf.trim();
+    miutil::trim(buf);
     checkEnvironment(buf);
     // discard empty lines and comments
     if (!buf.length() || buf[0]=='#') continue;
     // check for commands (keyword in brackets)
     if (buf[0]=='['){
-      if (buf.contains("DIAGRAM")){
+      if (miutil::contains(buf, "DIAGRAM")){
         sdata.diagramtab = ADD_TO_STATION_TAB;
-        if(buf.contains("WDB")) {
+        if(miutil::contains(buf, "WDB")) {
           sdata.diagramtab = ADD_TO_WDB_TAB;
         }
-        else if(buf.contains("FIMEX"))
+        else if(miutil::contains(buf, "FIMEX"))
          sdata.diagramtab = ADD_TO_FIMEX_TAB;
 
 
@@ -305,32 +308,32 @@ void SessionManager::readSessions(const miString& fname,const miString& stylepat
             pdata.params.end());
         status= f_diagram;
 
-      } else if (buf.contains("ADD")){
+      } else if (miutil::contains(buf, "ADD")){
         if (status!=f_models){
           // Add a new diagram
           styles.push_back(sdata);
           // read style
-          if (styles[nums].stylefile.exists())
+          if ((not styles[nums].stylefile.empty()))
             styles[nums].style.readStyle(styles[nums].stylefile,
                 verbose);
           else
             cerr << "ptStyle::readStyle. name of stylefile undefined" << endl;
           nums++;
         }
-      } else if (buf.contains("LEGALMODELS")){
+      } else if (miutil::contains(buf, "LEGALMODELS")){
         // Starting list of legal models for modelindependent params
         status= f_legalmodels;
-      } else if (buf.contains("MODELINDEPENDENT")){
+      } else if (miutil::contains(buf, "MODELINDEPENDENT")){
         // Starting list of modelindependent params
         status= f_modelindependent;
-      } else if (buf.contains("MODELSPECIFIC")){
+      } else if (miutil::contains(buf, "MODELSPECIFIC")){
         // Starting a new list of modelspecific params
         status= f_modelspecific;
         model= M_UNDEF;
         pdata.midx= -1;
         pdata.params.erase(pdata.params.begin(),
             pdata.params.end());
-      } else if (buf.contains("END")){
+      } else if (miutil::contains(buf, "END")){
         if (status==f_modelspecific){
           // Ended a modelspecific list
           if (pdata.params.size() && pdata.midx!=-1)
@@ -340,7 +343,7 @@ void SessionManager::readSessions(const miString& fname,const miString& stylepat
             " error in modelspecific list for diagram: " <<
             sdata.stylename << endl;
         }
-      } else if (buf.contains("MODELS")){
+      } else if (miutil::contains(buf, "MODELS")){
         // Starting global model definition
         status= f_models;
       } else
@@ -349,8 +352,8 @@ void SessionManager::readSessions(const miString& fname,const miString& stylepat
       continue;
     }
     // split into keyword and argument
-    parts= buf.split('=',true);
     if (parts.size()<2) continue;
+    parts= miutil::split(buf, "=", true);
     keyw= parts[0];
     argu= parts[1];
     // global modellist

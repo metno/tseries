@@ -86,7 +86,7 @@ private:
   int forecastLength;
   bool lengthChanged;
   miutil::miTime observationStartTime;
-  std::map<miutil::miString,miutil::miTime> timemarks;
+  std::map<std::string,miutil::miTime> timemarks;
   void useTimemarks();
   bool prepareData();
   void prepareDiagram();
@@ -99,7 +99,7 @@ private:
   int  minProg;
   bool forceSequentialRead;
 
-  bool readFimexData(pets::FimexStream* fimex, double lat, double lon, miutil::miString stationname,
+  bool readFimexData(pets::FimexStream* fimex, double lat, double lon, std::string stationname,
       std::vector<ParId>& inpars, std::vector<ParId>& outpars, bool sequential_read);
 
 
@@ -121,8 +121,8 @@ public:
   void resetNewLength() { lengthChanged = false; }
   void plot();
 
-  void setTimemark(miutil::miTime nt,miutil::miString name="");
-  void clearTimemarks(miutil::miString name="");
+  void setTimemark(miutil::miTime nt,std::string name="");
+  void clearTimemarks(std::string name="");
   void setShowObservations(bool o) { showObservations=o;}
   void setObservationStartTime(miutil::miTime st) {observationStartTime=st;}
   miutil::miTime getObservationStartTime() const { return observationStartTime; }

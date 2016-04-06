@@ -36,6 +36,8 @@
 
 #include "StationTab.h"
 
+#include <puTools/miStringFunctions.h>
+
 using namespace miutil;
 using namespace std;
 
@@ -153,7 +155,7 @@ QString StationTab::current(const StationTab::lEntry c)
 }
 
 
-void StationTab::set(const miString& cur,const StationTab::lEntry c)
+void StationTab::set(const std::string& cur,const StationTab::lEntry c)
 {
   int idx;
   if(c == CMSTYLE) {

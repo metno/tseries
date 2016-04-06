@@ -31,8 +31,7 @@
 #ifndef _diImageIO_h
 #define _diImageIO_h
 
-
-#include <puTools/miString.h>
+#include <string>
 
 namespace imageIO {
 
@@ -41,7 +40,7 @@ namespace imageIO {
   */
 
   struct Image_data {
-    miutil::miString filename;        // source filename
+    std::string filename;        // source filename
     int width;                // width of image
     int height;               // height of image
     int nchannels;            // 3=RGB, 4=RGBA
@@ -49,7 +48,7 @@ namespace imageIO {
     
     Image_data()
       :filename(""),width(0),height(0),nchannels(0),data(0){}
-    Image_data(const miutil::miString& f)
+    Image_data(const std::string& f)
       :filename(f),width(0),height(0),nchannels(0),data(0){}
     ~Image_data(){if (data) delete[] data;}
   };

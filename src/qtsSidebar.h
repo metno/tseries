@@ -51,7 +51,6 @@
 
 #include <vector>
 #include <string>
-#include <puTools/miString.h>
 #include <coserver/ClientSelection.h>
 #include <coserver/ClientButton.h>
 
@@ -103,25 +102,25 @@ public slots:
 public:
   qtsSidebar(QString language);
 
-  QString fillList(const std::vector<miutil::miString>& v, const StationTab::lEntry l);
+  QString fillList(const std::vector<std::string>& v, const StationTab::lEntry l);
   QString fillStations(const QStringList& s) { return stationtab->fillStations(s);}
 
   QString current(const StationTab::lEntry l) { return stationtab->current(l);}
   QString station()               { return stationtab->station(); }
-  void set(const miutil::miString& s,const  StationTab::lEntry c) {stationtab->set(s,c);}
+  void set(const std::string& s,const  StationTab::lEntry c) {stationtab->set(s,c);}
 
   ClientSelection* pluginButton() const {return pluginB;}
   QPushButton*  targetButton() const {return targetB;}
   void setStationInfo(QString s) { stationtab->setStationInfo(s); }
   void setObsInfo(QString s);
-  miutil::miString coordinateString() const { return wdbtab->coordinateString(); }
+  std::string coordinateString() const { return wdbtab->coordinateString(); }
 
   void writeBookmarks();
   void setTab(int idx);
   int getTab() { return tabs->currentIndex(); }
 
-  miutil::miString getTimecontrolLog() { return timecontrol->getTimecontrolLog(); }
-  void setTimeControlFromLog(miutil::miString t) { timecontrol->setTimecontrolFromlLog(t); }
+  std::string getTimecontrolLog() { return timecontrol->getTimecontrolLog(); }
+  void setTimeControlFromLog(std::string t) { timecontrol->setTimecontrolFromlLog(t); }
   void toggleLockHoursToModel(bool lockHoursToModel) {if(timecontrol) timecontrol->toggleLockHoursToModel(lockHoursToModel);}
 
   void setObservationsEnabled(bool e) {if(e) observationB->setChecked(e);}
@@ -135,7 +134,7 @@ public:
   void setCoordinates(float lon, float lat);
 
   void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat) {wdbtab->setWdbGeometry(minLon, maxLon, minLat, maxLat);}
-  bool restoreWdbFromLog(miutil::miString mod, miutil::miString sty, double lat, double lon, miutil::miString run, miutil::miString posname);
+  bool restoreWdbFromLog(std::string mod, std::string sty, double lat, double lon, std::string run, std::string posname);
   void enableBusyLabel(bool enable);
   void enableCacheButton(bool enable, bool force, unsigned long querytime);
 
@@ -160,7 +159,7 @@ public:
 
   std::string getFimexExpanded() const { return fimextab->getExpandedDirs(); }
   bool restoreFimexFromLog(std::string mod, std::string sty, std::string expanded);
-  miutil::miString fimexCoordinateString() const { return fimextab->coordinateString(); }
+  std::string fimexCoordinateString() const { return fimextab->coordinateString(); }
 
 
 signals:

@@ -44,6 +44,7 @@
 #include <coserver/QLetterCommands.h>
 #include <puTools/ttycols.h>
 #include <puTools/miDate.h>
+#include <puTools/miStringFunctions.h>
 #include <tsData/FimexStream.h>
 
 #include <fstream>
@@ -60,10 +61,10 @@
 using namespace std;
 using namespace miutil;
 
-const miString thisTM = "MARKEDTIME";
-const miString dianaTM = "DIANATIME";
+const std::string thisTM = "MARKEDTIME";
+const std::string dianaTM = "DIANATIME";
 
-qtsMain::qtsMain(miString l) :
+qtsMain::qtsMain(std::string l) :
             lang(l), QMainWindow()
 
 {
@@ -336,8 +337,8 @@ void qtsMain::quit()
 
 void qtsMain::raster()
 {
-  miString format = "PNG";
-  miString fname = "./" + work->file("png");
+  std::string format = "PNG";
+  std::string fname = "./" + work->file("png");
 
   QString fpath = fname.c_str();
   QString fcaption = "save file dialog";
@@ -357,11 +358,11 @@ void qtsMain::raster()
 
   cerr << "Saving: " << fname << endl;
 
-  if (fname.contains(".xpm") || fname.contains(".XPM"))
+  if (miutil::contains(fname, ".xpm") || miutil::contains(fname, ".XPM"))
     format = "XPM";
-  else if (fname.contains(".bmp") || fname.contains(".BMP"))
+  else if (miutil::contains(fname, ".bmp") || miutil::contains(fname, ".BMP"))
     format = "BMP";
-  else if (fname.contains(".eps") || fname.contains(".epsf")) {
+  else if (miutil::contains(fname, ".eps") || miutil::contains(fname, ".epsf")) {
     makeEPS(fname);
     return;
   }
@@ -376,7 +377,7 @@ void qtsMain::print()
   if(!printer)
     printer = new QPrinter(QPrinter::HighResolution);
 
-  miString command;
+  std::string command;
 
   if(!printer)
     printer = new QPrinter(QPrinter::HighResolution);
@@ -390,7 +391,7 @@ void qtsMain::print()
 
   printOptions priop;
 
-  miString fname = work->file("ps"); //"tseries_temp.ps"
+  std::string fname = work->file("ps"); //"tseries_temp.ps"
 
   QString ofn = printer->outputFileName();
 
@@ -447,7 +448,7 @@ void qtsMain::print()
 
 }
 
-void qtsMain::makeEPS(const miString& filename)
+void qtsMain::makeEPS(const std::string& filename)
 {
   QApplication::setOverrideCursor(Qt::WaitCursor);
   printOptions priop;
@@ -490,11 +491,11 @@ void qtsMain::writeLog()
   config.set("SHOWICON", sicon);
   config.set("TIMEMARK", tmark);
   config.set("LATLONDEC", latlond);
-  config.set("FONT", miString(qApp->font().toString().toStdString()));
+  config.set("FONT", std::string(qApp->font().toString().toStdString()));
   config.set("LOCKHOURSTOMODEL", lockHoursToModel);
   config.set("SHOWGRIDLINES", showGridLines);
 
-  if (lang.exists())
+  if ((not lang.empty()))
     config.set("LANG", lang);
 
   work->collectLog();
@@ -505,7 +506,7 @@ void qtsMain::writeLog()
 void qtsMain::restoreLog()
 {
   int sx, sy, px, py;
-  miString f;
+  std::string f;
 
   if (config.get("SIZEY", sy) && config.get("SIZEX", sx))
     this->resize(sx, sy);
@@ -629,7 +630,7 @@ void qtsMain::setDianaTimemark(miTime mark)
 }
 
 // send one image to diana (with name)
-void qtsMain::sendImage(const miString name, const QImage& image)
+void qtsMain::sendImage(const std::string name, const QImage& image)
 {
   if (!dianaconnected)
     return;
@@ -651,7 +652,7 @@ void qtsMain::sendImage(const miString name, const QImage& image)
   for (int i = 0; i < n; i++) {
     ost << setw(7) << int((*a).data()[i]);
   }
-  miString txt = ost.str();
+  std::string txt = ost.str();
   m.data.push_back(txt);
 
   sendLetter(m);
@@ -663,7 +664,7 @@ void qtsMain::refreshDianaStations()
   if (!dianaconnected || !sposition)
     return;
 
-  miString prevModel = currentModel;
+  std::string prevModel = currentModel;
 
 
   if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX){
@@ -688,7 +689,7 @@ void qtsMain::refreshDianaStations()
 
 }
 
-void qtsMain::disablePoslist(miString prev)
+void qtsMain::disablePoslist(std::string prev)
 {
   if (prev == NOMODEL_TSERIES)
     return;
@@ -982,22 +983,22 @@ void qtsMain::manageFimexFilter()
 void qtsMain::manageFilter()
 {
 
-  set<miString> p = work->fullPosList();
-  set<miString> f = work->Filter();
-  set<miString> o = work->createFilter(true);
+  set<std::string> p = work->fullPosList();
+  set<std::string> f = work->Filter();
+  set<std::string> o = work->createFilter(true);
 
   qtsFilterManager * fm = new qtsFilterManager(p, f, o, this);
 
   if (fm->exec()) {
     // clean out the old filters from diana
     if (dianaconnected) {
-      set<miString>::iterator itr = sendModels.begin();
+      set<std::string>::iterator itr = sendModels.begin();
       for (; itr != sendModels.end(); itr++)
-        if (itr->contains(TS_MINE)) {
+        if (miutil::contains(*itr, TS_MINE)) {
           sendModels.erase(*itr);
           itr--;
         }
-      if (currentModel.contains(TS_MINE))
+      if (miutil::contains(currentModel, TS_MINE))
         currentModel = NOMODEL_TSERIES;
     }
     // new filter
@@ -1025,7 +1026,7 @@ void qtsMain::findLanguages()
   QDir d;
 
   tsSetup setup;
-  miString dlang = (setup.path.lang.empty() ? "./" : setup.path.lang[0]);
+  std::string dlang = (setup.path.lang.empty() ? "./" : setup.path.lang[0]);
 
   d.setPath(dlang.c_str());
   QStringList f = d.entryList(QStringList("tseries_??.qm"));
@@ -1048,7 +1049,7 @@ void qtsMain::findLanguages()
 
   QAction * action = new QAction("en", languageGroup);
   action->setCheckable(true);
-  action->setChecked(!lang.exists() || lang == "en");
+  action->setChecked((not !lang.empty()) || lang == "en");
   languageGroup->addAction(action);
   menu_lang->addAction(action);
 }

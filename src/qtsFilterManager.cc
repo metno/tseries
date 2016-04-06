@@ -41,12 +41,9 @@
 #include "tb_refresh.xpm"
 
 using namespace std;
-using namespace miutil;
 
-qtsFilterManager::qtsFilterManager(const set<miString>& p,
-				   const set<miString>& f,
-				   const set<miString>& o,
-				   QWidget* parent)
+qtsFilterManager::qtsFilterManager(const set<std::string>& p,
+    const set<std::string>& f, const set<std::string>& o, QWidget* parent)
   : QDialog( parent)
 {
   setModal(true);
@@ -153,10 +150,10 @@ qtsFilterManager::qtsFilterManager(const set<miString>& p,
 }
 
 
-QStringList qtsFilterManager::createList(const set<miString>& in)
+QStringList qtsFilterManager::createList(const set<std::string>& in)
 {
   QStringList slist;
-  set<miString>::iterator itr=in.begin();
+  set<std::string>::iterator itr=in.begin();
   for(;itr!=in.end();itr++)
     slist << itr->c_str();
   return slist;
@@ -164,12 +161,12 @@ QStringList qtsFilterManager::createList(const set<miString>& in)
 
 
 
-set<miString> qtsFilterManager::result()
+set<std::string> qtsFilterManager::result()
 {
-  set<miString> res;
+  set<std::string> res;
   if(filtered->count()) {
     for(int i=0; i < filtered->count();i++) {
-      miString a = filtered->item(i)->text().toStdString();
+      std::string a = filtered->item(i)->text().toStdString();
       res.insert(a);
     }
   }

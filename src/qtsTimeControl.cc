@@ -28,9 +28,10 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+#include <puTools/miStringFunctions.h>
+
 #include <iostream>
 #include <sstream>
-#include <puTools/miString.h>
 #include "qtsTimeControl.h"
 
 using namespace std;
@@ -78,7 +79,7 @@ TimeControl::TimeControl(QWidget* parent)
 }
 
 
-miutil::miString TimeControl::getTimecontrolLog()
+std::string TimeControl::getTimecontrolLog()
 {
   ostringstream ost;
   ost << totalrange << "," << fcastrange << "," << startSlider->value() << "," << stopSlider->value();
@@ -87,9 +88,10 @@ miutil::miString TimeControl::getTimecontrolLog()
 
 }
 
-void TimeControl::setTimecontrolFromlLog(  miutil::miString logString)
+
+void TimeControl::setTimecontrolFromlLog(  std::string logString)
 {
-  vector<miutil::miString> logEntries=logString.split(",");
+  vector<std::string> logEntries=miutil::split(logString, ",");
   if(logEntries.size() < 4) return;
 
   int t=atoi(logEntries[0].c_str());

@@ -31,8 +31,9 @@
 #ifndef _diPrintOptions_h
 #define _diPrintOptions_h
 
-#include <puTools/miString.h>
+#include <string>
 #include <map>
+#include <vector>
 
 namespace d_print {
 
@@ -69,8 +70,8 @@ namespace d_print {
 
 class printOptions {
 public:
-  miutil::miString fname;                   // name of output file
-  miutil::miString printer;                 // name of printer
+  std::string fname;                   // name of output file
+  std::string printer;                 // name of printer
   d_print::Orientation orientation; // paper-orientation
   d_print::ColourOption colop;      // use of colour
   d_print::PageSize pagesize;       // pagesize in standard notation
@@ -102,26 +103,26 @@ public:
 class printerManager {
 private:
   struct printerExtra { // extra commands for postscript
-    std::map<miutil::miString,miutil::miString> keys;// keys for matching..
+    std::map<std::string,std::string> keys;// keys for matching..
     std::map<std::string,std::string> commands;// Extra output-commands
   };
   static std::vector<printerExtra> printers;
-  static std::map<miutil::miString,d_print::PageSize> pages;
+  static std::map<std::string,d_print::PageSize> pages;
   static std::map<d_print::PageSize,d_print::PaperSize> pagesizes;
-  static miutil::miString pcommand; // printercommand
+  static std::string pcommand; // printercommand
 public:
   printerManager();
 
-  bool readPrinterInfo(const miutil::miString fname); // parse printer-info file
-  d_print::PageSize  getPage(const miutil::miString s); // page from string
+  bool readPrinterInfo(const std::string fname); // parse printer-info file
+  d_print::PageSize  getPage(const std::string s); // page from string
   d_print::PaperSize getSize(const d_print::PageSize ps);// size from page
   // check if special commands exist for this setup
   bool checkSpecial(const printOptions& po, std::map<std::string,std::string>& mc);
   // expand variables in print-command
-  bool expandCommand(miutil::miString& com, const printOptions& po);
+  bool expandCommand(std::string& com, const printOptions& po);
 
-  void setPrintCommand(const miutil::miString pc){pcommand= pc; }
-  miutil::miString printCommand() const {return pcommand; }
+  void setPrintCommand(const std::string pc){pcommand= pc; }
+  std::string printCommand() const {return pcommand; }
 };
 
 #endif

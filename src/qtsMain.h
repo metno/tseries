@@ -103,7 +103,7 @@ private:
 
 
   // languages
-  std::map<int,miutil::miString> langID;
+  std::map<int,std::string> langID;
 
   // printerdefinitions
   printerManager pman;
@@ -118,10 +118,10 @@ private:
 
   miMessage target;
 
-  miutil::miString      lang;
-  miutil::miString      currentModel;
+  std::string      lang;
+  std::string      currentModel;
   miutil::miTime        currentTime;
-  std::set<miutil::miString> sendModels;
+  std::set<std::string> sendModels;
 
 
   void timerEvent(QTimerEvent*);
@@ -144,13 +144,13 @@ private:
   void makeSettingsMenu();
 
   void restoreLog();
-  void sendImage(const miutil::miString, const QImage&);
+  void sendImage(const std::string, const QImage&);
   void setRemoteParameters();
-  void makeEPS(const miutil::miString&);
+  void makeEPS(const std::string&);
   void setTimemark(miutil::miTime);
   void setDianaTimemark(miutil::miTime);
 
-  void disablePoslist(miutil::miString);
+  void disablePoslist(std::string);
   void enableCurrentPoslist();
   void sendNewPoslist();
 
@@ -203,9 +203,9 @@ private slots:
   void fimexPoslistChanged();
   void fimexPositionChanged(const QString&);
 public:
-  qtsMain(miutil::miString l);
+  qtsMain(std::string l);
 
-  void setLang(miutil::miString l) { lang=l; }
+  void setLang(std::string l) { lang=l; }
 
 };
 

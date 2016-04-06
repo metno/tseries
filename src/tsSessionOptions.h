@@ -34,7 +34,6 @@
 
 #include <vector>
 
-#include <puTools/miString.h>
 #include <puTools/miTime.h>
 #include <puDatatypes/miPosition.h>
 
@@ -42,17 +41,20 @@
 #include <tsData/ptParameterDefinition.h>
 #include <tsData/ptPrimitiveType.h>
 
+#include <string>
+
 class SessionOptions {
 private:
   struct modeldata{
     Model model;
-    miutil::miString modelname;
+    std::string modelname;
     std::vector<ParId> parameters;
   };
+
 private:
   std::vector<modeldata> mdata;
   miutil::miTime start, stop;  // timeline interval to use
-  miutil::miString dialogname; // dialog headline (Customer name etc)
+  std::string dialogname; // dialog headline (Customer name etc)
   miPosition station;
 
   bool idxOk(const int idx) { return (idx>=0 && idx<(signed int)mdata.size());}
@@ -62,10 +64,10 @@ public:
   void Erase()     { mdata.clear();       }
   int numModels()  { return mdata.size(); }
   Model getmodel(const int idx);
-  int addModel(const Model, const miutil::miString);
+  int addModel(const Model, const std::string);
 
   // return name of model
-  const miutil::miString& getmodelname(const int);
+  const std::string& getmodelname(const int);
   const std::vector<ParId>& paramVector(const int idx);
   const std::vector<ParId>  distinctParamVector(const int idx);
   // add a new parameter to a model
@@ -77,10 +79,10 @@ public:
 
   // return dialogname
 
-  const miutil::miString& getdialogname() { return(dialogname); }
+  const std::string& getdialogname() { return(dialogname); }
   const miPosition& getstation()  { return(station);    }
 
-  void setdialogname(const miutil::miString& n){ dialogname=n;}
+  void setdialogname(const std::string& n){ dialogname=n;}
   void setstation(const miPosition& s) { station=s;   }
 
 

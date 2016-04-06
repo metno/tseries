@@ -163,13 +163,13 @@ void qtsShow::post_hardcopy()
 
 
 
-void qtsShow::setTimemark(miTime tim, miString nam)
+void qtsShow::setTimemark(miTime tim, std::string nam)
 {
   drawArea->setTimemark(tim,nam);
   refresh(false);
 }
 
-void qtsShow::clearTimemarks(miString nam)
+void qtsShow::clearTimemarks(std::string nam)
 {
   drawArea->clearTimemarks(nam);
   refresh(false);

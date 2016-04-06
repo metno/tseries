@@ -36,7 +36,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QLayout>
-#include <puTools/miString.h>
+#include <string>
 
 class TimeControl : public QFrame {
   Q_OBJECT
@@ -57,8 +57,8 @@ public:
   int getLengthValue();
   int getStartValue();
   void setTimeRange(int, int);
-  miutil::miString getTimecontrolLog();
-  void setTimecontrolFromlLog(  miutil::miString t);
+  std::string getTimecontrolLog();
+  void setTimecontrolFromlLog(  std::string t);
   void toggleLockHoursToModel(bool lockHoursToModel) {lockHours = lockHoursToModel;}
 signals:
   void minmaxProg(int,int);

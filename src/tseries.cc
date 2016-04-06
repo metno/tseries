@@ -34,7 +34,7 @@
 
 #include <puTools/miCommandLine.h>
 #include <puTools/miTime.h>
-#include <puTools/miString.h>
+#include <puTools/miStringFunctions.h>
 
 #include <QTranslator>
 #include <QApplication>
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
   string    title     = "T-series";
   tsSetup     setup;
   tsConfigure config;
-  miString    lang;
+  std::string    lang;
 
   if(cl.hasFlag('h')){
     cerr << "Usage: "
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 #if defined(METLIBS_PUTOOLS_VERSION_CURRENT_INT) && METLIBS_PUTOOLS_VERSION_CURRENT_INT >= METLIBS_PUTOOLS_VERSION_INT(5,1,4)
     vector<string> overridetokens=cl.arg('d');
 #else
-    vector<miString> overridetokens=cl.arg('d');
+    vector<std::string> overridetokens=cl.arg('d');
 #endif
     for(int i=0; i<overridetokens.size();i++)
       setup.overrideToken(overridetokens[i]);

@@ -58,8 +58,8 @@ public:
   void refresh(bool readData = false);
   void hardcopy(const printOptions&);
   void post_hardcopy();
-  void setTimemark(miutil::miTime,miutil::miString="");
-  void clearTimemarks(miutil::miString="");
+  void setTimemark(miutil::miTime,std::string="");
+  void clearTimemarks(std::string="");
   void setProgintervall(int mi,int ma) { drawArea->setProgintervall(mi,ma);}
   void setShowObservations(bool showObs) {drawArea->setShowObservations(showObs);}
   void getTimeRange(int& t,int& f) { drawArea->getTimeRange(t,f);}

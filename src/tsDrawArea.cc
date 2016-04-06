@@ -326,7 +326,7 @@ void tsDrawArea::prepareDiagram()
   }
   if (sev.size()) {
     vector<std::string> symbimages;
-    miString stmp;
+    std::string stmp;
     for (i = minsymb; i <= maxsymb; i++) {
       tmpSymbol = setup.wsymbols.getSymbol(i);
       stmp = setup.path.images + tmpSymbol.picture();
@@ -339,14 +339,14 @@ void tsDrawArea::prepareDiagram()
 
 }
 
-void tsDrawArea::setTimemark(miTime nt, miString name)
+void tsDrawArea::setTimemark(miTime nt, std::string name)
 {
   timemarks[name] = nt;
 }
 
-void tsDrawArea::clearTimemarks(miString el)
+void tsDrawArea::clearTimemarks(std::string el)
 {
-  if (!el.exists())
+  if ((not !el.empty()))
     timemarks.clear();
 
   if (timemarks.count(el))
@@ -358,7 +358,7 @@ void tsDrawArea::useTimemarks()
   if (timemarks.empty() || !theData || !diagram)
     return;
 
-  map<miString, miTime>::iterator itr = timemarks.begin();
+  map<std::string, miTime>::iterator itr = timemarks.begin();
   vector<miTime> mark(1);
 
   for (; itr != timemarks.end(); itr++) {
@@ -469,7 +469,7 @@ bool tsDrawArea::prepareWdbData()
   // the style index - needed to find parameters according to our model which
   // is probably unknown in tsDiagrams
   int styleIndex = session->getStyleIndex(request->getWdbStyle(),SessionManager::ADD_TO_WDB_TAB);
-  miString mod = request->getWdbModel();
+  std::string mod = request->getWdbModel();
 
   //  Run=0; run is not used in the function at all!
   bool retryGetShowOptions = false;
@@ -532,11 +532,11 @@ bool tsDrawArea::prepareWdbData()
 bool tsDrawArea::prepareFimexData()
 {
 
-  miString fimexname;
+  std::string fimexname;
   double lat,lon;
-  miString fimexmodel = request->getFimexModel();
-  miString fimexstyle = request->getFimexStyle();
-  miString fimexrun   = request->getFimexRun();
+  std::string fimexmodel = request->getFimexModel();
+  std::string fimexstyle = request->getFimexStyle();
+  std::string fimexrun   = request->getFimexRun();
   if(!request->getFimexLocation(lat,lon,fimexname)) {
     cerr << "Empty position - dropping interpolation" << endl;
     return false;
@@ -647,7 +647,7 @@ bool tsDrawArea::prepareFimexData()
 
 }
 
-bool tsDrawArea::readFimexData(pets::FimexStream* fimex, double lat, double lon, miutil::miString stationname,
+bool tsDrawArea::readFimexData(pets::FimexStream* fimex, double lat, double lon, std::string stationname,
     std::vector<ParId>& inpars, std::vector<ParId>& outpars, bool sequential_read)
 {
 

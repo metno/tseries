@@ -107,7 +107,7 @@ DatafileColl::~DatafileColl()
   closeMoraStream();
 }
 
-int DatafileColl::addDataset(miString name)
+int DatafileColl::addDataset(std::string name)
 {
   int n = datasetname.size();
   if (n < MAXDATASETS) {
@@ -128,9 +128,9 @@ string DatafileColl::getCleanStreamType(string streamtype)
 }
 
 
-int DatafileColl::addStream(const miString name, const miString desc,
-    const miString streamtype, const int dset, const int numindset,
-    const miString sparid, const miString fimexconfig)
+int DatafileColl::addStream(const std::string name, const std::string desc,
+    const std::string streamtype, const int dset, const int numindset,
+    const std::string sparid, const std::string fimexconfig)
 {
   tsSetup setup;
 
@@ -181,7 +181,7 @@ int DatafileColl::addStream(const miString name, const miString desc,
   }
 }
 
-bool DatafileColl::openStreams(const miString mod)
+bool DatafileColl::openStreams(const std::string mod)
 {
   if (verbose)
     cout << "- Open streams with model " << mod << endl;
@@ -307,7 +307,7 @@ void DatafileColl::closeStreams()
 
 }
 
-bool DatafileColl::_isafile(const miString& name)
+bool DatafileColl::_isafile(const std::string& name)
 {
   FILE *fp;
   if ((fp = fopen(name.c_str(), "r"))) {
@@ -317,7 +317,7 @@ bool DatafileColl::_isafile(const miString& name)
     return false;
 }
 
-unsigned long DatafileColl::_modtime(miString& fname)
+unsigned long DatafileColl::_modtime(std::string& fname)
 {
   struct stat filestat;
   // first check if fname is a proper file
@@ -328,7 +328,7 @@ unsigned long DatafileColl::_modtime(miString& fname)
     return 1;
 }
 
-void DatafileColl::_filestat(miString& fname, struct stat& filestat)
+void DatafileColl::_filestat(std::string& fname, struct stat& filestat)
 {
   stat(fname.c_str(), &filestat);
 }
@@ -376,8 +376,7 @@ void DatafileColl::makeStationList()
         nums = 0;
         while (datastreams[i].dataStream->getStationSeq(nums, st)) {
           // force upcase on all stations
-        // miString uppername= to_upper(st.Name());
-          miString uppername = miutil::to_upper_latin1(st.Name());
+          std::string uppername = miutil::to_upper_latin1(st.Name());
           st.setName(uppername);
 
           // Check if station already exists
@@ -413,7 +412,7 @@ void DatafileColl::makeStationList()
 
 }
 
-bool DatafileColl::getStreamInfo(int idx, miString& name, miString& desc,
+bool DatafileColl::getStreamInfo(int idx, std::string& name, std::string& desc,
     int& size, int& dset, int& nindset)
 {
   struct stat fstat;
@@ -457,7 +456,7 @@ int DatafileColl::getNumPositions(int dset)
     return 0;
 }
 
-miPosition DatafileColl::getPositionInfo(miString name)
+miPosition DatafileColl::getPositionInfo(std::string name)
 {
   if (pos_info.count(name))
     return pos_info[name];
@@ -465,7 +464,7 @@ miPosition DatafileColl::getPositionInfo(miString name)
   return empty;
 }
 
-bool DatafileColl::getPosition(int dset, int &idx, miString& name, int &id,
+bool DatafileColl::getPosition(int dset, int &idx, std::string& name, int &id,
     float& lat, float& lng, int &prio)
 {
   int n = stations.size();
@@ -511,9 +510,9 @@ bool DatafileColl::getPosition(int dset, int &idx, ExtStation** es)
   return true;
 }
 
-map<miString, miString> DatafileColl::getPositions(const miString mod)
+map<std::string, std::string> DatafileColl::getPositions(const std::string mod)
 {
-  map<miString, miString> result;
+  map<std::string, std::string> result;
 
   dataset ds;
 
@@ -528,8 +527,8 @@ map<miString, miString> DatafileColl::getPositions(const miString mod)
   n = stations.size();
   for (i = 0; i < n; i++) {
     if (Union(ds, stations[i].d)) {
-      result[stations[i].station.Name()] = miString(stations[i].station.lat())
-                          + ":" + miString(stations[i].station.lon());
+      result[stations[i].station.Name()] = miutil::from_number(stations[i].station.lat())
+                          + ":" + miutil::from_number(stations[i].station.lon());
     }
   }
   return result;
@@ -556,10 +555,10 @@ int DatafileColl::findModel(const Model& mid, const Run& rid, int* idx, int max)
   return numi;
 }
 
-vector<miString> DatafileColl::findRuns(const Model& mid)
+vector<std::string> DatafileColl::findRuns(const Model& mid)
 {
   Run rid;
-  vector<miString> vrid;
+  vector<std::string> vrid;
   set<int> srid;
   int n = datastreams.size();
   for (int i = 0; i < n; i++)
@@ -571,15 +570,15 @@ vector<miString> DatafileColl::findRuns(const Model& mid)
     }
   set<int>::iterator itr = srid.begin();
   for (; itr != srid.end(); itr++)
-    vrid.push_back(miString(*itr));
+    vrid.push_back(miutil::from_number(*itr));
 
   return vrid;
 }
 
 // Binary search for position by name
-bool DatafileColl::findpos(const miString& name, int& idx)
+bool DatafileColl::findpos(const std::string& name, int& idx)
 {
-  miString pname;
+  std::string pname;
   int n = stations.size(), min = 0, max = n - 1, p;
   while (!(max < min)) {
     p = (min + max) / 2;
@@ -759,9 +758,9 @@ void DatafileColl::initialiseFimexParameters()
 }
 
 
-vector<miString> DatafileColl::getFimexTimes(std::string model)
+vector<std::string> DatafileColl::getFimexTimes(std::string model)
 {
-  vector<miString> runtimes;
+  vector<std::string> runtimes;
   cerr << "trying to find runtimes for model: " << model << endl;
 
   for ( size_t i = 0; i< fimexStreams.size();i++) {
