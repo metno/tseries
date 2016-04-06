@@ -1,8 +1,6 @@
 /*
  Tseries - A Free Meteorological Timeseries Viewer
 
- $Id$
-
  Copyright (C) 2006 met.no
 
  Contact information:
@@ -96,7 +94,6 @@ DatafileColl::DatafileColl() :
   openMoraStream();
   initialiseFimexPositions();
   initialiseFimexParameters();
-
 }
 
 DatafileColl::~DatafileColl()
@@ -209,11 +206,10 @@ bool DatafileColl::openStream(const int idx)
   datastreams[idx].numModels = 0;
   // Dont reopen stream if type MORA
   if (datastreams[idx].sType != "MORA") {
- 
     delete datastreams[idx].dataStream;
     datastreams[idx].dataStream = 0;
   }
- 
+
   if (verbose)
     cout << "About to open stream:" << datastreams[idx].streamname << endl;
 
@@ -304,7 +300,6 @@ void DatafileColl::closeStreams()
       fimexStreams[i].dataStream=NULL;
     }
   }
-
 }
 
 bool DatafileColl::_isafile(const std::string& name)
@@ -407,9 +402,6 @@ void DatafileColl::makeStationList()
       } // if file open
     } // for numdatastreams
   } // if numdatastreams > 0
-
-  return;
-
 }
 
 bool DatafileColl::getStreamInfo(int idx, std::string& name, std::string& desc,
@@ -618,7 +610,6 @@ void DatafileColl::closeKlimaStream()
                         << endl;
   }
   klimaStream = NULL;
-
 }
 
 /////// SMHI mora database -----------------------------
@@ -642,7 +633,6 @@ void DatafileColl::closeMoraStream()
                         << endl;
   }
   moraStream = NULL;
-
 }
 
 /////// WDB ------------------------------------------
@@ -675,7 +665,6 @@ void DatafileColl::closeWdbStream()
                         << endl;
   }
   wdbStream = NULL;
-
 }
 
 set<string> DatafileColl::getWdbProviders()
@@ -754,7 +743,6 @@ void DatafileColl::initialiseFimexParameters()
   cerr << "Setting " << fimexparameter.size() << " Parameters to fimex" << endl;
   pets::FimexStream::setFimexParameters(fimexparameter);
   pets::FimexStream::addToAllParameters(setup.fimex.filters);
-
 }
 
 
@@ -791,7 +779,7 @@ vector<std::string> DatafileColl::getFimexTimes(std::string model)
 
               boost::posix_time::time_facet *facet = new boost::posix_time::time_facet("%Y-%m-%d %H:%M");
               stime.imbue(locale(stime.getloc(), facet));
-              stime << time;           
+              stime << time;
               fimexStreams[i].run = stime.str();
             }
           } catch (exception & e) {
@@ -841,7 +829,6 @@ pets::FimexStream* DatafileColl::getFimexStream(std::string model, std::string r
   ostringstream ost;
   ost << "stream for " << model << " at " << run << " does not exist";
   throw pets::FimexstreamException(ost.str());
-
 }
 
 
@@ -882,9 +869,4 @@ bool DatafileColl::createFimexStreams(FimexFileindex& findex)
     fimexStreams.back().dataStream = new pets::FimexStream(finfo.streamname, finfo.model, finfo.sType, finfo.configfile);
   }
   return bool ( streamfilenames.size());
-
 }
-
-
-
-

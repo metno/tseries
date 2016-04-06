@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -49,10 +47,10 @@
 #include "CoordinateTab.h"
 #include "FimexTab.h"
 
+#include <coserver/ClientSelection.h>
+
 #include <vector>
 #include <string>
-#include <coserver/ClientSelection.h>
-#include <coserver/ClientButton.h>
 
 class qtsSidebar : public QWidget
 {
@@ -88,13 +86,12 @@ private:
   bool wdbDisabled,fimexDisabled,hdfDisabled;
 
 
-
-private slots:
+private Q_SLOTS:
   void tabChanged(int);
   void chacheQueryActivated();
   void recordToggled(bool record);
 
-public slots:
+public Q_SLOTS:
   void searchStation(const QString&);
   void newTimeRange(int,int);
   void currentStationChanged ( QListWidgetItem * current, QListWidgetItem * previous );
@@ -161,8 +158,7 @@ public:
   bool restoreFimexFromLog(std::string mod, std::string sty, std::string expanded);
   std::string fimexCoordinateString() const { return fimextab->coordinateString(); }
 
-
-signals:
+Q_SIGNALS:
   void changestyle(const QString&);
   void changemodel(const QString&);
   void changerun(const QString&);
@@ -188,19 +184,6 @@ signals:
   void changeFimexCoordinates(float lon, float lat,QString name);
   void changeFimexPoslist();
   void newFimexPoslist();
-
-
-
 };
 
 #endif
-
-
-
-
-
-
-
-
-
-

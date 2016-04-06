@@ -1,8 +1,6 @@
 /*
  Tseries - A Free Meteorological Timeseries Viewer
 
- $Id$
-
  Copyright (C) 2006 met.no
 
  Contact information:
@@ -82,7 +80,6 @@ void tsDrawArea::prepare(bool readData)
   }
 
   prepareDiagram();
-
 }
 
 void tsDrawArea::setViewport(int w, int h, float pw, float ph)
@@ -98,7 +95,6 @@ void tsDrawArea::setViewport(int w, int h, float pw, float ph)
 
   if (diagram)
     diagram->setViewport(width, height, glwidth, glheight);
-
 }
 
 bool tsDrawArea::prepareData()
@@ -270,10 +266,6 @@ bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
 
 
 
-
-
-
-
 void tsDrawArea::prepareDiagram()
 {
 
@@ -336,7 +328,6 @@ void tsDrawArea::prepareDiagram()
       sev[i]->setImages(minsymb, symbimages);
     }
   }
-
 }
 
 void tsDrawArea::setTimemark(miTime nt, std::string name)
@@ -517,17 +508,10 @@ bool tsDrawArea::prepareWdbData()
   if (outlist.size())
     theData->makeParameters(outlist, true);
 
-
-
-
-
   return true;
 }
 
-
-
 /// FIMEX
-
 
 bool tsDrawArea::prepareFimexData()
 {
@@ -634,17 +618,16 @@ bool tsDrawArea::prepareFimexData()
       }
     }
     // Find any missing params
-    
+
     prepareKlimaData(inlist);
-    
+
     prepareMoraData(inlist);
 
     if (outlist.size())
       theData->makeParameters(outlist, true);
-  
-  }  
-  return true;
 
+  }
+  return true;
 }
 
 bool tsDrawArea::readFimexData(pets::FimexStream* fimex, double lat, double lon, std::string stationname,
@@ -706,9 +689,3 @@ void tsDrawArea::dataLoad_finished(bool read_success)
   emit dataread_ended();
   emit post_dataLoad(threadedLoadRequest);
 }
-
-
-
-
-
-

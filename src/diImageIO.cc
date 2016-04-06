@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -28,6 +26,7 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
 #include "diImageIO.h"
 
 #include <puTools/miStringFunctions.h>
@@ -38,7 +37,6 @@
 #include <fstream>
 #include <map>
 
-using namespace miutil;
 using namespace std;
 
 bool imageIO::read_image(Image_data& img)
@@ -81,8 +79,7 @@ bool imageIO::read_png(Image_data& img){
 
   png_infop info_ptr = png_create_info_struct(png_ptr);
   if (!info_ptr){
-    png_destroy_read_struct(&png_ptr,
-			    (png_infopp)NULL, (png_infopp)NULL);
+    png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
     cerr << "read_png ERROR creating info_struct" << endl;
     fclose(fp);
     return false;
@@ -90,8 +87,7 @@ bool imageIO::read_png(Image_data& img){
 
   png_infop end_info = png_create_info_struct(png_ptr);
   if (!end_info){
-    png_destroy_read_struct(&png_ptr, &info_ptr,
-			    (png_infopp)NULL);
+    png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
     cerr << "read_png ERROR creating end_info_struct" << endl;
     fclose(fp);
     return false;
@@ -101,8 +97,7 @@ bool imageIO::read_png(Image_data& img){
 #else
   if (setjmp(png_ptr->jmpbuf)) {
 #endif
-    png_destroy_read_struct(&png_ptr, &info_ptr,
-			    &end_info);
+    png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
     cerr << "read_png ERROR longjmp out of process" << endl;
     fclose(fp);
     return false;
@@ -123,8 +118,8 @@ bool imageIO::read_png(Image_data& img){
   int filter_type;//=      PNG_FILTER_TYPE_DEFAULT;
 
   png_get_IHDR(png_ptr, info_ptr, &uwidth, &uheight,
-	       &bit_depth, &color_type, &interlace_type,
-	       &compression_type, &filter_type);
+      &bit_depth, &color_type, &interlace_type,
+      &compression_type, &filter_type);
   img.width= uwidth;
   img.height= uheight;
 
@@ -144,11 +139,11 @@ bool imageIO::read_png(Image_data& img){
     img.nchannels= 3;
   else if (color_type == PNG_COLOR_TYPE_PALETTE){
     cerr << "PNG_COLOR_TYPE_PALETTE"
-	 << " ..exiting" << endl;
+         << " ..exiting" << endl;
     return false;
   } else {
     cerr << "Unknown color_type:" << color_type
-	 << " ..exiting" << endl;
+         << " ..exiting" << endl;
     return false;
   }
 
@@ -171,8 +166,7 @@ bool imageIO::read_png(Image_data& img){
   }
 
   // clean up
-  png_destroy_read_struct(&png_ptr, &info_ptr,
-			  &end_info);
+  png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
   return true;
 }
 
@@ -201,8 +195,7 @@ bool imageIO::write_png(const Image_data& img){
   // create info struct
   png_infop info_ptr = png_create_info_struct(png_ptr);
   if (!info_ptr) {
-    png_destroy_write_struct(&png_ptr,
-			     (png_infopp)NULL);
+    png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
     cerr << "write_png ERROR creating info_struct" << endl;
     fclose(fp);
     return false;
@@ -220,8 +213,7 @@ bool imageIO::write_png(const Image_data& img){
 
   png_init_io(png_ptr, fp);
 
-  const int color_type=       (img.nchannels==4 ?
-			       PNG_COLOR_TYPE_RGB_ALPHA : PNG_COLOR_TYPE_RGB);
+  const int color_type=       (img.nchannels==4 ? PNG_COLOR_TYPE_RGB_ALPHA : PNG_COLOR_TYPE_RGB);
   const int bit_depth=        8;
 #ifdef linux
   const int interlace_type=   PNG_INTERLACE_NONE;
@@ -235,20 +227,15 @@ bool imageIO::write_png(const Image_data& img){
 
   // set all info
   png_set_IHDR(png_ptr, info_ptr, img.width, img.height,
-	       bit_depth, color_type, interlace_type,
-	       compression_type, filter_type);
+      bit_depth, color_type, interlace_type,
+      compression_type, filter_type);
 
   // write info to file
   png_write_info(png_ptr, info_ptr);
 
-//   png_write_IHDR(png_ptr, width, height, bit_depth,
-// 		 color_type, compression_type, filter_type,
-// 		 interlace_type);
-
-
   // pack image into row-based structure
   png_byte **row_pointers;
-  row_pointers= new (png_byte*[img.height]);
+  row_pointers= new png_byte*[img.height];
   int bp=0;
   for (int i=img.height-1; i>=0; i--){
     row_pointers[i]= new png_byte[img.width*img.nchannels];
@@ -327,9 +314,9 @@ bool imageIO::imageFromXpmdata(const char** xd, Image_data& img){
 
   if (xsize < 1 || ysize < 1 || ncols < 1 || nchar < 1){
     cerr << "imageFromXpmdata ERROR Illegal numbers "
-	 << " xsize:" << xsize << " ysize:" << ysize
-	 << " ncols:" << ncols << " nchar:" << nchar
-	 << endl;
+         << " xsize:" << xsize << " ysize:" << ysize
+         << " ncols:" << ncols << " nchar:" << nchar
+         << endl;
     return false;
   }
 
@@ -343,7 +330,7 @@ bool imageIO::imageFromXpmdata(const char** xd, Image_data& img){
     int j= buf.find_last_of("c");
     if (j < 0){
       cerr << "imageFromXpmdata ERROR Illegal colourdefinition:"
-	   << buf << endl;
+           << buf << endl;
       return false;
     }
     std::string key=    buf.substr(0,nchar);
@@ -356,9 +343,9 @@ bool imageIO::imageFromXpmdata(const char** xd, Image_data& img){
       alphamap[key]= 0;
     } else {
       if (colour.size() < 2){
-	cerr << "imageFromXpmdata ERROR Illegal colourdefinition:"
-	     << buf << endl;
-	return false;
+        cerr << "imageFromXpmdata ERROR Illegal colourdefinition:"
+             << buf << endl;
+        return false;
       }
       colour= colour.substr(1,colour.length()-1);
       int numcomp = colour.length()/3;
@@ -400,7 +387,7 @@ bool imageIO::read_xpm(Image_data& img){
 
   if (!file){
     cerr << "readXpmFile ERROR: Unable to open file:"
-	 << img.filename << endl;
+         << img.filename << endl;
     return false;
   }
 
@@ -421,7 +408,7 @@ bool imageIO::read_xpm(Image_data& img){
     return false;
 
   //   cerr << "RESULTING DATA:" << endl;
-  char **data = new (char*[vs.size()]);
+  char **data = new char*[vs.size()];
   for (unsigned int i=0; i<vs.size(); i++){
     data[i]= strdup(vs[i].c_str());
     //     cerr << data[i] << endl;
@@ -435,5 +422,3 @@ bool imageIO::read_xpm(Image_data& img){
 
   return res;
 }
-
-

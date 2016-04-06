@@ -9,8 +9,6 @@
 #define StationTab_H_
 
 /*
- $Id$
-
  Copyright (C) 2006 met.no
 
  Contact information:

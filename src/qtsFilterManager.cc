@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -146,7 +144,6 @@ qtsFilterManager::qtsFilterManager(const set<std::string>& p,
 
   vlayout->addLayout(hlayout);
   vlayout->addLayout(bhlayout);
-
 }
 
 
@@ -160,7 +157,6 @@ QStringList qtsFilterManager::createList(const set<std::string>& in)
 }
 
 
-
 set<std::string> qtsFilterManager::result()
 {
   set<std::string> res;
@@ -171,14 +167,14 @@ set<std::string> qtsFilterManager::result()
     }
   }
   return res;
-};
+}
 
 
 void qtsFilterManager::reload()
 {
   filtered->clear();
   filtered->addItems(original);
-};
+}
 
 
 void qtsFilterManager::remove()
@@ -215,10 +211,3 @@ void qtsFilterManager::copy()
     filtered->addItem(txt);
   }
 }
-
-
-
-
-
-
-

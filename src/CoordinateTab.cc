@@ -6,8 +6,6 @@
  */
 
 /*
- $Id$
-
  Copyright (C) 2006 met.no
 
  Contact information:
@@ -33,11 +31,12 @@
  along with Tseries; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#include <QFont>
+
 #include "CoordinateTab.h"
-#include <iostream>
-#include <QPixmap>
 #include "tsSetup.h"
+
+#include <QFont>
+#include <QPixmap>
 #include <QMenu>
 #include <QEvent>
 #include <QtGui>
@@ -46,9 +45,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
-
-
-//#include "list-add.xpm"
+#include <iostream>
 #include <sstream>
 
 using namespace std;
@@ -181,7 +178,6 @@ CoordinateTab::CoordinateTab(QWidget* parent)   : QWidget(parent)
   vlayout->addLayout(editHlayout);
 
   setLayout(vlayout);
-
 }
 
 
@@ -210,8 +206,7 @@ void CoordinateTab::setCoordinates(float lon, float lat, QString name)
         << bookmarkTools.createRecordName(lat,'N','S');
 
     name.fromLatin1(ost.str().c_str());
-  } 
-
+  }
 
   bookmarkTools.addRecord(lon,lat,name.toStdString());
   emit changeCoordinates(lon,lat,name);
@@ -368,9 +363,7 @@ bool CoordinateTab::findPosition(QString newpos, QModelIndex& found_idx)
           }
         }
       }
-
     }
-
   }
   return false;
 }
@@ -401,7 +394,6 @@ void CoordinateTab::bookmarkClicked(QModelIndex idx)
 
   float lat= atof(c[0].c_str());
   float lon= atof(c[1].c_str());
-
 
   setCoordinates(lon,lat,name);
 }
@@ -509,7 +501,6 @@ void CoordinateTab::recordToggled(bool rec)
   bookmarks->collapse(recordIdx);
 
   emit newPoslist();
-
 }
 
 
@@ -564,12 +555,4 @@ void CoordinateTab::showContextMenu(const QPoint& pos)
   pmenu.addAction(delAction);
 
   pmenu.exec(globalPos);
-
-
 }
-
-
-
-
-
-

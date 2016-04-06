@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -137,22 +135,14 @@ public:
 
   void setDataloadRequest(tsDrawArea::DataloadRequest lrequest) { dataloadrequest = lrequest; }
 
-
-signals:
+Q_SIGNALS:
   void post_dataLoad(tsDrawArea::DataloadRequest);
   void dataread_started();
   void dataread_ended();
 
-public slots:
+public Q_SLOTS:
   void dataLoad_finished(bool);
 
 };
 
 #endif
-
-
-
-
-
-
-

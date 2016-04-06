@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -11,7 +9,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,16 +21,18 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+#include "qtsTimeControl.h"
+
 #include <puTools/miStringFunctions.h>
 
 #include <iostream>
 #include <sstream>
-#include "qtsTimeControl.h"
 
 using namespace std;
 
@@ -42,13 +42,12 @@ TimeControl::TimeControl(QWidget* parent)
   QGridLayout* timeLayout = new QGridLayout(this);
   setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
-
   QLabel  *lab1 = new QLabel(tr("Start:"),this);
   QLabel  *lab2 = new QLabel(tr("Hours:"),this);
-  
+
   startSlider   = new QSlider( Qt::Horizontal,this);
   stopSlider    = new QSlider( Qt::Horizontal,this);
-  
+
   startSlider->setTickPosition(QSlider::TicksBelow);
   startSlider->setTickInterval(24);
   startSlider->setRange(0,300);
@@ -66,16 +65,14 @@ TimeControl::TimeControl(QWidget* parent)
   connect( stopSlider, SIGNAL(  valueChanged(int)),SLOT(stopchanged(int)));
 
 
-
   timeLayout->addWidget(lab1,0,0);
   timeLayout->addWidget(lab2,1,0);
-  
+
   timeLayout->addWidget ( startSlider,0,1,1,3 );
   timeLayout->addWidget ( stopSlider ,1,1,1,3 );
-  
+
   timeLayout->addWidget(startLabel,0,4);
   timeLayout->addWidget(stopLabel, 1,4);
-   
 }
 
 
@@ -83,9 +80,7 @@ std::string TimeControl::getTimecontrolLog()
 {
   ostringstream ost;
   ost << totalrange << "," << fcastrange << "," << startSlider->value() << "," << stopSlider->value();
-
   return ost.str();
-
 }
 
 
@@ -99,10 +94,9 @@ void TimeControl::setTimecontrolFromlLog(  std::string logString)
   int s=atoi(logEntries[2].c_str());
   int l=atoi(logEntries[3].c_str());
 
-    setTimeRange(t,f);
-    setLengthSlider(l);
-    setStartSlider(s);
-
+  setTimeRange(t,f);
+  setLengthSlider(l);
+  setStartSlider(s);
 }
 
 void TimeControl::setLengthSlider(int v)
@@ -143,7 +137,7 @@ void TimeControl::startchanged(int v)
 void TimeControl::stopchanged(int v)
 {
   stopLabel->setNum(v);
-  minmaxSlot(); 
+  minmaxSlot();
 }
 
 void TimeControl::setTimeRange(int total, int fcast)
@@ -169,18 +163,15 @@ void TimeControl::setTimeRange(int total, int fcast)
   stopSlider->setValue(oldfcastrange);
 
   startSlider->setValue(activeposition);
-
 }
-
 
 
 void TimeControl::minmaxSlot()
 {
-  int istart, istop;    
-  istart= startSlider->value();
-  istop=  stopSlider->value(); 
-  
+  int istart= startSlider->value();
+  int istop=  stopSlider->value();
+
   istop+=istart;
-  
+
   emit   minmaxProg(istart,istop);
 }

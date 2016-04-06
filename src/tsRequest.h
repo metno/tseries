@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -64,8 +62,6 @@ private:
   std::string  fimexRun;
 
 
-
-
   bool setString(const std::string&, std::string&);
 
 public:
@@ -120,7 +116,6 @@ public:
 
 
   friend std::ostream& operator<<(std::ostream&, const tsRequest&);
-
 };
 
 #endif

@@ -6,8 +6,6 @@
  */
 
 /*
- $Id$
-
  Copyright (C) 2006 met.no
 
  Contact information:
@@ -33,11 +31,12 @@
  along with Tseries; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#include <QFont>
+
 #include "FimexTab.h"
-#include <iostream>
-#include <QPixmap>
 #include "tsSetup.h"
+
+#include <QFont>
+#include <QPixmap>
 #include <QMenu>
 #include <QEvent>
 #include <QtGui>
@@ -46,9 +45,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
-
-
-//#include "list-add.xpm"
+#include <iostream>
 #include <sstream>
 
 using namespace std;
@@ -176,9 +173,6 @@ FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
 
 
   setLayout(vlayout);
-
-
-
 }
 
 void FimexTab::filterBookmarks(const QString& text)
@@ -207,8 +201,7 @@ void FimexTab::setCoordinates(float lon, float lat, QString name)
         << bookmarkTools.createRecordName(lat,'N','S');
 
     name.fromLatin1(ost.str().c_str());
-  } 
-
+  }
 
   if(recordingPositions) {
     if(addToRecord) {
@@ -240,7 +233,6 @@ std::string FimexTab::coordinateString()
 
 QString FimexTab::setStyles(const QStringList& qlist)
 {
-
   QString cur = stylel->currentText();
 
   stylel->clear();
@@ -327,6 +319,7 @@ void FimexTab::setRuns(const QStringList& newruns)
   if(cur != cur2)
     emit changerun(cur2);
 }
+
 void FimexTab::changeModel(const QString& s)
 {
   activeCacheRequest=false;
@@ -342,7 +335,6 @@ void FimexTab::changeRun(const QString& s)
 
 bool FimexTab::findPosition(QString newpos, QModelIndex& found_idx)
 {
-
   unsigned int num_rows = model->rowCount();
   for (unsigned int row=0; row <num_rows; row++ ) {
     QModelIndex idx = proxyModel->index(row,0);
@@ -379,7 +371,6 @@ void FimexTab::changePosition(QString newpos)
     bookmarks->setCurrentIndex(proxyModel->mapFromSource(idx));
     bookmarkClicked(proxyModel->mapFromSource(idx));
   }
-
 }
 
 
@@ -502,7 +493,6 @@ void FimexTab::recordToggled(bool rec)
 {
   recordingPositions=rec;
 
-
   QModelIndex recordIdx= bookmarkTools.getRecordFolderIndex();
 
   if(recordingPositions) {
@@ -511,7 +501,6 @@ void FimexTab::recordToggled(bool rec)
   }
 
   emit newPoslist();
-
 }
 
 
@@ -560,16 +549,12 @@ void FimexTab::showContextMenu(const QPoint& pos)
   QPoint globalPos = mapToGlobal(pos);
 
   QMenu pmenu;
-
-
   pmenu.addAction(cutAction);
   pmenu.addAction(copyAction);
   pmenu.addAction(pasteAction);
   pmenu.addAction(delAction);
 
   pmenu.exec(globalPos);
-
-
 }
 
 
@@ -648,7 +633,6 @@ void FimexTab::selectFirstPosition()
 void FimexTab::search(QString query)
 {
   fetchstations->getData(query);
-
 }
 
 
@@ -666,9 +650,3 @@ void FimexTab::searchResult(std::vector<std::string> stat)
 
   emit newPoslist();
 }
-
-
-
-
-
-

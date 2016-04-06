@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -28,19 +26,22 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 #include "qtsWork.h"
 #include "tsConfigure.h"
 
+#include "WdbCacheThread.h"
+
+#include <tsData/FimexStream.h>
 #include <puTools/miStringFunctions.h>
 #include <coserver/QLetterCommands.h>
+
 #include <QApplication>
+#include <QSplitter>
 
 #include <fstream>
 #include <set>
 #include <string>
-#include "WdbCacheThread.h"
-#include <QSplitter>
-#include <tsData/FimexStream.h>
 
 using namespace std;
 using namespace miutil;
@@ -417,8 +418,6 @@ void qtsWork::changeRun(const QString& qstr)
     changeRun(st);
 }
 
-
-////// miString
 
 void qtsWork::changeStyle(const std::string& st)
 {

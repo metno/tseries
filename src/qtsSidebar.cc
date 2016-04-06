@@ -1,9 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
-
   Contact information:
   Norwegian Meteorological Institute
   Box 43 Blindern
@@ -253,7 +250,6 @@ qtsSidebar::qtsSidebar(QString language)
   progress->hide();
 
   cacheQueryButton->hide();
-
 }
 
 void qtsSidebar::recordToggled(bool record)
@@ -334,7 +330,6 @@ QString  qtsSidebar::fillList(const vector<std::string>& v, const StationTab::lE
     return wdbtab->setStyles(qlist);
 
   return stationtab->fillList(qlist,l);
-
 }
 
 ///  Wdb ---------------------------
@@ -342,7 +337,6 @@ QString  qtsSidebar::fillList(const vector<std::string>& v, const StationTab::lE
 
 void qtsSidebar::tabChanged(int idx)
 {
-
   actualIndex=idx;
   if(idx==wdbIdx){
     addWdbBookmarkButton->show();
@@ -378,8 +372,7 @@ void qtsSidebar::tabChanged(int idx)
     targetB->show();
     filterB->hide();
     recordToggled(fimexRexordToggled);
-    emit changetype(tsRequest::FIMEXSTREAM);
-
+    Q_EMIT changetype(tsRequest::FIMEXSTREAM);
   }
 }
 
@@ -411,7 +404,6 @@ void qtsSidebar::enableBusyLabel(bool enable)
   } else {
     connectStatus->clear();
   }
-
 }
 
 
@@ -428,7 +420,6 @@ bool qtsSidebar::restoreWdbFromLog(std::string mod, std::string sty, double lat,
   wdbtab->setModel( mod.c_str() );
   wdbtab->setRun(   run.c_str() );
   wdbtab->setCoordinates(lon,lat,posname.c_str());
-
 }
 
 bool qtsSidebar::restoreFimexFromLog(std::string mod, std::string sty, std::string expanded)
@@ -469,8 +460,7 @@ void qtsSidebar::chacheQueryActivated()
   cacheQueryButton->setEnabled(false);
 
   enableBusyLabel(true);
-  emit requestWdbCacheQuery();
-
+  Q_EMIT requestWdbCacheQuery();
 }
 
 void qtsSidebar::writeBookmarks()
@@ -494,8 +484,6 @@ void qtsSidebar::setProgress(int progr, std::string text)
   progress->setValue(progr);
 
   progress->setFormat(txt.section(':',1,1));
-
-
 }
 
 void qtsSidebar::endProgress()
@@ -503,11 +491,4 @@ void qtsSidebar::endProgress()
   progress->reset();
   progress->hide();
   progressHeader->hide();
-
 }
-
-
-
-
-
-

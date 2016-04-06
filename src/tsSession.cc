@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -222,12 +220,10 @@ bool SessionManager::checkEnvironment(std::string& t)
   if (!miutil::contains(t, "${"))
     return false;
 
-  int start,stop;
+  int start = t.find("${",0) + 2;
+  int stop  = t.find("}",start);
 
-  start = t.find("${",0) + 2;
-  stop  = t.find("}",start);
-
-  if(stop < start ) {
+  if (stop < start) {
     cerr << "Missing end }" << endl;
     return false;
   }
@@ -352,8 +348,9 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
       continue;
     }
     // split into keyword and argument
-    if (parts.size()<2) continue;
     parts= miutil::split(buf, "=", true);
+    if (parts.size()<2)
+      continue;
     keyw= parts[0];
     argu= parts[1];
     // global modellist

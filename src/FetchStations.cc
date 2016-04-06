@@ -117,7 +117,7 @@ void FetchStations::replyFinished(QNetworkReply* reply)
               longitude = entry.toElement().attributeNode("lon").value().toFloat();
               latitude = entry.toElement().attributeNode("lat").value().toFloat();
               name.clear();
-              // First level of child nodes, Wmo, Clim, Ikv 
+              // First level of child nodes, Wmo, Clim, Ikv
               QDomNodeList child_nodes = entry.childNodes();
               bool name_found = false;
               for(int i = 0; i < child_nodes.count(); i++)
@@ -160,7 +160,7 @@ void FetchStations::replyFinished(QNetworkReply* reply)
                     }
                   }
                 }
-              }            
+              }
             } // End StationPlace
           } // End mora_format
           else {

@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -206,12 +204,6 @@ public:
   qtsMain(std::string l);
 
   void setLang(std::string l) { lang=l; }
-
 };
 
 #endif
-
-
-
-
-

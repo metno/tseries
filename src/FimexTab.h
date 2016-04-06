@@ -9,8 +9,6 @@
 #define FIMEXTAB_H_
 
 /*
- $Id$
-
  Copyright (C) 2006 met.no
 
  Contact information:
@@ -57,17 +55,12 @@
 #include <vector>
 
 
-
 class FilterProxyModel : public QSortFilterProxyModel {
 public:
   FilterProxyModel(QObject* parent=0)  : QSortFilterProxyModel(parent) { }
 protected:
   bool filterAcceptsRow(int row, const QModelIndex &parent) const;
 };
-
-
-
-
 
 
 
@@ -120,9 +113,7 @@ public:
   void setExpandedDirs(std::string);
   std::vector<std::string> allFimexPositions() {return  bookmarkTools.getAllBookmarks();}
 
-
-private slots:
-
+private Q_SLOTS:
   void coordinatesChanged();
   void changeModel(const QString&);
   void changeRun(const QString&);
@@ -135,7 +126,8 @@ private slots:
   void remove();
   void filterBookmarks(const QString&);
   void searchResult(std::vector<std::string>);
-public slots:
+
+public Q_SLOTS:
   void setCoordinates(float lon, float lat, QString name="");
   void setModel(QString model);
   void setStyle(QString style);
@@ -154,22 +146,15 @@ public slots:
 
 
 
-  signals:
+Q_SIGNALS:
     void changestyle(const QString&);
     void changemodel(const QString&);
     void changerun(const QString&);
     void changeCoordinates(float lon, float lat,QString name);
     void changePoslist();
     void newPoslist();
-
-
 };
 
-
 // --------------------------------------------------------------
-
-
-
-
 
 #endif /* FIMEXTAB_H_ */

@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -67,10 +65,10 @@ public:
   miutil::miTime getObservationStartTime() const { return drawArea->getObservationStartTime(); }
   void setShowGridLines( bool s ){ drawArea->setShowGridLines(s); }
 
-public slots:
+public Q_SLOTS:
   void post_dataLoad(tsDrawArea::DataloadRequest);
 
-signals:
+Q_SIGNALS:
   void refreshFinished();
   void newTimeRange(int total, int fcast);
   void dataread_started();

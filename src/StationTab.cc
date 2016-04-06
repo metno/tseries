@@ -6,8 +6,6 @@
  */
 
 /*
- $Id$
-
  Copyright (C) 2006 met.no
 
  Contact information:
@@ -36,14 +34,10 @@
 
 #include "StationTab.h"
 
-#include <puTools/miStringFunctions.h>
-
-using namespace miutil;
 using namespace std;
 
 StationTab::StationTab(QWidget* parent) : QWidget(parent)
 {
-
   QVBoxLayout * vlayout = new QVBoxLayout(this);
 
   modell  = new QComboBox(this);
@@ -57,11 +51,11 @@ StationTab::StationTab(QWidget* parent) : QWidget(parent)
 
   // showing the positions
 
-    pos_label = new QLabel("<b>Position</b>");
-    pos_label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    QFont thisfont=this->font();
-    thisfont.setPointSize(8);
-    pos_label->setFont(thisfont);
+  pos_label = new QLabel("<b>Position</b>");
+  pos_label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+  QFont thisfont=this->font();
+  thisfont.setPointSize(8);
+  pos_label->setFont(thisfont);
 
 
   vlayout->addWidget(stylel);
@@ -77,7 +71,6 @@ StationTab::StationTab(QWidget* parent) : QWidget(parent)
   connect(runl,SIGNAL(activated(const QString&)),     this, SIGNAL(changerun(const QString&)));
   connect(statl,SIGNAL(currentItemChanged (    QListWidgetItem *, QListWidgetItem *)),
           this, SLOT  (currentStationChanged(  QListWidgetItem *, QListWidgetItem *)));
-
 }
 
 
@@ -85,7 +78,7 @@ void StationTab::currentStationChanged ( QListWidgetItem * current, QListWidgetI
 {
   if(current) {
     QString st = current->text();
-    emit changestation(st);
+    Q_EMIT changestation(st);
   }
 }
 
@@ -127,8 +120,10 @@ QString StationTab::fillList(const QStringList& qlist, const StationTab::lEntry 
 {
   QComboBox * co =  modell;
 
-  if ( c == CMRUN   ) co = runl;
-  if ( c == CMSTYLE ) co = stylel;
+  if (c == CMRUN)
+    co = runl;
+  if (c == CMSTYLE)
+    co = stylel;
 
   QString cur = co->currentText();
 
@@ -172,19 +167,3 @@ void StationTab::set(const std::string& cur,const StationTab::lEntry c)
       modell->setCurrentIndex(idx);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

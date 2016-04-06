@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -77,8 +75,9 @@ public:
     if (empty()) return -1;
     for (int i=0; i<MAXDATASETS; i++)
       if (isdata(i)){
-	num++;
-	if (f<0) f=i;
+        num++;
+        if (f<0)
+          f=i;
       }
     return f;
   }
@@ -86,7 +85,7 @@ public:
   bool empty() const {
     for (int i=0; i<MAXDATASETS; i++)
       if (bits[i])
-	return false;
+        return false;
     return true;
   }
   void clear(){
@@ -180,7 +179,7 @@ private:
 
   void openKlimaStream();
   void closeKlimaStream();
-  
+
   void openMoraStream();
   void closeMoraStream();
 
@@ -257,7 +256,7 @@ public:
 
   pets::KlimaStream* getKlimaStream() { return klimaStream;}
   pets::KlimaStation getNearestKlimaStation(miCoordinates& pos) { return klimaStream->getNearestKlimaStation(pos);}
-  
+
   // SMHI mora --------------------
   pets::MoraStream* getMoraStream() { return moraStream;}
   pets::MoraStation getNearestMoraStation(miCoordinates& pos) { return moraStream->getNearestMoraStation(pos);}

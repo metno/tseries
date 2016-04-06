@@ -1,7 +1,5 @@
 /*
-  Diana - A Free Meteorological Visualisation Tool
-
-  $Id$
+  Tseries - A Free Meteorological Timeseries Viewer
 
   Copyright (C) 2006 met.no
 
@@ -14,12 +12,12 @@
 
   This file is part of Diana
 
-  Diana is free software; you can redistribute it and/or modify
+  Tseries is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version.
 
-  Diana is distributed in the hope that it will be useful,
+  Tseries is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
@@ -60,7 +58,8 @@ public:
   std::string getTimecontrolLog();
   void setTimecontrolFromlLog(  std::string t);
   void toggleLockHoursToModel(bool lockHoursToModel) {lockHours = lockHoursToModel;}
-signals:
+
+Q_SIGNALS:
   void minmaxProg(int,int);
 
 private slots:

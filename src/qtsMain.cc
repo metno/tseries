@@ -1,8 +1,6 @@
 /*
  Tseries - A Free Meteorological Timeseries Viewer
 
- $Id$
-
  Copyright (C) 2006 met.no
 
  Contact information:
@@ -37,10 +35,13 @@
 #include <QFontDialog>
 #include <QPrintDialog>
 #include <QStringList>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "config.h"
 #include "ParameterFilterDialog.h"
 #include "PopupCalendar.h"
+
 #include <coserver/QLetterCommands.h>
 #include <puTools/ttycols.h>
 #include <puTools/miDate.h>
@@ -54,9 +55,6 @@
 
 #include "tseries.xpm"
 
-#include <QDesktopServices>
-#include <QUrl>
-
 
 using namespace std;
 using namespace miutil;
@@ -64,9 +62,8 @@ using namespace miutil;
 const std::string thisTM = "MARKEDTIME";
 const std::string dianaTM = "DIANATIME";
 
-qtsMain::qtsMain(std::string l) :
-            lang(l), QMainWindow()
-
+qtsMain::qtsMain(std::string l)
+  : lang(l)
 {
   // Added to avoid unnessecary updates when connected to diana
   // and diana is in automatic update mode
@@ -86,7 +83,7 @@ qtsMain::qtsMain(std::string l) :
   toggleLockHoursToModel(lockHoursToModel);
   toggleShowGridlines(showGridLines);
 
-  printer=0; 
+  printer=0;
 
   setWindowIcon(QPixmap(tseries_xpm));
 
@@ -136,7 +133,6 @@ void qtsMain::makeHelpMenu()
   aboutAct = new QAction(tr("About"), this);
   connect(aboutAct, SIGNAL(triggered()), this, SLOT( about() ));
   menu_help->addAction(aboutAct);
-
 }
 
 void qtsMain::makeFileMenu()
@@ -184,7 +180,6 @@ void qtsMain::makeFileMenu()
   quitAct->setStatusTip(tr("Quit program"));
   connect(quitAct, SIGNAL(triggered()), this, SLOT( quit() ));
   menu_file->addAction(quitAct);
-
 }
 
 void qtsMain::makeSettingsMenu()
@@ -300,12 +295,10 @@ void qtsMain::makeSettingsMenu()
 
   menu_lang = menu_setting->addMenu(tr("Languages"));
   findLanguages();
-
 }
 
 void qtsMain::makeConnectButtons()
 {
-
   connect(work, SIGNAL(refreshStations()), this, SLOT(refreshDianaStations()));
 
   pluginB = work->sideBar()->pluginButton();
@@ -773,7 +766,7 @@ void qtsMain::processConnect()
 {
   tsSetup s;
 
-   if (pluginB->client()->hasClientOfType(QString::fromStdString(s.server.client.c_str()))) { 
+  if (pluginB->client()->hasClientOfType(QString::fromStdString(s.server.client.c_str()))) {
     dianaconnected = true;
 
     cerr << ttc::color(ttc::Blue) << "< CONNECTING TO: " << s.server.client
@@ -791,7 +784,6 @@ void qtsMain::processConnect()
     sendImage(IMG_ICON_TSERIES, iImage);
     sendImage(IMG_ACTIVE_TSERIES, aImage);
 
-
     sendNamePolicy();
     selectionTypeChanged();
     refreshDianaStations();
@@ -800,7 +792,6 @@ void qtsMain::processConnect()
     dianaconnected = false;
 
   setRemoteParameters();
-
 }
 
 void qtsMain::setRemoteParameters()
@@ -837,7 +828,6 @@ void qtsMain::sendNamePolicy()
   m.data[0] += (sselect ? ":true" : ":false");
   m.data[0] += (sicon ? ":true" : ":false");
   sendLetter(m);
-
 }
 
 // processes incoming miMessages
@@ -882,19 +872,18 @@ void qtsMain::processLetter(const miMessage& letter)
       setDianaTimemark(currentTime);
     }
   }
-
 }
 
 void qtsMain::showHelp()
 {
- tsSetup setup;
- QDesktopServices::openUrl(QUrl( setup.doc.docURL.c_str()));
+  tsSetup setup;
+  QDesktopServices::openUrl(QUrl( setup.doc.docURL.c_str()));
 }
 
 void qtsMain::showNews()
 {
- tsSetup setup;
- QDesktopServices::openUrl(QUrl( setup.doc.newsURL.c_str()));
+  tsSetup setup;
+  QDesktopServices::openUrl(QUrl( setup.doc.newsURL.c_str()));
 }
 
 
@@ -910,8 +899,6 @@ void qtsMain::timerEvent(QTimerEvent* e)
   if (e->timerId() == progressTimer)
     if(work)
       work->updateProgress();
-
-
 }
 
 void qtsMain::cleanConnection()
@@ -942,7 +929,6 @@ void qtsMain::changeObservationStart()
     start.setTime(year,month,day,0,0,0);
     work->setObservationStartTime(start);
   }
-
 }
 
 
@@ -982,7 +968,6 @@ void qtsMain::manageFimexFilter()
 
 void qtsMain::manageFilter()
 {
-
   set<std::string> p = work->fullPosList();
   set<std::string> f = work->Filter();
   set<std::string> o = work->createFilter(true);
@@ -1005,7 +990,6 @@ void qtsMain::manageFilter()
     work->newFilter(fm->result());
 
   }
-
 }
 
 void qtsMain::chooseFont()
@@ -1118,13 +1102,3 @@ void qtsMain::fimexPositionChanged(const QString& qname)
    lastFimexPosition = name;
    sendLetter(m);
 }
-
-
-
-
-
-
-
-
-
-

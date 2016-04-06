@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -32,8 +30,6 @@
 #ifndef _SessionOptions_h
 #define _SessionOptions_h
 
-#include <vector>
-
 #include <puTools/miTime.h>
 #include <puDatatypes/miPosition.h>
 
@@ -41,6 +37,7 @@
 #include <tsData/ptParameterDefinition.h>
 #include <tsData/ptPrimitiveType.h>
 
+#include <vector>
 #include <string>
 
 class SessionOptions {
@@ -84,11 +81,6 @@ public:
 
   void setdialogname(const std::string& n){ dialogname=n;}
   void setstation(const miPosition& s) { station=s;   }
-
-
 };
 
 #endif
-
-
-

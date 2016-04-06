@@ -9,8 +9,6 @@
 #define COORDINATETAB_H_
 
 /*
- $Id$
-
  Copyright (C) 2006 met.no
 
  Contact information:
@@ -79,6 +77,7 @@ private:
   std::string         variableBookmarkfile;
   bool recordingPositions;
   bool addToRecord;
+
 public:
   CoordinateTab(QWidget*);
 
@@ -97,8 +96,7 @@ public:
   std::vector<std::string> allFimexPositions() {return  bookmarkTools.getAllBookmarks();}
 
 
-private slots:
-
+private Q_SLOTS:
   void coordinatesChanged();
   void changeModel(const QString&);
   void changeRun(const QString&);
@@ -110,7 +108,7 @@ private slots:
   void paste();
   void remove();
 
-public slots:
+public Q_SLOTS:
   void setCoordinates(float lon, float lat, QString name="");
   void setModel(QString model);
   void setStyle(QString style);
@@ -127,15 +125,13 @@ public slots:
   void recordToggled(bool);
 
 
-  signals:
+Q_SIGNALS:
     void changestyle(const QString&);
     void changemodel(const QString&);
     void changerun(const QString&);
     void changeCoordinates(float lon, float lat,QString name);
     void changePoslist();
     void newPoslist();
-
-
 };
 
 #endif /* COORDINATETAB_H_ */

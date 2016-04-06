@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -106,8 +104,3 @@ void SessionOptions::setTinterval(miTime& sta, miTime& sto)
     stop = sto;
   }
 }
-
-
-
-
-

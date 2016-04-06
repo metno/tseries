@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -40,22 +38,23 @@ using namespace miutil;
 
 bool tsRequest::setString(const std::string& i, std::string& o)
 {
-  if(o == i) return false;
+  if (o == i)
+    return false;
   o = i;
   return true;
-
 }
 
 
 bool tsRequest::setRun(int i)
 {
-  if(run_ == i) return false;
+  if (run_ == i)
+    return false;
   run_ = i;
   return true;
 }
 
-ostream& operator<<(ostream& out, const tsRequest& rhs){
-
+ostream& operator<<(ostream& out, const tsRequest& rhs)
+{
   out <<           rhs.sty_
       << " : " <<  rhs.pos_
       << " : " <<  rhs.mod_
@@ -166,8 +165,3 @@ std::string  tsRequest::getFimexInfo()
       << "fimexRun:   " <<  fimexRun     << endl;
   return ost.str();
 }
-
-
-
-
-

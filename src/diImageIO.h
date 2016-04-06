@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -11,7 +9,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,7 +21,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -45,7 +43,7 @@ namespace imageIO {
     int height;               // height of image
     int nchannels;            // 3=RGB, 4=RGBA
     unsigned char* data;      // image-data
-    
+
     Image_data()
       :filename(""),width(0),height(0),nchannels(0),data(0){}
     Image_data(const std::string& f)
@@ -53,21 +51,20 @@ namespace imageIO {
     ~Image_data(){if (data) delete[] data;}
   };
 
-  
+
   /*
     Generic read-routine
     calls read_png or read_xpm
   */
   bool read_image(Image_data& img);
-		  
 
   /*
     PNG - routines
   */
   bool read_png(Image_data& img);
   bool write_png(const Image_data& img);
-  
-  
+
+
   /*
     XPM - routines
   */
@@ -75,7 +72,6 @@ namespace imageIO {
   bool imageFromXpmdata(const char** xd, Image_data& img);
   // from file
   bool read_xpm(Image_data& img);
-  
 }
 
 #endif

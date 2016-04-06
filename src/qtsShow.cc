@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -38,9 +36,7 @@ const float gl_width =  1500.0;
 const float gl_height = 1000.0;
 
 qtsShow::qtsShow(const QGLFormat fmt,
-		 tsRequest* tsr,
-		 DatafileColl* tsd,
-		 SessionManager* ses)
+    tsRequest* tsr, DatafileColl* tsd, SessionManager* ses)
   : QGLWidget(fmt), plotw(1), ploth(1), initialised(false)
 {
   drawArea = new tsDrawArea(tsr,tsd,ses,this);
@@ -50,13 +46,11 @@ qtsShow::qtsShow(const QGLFormat fmt,
 
   connect(drawArea,SIGNAL(dataread_started()),this, SIGNAL(dataread_started()));
   connect(drawArea,SIGNAL(dataread_ended())  ,this, SIGNAL(dataread_ended()));
-
 }
 
 
 void qtsShow::paintGL()
 {
-
   static int paintw=0, painth=0;
   if ( paintw != plotw || painth != ploth ){
     glViewport( 0, 0, plotw, ploth );
@@ -138,15 +132,16 @@ void qtsShow::refresh(bool readData)
     emit newTimeRange(totall,fcastl);
   }
 
-  emit refreshFinished();
+  Q_EMIT refreshFinished();
 }
 
 
 void qtsShow::hardcopy(const printOptions& p)
 {
-    if (!initialised) return;
-    drawArea->setPrintOptions(p);
-    post_hardcopy();
+  if (!initialised)
+    return;
+  drawArea->setPrintOptions(p);
+  post_hardcopy();
 }
 
 
@@ -174,6 +169,3 @@ void qtsShow::clearTimemarks(std::string nam)
   drawArea->clearTimemarks(nam);
   refresh(false);
 }
-
-
-

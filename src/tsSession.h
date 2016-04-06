@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -11,7 +9,7 @@
   0313 OSLO
   NORWAY
   email: diana@met.no
-  
+
   This file is part of Tseries
 
   Tseries is free software; you can redistribute it and/or modify
@@ -23,12 +21,12 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-// Header fil for SessionManager
+
 #ifndef _SessionManager_h
 #define _SessionManager_h
 
@@ -45,11 +43,7 @@
 #include <vector>
 #include <map>
 
-#ifdef Bool
-#undef Bool
-#endif 
-
-// Should have a list of required models for a station 
+// Should have a list of required models for a station
 // for each style type
 class SessionManager {
 public:
@@ -61,7 +55,7 @@ private:
     Model modelid;
   };
   std::vector<modeldata> models;
-  
+
   struct pardata{
     int midx;                  // model index
     std::vector<ParId> params; // the parameters
@@ -114,12 +108,3 @@ public:
 };
 
 #endif
-
-
-
-
-
-
-
-
-

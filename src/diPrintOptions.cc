@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -199,10 +197,11 @@ bool printerManager::readPrinterInfo(const std::string fname)
     if ((not !s.empty()) || s[0]=='#') continue;
 
     if (incom) { // reading command-lines
-	if (j>=0) printers[j].commands[comkey]= com;
-	incom= false;
-	continue;
       if (miutil::contains(s, "}}")){ // end of command
+        if (j>=0)
+          printers[j].commands[comkey] = com;
+        incom= false;
+        continue;
       }
       com += (s + "\n");
 
@@ -256,8 +255,7 @@ PaperSize printerManager::getSize(const PageSize ps)// size from page
   return prs;
 }
 
-bool printerManager::checkSpecial(const printOptions& po,
-				  map<string,string>& mc)
+bool printerManager::checkSpecial(const printOptions& po, map<string,string>& mc)
 {
   if (!printers.size()) return false;
   mc.clear();
@@ -266,8 +264,8 @@ bool printerManager::checkSpecial(const printOptions& po,
     if (printers[i].keys["PRINTER"]==po.printer){
       // check rest of the keys
       if (printers[i].keys.count("PAGESIZE")>0)
-	if (getPage(printers[i].keys["PAGESIZE"])!=po.pagesize)
-	  continue;
+        if (getPage(printers[i].keys["PAGESIZE"])!=po.pagesize)
+          continue;
 
       // we have a match
       mc= printers[i].commands;
@@ -277,4 +275,3 @@ bool printerManager::checkSpecial(const printOptions& po,
 
   return false;
 }
-

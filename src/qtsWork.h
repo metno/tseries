@@ -1,8 +1,6 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  $Id$
-
   Copyright (C) 2006 met.no
 
   Contact information:
@@ -28,10 +26,9 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 #ifndef _qtsWork_h
 #define _qtsWork_h
-
-
 
 #include <QLayout>
 #include <QWidget>
@@ -151,9 +148,7 @@ public:
   miutil::miTime getObservationStartTime() const { return show->getObservationStartTime(); }
 
 
-
-  public slots:
-
+public Q_SLOTS:
   void changeStyle(const QString&);
   void changeModel(const QString&);
   void changeStation(const QString&);
@@ -188,7 +183,7 @@ public:
   void dataread_started();
   void dataread_ended();
 
-  signals:
+Q_SIGNALS:
   void refreshStations();
   void selectionTypeChanged();
   void coordinatesChanged();
@@ -196,15 +191,5 @@ public:
   void fimexPositionChanged(const QString&);
 
 };
+
 #endif
-
-
-
-
-
-
-
-
-
-
-
