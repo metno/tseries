@@ -127,6 +127,9 @@ void FetchStations::replyFinished(QNetworkReply* reply)
                 if(child_element.isElement())
                 {
                   // Next level of child nodes, Name, Num osv
+                  // Dont use Ikv station type, just skip it
+                  if (child_element.toElement().tagName().toStdString() == "Ikv")
+                    continue;
                   QDomNodeList element_nodes = child_element.childNodes();
                   for(int i = 0; i < element_nodes.count(); i++)
                   {
