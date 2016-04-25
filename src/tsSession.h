@@ -63,7 +63,7 @@ private:
   struct styledata{
     std::string stylename;      // name of style
     std::string stylefile;      // name of stylefile
-    ptStyle  style;                  // pets-style
+    pets2::ptStyle  style;      // pets-style
     bool modelchoice;                // whether there is a choice of models
     std::vector<int> modelidx;       // model indices for modelchoice
     std::vector<ParId> params;       // id without model
@@ -78,9 +78,9 @@ public:
   // get defined stylenames, return number of style
   int getStyleTypes(std::vector<std::string>& stylenam, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
   // get a PETS style by name
-  ptStyle& getStyle(const std::string, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
+  const pets2::ptStyle& getStyle(const std::string, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
   // get a PETS style by index
-  ptStyle& getStyle(int idx);
+  const pets2::ptStyle& getStyle(int idx);
   // get the PETS style index - WDBadd
   int getStyleIndex(const std::string name, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
 

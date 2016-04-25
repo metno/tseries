@@ -38,7 +38,7 @@
 using namespace std;
 using namespace miutil;
 
-static ptStyle emptysty;
+static const pets2::ptStyle emptysty;
 
 int SessionManager::getStyleTypes(vector<std::string>& stylename,DiagramTab tab)
 {
@@ -53,7 +53,7 @@ int SessionManager::getStyleTypes(vector<std::string>& stylename,DiagramTab tab)
 
 
 
-ptStyle& SessionManager::getStyle(const std::string name,DiagramTab tab)
+const pets2::ptStyle& SessionManager::getStyle(const std::string name,DiagramTab tab)
 {
   return getStyle( getStyleIndex(name, tab) );
 }
@@ -70,7 +70,7 @@ int SessionManager::getStyleIndex(const std::string name,DiagramTab tab)
 
 
 
-ptStyle& SessionManager::getStyle(int idx){
+const pets2::ptStyle& SessionManager::getStyle(int idx){
 
   if (idx>=0 && idx <(signed int)styles.size()){
     return styles[idx].style;

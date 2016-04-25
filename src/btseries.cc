@@ -28,7 +28,6 @@
  */
 
 #include <QApplication>
-#include <QGLPixelBuffer>
 
 #include <puTools/miStringFunctions.h>
 #include <puTools/miTime.h>
@@ -59,8 +58,10 @@ void startHardcopy(const printOptions priop)
 {
   if (verbose)
     cout << "- startHardcopy" << endl;
+#if 0
   drawarea->setPrintOptions(priop);
   drawarea->startHardcopy();
+#endif
   hardcopy_started = true;
 }
 
@@ -70,7 +71,9 @@ void endHardcopy()
   if (hardcopy_started) {
     if (verbose)
       cout << "- endHardcopy " << endl;
+#if 0
     drawarea->endHardcopy();
+#endif
   }
   hardcopy_started = false;
 }
@@ -525,7 +528,6 @@ void printUsage(bool showexample)
 int main(int argc, char** argv)
 {
   QApplication a(argc,argv);
-  QGLPixelBuffer * qpbuffer;
 
   int xsize, ysize; // total pixmap size
   bool multiple_plots = false; // multiple plots per page
@@ -548,7 +550,6 @@ int main(int argc, char** argv)
 
   miutil::miTime time, ptime, fixedtime;
 
-  std::string xhost = ":0.0";
   std::string sarg;
   std::string batchinput;
   // tseries setup file
@@ -565,16 +566,11 @@ int main(int argc, char** argv)
   int ac = 1;
   while (ac < argc) {
     sarg = argv[ac];
-    //cerr << "Checking arg:" << sarg << endl;
 
     if (sarg == "-display") {
       ac++;
       if (ac >= argc)
         printUsage(false);
-      xhost = argv[ac];
-
-      // prepare font-pack for different display
-      FontManager::set_display_name(xhost);
 
     } else if (sarg == "-input" || sarg == "-i") {
       ac++;
@@ -627,11 +623,6 @@ int main(int argc, char** argv)
   std::ifstream bfile(batchinput.c_str());
   if (!bfile) {
     cerr << "ERROR cannot open inputfile " << batchinput << endl;
-    return 1;
-  }
-
-  if (!QGLFormat::hasOpenGL() || !QGLPixelBuffer::hasOpenGLPbuffers()) {
-    cerr << "This system does not support OpenGL pbuffers." << endl;
     return 1;
   }
 
@@ -759,11 +750,15 @@ int main(int argc, char** argv)
       if (!multiple_plots) {
         pixwidth = (globalWindow.x2 - globalWindow.x1) / float(xsize);
         pixheight = (globalWindow.y2 - globalWindow.y1) / float(ysize);
+#if 0
         drawarea->setViewport(xsize, ysize, pixwidth, pixheight);
+#endif
       } else {
         pixwidth = (globalWindow.x2 - globalWindow.x1) / float(deltax);
         pixheight = (globalWindow.y2 - globalWindow.y1) / float(deltay);
+#if 0
         drawarea->setViewport(deltax, deltay, pixwidth, pixheight);
+#endif
       }
 
       if (verbose)
@@ -781,37 +776,36 @@ int main(int argc, char** argv)
       }
 
       if (multiple_plots) {
+#if 0
         glViewport(margin + plotcol * (deltax + spacing), margin + plotrow
             * (deltay + spacing), deltax, deltay);
+#endif
       }
 
       if (verbose)
         cout << "- plot" << endl;
+#if 0
       glLoadIdentity();
       glOrtho(globalWindow.x1, globalWindow.x2, globalWindow.y1,
           globalWindow.y2, -1, 1);
       drawarea->plot();
+#endif
 
       if (raster) {
-        if (qpbuffer == 0){
-          cerr << " ERROR. when saving image - qpbuffer is NULL" << endl;
-        } else {
-          QImage image = qpbuffer->toImage();
+        QImage image; // FIXME = qpbuffer->toImage();
 
-          if (verbose){
-            cout << "- Saving image to:" << priop.fname;
-            cout.flush();
-          }
-
-          bool result = image.save(priop.fname.c_str());
-
-          if (verbose){
-            cout << " .." << (result ? "Ok" : " **FAILED!**") << endl;
-          } else if (!result){
-            cerr << " ERROR, saving image to:" << priop.fname << endl;
-          }
+        if (verbose){
+          cout << "- Saving image to:" << priop.fname;
+          cout.flush();
         }
 
+        bool result = image.save(priop.fname.c_str());
+
+        if (verbose){
+          cout << " .." << (result ? "Ok" : " **FAILED!**") << endl;
+        } else if (!result){
+          cerr << " ERROR, saving image to:" << priop.fname << endl;
+        }
 
       } else { // PostScript only
         if (toprinter) { // automatic print of each page
@@ -998,22 +992,11 @@ int main(int argc, char** argv)
       // first stop ongoing postscript sessions
       endHardcopy();
 
-      // delete old pixmaps
-      if (buffermade && qpbuffer) {
-        delete qpbuffer;
-      }
-
-      QGLFormat format = QGLFormat::defaultFormat();
-      //TODO: any specific format specifications?
-      qpbuffer = new QGLPixelBuffer(xsize, ysize, format, 0);
-
-      qpbuffer->makeCurrent();
-
-      glShadeModel(GL_FLAT);
-
+#if 0
       glOrtho(globalWindow.x1, globalWindow.x2, globalWindow.y1,
           globalWindow.y2, -1, 1);
       glViewport(0, 0, xsize, ysize);
+#endif
 
       // for multiple plots
       priop.viewport_x0 = 0;
@@ -1138,7 +1121,9 @@ int main(int argc, char** argv)
       if (miutil::to_lower(value) == "off") {
         multiple_newpage = false;
         multiple_plots = false;
+#if 0
         glViewport(0, 0, xsize, ysize);
+#endif
 
       } else {
         std::vector<std::string> v1 = miutil::split(value, ",");
@@ -1218,11 +1203,6 @@ int main(int argc, char** argv)
 
   // finish off postscript-sessions
   endHardcopy();
-
-  // clean up structures
-  if (qpbuffer) {
-    delete qpbuffer;
-  }
 
   return 0;
 }

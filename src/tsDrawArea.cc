@@ -31,18 +31,22 @@
 #include <puMet/symbolMaker.h>
 #include <pets2/ptSymbolElement.h>
 #include <pets2/ptTimemarkerElement.h>
-#include <pets2/ptFontManager.h>
-//#include <glText/glTextX.h>
-#include <glText/glTextQtTexture.h>
 
 using namespace d_print;
 using namespace std;
 using namespace miutil;
+using namespace pets2;
 
-tsDrawArea::tsDrawArea(tsRequest* tsr, DatafileColl* tsd, SessionManager* ses, QObject* parent) :
-                                    request(tsr), data(tsd), session(ses), diagram(0), theData(0), width(1), height(
-                                        1), pixwidth(1), pixheight(1), hardcopy(false), hardcopystarted(
-                                            false), showGridLines(true), QObject(parent), forceSequentialRead(false)
+tsDrawArea::tsDrawArea(tsRequest* tsr, DatafileColl* tsd, SessionManager* ses, QObject* parent)
+  : QObject(parent)
+  , request(tsr)
+  , data(tsd)
+  , session(ses)
+  , canvas(0)
+  , diagram(0)
+  , theData(0)
+  , showGridLines(true)
+  , forceSequentialRead(false)
 {
   minProg = 0;
   maxProg = 300;
@@ -52,13 +56,12 @@ tsDrawArea::tsDrawArea(tsRequest* tsr, DatafileColl* tsd, SessionManager* ses, Q
   observationStartTime = miTime::nowTime();
   observationStartTime.addHour(-(setup.klima.maxObservationLength));
 
-  glText* gltext = new glTextQtTexture();
-  gltext->testDefineFonts();
-  FM.addFontCollection(gltext, XFONTSET);
-  FM.setFontColl(XFONTSET);
   datathread = new pets::PrepareDataThread(this);
   connect (datathread, SIGNAL(post_dataLoad(bool)), this , SLOT(dataLoad_finished(bool)));
+}
 
+tsDrawArea::~tsDrawArea()
+{
 }
 
 void tsDrawArea::prepare(bool readData)
@@ -82,19 +85,11 @@ void tsDrawArea::prepare(bool readData)
   prepareDiagram();
 }
 
-void tsDrawArea::setViewport(int w, int h, float pw, float ph)
+void tsDrawArea::setViewport(ptCanvas* c)
 {
-  width = w;
-  height = h;
-
-  glwidth = w * pw;
-  glheight = h * ph;
-
-  pixwidth = pw;
-  pixheight = ph;
-
+  canvas = c;
   if (diagram)
-    diagram->setViewport(width, height, glwidth, glheight);
+    diagram->setViewport(c);
 }
 
 bool tsDrawArea::prepareData()
@@ -268,7 +263,6 @@ bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
 
 void tsDrawArea::prepareDiagram()
 {
-
   if (!theData) {
     cerr << "tsDrawArea::prepareDiagram(): !theData  - prepareDiagram failed  " << endl;
     return;
@@ -290,41 +284,29 @@ void tsDrawArea::prepareDiagram()
     theData->setStation(s);
   }
 
-  ptColor bgColor;
-  if (!diagram->makeDefaultPlotElements(&bgColor)) {
+  if (!diagram->makeDefaultPlotElements()) {
     cerr << "tsDrawArea::prepareDiagram(): !diagram->makeDefaultPlotElements(&bgColor) - prepareDiagram failed" << endl;
     return;
   }
 
-  diagram->setViewport(width, height, glwidth, glheight);
-
-  float bgRGB[3];
-  bgRGB[0] = bgColor.colTable[0];
-  bgRGB[1] = bgColor.colTable[1];
-  bgRGB[2] = bgColor.colTable[2];
-
-  glClearColor(bgRGB[0], bgRGB[1], bgRGB[2], 1.0);
+  diagram->setViewport(canvas);
 
   // set correct weathersymbols
-  miSymbol tmpSymbol;
   PlotElement* pe = 0;
   vector<SymbolElement*> sev;
-  int i;
-  int minsymb = setup.wsymbols.minCustom(), maxsymb =
-      setup.wsymbols.maxCustom();
   while ((pe = diagram->findElement(SYMBOL, pe)) != 0) {
     sev.push_back((SymbolElement*) pe);
     pe = pe->next;
   }
-  if (sev.size()) {
+  if (!sev.empty()) {
+    const int minsymb = setup.wsymbols.minCustom(), maxsymb = setup.wsymbols.maxCustom();
     vector<std::string> symbimages;
-    std::string stmp;
-    for (i = minsymb; i <= maxsymb; i++) {
-      tmpSymbol = setup.wsymbols.getSymbol(i);
-      stmp = setup.path.images + tmpSymbol.picture();
+    for (int i = minsymb; i <= maxsymb; i++) {
+      miSymbol tmpSymbol = setup.wsymbols.getSymbol(i);
+      std::string stmp = setup.path.images + tmpSymbol.picture();
       symbimages.push_back(stmp);
     }
-    for (i = 0; i < (signed int) sev.size(); i++) {
+    for (int i = 0; i < (signed int) sev.size(); i++) {
       sev[i]->setImages(minsymb, symbimages);
     }
   }
@@ -363,88 +345,14 @@ void tsDrawArea::useTimemarks()
   }
 }
 
-void tsDrawArea::plot()
+void tsDrawArea::plot(ptPainter& painter)
 {
   if (!diagram)
     return;
 
   diagram->setProgInterval(minProg, maxProg);
-
-  if (hardcopy && !hardcopystarted) {
-    oco = diagram->getColour();
-    ico = (printoptions.colop == incolour);
-
-    if (oco != ico)
-      diagram->toggleColour(ico);
-
-    bool ila = (printoptions.orientation == ori_landscape);
-    bool eps = printoptions.doEPS;
-
-    diagram->startPSoutput(printoptions.fname, ico, ila, eps);
-    hardcopystarted = true;
-  }
-
-  //glLoadIdentity();
-  //glOrtho(0,glwidth,0,glheight,-1,1);
-
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
   useTimemarks();
-
-  diagram->plot();
-
-  glFlush();
-}
-
-void tsDrawArea::startHardcopy()
-{
-  if (!diagram)
-    return;
-
-  //  if (hardcopy) {
-  //    // if hardcopy in progress, and same filename: make new page
-  //    if (po.fname == printoptions.fname) {
-  //      diagram->startPSnewpage();
-  //      return;
-  //    }
-  //    // different filename: end current output and start a new
-  //    endHardcopy();
-  //  }
-  hardcopy = true;
-
-  // if (delay_creation)
-  //   hardcopystarted = false;
-  // else {
-  hardcopystarted = true;
-
-  oco = diagram->getColour();
-  ico = (printoptions.colop == incolour);
-
-  if (oco != ico)
-    diagram->toggleColour(ico);
-
-  bool ila = (printoptions.orientation == ori_landscape);
-  bool eps = printoptions.doEPS;
-
-  diagram->startPSoutput(printoptions.fname, ico, ila, eps);
-  hardcopystarted = true;
-  //  }
-}
-
-void tsDrawArea::endHardcopy()
-{
-  if (!diagram || !hardcopy)
-    return;
-
-  diagram->endPSoutput();
-  if (oco != ico)
-    diagram->toggleColour(oco);
-
-  hardcopy = false;
+  diagram->plot(painter);
 }
 
 ///////////// WDB

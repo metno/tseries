@@ -29,12 +29,16 @@
 #include "qtsMain.h"
 
 #include <QTimerEvent>
+#include <QPainter>
 #include <QPixmap>
 #include <QCloseEvent>
 #include <QFileInfo>
 #include <QFontDialog>
 #include <QPrintDialog>
 #include <QStringList>
+#ifdef HAVE_QTSVG
+#include <QSvgGenerator>
+#endif
 #include <QDesktopServices>
 #include <QUrl>
 
@@ -335,46 +339,76 @@ void qtsMain::raster()
 
   QString fpath = fname.c_str();
   QString fcaption = "save file dialog";
-  QString fpattern = "Pictures (*.png *.xpm *.bmp *.eps);;All (*.*)";
+#ifdef HAVE_QTSVG
+  const QString fpattern = "Pictures (*.png *.xpm *.bmp *.pdf *.ps *.eps *.svg);;All (*.*)";
+#else // !HAVE_QTSVG
+  const QString fpattern = "Pictures (*.png *.xpm *.bmp *.pdf *.ps *.eps);;All (*.*)";
+#endif // !HAVE_QTSVG
 
   QString s = QFileDialog::getSaveFileName(this, fcaption, fpath, fpattern);
-
   if (s.isNull())
     return;
 
   QFileInfo finfo(s);
   fpath = finfo.absolutePath();
 
-  fname = s.toStdString();
+  qtsShow* w = work->Show();
+  QImage* image = 0;
+  QPaintDevice* device = 0;
+  if (s.endsWith(".pdf") || s.endsWith(".ps") || s.endsWith(".eps")) {
+    QPrinter* printer = new QPrinter(QPrinter::ScreenResolution);
+    if (s.endsWith(".pdf"))
+      printer->setOutputFormat(QPrinter::PdfFormat);
+    else
+      printer->setOutputFormat(QPrinter::PostScriptFormat);
+    printer->setOutputFileName(s);
+    printer->setFullPage(true);
+    printer->setPaperSize(QSizeF(w->width(), w->height()), QPrinter::DevicePixel);
 
-  int quality = -1;
+    // FIXME copy from bdiana
+    // According to QTBUG-23868, orientation and custom paper sizes do not
+    // play well together. Always use portrait.
+    printer->setOrientation(QPrinter::Portrait);
 
-  cerr << "Saving: " << fname << endl;
+    device = printer;
+#ifdef HAVE_QTSVG
+  } else if (filename.endsWith(".svg")) {
+    QSvgGenerator* generator = new QSvgGenerator();
+    generator->setFileName(filename);
+    generator->setSize(w->size());
+    generator->setViewBox(QRect(0, 0, w->width(), w->height()));
+    generator->setTitle(tr("tseries image"));
+    generator->setDescription(tr("Created by tseries %1.").arg(PVERSION));
 
-  if (miutil::contains(fname, ".xpm") || miutil::contains(fname, ".XPM"))
-    format = "XPM";
-  else if (miutil::contains(fname, ".bmp") || miutil::contains(fname, ".BMP"))
-    format = "BMP";
-  else if (miutil::contains(fname, ".eps") || miutil::contains(fname, ".epsf")) {
-    makeEPS(fname);
-    return;
+    // FIXME copy from bdiana
+    // For some reason, QPrinter can determine the correct resolution to use, but
+    // QSvgGenerator cannot manage that on its own, so we take the resolution from
+    // a QPrinter instance which we do not otherwise use.
+    QPrinter sprinter;
+    generator->setResolution(sprinter.resolution());
+
+    device = generator;
+#endif // HAVE_QTSVG
+  } else {
+    image = new QImage(w->size(), QImage::Format_ARGB32_Premultiplied);
+    image->fill(Qt::transparent);
+    device = image;
   }
 
-  QImage img = work->Show()->grabFrameBuffer(true);
-  img.save(fname.c_str(), format.c_str(), quality);
+  w->paintOn(device);
+
+  if (image)
+    image->save(s);
+
+  delete device;
 }
 
 void qtsMain::print()
 {
-
-  if(!printer)
+  if (!printer)
     printer = new QPrinter(QPrinter::HighResolution);
 
   std::string command;
-
-  if(!printer)
-    printer = new QPrinter(QPrinter::HighResolution);
-
 
 #ifdef linux
   command = "lpr -h -r -{hash}{numcopies} -P {printer} {filename}";
@@ -420,7 +454,7 @@ void qtsMain::print()
 
   // start the postscript production
   QApplication::setOverrideCursor(Qt::WaitCursor);
-  work->Show()->hardcopy(priop);
+  work->Show()->paintOn(printer);
 
   // if output to printer: call appropriate command
   if (printer->outputFileName().isEmpty()) {
@@ -438,36 +472,15 @@ void qtsMain::print()
 
   // reset number of copies (saves a lot of paper)
   printer->setNumCopies(1);
-
-}
-
-void qtsMain::makeEPS(const std::string& filename)
-{
-  QApplication::setOverrideCursor(Qt::WaitCursor);
-  printOptions priop;
-  priop.fname = filename;
-  priop.colop = d_print::incolour;
-  priop.orientation = d_print::ori_automatic;
-  priop.pagesize = d_print::A4;
-  priop.numcopies = 1;
-  priop.usecustomsize = false;
-  priop.fittopage = false;
-  priop.drawbackground = true;
-  priop.doEPS = true;
-
-  work->Show()->hardcopy(priop);
-
-  QApplication::restoreOverrideCursor();
 }
 
 void qtsMain::about()
 {
-
   QMessageBox::about(
       this,
       tr("About T-series"),
-      tr("T-series: Times series viewer\nVersion: %1\n\nmet.no 2002").arg(
-          VERSION));
+      tr("T-series: Times series viewer\nVersion: %1\n\nmet.no 2016")
+      .arg(VERSION));
 }
 
 void qtsMain::writeLog()

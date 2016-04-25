@@ -26,21 +26,14 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
 #include "qtsShow.h"
-#include <iostream>
 
-using namespace std;
-using namespace miutil;
-
-const float gl_width =  1500.0;
-const float gl_height = 1000.0;
-
-qtsShow::qtsShow(const QGLFormat fmt,
-    tsRequest* tsr, DatafileColl* tsd, SessionManager* ses)
-  : QGLWidget(fmt), plotw(1), ploth(1), initialised(false)
+qtsShow::qtsShow(tsRequest* tsr, DatafileColl* tsd, SessionManager* ses, QWidget* parent)
+  : QWidget(parent)
+  , canvas(this)
 {
   drawArea = new tsDrawArea(tsr,tsd,ses,this);
-
 
   connect(drawArea,SIGNAL(post_dataLoad(tsDrawArea::DataloadRequest)),this,SLOT(post_dataLoad(tsDrawArea::DataloadRequest)));
 
@@ -49,19 +42,14 @@ qtsShow::qtsShow(const QGLFormat fmt,
 }
 
 
-void qtsShow::paintGL()
+void qtsShow::paintEvent(QPaintEvent*)
 {
-  static int paintw=0, painth=0;
-  if ( paintw != plotw || painth != ploth ){
-    glViewport( 0, 0, plotw, ploth );
-    paintw= plotw;
-    painth= ploth;
-  }
   drawArea->setDataloadRequest(tsDrawArea::dataload_paintGL);
   drawArea->prepare(false);
-  drawArea->plot();
 
-  swapBuffers();
+  pets2::ptQPainter painter(&canvas);
+  //painter.qPainter().setRenderHint(QPainter::Antialiasing, true);
+  drawArea->plot(painter);
 }
 
 
@@ -69,102 +57,63 @@ void qtsShow::post_dataLoad(tsDrawArea::DataloadRequest dlRequest)
 {
   switch(dlRequest) {
   case tsDrawArea::dataload_paintGL:
-    paintGL();
+    update();
     break;
   case tsDrawArea::dataload_refresh:
     refresh(false);
     break;
   case tsDrawArea::dataload_hardcopy:
-    post_hardcopy();
+    // FIXME post_hardcopy();
     break;
   }
 }
 
-
-
-
-//  Set up the OpenGL rendering state
-void qtsShow::initializeGL()
-{
-  glClearColor( 1.0,1.0,1.0,1.0 ); // Let OpenGL clear to white
-  glShadeModel( GL_FLAT );
-
-  setAutoBufferSwap(false);
-  glDrawBuffer(GL_BACK);
-
-  glLoadIdentity();
-  glOrtho(0,gl_width,0,gl_height,-1,1);
-  initialised = true;
-}
-
-
 //  Set up the OpenGL view port, matrix mode, etc.
-void qtsShow::resizeGL( int w, int h )
+void qtsShow::resizeEvent(QResizeEvent*)
 {
-  glViewport( 0, 0, (GLint)w, (GLint)h );
-  plotw= w;
-  ploth= h;
-
-  float pw = 1;
-  float ph = 1;
-  if ( plotw!=0 && ploth!=0 ){
-    pw = gl_width/float(plotw);
-    ph = gl_height/float(ploth);
-  }
-
-  drawArea->setViewport(w,h,pw,ph);
+  canvas.update();
+  drawArea->setViewport(&canvas);
 }
 
 void qtsShow::refresh(bool readData)
 {
-  if (!initialised) return;
-
-  makeCurrent();
   drawArea->setDataloadRequest(tsDrawArea::dataload_refresh);
   drawArea->prepare(false);
 
-  updateGL();
+  update();
 
   if(drawArea->newLength()) {
     int totall, fcastl;
     drawArea->getMaxIntervall(totall,fcastl);
     drawArea->resetNewLength();
-    emit newTimeRange(totall,fcastl);
+    Q_EMIT newTimeRange(totall,fcastl);
   }
 
   Q_EMIT refreshFinished();
 }
 
 
-void qtsShow::hardcopy(const printOptions& p)
+void qtsShow::paintOn(QPaintDevice* device)
 {
-  if (!initialised)
-    return;
-  drawArea->setPrintOptions(p);
-  post_hardcopy();
-}
+  pets2::ptQCanvas pcanvas(device);
+  drawArea->setViewport(&pcanvas);
 
-
-void qtsShow::post_hardcopy()
-{
-  makeCurrent(); // set current OpenGL context
   drawArea->setDataloadRequest(tsDrawArea::dataload_hardcopy);
   drawArea->prepare(true);
-  drawArea->startHardcopy();
-  updateGL();
-  drawArea->endHardcopy();
+
+  pets2::ptQPainter ppainter(&pcanvas);
+  drawArea->plot(ppainter);
+
+  drawArea->setViewport(&canvas);
 }
 
-
-
-
-void qtsShow::setTimemark(miTime tim, std::string nam)
+void qtsShow::setTimemark(const miutil::miTime& tim, const std::string& nam)
 {
   drawArea->setTimemark(tim,nam);
   refresh(false);
 }
 
-void qtsShow::clearTimemarks(std::string nam)
+void qtsShow::clearTimemarks(const std::string& nam)
 {
   drawArea->clearTimemarks(nam);
   refresh(false);

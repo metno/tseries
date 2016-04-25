@@ -144,7 +144,6 @@ private:
   void restoreLog();
   void sendImage(const std::string, const QImage&);
   void setRemoteParameters();
-  void makeEPS(const std::string&);
   void setTimemark(miutil::miTime);
   void setDianaTimemark(miutil::miTime);
 

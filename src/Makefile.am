@@ -1,7 +1,6 @@
 # Makefile to build tseries & btseries 
-# $Id$ 
-#
-bin_PROGRAMS= tseries.bin btseries
+
+bin_PROGRAMS= tseries.bin
 
 # sources --------------------------
 
@@ -114,7 +113,6 @@ img_sources=               \
 common_cppflags +=              \
 	$(PETS2_CPPFLAGS)       \
 	$(PUMET_CPPFLAGS)       \
-	$(GLTEXT_CPPFLAGS)      \
 	$(PUDATATYPES_CPPFLAGS) \
 	$(COSERVER_CPPFLAGS)    \
 	$(QT4_CPPFLAGS)         \
@@ -123,21 +121,17 @@ common_cppflags +=              \
 common_ldflags=                \
 	$(PETS2_LDFLAGS)       \
 	$(PUMET_LDFLAGS)       \
-	$(GLTEXT_LDFLAGS)      \
 	$(PUDATATYPES_LDFLAGS) \
 	$(COSERVER_LDFLAGS)    \
 	$(QT4_LDFLAGS)         \
-	$(GLU_LDFLAGS) \
 	$(FIMEX_LDFLAGS) -DFIMEX 
 
 common_ldadd=               \
 	$(PETS2_LIBS)       \
 	$(PUMET_LIBS)       \
-	$(GLTEXT_LIBS)      \
 	$(PUDATATYPES_LIBS) \
 	$(COSERVER_LIBS)    \
 	$(QT4_LIBS) \
-	$(GLU_LIBS) \
 	$(FIMEX_LIBS) 
 
 
@@ -162,27 +156,25 @@ tseries_bin_LDADD=    $(common_ldadd)
 
 # building btseries -----------------
 
-btseries_SOURCES=         \
-	btseries.cc       \
-	diImageIO.cc      \
-	$(header_sources) \
-	$(common_sources) \
-	$(cc_sources)
-
-nodist_btseries_SOURCES = \
-	$(common_moc_sources)
-
-
-btseries_CXXFLAGS= $(common_cppflags)
-btseries_LDFLAGS=  $(common_ldflags)
-btseries_LDADD=    $(common_ldadd)
-
+## bin_PROGRAMS += btseries
+##
+## btseries_SOURCES=         \
+## 	btseries.cc       \
+## 	diImageIO.cc      \
+## 	$(header_sources) \
+## 	$(common_sources) \
+## 	$(cc_sources)
+##
+## nodist_btseries_SOURCES = \
+## 	$(common_moc_sources)
+##
+## btseries_CXXFLAGS= $(common_cppflags)
+## btseries_LDFLAGS=  $(common_ldflags)
+## btseries_LDADD=    $(common_ldadd)
 
 # generated file must be cleaned afterwards...
 
 CLEANFILES = $(moc_sources) $(nodist_language_DATA) $(common_moc_sources)
-
-
 
 # Preserve timestamps under install --
 

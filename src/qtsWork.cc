@@ -62,10 +62,6 @@ qtsWork::qtsWork(QWidget* parent, QString language)
   selectionType   = SELECT_BY_STATION;
   filterOn        = false;
   latlonInDecimal = false;
-  QGLFormat fmt;
-  fmt.setOverlay(false);
-  fmt.setDoubleBuffer(true);
-
 
   reading_data=false;
 
@@ -74,7 +70,7 @@ qtsWork::qtsWork(QWidget* parent, QString language)
   oldModel = NOMODEL_TSERIES;
 
   sidebar = new qtsSidebar(language);
-  show    = new qtsShow(fmt,&request,&data,&session);
+  show    = new qtsShow(&request,&data,&session);
 
 
   connect (show,SIGNAL(refreshFinished()),this,SLOT(refreshFinished()));

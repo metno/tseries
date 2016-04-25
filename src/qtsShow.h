@@ -29,35 +29,30 @@
 #ifndef _qtsShow_h
 #define _qtsShow_h
 
-#include <qgl.h>
-#include <QGLFormat>
-#include <QGLWidget>
+#include <QWidget>
 #include "tsDrawArea.h"
 #include <puTools/miTime.h>
 
-class qtsShow : public QGLWidget {
+class qtsShow : public QWidget {
   Q_OBJECT
 
 private:
-  int plotw;
-  int ploth;
   tsDrawArea* drawArea;
-  bool initialised;
+  pets2::ptQCanvas canvas;
 
 protected:
-  void resizeGL( int width, int height );
-  void initializeGL();
-  void paintGL();
-
+  void resizeEvent(QResizeEvent*);
+  void paintEvent(QPaintEvent*);
 
 public:
-  qtsShow(const QGLFormat fmt, tsRequest*,DatafileColl*, SessionManager*);
+  qtsShow(tsRequest*,DatafileColl*, SessionManager*, QWidget* parent=0);
 
   void refresh(bool readData = false);
-  void hardcopy(const printOptions&);
-  void post_hardcopy();
-  void setTimemark(miutil::miTime,std::string="");
-  void clearTimemarks(std::string="");
+
+  void paintOn(QPaintDevice* device);
+
+  void setTimemark(const miutil::miTime& time, const std::string& name="");
+  void clearTimemarks(const std::string& name="");
   void setProgintervall(int mi,int ma) { drawArea->setProgintervall(mi,ma);}
   void setShowObservations(bool showObs) {drawArea->setShowObservations(showObs);}
   void getTimeRange(int& t,int& f) { drawArea->getTimeRange(t,f);}

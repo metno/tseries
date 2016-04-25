@@ -40,6 +40,7 @@
 #include <pets2/ptDiagram.h>
 #include <pets2/ptPlotElement.h>
 #include <pets2/ptEditLineElement.h>
+#include <pets2/ptQPainter.h>
 #include <puTools/miTime.h>
 #include <tsData/ptWeatherParameter.h>
 
@@ -61,24 +62,15 @@ private:
   DatafileColl  * data;
   SessionManager* session;
 
-  ptDiagram     * diagram;
+  pets2::ptCanvas* canvas;
+  pets2::ptDiagram     * diagram;
   ptDiagramData * theData;
-  ptStyle         diaStyle;
+  pets2::ptStyle         diaStyle;
   printOptions    printoptions;
   pets::PrepareDataThread * datathread;
   DataloadRequest dataloadrequest;
   DataloadRequest threadedLoadRequest;
 
-  int width;
-  int height;
-  float glwidth;
-  float glheight;
-  float pixwidth;
-  float pixheight;
-  bool  hardcopy;
-  bool  hardcopystarted;
-  bool  oco; // original
-  bool  ico; // new color
   bool showObservations;
   int totalLength;
   int forecastLength;
@@ -103,21 +95,19 @@ private:
 
 public:
   tsDrawArea( tsRequest* tsr, DatafileColl* tsd, SessionManager* ses, QObject* parent=0);
+  ~tsDrawArea();
 
   void prepare(bool readData = true);
 
   void setShowGridLines(bool s){showGridLines=s;}
   void setPrintOptions(const printOptions& po) { printoptions = po;}
-  void setViewport(int w, int h,float,float);
-
-  void startHardcopy();
-  void endHardcopy();
+  void setViewport(pets2::ptCanvas* c);
 
   void getTimeRange(int & t, int& f) { t=totalLength; f=forecastLength; }
 
   bool newLength() { return lengthChanged;}
   void resetNewLength() { lengthChanged = false; }
-  void plot();
+  void plot(pets2::ptPainter& painter);
 
   void setTimemark(miutil::miTime nt,std::string name="");
   void clearTimemarks(std::string name="");
