@@ -73,7 +73,7 @@ common_cppflags += -DGRIBSTREAM
 endif
 
 %.qm: %.ts  $(qt_sources)
-	$(LUPDATE4)  $(qt_sources) -ts $< ; \
+	$(LUPDATE4)  $(qt_sources:%=$(srcdir)/%) -ts $< ; \
 	$(LRELEASE4)  $<
 
 
