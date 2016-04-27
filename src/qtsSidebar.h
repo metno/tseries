@@ -47,10 +47,10 @@
 #include "CoordinateTab.h"
 #include "FimexTab.h"
 
-#include <coserver/ClientSelection.h>
-
 #include <vector>
 #include <string>
+
+class ClientSelection;
 
 class qtsSidebar : public QWidget
 {

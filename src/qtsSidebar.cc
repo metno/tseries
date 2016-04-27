@@ -26,8 +26,11 @@
  */
 #include "qtsSidebar.h"
 
+#include <coserver/ClientSelection.h>
+
 #include <QPixmap>
 #include <QHBoxLayout>
+#include <QRegExp>
 #include <QVBoxLayout>
 
 
@@ -147,9 +150,9 @@ qtsSidebar::qtsSidebar(QString language)
   QPixmap expand_pix(expand_xpm);
   QPixmap collapse_pix(collapse_xpm);
 
-  pluginB = new ClientSelection(QString::fromStdString(s.server.name.c_str()), this);
-  pluginB->client()->setServerCommand(QString::fromStdString(s.server.command.c_str()));
-  pluginB->setName(QString::fromStdString(s.server.name.c_str()));
+  pluginB = new ClientSelection("TSeries", this);
+  pluginB->client()->setServerCommand(QString::fromStdString(s.server.command));
+  pluginB->setName(QString::fromStdString(s.server.name));
   const QRegExp instanceNamePattern("tseries(-[\\w\\d+-]+)?");
   pluginB->setNamePattern(instanceNamePattern);
 

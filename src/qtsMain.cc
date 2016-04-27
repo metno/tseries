@@ -46,6 +46,7 @@
 #include "ParameterFilterDialog.h"
 #include "PopupCalendar.h"
 
+#include <coserver/ClientSelection.h>
 #include <coserver/QLetterCommands.h>
 #include <puTools/ttycols.h>
 #include <puTools/miDate.h>
@@ -66,7 +67,7 @@ using namespace miutil;
 const std::string thisTM = "MARKEDTIME";
 const std::string dianaTM = "DIANATIME";
 
-qtsMain::qtsMain(std::string l)
+qtsMain::qtsMain(std::string l, const QString& name)
   : lang(l)
 {
   // Added to avoid unnessecary updates when connected to diana
@@ -81,6 +82,7 @@ qtsMain::qtsMain(std::string l)
   setCentralWidget(work);
 
   makeConnectButtons();
+  pluginB->setName(name);
 
   work->latlonInDecimalToggled(latlond);
 
@@ -315,6 +317,9 @@ void qtsMain::makeConnectButtons()
       SLOT(processLetter(const miMessage&)));
   connect(pluginB->client(), SIGNAL(addressListChanged()), SLOT(processConnect()));
   connect(pluginB, SIGNAL(disconnected()), SLOT(cleanConnection()));
+
+  // makeConnectButtons is called after makeMenuBar
+  menu_setting->addAction(pluginB->getMenuBarAction());
 }
 
 void qtsMain::closeEvent(QCloseEvent * e)
@@ -501,6 +506,14 @@ void qtsMain::writeLog()
   config.set("LOCKHOURSTOMODEL", lockHoursToModel);
   config.set("SHOWGRIDLINES", showGridLines);
 
+  {
+    std::ostringstream p;
+    const QStringList peers = pluginB->getSelectedClientNames();
+    for (int i=0; i<peers.count(); ++i)
+      p << ' ' << peers.at(i).toStdString();
+    config.set("COSERVER_PEERS", p.str());
+  }
+
   if ((not lang.empty()))
     config.set("LANG", lang);
 
@@ -524,6 +537,14 @@ void qtsMain::restoreLog()
     QFont font;
     if (font.fromString(f.c_str()))
       qApp->setFont(font);
+  }
+
+  if (config.get("COSERVER_PEERS", f)) {
+    const std::vector<std::string>  cp = miutil::split(f, 0, " ");
+    QStringList peers;
+    for (size_t i=0; i<cp.size(); ++i)
+      peers << QString::fromStdString(cp[i]);
+    pluginB->setSelectedClientNames(peers);
   }
 
   work->restoreLog();
@@ -570,17 +591,12 @@ void qtsMain::togglePositions(bool isOn)
 
   if (sposition)
     refreshDianaStations();
-  miMessage m;
-  if (sposition)
-    m.command = qmstrings::showpositions;
-  else
-    m.command = qmstrings::hidepositions;
 
-
+  miQMessage m(sposition ? qmstrings::showpositions : qmstrings::hidepositions);
   if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX){
-    m.description = DATASET_FIMEX;
+    m.addDataDesc(QString::fromStdString(DATASET_FIMEX));
   } else {
-    m.description = DATASET_TSERIES + work->lastList();
+    m.addDataDesc(QString::fromStdString(DATASET_TSERIES + work->lastList()));
   }
   sendLetter(m);
 }
@@ -647,20 +663,20 @@ void qtsMain::sendImage(const std::string name, const QImage& image)
   QDataStream s(a, QIODevice::WriteOnly);
   s << image;
 
-  miMessage m;
-  m.command = qmstrings::addimage;
-  m.description = "name:image";
+  miQMessage m(qmstrings::addimage);
+  m.addDataDesc("name").addDataDesc("image");
 
-  ostringstream ost;
-  ost << name << ":";
+  QStringList values;
+  values << QString::fromStdString(name);
 
+  QString img;
   int n = a->count();
   for (int i = 0; i < n; i++) {
-    ost << setw(7) << int((*a).data()[i]);
+    img += " " + QString::number(int((*a).data()[i]));
   }
-  std::string txt = ost.str();
-  m.data.push_back(txt);
+  values << img;
 
+  m.addDataValues(values);
   sendLetter(m);
 }
 
@@ -702,9 +718,8 @@ void qtsMain::disablePoslist(std::string prev)
   if (!dianaconnected)
     return;
 
-  miMessage m;
-  m.command = qmstrings::hidepositions;
-  m.description = DATASET_TSERIES + prev;
+  miQMessage m(qmstrings::hidepositions);
+  m.addDataDesc(QString::fromStdString(DATASET_TSERIES + prev));
   sendLetter(m);
 }
 
@@ -712,12 +727,11 @@ void qtsMain::enableCurrentPoslist()
 {
   if (!dianaconnected)
     return;
-  miMessage m;
-  m.command = qmstrings::showpositions;
+  miQMessage m(qmstrings::showpositions);
   if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX){
-    m.description = DATASET_FIMEX;
+    m.addDataDesc(QString::fromStdString(DATASET_FIMEX));
   } else {
-    m.description = DATASET_TSERIES + currentModel;
+    m.addDataDesc(QString::fromStdString(DATASET_TSERIES + currentModel));
   }
   sendLetter(m);
 }
@@ -739,14 +753,12 @@ void qtsMain::sendTarget()
   if (!dianaconnected)
     return;
 
-  miMessage m, m2;
-
-  m = work->target();
+  miMessage m = work->target();
   sendLetter(m);
 
-  m2.command = qmstrings::showpositions;
-  m2.description = TARGETS_TSERIES;
-  sendLetter(m);
+  miQMessage m2(qmstrings::showpositions);
+  m2.addDataDesc(QString::fromStdString(TARGETS_TSERIES));
+  sendLetter(m2);
 }
 
 
@@ -755,9 +767,8 @@ void qtsMain::clearFimexList()
   if (!dianaconnected)
     return;
 
-  miMessage m;
-  m.command = qmstrings::hidepositions;
-  m.description = DATASET_FIMEX;
+  miQMessage m(qmstrings::hidepositions);
+  m.addDataDesc(QString::fromStdString(DATASET_FIMEX));
   sendLetter(m);
 }
 
@@ -767,21 +778,26 @@ void qtsMain::clearTarget()
   if (!dianaconnected)
     return;
 
-  miMessage m;
-  m.command = qmstrings::hidepositions;
-  m.description = TARGETS_TSERIES;
+  miQMessage m(qmstrings::hidepositions);
+  m.addDataDesc(QString::fromStdString(TARGETS_TSERIES));
   sendLetter(m);
+}
+
+bool qtsMain::updateDianaConnected()
+{
+  tsSetup s;
+  const bool old_dianaconnected = dianaconnected;
+  dianaconnected = pluginB->client()->hasClientOfType(QString::fromStdString(s.server.client));
+  return old_dianaconnected != dianaconnected;
 }
 
 // called when client-list changes
 
 void qtsMain::processConnect()
 {
-  tsSetup s;
+  if (updateDianaConnected() && dianaconnected) {
 
-  if (pluginB->client()->hasClientOfType(QString::fromStdString(s.server.client.c_str()))) {
-    dianaconnected = true;
-
+    tsSetup s;
     cerr << ttc::color(ttc::Blue) << "< CONNECTING TO: " << s.server.client
         << " > " << ttc::reset << endl;
 
@@ -801,8 +817,7 @@ void qtsMain::processConnect()
     selectionTypeChanged();
     refreshDianaStations();
 
-  } else
-    dianaconnected = false;
+  }
 
   setRemoteParameters();
 }
@@ -828,18 +843,25 @@ void qtsMain::sendLetter(miMessage& letter)
   pluginB->sendMessage(qmsg);
 }
 
+void qtsMain::sendLetter(const miQMessage& qmsg)
+{
+  pluginB->sendMessage(qmsg); // send to all
+}
+
 void qtsMain::sendNamePolicy()
 {
   if (!dianaconnected)
     return;
 
-  miMessage m;
-  m.command = qmstrings::showpositionname;
-  m.description = "normal:selected:icon";
+  miQMessage m(qmstrings::showpositionname);
+  m.addDataDesc("normal").addDataDesc("selected").addDataDesc("icon");
 
-  m.data.push_back(snormal ? "true" : "false");
-  m.data[0] += (sselect ? ":true" : ":false");
-  m.data[0] += (sicon ? ":true" : ":false");
+  QStringList values;
+  values << (snormal ? "true" : "false");
+  values << (sselect ? ":true" : ":false");
+  values << (sicon ? ":true" : ":false");
+  m.addDataValues(values);
+
   sendLetter(m);
 }
 
@@ -916,11 +938,12 @@ void qtsMain::timerEvent(QTimerEvent* e)
 
 void qtsMain::cleanConnection()
 {
-  dianaconnected = false;
-  cout << ttc::color(ttc::Red) << "< DISCONNECTING >" << ttc::reset << endl;
+  if (updateDianaConnected() && !dianaconnected) {
+    cout << ttc::color(ttc::Red) << "< DISCONNECTING >" << ttc::reset << endl;
 
-  setRemoteParameters();
-  setDianaTimemark(miTime::nowTime());
+    setRemoteParameters();
+    setDianaTimemark(miTime::nowTime());
+  }
 }
 
 
@@ -1091,27 +1114,27 @@ void qtsMain::fimexPoslistChanged()
 }
 
 
-
 void qtsMain::fimexPositionChanged(const QString& qname)
 {
   if (!dianaconnected)
-     return;
+    return;
 
   std::string name = qname.toStdString();
 
-   miMessage m;
+  miQMessage m(qmstrings::changeimageandtext);
+  m.addCommon("", QString::fromStdString(DATASET_FIMEX));
+  m.addDataDesc("name").addDataDesc("image");
 
-   m.command = qmstrings::changeimageandtext;
-   m.common = DATASET_FIMEX;
-   m.description = "name:image";
+  QStringList values;
+  values << QString::fromStdString(name) << QString::fromStdString(IMG_ACTIVE_TSERIES);
+  m.addDataValues(values);
 
-   ostringstream ost,nst;
-   ost << name << ":" << IMG_ACTIVE_TSERIES;
-   m.data.push_back(ost.str());
-   if(!lastFimexPosition.empty()) {
-     nst <<  lastFimexPosition << ":" << IMG_STD_TSERIES;
-     m.data.push_back(nst.str());
-   }
-   lastFimexPosition = name;
-   sendLetter(m);
+  if (!lastFimexPosition.empty()) {
+    QStringList last;
+    last << QString::fromStdString(lastFimexPosition) << QString::fromStdString(IMG_STD_TSERIES);
+    m.addDataValues(last);
+  }
+  lastFimexPosition = name;
+
+  sendLetter(m);
 }

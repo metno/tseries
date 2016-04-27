@@ -44,9 +44,6 @@
 #include <QActionGroup>
 #include <QShortcut>
 
-#include <coserver/ClientSelection.h>
-#include <coserver/miMessage.h>
-
 #include "qtsWork.h"
 #include "qtsFilterManager.h"
 #include "qtPrintManager.h"
@@ -57,6 +54,7 @@
 #include <map>
 #include <set>
 
+class ClientSelection;
 
 class qtsMain : public QMainWindow {
   Q_OBJECT
@@ -112,10 +110,6 @@ private:
 
   bool dianaconnected;
 
-
-
-  miMessage target;
-
   std::string      lang;
   std::string      currentModel;
   miutil::miTime        currentTime;
@@ -151,8 +145,10 @@ private:
   void enableCurrentPoslist();
   void sendNewPoslist();
 
-  std::string lastFimexPosition;
+  /// check for "Diana" clients and update dianaconnected; returns true if changed
+  bool updateDianaConnected();
 
+  std::string lastFimexPosition;
 
 protected:
  void closeEvent ( QCloseEvent * );
@@ -180,6 +176,7 @@ private slots:
 
   void processLetter(const miMessage&);
   void sendLetter(miMessage&);
+  void sendLetter(const miQMessage& qmsg);
   void processConnect();
   void sendTarget();
   void clearTarget();
@@ -200,7 +197,7 @@ private slots:
   void fimexPoslistChanged();
   void fimexPositionChanged(const QString&);
 public:
-  qtsMain(std::string l);
+  qtsMain(std::string l, const QString& name);
 
   void setLang(std::string l) { lang=l; }
 };

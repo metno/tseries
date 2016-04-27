@@ -38,7 +38,7 @@ METNO_REQUIRE_PKG([PETS2], [pets2], [6.0.0])
 METNO_REQUIRE_PKG([PUMET], [puMet], [5.1.0])
 METNO_REQUIRE_PKG([PUDATATYPES], [puDatatypes])
 METNO_REQUIRE_PKG([FIMEX],[fimex])
-METNO_REQUIRE_PKG([COSERVER],[coserver])
+METNO_REQUIRE_PKG([COSERVER],[coserver],[2.0.5])
 
 
 METNO_ENABLE([gribfile],[GRIBFILE], [enable Gribfile support],[no])

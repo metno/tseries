@@ -53,6 +53,7 @@ int main(int argc, char **argv)
   o.push_back(miCommandLine::option( 'S',"site"     , 1 ));
   o.push_back(miCommandLine::option( 'l',"lang"     , 1 ));
   o.push_back(miCommandLine::option( 'T',"title"    , 1 ));
+  o.push_back(miCommandLine::option( 'I',"instancename", 1 ));
   o.push_back(miCommandLine::option( 'd',"define"   , 1 ));
   o.push_back(miCommandLine::option( 'H',"host"     , 1 ));
   o.push_back(miCommandLine::option( 'u',"user"     , 1 ));
@@ -64,6 +65,7 @@ int main(int argc, char **argv)
   string    site      = "FOU";
   string    setupfile = "tseries.ctl";
   string    title     = "T-series";
+  QString   instancename = "tseries";
   tsSetup     setup;
   tsConfigure config;
   std::string    lang;
@@ -75,6 +77,7 @@ int main(int argc, char **argv)
                 << "  -S site      "  << endl
                 << "  -l lang      "  << endl
                 << "  -T title     "  << endl
+                << "  -I instancename" << endl
                 << "  -H wdbhost   "  << endl
                 << "  -u wdbuser   "  << endl
                 << "  -d section1:key1=token1 section2:key2=token2 "
@@ -85,6 +88,7 @@ int main(int argc, char **argv)
   if(cl.hasFlag('S')) site         = cl.arg('S')[0];
   if(cl.hasFlag('s')) setupfile    = cl.arg('s')[0];
   if(cl.hasFlag('T')) title += " " + cl.arg('T')[0];
+  if(cl.hasFlag('I')) instancename = QString::fromStdString(cl.arg('I')[0]);
 
 
   if(!setup.read(setupfile,site))
@@ -152,7 +156,7 @@ int main(int argc, char **argv)
   }
 
 
-  qtsMain *main = new qtsMain(lang);
+  qtsMain *main = new qtsMain(lang, instancename);
 
   main->setWindowTitle(title.c_str());
   main->show();
