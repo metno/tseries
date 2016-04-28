@@ -1,7 +1,7 @@
 /*
   Tseries - A Free Meteorological Timeseries Viewer
 
-  Copyright (C) 2006 met.no
+  Copyright (C) 2006-2016 met.no
 
   Contact information:
   Norwegian Meteorological Institute
@@ -40,7 +40,7 @@
 #include <fstream>
 #include <sstream>
 
-#include <config.h>
+#include "config.h"
 
 using namespace std;
 using namespace boost;

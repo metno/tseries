@@ -30,14 +30,14 @@
 #ifndef _SessionManager_h
 #define _SessionManager_h
 
+#include "tsSessionOptions.h"
+#include "tsRequest.h"
+
 #include <puTools/miTime.h>
 
 #include <pets2/ptGlobals.h>
 #include <tsData/ptParameterDefinition.h>
 #include <pets2/ptStyle.h>
-
-#include <tsSessionOptions.h>
-#include <tsRequest.h>
 
 #include <string>
 #include <vector>

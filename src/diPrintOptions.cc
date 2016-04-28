@@ -158,13 +158,13 @@ bool printerManager::expandCommand(std::string& com, const printOptions& po)
 {
   miutil::replace(com, "{printer}",po.printer);
   miutil::replace(com, "{filename}",po.fname);
-#ifdef linux
+#ifdef __unix__
   // current Debian linux version uses this # as start of comment !!!
   miutil::replace(com, "-{hash}",""); // setupParser is not fond of #'s
   miutil::replace(com, "{numcopies}","");
 #else
   miutil::replace(com, "{hash}","#"); // setupParser is not fond of #'s
-  miutil::replace(com, "{numcopies}",std::string(po.numcopies));
+  miutil::replace(com, "{numcopies}", miutil::from_numba(po.numcopies));
 #endif
   return true;
 }

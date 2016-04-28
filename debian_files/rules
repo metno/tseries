@@ -4,12 +4,6 @@
 %:
 	dh $@ --parallel
 
-.PHONY: override_dh_auto_configure
-override_dh_auto_configure:
-	./autogen.sh
-	./configure \
-	--prefix=/usr --sysconfdir=/etc --localstatedir=/var
-
 .PHONY: override_dh_strip override_dh_auto_install
 override_dh_strip:
 	dh_strip --dbg-package=tseries-@METNO_VERSION@-dbg

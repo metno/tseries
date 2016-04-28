@@ -1,3 +1,10 @@
+tseries (7.0.0-1) unstable; urgency=low
+
+  * use pets2 6.0.0 (without OpenGL)
+  * CMake build
+
+ -- Alexander Bürger <alexander.buerger@met.no>  Thu, 28 Apr 2016 08:00:00 +0200
+
 tseries (6.9.3-1) unstable; urgency=low
 
   * removed  setDirectRendering

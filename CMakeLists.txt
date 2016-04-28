@@ -1,0 +1,36 @@
+PROJECT(tseries)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+INCLUDE(MetnoUtils)
+INCLUDE(MetnoVersions)
+METNO_PVERSION(7.0.0)
+
+FIND_PACKAGE(Boost COMPONENTS date_time REQUIRED)
+
+METNO_FIND_QT4(Gui Core Network Xml)
+
+SET(PKGS
+  pets2${METNO_QT_SUFFIX}>=6.0.0
+  puMet>=5.1.0
+  puDatatypes
+  fimex>=0.61
+  coserver${METNO_QT_SUFFIX}>=2.0.5
+)
+
+SET(ENABLE_FIMEX ON CACHE BOOL "use fimex to read NetCDF and other files")
+IF(ENABLE_FIMEX)
+LIST(APPEND PKGS
+  fimex>=0.61
+)
+ENDIF() # ENABLE_FIMEX
+
+PKG_CHECK_MODULES(PC REQUIRED ${PKGS})
+
+ADD_SUBDIRECTORY(src)
+
+SET(ENABLE_SMHI OFF CACHE BOOL "do not install files from 'bin' and 'share' directories")
+IF(NOT ENABLE_SMHI)
+ADD_SUBDIRECTORY(bin)
+ADD_SUBDIRECTORY(share)
+ENDIF() # ENABLE_SMHI

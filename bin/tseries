@@ -1,17 +1,23 @@
 #!/bin/sh
 
-prefix=@prefix@
-bindir=$prefix/bin
-etcdir=@sysconfdir@
+set -e
+
+bindir=`dirname $0`
+
+case "$bindir" in
+    /usr/bin ) etcdir="/etc" ;;
+    /* ) etcdir="../etc" ;;
+esac
+
+PVERSION=`basename $0`
+PVERSION="${PVERSION#[a-z]*-}"
+
 
 export LC_ALL=C
 export LC_NUMERIC=C
 
 
-hasLUSTRE=`lsmod | grep lustre`
-
-if [ -n "$hasLUSTRE" ] ; then 
- 
+if lsmod | grep -q lustre ; then
  region="VGL"
 
  LUSTREDATA=/lustre/storeB/project/metproduction/products
@@ -48,12 +54,10 @@ fi
 
 export LUSTREDATA=$LUSTREDATA
 
+mkdir -p "$HOME/.tseries"
 
-
-mkdir -p $HOME/.tseries
-
-$bindir/tseries.bin-@PVERSION@ $@ -S $region -s $etcdir/tseries/@PVERSION@/tseries.ctl -T tseries
-
-
-
-
+exec "$bindir/tseries-${PVERSION}.bin" \
+    "$@" \
+    -S "$region" \
+    -s "$etcdir/tseries/${PVERSION}/tseries.ctl" \
+    -T tseries
