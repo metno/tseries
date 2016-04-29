@@ -91,34 +91,34 @@ Tseries supports a number of in-house (met.no) formats.
 The exact specification for this format is omitted here; mainly because we intend to make changes to this format in the near future. If you are still interested: use the 'vshow' program that comes with the HDF4.2 package to view the structure of one the files in the test data set.
 
 2. Tseries also supports a simple ascii format. See the test data file `metnolocal/demodata/hirlam/t2m_lqr.txt` for a complete example. 
-Here is a short definition:
+Here is a short example:
 
-    # --------------------------------------
-    # Example time series data file in ascii
-    # --------------------------------------
-    
-    #- source name, runtime
-    Model=HIRLAM20, 2006-05-24 00:00:00
-    
-    #-----------------
-    # New position
-    #-----------------
-    #- Name of position, longitude, latitude
-    Position=GARDERMOEN, 11.1, 60.2
-    
-    #- Data-header
-    #  the Time and Level specification is mandatory
-    #  Add your own parameters after these (defined properly in etc/parameters.def)
-    Time                  Level     MSLP    TT
-    #- Data-table matching header
-    2006-05-23 18:00:00   0         1000.1  23.3
-    2006-05-24 00:00:00   0         999.9   16.4
-    .....
-    
-    #-----------------
-    # Start a new position with Position=
-    #-----------------
-    #- Name of position, longitude, latitude
-    Position=X,....
-    ....
-    # End of Ascii file format description
+        # --------------------------------------
+        # Example time series data file in ascii
+        # --------------------------------------
+        
+        #- source name, runtime
+        Model=HIRLAM20, 2006-05-24 00:00:00
+        
+        #-----------------
+        # New position
+        #-----------------
+        #- Name of position, longitude, latitude
+        Position=GARDERMOEN, 11.1, 60.2
+        
+        #- Data-header
+        #  the Time and Level specification is mandatory
+        #  Add your own parameters after these (defined properly in etc/parameters.def)
+        Time                  Level     MSLP    TT
+        #- Data-table matching header
+        2006-05-23 18:00:00   0         1000.1  23.3
+        2006-05-24 00:00:00   0         999.9   16.4
+        .....
+        
+        #-----------------
+        # Start a new position with Position=
+        #-----------------
+        #- Name of position, longitude, latitude
+        Position=X,....
+        ....
+        # End of Ascii file format description
