@@ -1,3 +1,9 @@
+tseries (7.0.1-1) unstable; urgency=low
+
+  * removed MET Norway configuration
+
+ -- Alexander Bürger <alexander.buerger@met.no>  Mon, 02 May 2016 08:00:00 +0200
+
 tseries (7.0.0-1) unstable; urgency=low
 
   * use pets2 6.0.0 (without OpenGL)

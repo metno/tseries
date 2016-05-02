@@ -1,4 +1,6 @@
 #!/bin/sh
 
 set -e
-exec update-alternatives --remove tseries /usr/bin/tseries-@METNO_VERSION@
+exec update-alternatives --remove tseries.bin /usr/bin/tseries.bin-@METNO_VERSION@
+
+#DEBHELPER#

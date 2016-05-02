@@ -1,5 +1,0 @@
-
-INSTALL(PROGRAMS tseries
-  DESTINATION "bin"
-  RENAME "tseries-${PVERSION}"
-)

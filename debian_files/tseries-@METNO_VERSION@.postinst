@@ -1,9 +1,9 @@
 #!/bin/sh
 
 set -e
-exec update-alternatives --install /usr/bin/tseries tseries /usr/bin/tseries-@METNO_VERSION@ @PVERSION_NUMBER_MAJOR_MINOR@ \
-    --slave /usr/bin/tseries.bin tseries.bin /usr/bin/tseries.bin-@METNO_VERSION@
+exec update-alternatives --install /usr/bin/tseries.bin tseries.bin /usr/bin/tseries.bin-@METNO_VERSION@ @PVERSION_NUMBER_MAJOR_MINOR@
 
 # btseries is disabled
 #    --slave /usr/bin/btseries btseries /usr/bin/btseries-@METNO_VERSION@
    
+#DEBHELPER#
