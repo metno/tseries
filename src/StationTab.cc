@@ -74,7 +74,7 @@ StationTab::StationTab(QWidget* parent) : QWidget(parent)
 }
 
 
-void StationTab::currentStationChanged ( QListWidgetItem * current, QListWidgetItem * previous )
+void StationTab::currentStationChanged(QListWidgetItem* current, QListWidgetItem*)
 {
   if(current) {
     QString st = current->text();
@@ -111,8 +111,10 @@ QString StationTab::fillStations(const QStringList& qlist )
 QString StationTab::station()
 {
   QListWidgetItem* item=statl->currentItem();
-   if(item)
-     return item->text();
+  if (item)
+    return item->text();
+  else
+    return QString();
 }
 
 

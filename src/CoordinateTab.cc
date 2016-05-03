@@ -434,7 +434,7 @@ void CoordinateTab::setExpandedDirs(std::string e)
   vector<string> exdirs;
   boost::split(exdirs,e, boost::algorithm::is_any_of(",") );
 
-  for(int i=0; i< exdirs.size();i++) {
+  for(size_t i=0; i < exdirs.size(); i++) {
     QString dir = QString::fromStdString(exdirs[i]);
     QList<QStandardItem *> items = model->findItems(dir);
     if(!items.isEmpty()) {

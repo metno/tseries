@@ -194,8 +194,8 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
     set<ParId> allObservations;
     miTime lastTime=  theData->timelineEnd();
 
-    for (int j = 0; j < inlist.size(); j++) {
-      ParId obsTmp = inlist[j];
+    for (vector<ParId>::const_iterator it = inlist.begin(); it != inlist.end(); ++it) {
+      ParId obsTmp = *it;
       obsTmp.model = "OBS";
       if(allObservations.count(obsTmp))
         continue;
@@ -207,6 +207,9 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
     set<ParId>::iterator itr = allObservations.begin();
 
     bool result = theData->fetchDataFromKlimaDB(data->getKlimaStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
+    if (!result) {
+        cerr << "error in fetchDataFromKlimaDB" << endl;
+    }
 
     if (unresolvedObs.size()) {
       theData->makeParameters(unresolvedObs, true);
@@ -232,8 +235,8 @@ bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
     set<ParId> allObservations;
     miTime lastTime=  theData->timelineEnd();
 
-    for (int j = 0; j < inlist.size(); j++) {
-      ParId obsTmp = inlist[j];
+    for (vector<ParId>::const_iterator it = inlist.begin(); it != inlist.end(); ++it) {
+      ParId obsTmp = *it;
       obsTmp.model = "OBS";
       if(allObservations.count(obsTmp))
         continue;
@@ -245,6 +248,9 @@ bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
     set<ParId>::iterator itr = allObservations.begin();
 
     bool result = theData->fetchDataFromMoraDB(data->getMoraStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
+    if (!result) {
+        cerr << "error in fetchDataFromMoraDB" << endl;
+    }
 
     if (unresolvedObs.size()) {
       theData->makeParameters(unresolvedObs, true);
@@ -444,7 +450,6 @@ bool tsDrawArea::prepareFimexData()
 
 
   //  Run=0; run is not used in the function at all!
-  bool retryGetShowOptions = false;
 
   session->getShowOption(options, styleIndex, fimexmodel, 0);
 
@@ -459,9 +464,6 @@ bool tsDrawArea::prepareFimexData()
 
   // fetch data
   theData = new ptDiagramData(setup.wsymbols);
-
-  unsigned long readtime;
-
   theData->Erase();
 
   // precheck - is something missing in the cache?

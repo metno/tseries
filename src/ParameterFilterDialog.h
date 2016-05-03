@@ -48,7 +48,7 @@ private:
   std::vector<std::string> parameters;
 
 public:
-  ParameterFilterDialog(std::set<std::string> originalFilter, std::vector<std::string> allParameters, QWidget* parent);
+  ParameterFilterDialog(const std::set<std::string>& originalFilter, const std::vector<std::string>& allParameters, QWidget* parent);
   std::set<std::string>  result();
 };
 

@@ -431,7 +431,7 @@ void qtsWork::changeModel(const std::string& st)
   QApplication::setOverrideCursor( Qt::WaitCursor );
   data.openStreams(tmp);
   QApplication::restoreOverrideCursor();
-  bool changed = request.setModel(tmp);
+  /*bool changed =*/ request.setModel(tmp);
 
   //if( makeRunList(tmp) || changed) {
   makeRunList(tmp);
@@ -981,7 +981,6 @@ void qtsWork::makeFimexModels(const QString& activeStyle)
   qStr2miStr(activeStyle,st);
 
   vector<std::string>    modname;
-  bool changed = false;
 
   int choice =  session.getModels(st, fimexModelMap, modname,SessionManager::ADD_TO_FIMEX_TAB  );
 

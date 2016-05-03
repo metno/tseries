@@ -322,7 +322,7 @@ void qtsMain::makeConnectButtons()
   menu_setting->addAction(pluginB->getMenuBarAction());
 }
 
-void qtsMain::closeEvent(QCloseEvent * e)
+void qtsMain::closeEvent(QCloseEvent*)
 {
   quit();
 }

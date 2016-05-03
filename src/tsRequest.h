@@ -44,13 +44,13 @@ private:
 
   std::string posname_;
 
+  Streamtype        streamtype;
   double            wdbLat;
   double            wdbLon;
   miutil::miTime    wdbRun;
   std::string  wdbStyle;
   std::string  wdbModel;
   unsigned long     wdbReadTime;
-  Streamtype        streamtype;
   std::string  wdbstationname;
 
 
@@ -65,7 +65,7 @@ private:
   bool setString(const std::string&, std::string&);
 
 public:
-  tsRequest() : run_(-1), wdbReadTime(0), streamtype(tsRequest::HDFSTREAM), wdbStyle("Meteogram"), fimexStyle("Meteogram") {}
+  tsRequest() : run_(-1), streamtype(tsRequest::HDFSTREAM), wdbStyle("Meteogram"), wdbReadTime(0), fimexStyle("Meteogram") {}
 
 
   bool setModel(const std::string& i) {              return setString(i,mod_); }

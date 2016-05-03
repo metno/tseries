@@ -125,7 +125,7 @@ private Q_SLOTS:
   void paste();
   void remove();
   void filterBookmarks(const QString&);
-  void searchResult(std::vector<std::string>);
+  void searchResult(const std::vector<std::string>&);
 
 public Q_SLOTS:
   void setCoordinates(float lon, float lat, QString name="");

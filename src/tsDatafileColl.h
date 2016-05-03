@@ -186,7 +186,7 @@ private:
   void initialiseFimexPositions();
   void initialiseFimexParameters();
   bool wdbStreamIsOpen;
-  std::string getCleanStreamType(std::string);
+  std::string getCleanStreamType(const std::string&);
 
 protected:
   bool findpos(const std::string& name, int& idx);
@@ -264,9 +264,9 @@ public:
   // fimex -------------------------
 
   //std::set<std::string> getFimexModels(std::string style);
-  std::vector<std::string> getFimexTimes(std::string model);
+  std::vector<std::string> getFimexTimes(const std::string& model);
 
-  pets::FimexStream* getFimexStream(std::string model, std::string run);
+  pets::FimexStream* getFimexStream(const std::string& model, const std::string& run);
   bool has_fimex_stream() const { return fimex_streams_opened;}
   // returns true if the currentModel has an update (reloads the active runtime list in the GUI)
   bool updateFimexStreams(std::string currentModel);

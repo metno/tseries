@@ -126,6 +126,7 @@ bool tsRequest::restoreWdbFromLog(std::string mod, std::string sty, double lat, 
   setWdbRun(run);
   setWdbModel(mod);
   setWdbStyle(sty);
+  return true;
 }
 
 

@@ -183,7 +183,7 @@ void tsConfigure::set(string key, const bool token)
 
 
 
-void tsConfigure::setStyle(string& key, string& cont)
+void tsConfigure::setStyle(string& /*key*/, string& /*cont*/)
 {
 
 }

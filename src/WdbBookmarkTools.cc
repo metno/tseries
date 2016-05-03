@@ -40,8 +40,8 @@ bool WdbBookmarkTools::read(std::string filename,bool ignoreFromSave)
   while(in) {
     string line;
     getline(in,line);
-    int c = line.find_first_of("#",0);
-    if(0 <= c &&  c < line.length() ) {
+    string::size_type c = line.find_first_of("#",0);
+    if(c != string::npos && c < line.length()) {
       int k=line.length() -  c;
       line.erase(c,k);
     }
@@ -285,7 +285,7 @@ std::vector<std::string> WdbBookmarkTools::getAllBookmarks()
 void WdbBookmarkTools::copySelected(QModelIndexList indexlist)
 {
   buffer.clear();
-  for(unsigned int i=0;i<indexlist.size();i++) {
+  for (int i=0; i<indexlist.size(); i++) {
 
     QModelIndex index = indexlist.at(i);
     QStandardItem* child = model->itemFromIndex(index);
@@ -311,15 +311,14 @@ void WdbBookmarkTools::removeSelected(QModelIndexList indexlist)
     QStandardItem* child = model->itemFromIndex(index);
     if(child) {
       if(child->isDragEnabled()) {
-	QStandardItem* parent = child->parent();
-	int row = child->row();
-	parent->removeRow(row);
+        QStandardItem* parent = child->parent();
+        int row = child->row();
+        parent->removeRow(row);
       }
     }
     if(itr==indexlist.begin())
       break;
   }
-  
 }
 
 
@@ -336,7 +335,7 @@ void WdbBookmarkTools::paste(QModelIndex index)
       row = child->row();
     }
 
-    for(int i=0;i<buffer.size();i++) {
+    for(size_t i=0; i<buffer.size(); i++) {
       QStandardItem* newItem= itemFromString(buffer[i]);
       parent->insertRow(row+i,newItem);
     }

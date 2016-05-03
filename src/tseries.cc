@@ -108,13 +108,9 @@ int main(int argc, char **argv)
   config.get("LANG",lang);
 
   if(cl.hasFlag('d')) {
-#if defined(METLIBS_PUTOOLS_VERSION_CURRENT_INT) && METLIBS_PUTOOLS_VERSION_CURRENT_INT >= METLIBS_PUTOOLS_VERSION_INT(5,1,4)
-    vector<string> overridetokens=cl.arg('d');
-#else
     vector<std::string> overridetokens=cl.arg('d');
-#endif
-    for(int i=0; i<overridetokens.size();i++)
-      setup.overrideToken(overridetokens[i]);
+    for (vector<std::string>::iterator it = overridetokens.begin(); it != overridetokens.end(); ++it)
+      setup.overrideToken(*it);
   }
 
   if(cl.hasFlag('H')) setup.overrideToken("WDB:host="+cl.arg('H')[0]);

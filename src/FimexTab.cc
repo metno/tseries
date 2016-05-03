@@ -434,7 +434,7 @@ void FimexTab::setExpandedDirs(std::string e)
   vector<string> exdirs;
   boost::split(exdirs,e, boost::algorithm::is_any_of(",") );
 
-  for(int i=0; i< exdirs.size();i++) {
+  for(size_t i=0; i < exdirs.size();i++) {
     QString dir = QString::fromStdString(exdirs[i]);
     QList<QStandardItem *> items = model->findItems(dir);
     if(!items.isEmpty()) {
@@ -636,17 +636,17 @@ void FimexTab::search(QString query)
 }
 
 
-void FimexTab::searchResult(std::vector<std::string> stat)
+void FimexTab::searchResult(const std::vector<std::string>& stat)
 {
-  for(int i=0;i<stat.size();i++) {
-      bookmarkTools.addSearch(stat[i]);
+  for (std::vector<std::string>::const_iterator it=stat.begin(); it!=stat.end(); ++it) {
+      bookmarkTools.addSearch(*it);
    }
 
   addToRecord=false;
   QModelIndex searchIdx= bookmarkTools.getSearchFolderIndex();
 
-  if(stat.size())
+  if (!stat.empty())
     bookmarks->expand(proxyModel->mapFromSource(searchIdx));
 
-  emit newPoslist();
+  Q_EMIT newPoslist();
 }

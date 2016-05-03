@@ -75,7 +75,7 @@ void qtsShow::resizeEvent(QResizeEvent*)
   drawArea->setViewport(&canvas);
 }
 
-void qtsShow::refresh(bool readData)
+void qtsShow::refresh(bool /*readData*/)
 {
   drawArea->setDataloadRequest(tsDrawArea::dataload_refresh);
   drawArea->prepare(false);

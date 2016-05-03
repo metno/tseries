@@ -118,7 +118,7 @@ int SessionManager::getModels(const std::string& stylename,
 }
 
 
-int SessionManager::getRuns(const int sidx, const int midx,
+int SessionManager::getRuns(const int sidx, const int /*midx*/,
     vector<Run>& runid,
     vector<std::string>& runname){
   runid.clear();
@@ -154,7 +154,7 @@ int SessionManager::getRuns(const int sidx, const int midx,
 bool SessionManager::getShowOption(SessionOptions& opt,
     int idx,
     Model model,
-    Run run)
+    Run /*run*/)
 {
   int i,j,midx;
   ParId parid;

@@ -85,9 +85,14 @@ bool Union(const dataset& d1, const dataset& d2, dataset& result)
   return !result.empty();
 }
 
-DatafileColl::DatafileColl() :
-                    tolerance(1000.0), verbose(false), streams_opened(false), fimex_streams_opened(false),
-                    wdbStream(NULL), klimaStream(NULL), moraStream(NULL)     // the stream from SMHO observation database 'Mora'
+DatafileColl::DatafileColl()
+    : wdbStream(0)
+    , klimaStream(0)
+    , moraStream(0)
+    , tolerance(1000.0)
+    , verbose(false)
+    , streams_opened(false)
+    , fimex_streams_opened(false)
 {
   openWdbStream();
   openKlimaStream();
@@ -115,13 +120,14 @@ int DatafileColl::addDataset(std::string name)
   return -1;
 }
 
-string DatafileColl::getCleanStreamType(string streamtype)
+string DatafileColl::getCleanStreamType(const string& streamtype)
 {
-  int n = streamtype.find(":");
-  if( n > 0 && n <streamtype.size())
-    streamtype.erase(n,streamtype.size()-n);
+  string st = streamtype;
+  const string::size_type n = st.find(":");
+  if (n > 0 && n <st.size())
+    st.erase(n, st.size()-n);
 
-  return boost::trim_copy(streamtype);
+  return boost::trim_copy(st);
 }
 
 
@@ -746,16 +752,16 @@ void DatafileColl::initialiseFimexParameters()
 }
 
 
-vector<std::string> DatafileColl::getFimexTimes(std::string model)
+vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
 {
   vector<std::string> runtimes;
   cerr << "trying to find runtimes for model: " << model << endl;
 
-  for ( size_t i = 0; i< fimexStreams.size();i++) {
-    if( model == fimexStreams[i].model) {
-      cerr << "Trying to read from Fimex file " << fimexStreams[i].streamname << endl;
+  for (std::vector<FimexInfo>::iterator it = fimexStreams.begin(); it != fimexStreams.end(); ++it) {
+    if (model == it->model) {
+      cerr << "Trying to read from Fimex file " << it->streamname << endl;
 
-      if(fimexStreams[i].run == "") {
+      if (it->run.empty()) {
 
         try {
             miTime refTime;
@@ -768,26 +774,26 @@ vector<std::string> DatafileColl::getFimexTimes(std::string model)
               }
             }
             // Get refTime from filename..
-            if (index != -1 && fimexFileindex[index].tf.getTime(fimexStreams[i].streamname,refTime)) {
-              fimexStreams[i].run = refTime.isoTime(true,  false);
+            if (index != -1 && fimexFileindex[index].tf.getTime(it->streamname,refTime)) {
+              it->run = refTime.isoTime(true,  false);
               fimex_streams_opened = true;
             } else {
               // Get from the stream...
-              boost::posix_time::ptime time = fimexStreams[i].dataStream->getReferencetime();
+              boost::posix_time::ptime time = it->dataStream->getReferencetime();
               //std::string stime = boost::posix_time::to_simple_string(time);
               ostringstream stime;
 
               boost::posix_time::time_facet *facet = new boost::posix_time::time_facet("%Y-%m-%d %H:%M");
               stime.imbue(locale(stime.getloc(), facet));
               stime << time;
-              fimexStreams[i].run = stime.str();
+              it->run = stime.str();
             }
           } catch (exception & e) {
             cerr << e.what() << endl;
             cerr << "using streamname instead of runtime to identify model" << endl;
-            string streamname =  fimexStreams[i].streamname;
-            int n = streamname.rfind("/");
-            int p = streamname.rfind(".");
+            string streamname =  it->streamname;
+            string::size_type n = streamname.rfind("/");
+            string::size_type p = streamname.rfind(".");
 
              if( p>n && p <streamname.size())
                streamname.erase(p,streamname.size()-p);
@@ -795,15 +801,15 @@ vector<std::string> DatafileColl::getFimexTimes(std::string model)
              if(n>0 && n < streamname.size() )
                streamname.erase(0,n+1);
 
-             fimexStreams[i].run = streamname;
+             it->run = streamname;
 
           }
 
-          if(fimexStreams[i].dataStream->isOpen())
+          if (it->dataStream->isOpen())
             fimex_streams_opened=true;
 
         }
-        runtimes.push_back( fimexStreams[i].run);
+        runtimes.push_back(it->run);
 
     }
   }
@@ -812,16 +818,15 @@ vector<std::string> DatafileColl::getFimexTimes(std::string model)
 }
 
 
-pets::FimexStream* DatafileColl::getFimexStream(std::string model, std::string run)
+pets::FimexStream* DatafileColl::getFimexStream(const std::string& model, const std::string& run)
 {
-  for ( int i = 0; i< fimexStreams.size();i++) {
-    if( model == fimexStreams[i].model ) {
-      if(fimexStreams[i].run.empty()) {
+  for (std::vector<FimexInfo>::iterator it = fimexStreams.begin(); it != fimexStreams.end(); ++it) {
+    if (model == it->model) {
+      if (it->run.empty()) {
         getFimexTimes(model);
-
       }
-      if(run == fimexStreams[i].run) {
-        return fimexStreams[i].dataStream;
+      if (run == it->run) {
+        return it->dataStream;
       }
     }
   }

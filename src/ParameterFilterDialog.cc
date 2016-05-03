@@ -38,9 +38,11 @@
 using namespace std;
 
 
-ParameterFilterDialog::ParameterFilterDialog(std::set<std::string> originalFilter,
-      std::vector<std::string> allParameters, QWidget* parent)
-  : filter(originalFilter) , parameters(allParameters), QDialog(parent)
+ParameterFilterDialog::ParameterFilterDialog(const std::set<std::string>& originalFilter,
+    const std::vector<std::string>& allParameters, QWidget* parent)
+  : QDialog(parent)
+  , filter(originalFilter)
+  , parameters(allParameters)
 {
 
   QVBoxLayout*  mainLayout = new QVBoxLayout(this);

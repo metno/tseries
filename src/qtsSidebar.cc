@@ -157,7 +157,7 @@ qtsSidebar::qtsSidebar(QString language)
   pluginB->setNamePattern(instanceNamePattern);
 
   observationB = new QPushButton(synop_pix,"",this);
-  observationB->setMaximumWidth(synop_pix.width());fimexIdx;
+  observationB->setMaximumWidth(synop_pix.width());
   observationB->setCheckable(true);
   observationB->setToolTip(  tr("enable/disable observations") );
 
@@ -423,6 +423,7 @@ bool qtsSidebar::restoreWdbFromLog(std::string mod, std::string sty, double lat,
   wdbtab->setModel( mod.c_str() );
   wdbtab->setRun(   run.c_str() );
   wdbtab->setCoordinates(lon,lat,posname.c_str());
+  return true;
 }
 
 bool qtsSidebar::restoreFimexFromLog(std::string mod, std::string sty, std::string expanded)
