@@ -1,3 +1,12 @@
+tseries (7.0.2-1) unstable; urgency=low
+
+  * removed some old print support classes
+  * bugfixes CMakeLists.txt
+  * fewer compilation warnings
+  * require newest pets2
+
+ -- Alexander Bürger <alexander.buerger@met.no>  Tue, 03 May 2016 08:00:00 +0200
+
 tseries (7.0.1-2) unstable; urgency=low
 
   * removed update-alternatives invocation
@@ -19,7 +28,7 @@ tseries (7.0.0-1) unstable; urgency=low
 
 tseries (6.9.3-1) unstable; urgency=low
 
-  * removed  setDirectRendering
+  * removed setDirectRendering
   * moved print-initialising from start to print() to avoid startup delay
 
  -- Juergen Schulze <juergen.schulze@met.no>  Fri, 19 Feb 2016 09:14:23 +0100
