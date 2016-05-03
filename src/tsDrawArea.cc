@@ -32,7 +32,6 @@
 #include <pets2/ptSymbolElement.h>
 #include <pets2/ptTimemarkerElement.h>
 
-using namespace d_print;
 using namespace std;
 using namespace miutil;
 using namespace pets2;

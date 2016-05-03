@@ -46,7 +46,6 @@
 
 #include "qtsWork.h"
 #include "qtsFilterManager.h"
-#include "qtPrintManager.h"
 #include "qtsTimeControl.h"
 
 #include "tsConfigure.h"
@@ -102,7 +101,6 @@ private:
   std::map<int,std::string> langID;
 
   // printerdefinitions
-  printerManager pman;
   QPrinter   * printer;
 
   ClientSelection* pluginB;

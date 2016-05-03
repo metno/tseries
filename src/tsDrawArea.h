@@ -34,7 +34,6 @@
 #include "tsDatafileColl.h"
 #include "tsSession.h"
 #include "tsSetup.h"
-#include "diPrintOptions.h"
 
 #include <pets2/ptGlobals.h>
 #include <pets2/ptDiagram.h>
@@ -66,7 +65,6 @@ private:
   pets2::ptDiagram     * diagram;
   ptDiagramData * theData;
   pets2::ptStyle         diaStyle;
-  printOptions    printoptions;
   pets::PrepareDataThread * datathread;
   DataloadRequest dataloadrequest;
   DataloadRequest threadedLoadRequest;
@@ -100,7 +98,6 @@ public:
   void prepare(bool readData = true);
 
   void setShowGridLines(bool s){showGridLines=s;}
-  void setPrintOptions(const printOptions& po) { printoptions = po;}
   void setViewport(pets2::ptCanvas* c);
 
   void getTimeRange(int & t, int& f) { t=totalLength; f=forecastLength; }

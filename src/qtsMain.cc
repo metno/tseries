@@ -411,28 +411,17 @@ void qtsMain::raster()
 void qtsMain::print()
 {
   if (!printer)
-    printer = new QPrinter(QPrinter::HighResolution);
+    printer = new QPrinter();
 
-  std::string command;
-
-#ifdef linux
-  command = "lpr -h -r -{hash}{numcopies} -P {printer} {filename}";
-#else
-  command= "lp -c -n{numcopies} -d {printer} {filename}";
-#endif
-
-  printOptions priop;
-
-  std::string fname = work->file("ps"); //"tseries_temp.ps"
-
+  QString fname = QString::fromStdString(work->file("ps"));
   QString ofn = printer->outputFileName();
 
   if (ofn.isNull()) {
-    QFileInfo p(fname.c_str());
+    QFileInfo p(fname);
     printer->setOutputFileName(p.absoluteFilePath());
   } else {
     QFileInfo p(ofn);
-    printer->setOutputFileName(p.path() + "/" + fname.c_str());
+    printer->setOutputFileName(p.path() + "/" + fname);
   }
 
   printer->setOutputFormat(QPrinter::NativeFormat);
@@ -443,36 +432,8 @@ void qtsMain::print()
   if (dialog->exec() != QDialog::Accepted)
     return;
 
-  if (!printer->outputFileName().isEmpty())
-    priop.fname = printer->outputFileName().toStdString();
-  else if (command.substr(0, 4) == "lpr ")
-    priop.fname = miTime::nowTime().format("TS%d%H%M%S.ps");
-  else
-    priop.fname = fname;
-
-  // fill printOption from qprinter-selections
-  fillPrintOption(printer, priop);
-
-  // set printername
-  if (printer->outputFileName().isEmpty())
-    priop.printer = printer->printerName().toStdString();
-
-  // start the postscript production
   QApplication::setOverrideCursor(Qt::WaitCursor);
   work->Show()->paintOn(printer);
-
-  // if output to printer: call appropriate command
-  if (printer->outputFileName().isEmpty()) {
-    priop.numcopies = printer->numCopies();
-
-    // expand command-variables
-    pman.expandCommand(command, priop);
-
-    cerr << "PRINT: " << command << endl;
-
-    int sys = system(command.c_str());
-
-  }
   QApplication::restoreOverrideCursor();
 
   // reset number of copies (saves a lot of paper)

@@ -25,13 +25,11 @@ SET(tseries_SOURCES
   tsSetup.cc
   tsRequest.cc
   tsConfigure.cc
-  diPrintOptions.cc
 
   qtsMain.cc
   qtsWork.cc
   qtsSidebar.cc
   qtsShow.cc
-  qtPrintManager.cc
   qtsFilterManager.cc
   qtsTimeControl.cc
   StationTab.cc
