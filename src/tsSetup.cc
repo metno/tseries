@@ -536,6 +536,9 @@ void tsSetup::setSimpleToken(string token)
   case FIMEXPARAMETER:
     setFimexParameter(token);
     break;
+  case WDBVECTORFUNCTIONS:
+    // ignore here, handled above
+    break;
   }
 }
 
