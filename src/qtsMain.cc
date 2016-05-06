@@ -425,6 +425,7 @@ void qtsMain::print()
   }
 
   printer->setOutputFormat(QPrinter::NativeFormat);
+  printer->setOrientation(QPrinter::Landscape);
 
   QPrintDialog *dialog = new QPrintDialog(printer, this);
   dialog->setWindowTitle(tr("Print Diagram"));
