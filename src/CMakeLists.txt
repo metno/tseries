@@ -95,7 +95,7 @@ TARGET_LINK_LIBRARIES(tseries
 )
 
 SET_TARGET_PROPERTIES(tseries PROPERTIES
-  OUTPUT_NAME "tseries-${PVERSION}.bin"
+  OUTPUT_NAME "tseries.bin-${PVERSION}"
 )
 
 ########################################################################
