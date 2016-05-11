@@ -14,7 +14,6 @@ SET(PKGS
   pets2${METNO_QT_SUFFIX}>=6.0.2
   puMet>=5.1.0
   puDatatypes
-  fimex>=0.61
   coserver${METNO_QT_SUFFIX}>=2.0.5
 )
 
