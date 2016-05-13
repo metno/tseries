@@ -53,7 +53,7 @@ vector<string> FimexFileindex::findNewFiles()
 {
   glob_t glob_result;
   // Init the filter with pattern and remove YYYY ....
-  tf.initFilter(glob_string, true);
+  tf.initFilter(glob_string);
   glob(glob_string.c_str(),GLOB_NOMAGIC,NULL,&glob_result);
   vector<string> result;
   for(unsigned int i=0;i<glob_result.gl_pathc;++i){
