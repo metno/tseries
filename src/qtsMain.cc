@@ -82,7 +82,7 @@ qtsMain::qtsMain(std::string l, const QString& name)
   setCentralWidget(work);
 
   makeConnectButtons();
-  pluginB->setName(name);
+  pluginB->setClientName(name);
 
   work->latlonInDecimalToggled(latlond);
 

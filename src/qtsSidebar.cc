@@ -152,9 +152,7 @@ qtsSidebar::qtsSidebar(QString language)
 
   pluginB = new ClientSelection("TSeries", this);
   pluginB->client()->setServerCommand(QString::fromStdString(s.server.command));
-  pluginB->setName(QString::fromStdString(s.server.name));
-  const QRegExp instanceNamePattern("tseries(-[\\w\\d+-]+)?");
-  pluginB->setNamePattern(instanceNamePattern);
+  pluginB->setClientName(QString::fromStdString(s.server.name));
 
   observationB = new QPushButton(synop_pix,"",this);
   observationB->setMaximumWidth(synop_pix.width());
