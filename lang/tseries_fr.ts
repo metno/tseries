@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="fr">
 <context>
     <name>ClearLineEdit</name>
     <message>
@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/ClearLineEdit.cc" line="28"/>
         <source>search positions on the web</source>
-        <translation type="unfinished"></translation>
+        <translation>chercher positions sur internet</translation>
     </message>
 </context>
 <context>
@@ -19,27 +19,27 @@
     <message>
         <location filename="../src/CoordinateTab.cc" line="78"/>
         <source>Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Signets</translation>
     </message>
     <message>
         <location filename="../src/CoordinateTab.cc" line="114"/>
         <source>C&amp;ut...</source>
-        <translation type="unfinished"></translation>
+        <translation>Co&amp;uper…</translation>
     </message>
     <message>
         <location filename="../src/CoordinateTab.cc" line="115"/>
         <source>&amp;Copy...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Copier…</translation>
     </message>
     <message>
         <location filename="../src/CoordinateTab.cc" line="116"/>
         <source>&amp;Paste...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Coller…</translation>
     </message>
     <message>
         <location filename="../src/CoordinateTab.cc" line="117"/>
         <source>&amp;Delete...</source>
-        <translation type="unfinished"></translation>
+        <translation>Effa&amp;cer…</translation>
     </message>
 </context>
 <context>
@@ -47,27 +47,27 @@
     <message>
         <location filename="../src/FimexTab.cc" line="82"/>
         <source>Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Signets</translation>
     </message>
     <message>
         <location filename="../src/FimexTab.cc" line="128"/>
         <source>C&amp;ut...</source>
-        <translation type="unfinished"></translation>
+        <translation>Co&amp;uper…</translation>
     </message>
     <message>
         <location filename="../src/FimexTab.cc" line="129"/>
         <source>&amp;Copy...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Copier…</translation>
     </message>
     <message>
         <location filename="../src/FimexTab.cc" line="130"/>
         <source>&amp;Paste...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Coller…</translation>
     </message>
     <message>
         <location filename="../src/FimexTab.cc" line="131"/>
         <source>&amp;Delete...</source>
-        <translation type="unfinished"></translation>
+        <translation>Effa&amp;cer…</translation>
     </message>
     <message>
         <location filename="../src/FimexTab.cc" line="170"/>
@@ -97,17 +97,17 @@
 <context>
     <name>ParameterFilterDialog</name>
     <message>
-        <location filename="../src/ParameterFilterDialog.cc" line="49"/>
+        <location filename="../src/ParameterFilterDialog.cc" line="51"/>
         <source>Filter marked parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ParameterFilterDialog.cc" line="54"/>
+        <location filename="../src/ParameterFilterDialog.cc" line="56"/>
         <source>done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ParameterFilterDialog.cc" line="55"/>
+        <location filename="../src/ParameterFilterDialog.cc" line="57"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -130,12 +130,12 @@
     <message>
         <location filename="../src/qtsTimeControl.cc" line="45"/>
         <source>Start:</source>
-        <translation type="unfinished">Debut:</translation>
+        <translation>Début:</translation>
     </message>
     <message>
         <location filename="../src/qtsTimeControl.cc" line="46"/>
         <source>Hours:</source>
-        <translation type="unfinished">Heures:</translation>
+        <translation>Heures:</translation>
     </message>
 </context>
 <context>
@@ -169,12 +169,12 @@
 <context>
     <name>qtsMain</name>
     <message>
-        <location filename="../src/qtsMain.cc" line="124"/>
+        <location filename="../src/qtsMain.cc" line="133"/>
         <source>Help</source>
         <translation type="unfinished">Aide</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="126"/>
+        <location filename="../src/qtsMain.cc" line="135"/>
         <source>Manual</source>
         <translation type="unfinished">Manuel</translation>
     </message>
@@ -183,22 +183,22 @@
         <translation type="obsolete">A propos</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="146"/>
+        <location filename="../src/qtsMain.cc" line="155"/>
         <source>File</source>
         <translation type="unfinished">Fichier</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="148"/>
+        <location filename="../src/qtsMain.cc" line="157"/>
         <source>Print</source>
         <translation type="unfinished">Imprimer</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="154"/>
+        <location filename="../src/qtsMain.cc" line="163"/>
         <source>Save Image</source>
         <translation type="unfinished">Sauvegarder image</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="158"/>
+        <location filename="../src/qtsMain.cc" line="167"/>
         <source>Change filter</source>
         <translation type="unfinished">Changer filtre</translation>
     </message>
@@ -207,87 +207,86 @@
         <translation type="obsolete">Quitter</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="193"/>
+        <location filename="../src/qtsMain.cc" line="202"/>
         <source>Preferences</source>
         <translation type="unfinished">Préférences</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="197"/>
+        <location filename="../src/qtsMain.cc" line="206"/>
         <source>Reset Preferences</source>
         <translation type="unfinished">Réactualiser préférences</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="201"/>
+        <location filename="../src/qtsMain.cc" line="210"/>
         <source>Save Preferences</source>
         <translation type="unfinished">Sauvegarder préférences</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="209"/>
+        <location filename="../src/qtsMain.cc" line="218"/>
         <source>Save at exit</source>
         <translation type="unfinished">Sauvegarde automatique</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="222"/>
+        <location filename="../src/qtsMain.cc" line="231"/>
         <source>Show positions (DIANA)</source>
         <translation type="unfinished">Montrer nom de la station (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="230"/>
+        <location filename="../src/qtsMain.cc" line="239"/>
         <source>Show active position (DIANA)</source>
         <translation type="unfinished">Montrer la station (DIANA) active</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="238"/>
+        <location filename="../src/qtsMain.cc" line="247"/>
         <source>Show icons (DIANA)</source>
         <translation type="unfinished">Montrer icones (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="245"/>
+        <location filename="../src/qtsMain.cc" line="254"/>
         <source>Send positions (DIANA)</source>
         <translation type="unfinished">Envoyer station (DIANA)</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="257"/>
+        <location filename="../src/qtsMain.cc" line="266"/>
         <source>Show timemark</source>
         <translation type="unfinished">Montrer curseur temps</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="264"/>
-        <source>Show Gridlines </source>
+        <location filename="../src/qtsMain.cc" line="273"/>
+        <source>Show Gridlines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="285"/>
-        <source>Lock Hours to Model </source>
+        <location filename="../src/qtsMain.cc" line="294"/>
+        <source>Lock Hours to Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="295"/>
+        <location filename="../src/qtsMain.cc" line="304"/>
         <source>Font</source>
-        <translation type="unfinished">Choisir police</translation>
+        <translation type="unfinished">Choisir fonte</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="302"/>
+        <location filename="../src/qtsMain.cc" line="311"/>
         <source>Languages</source>
         <translation type="unfinished">Langues</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="486"/>
+        <location filename="../src/qtsMain.cc" line="457"/>
         <source>About T-series</source>
-        <translation type="unfinished"> A propos T-series</translation>
+        <translation type="unfinished">A propos T-series</translation>
     </message>
     <message>
-        <source>T-series: Times series viewer
+        <location filename="../src/qtsMain.cc" line="458"/>
+        <source>T-series: Time series viewer
 Version: %1
-
-met.no 2002</source>
-        <translation type="obsolete">T-series: Visionneur de série temporelle 
+Copyright: met.no 2016</source>
+        <translation>T-series: Visionneur de série temporelle
 Version: %1 
-
-met.no 2002</translation>
+Copyright: met.no 2016</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="1083"/>
+        <location filename="../src/qtsMain.cc" line="1044"/>
         <source>Language Changed</source>
         <translation type="unfinished">Langue changée</translation>
     </message>
@@ -296,7 +295,7 @@ met.no 2002</translation>
         <translation type="obsolete">T-series doit etre redémarré pour réactualiser la langue en: [%1]</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="133"/>
+        <location filename="../src/qtsMain.cc" line="142"/>
         <source>News</source>
         <translation type="unfinished">Modifications</translation>
     </message>
@@ -309,127 +308,115 @@ met.no 2002</translation>
         <translation type="obsolete">Quitter T-series</translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="127"/>
+        <location filename="../src/qtsMain.cc" line="136"/>
         <source>F1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="128"/>
+        <location filename="../src/qtsMain.cc" line="137"/>
         <source>Show manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="134"/>
+        <location filename="../src/qtsMain.cc" line="143"/>
         <source>Show changelog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="139"/>
+        <location filename="../src/qtsMain.cc" line="148"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="149"/>
+        <location filename="../src/qtsMain.cc" line="158"/>
         <source>Ctrl+P</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="150"/>
+        <location filename="../src/qtsMain.cc" line="159"/>
         <source>Print diagram</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="162"/>
+        <location filename="../src/qtsMain.cc" line="171"/>
         <source>Change Observation filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="168"/>
+        <location filename="../src/qtsMain.cc" line="177"/>
         <source>Change Fimex filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="174"/>
+        <location filename="../src/qtsMain.cc" line="183"/>
         <source>Change Observation start date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="184"/>
+        <location filename="../src/qtsMain.cc" line="193"/>
         <source>quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="185"/>
+        <location filename="../src/qtsMain.cc" line="194"/>
         <source>Ctrl+Q</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="186"/>
+        <location filename="../src/qtsMain.cc" line="195"/>
         <source>Quit program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="272"/>
+        <location filename="../src/qtsMain.cc" line="281"/>
         <source>Lat/Lon in decimal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="385"/>
+        <location filename="../src/qtsMain.cc" line="394"/>
         <source>tseries image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="386"/>
+        <location filename="../src/qtsMain.cc" line="395"/>
         <source>Created by tseries %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="441"/>
+        <location filename="../src/qtsMain.cc" line="440"/>
         <source>Print Diagram</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsMain.cc" line="487"/>
-        <source>T-series: Times series viewer
-Version: %1
-
-met.no 2016</source>
-        <translation type="unfinished">T-series: Visionneur de série temporelle 
-Version: %1 
-
-met.no 2016 {1
-?}</translation>
-    </message>
-    <message>
-        <location filename="../src/qtsMain.cc" line="1084"/>
-        <source>tseries must be restarted to reset the language to: [%1] </source>
+        <location filename="../src/qtsMain.cc" line="1045"/>
+        <source>tseries must be restarted to reset the language to: [%1]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>qtsSidebar</name>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="162"/>
+        <location filename="../src/qtsSidebar.cc" line="160"/>
         <source>enable/disable observations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="168"/>
+        <location filename="../src/qtsSidebar.cc" line="166"/>
         <source>Show position (DIANA)</source>
         <translation type="unfinished">Montrer position</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="175"/>
+        <location filename="../src/qtsSidebar.cc" line="173"/>
         <source>Position filter</source>
         <translation type="unfinished">Position du filtre</translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="194"/>
+        <location filename="../src/qtsSidebar.cc" line="192"/>
         <source>expand all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtsSidebar.cc" line="196"/>
+        <location filename="../src/qtsSidebar.cc" line="194"/>
         <source>collapse all</source>
         <translation type="unfinished"></translation>
     </message>

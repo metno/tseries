@@ -270,7 +270,7 @@ void qtsMain::makeSettingsMenu()
   menu_setting->addAction(tmarkAct);
 
   config.get("SHOWGRIDLINES", showGridLines);
-  showGridLinesAct = new QAction(tr("Show Gridlines "), this);
+  showGridLinesAct = new QAction(tr("Show Gridlines"), this);
   showGridLinesAct->setCheckable(true);
   showGridLinesAct->setChecked(showGridLines);
   connect(showGridLinesAct, SIGNAL(toggled(bool)), this,
@@ -291,7 +291,7 @@ void qtsMain::makeSettingsMenu()
 
 
   config.get("LOCKHOURSTOMODEL", lockHoursToModel);
-  lockHoursToModelAct = new QAction(tr("Lock Hours to Model "), this);
+  lockHoursToModelAct = new QAction(tr("Lock Hours to Model"), this);
   lockHoursToModelAct->setCheckable(true);
   lockHoursToModelAct->setChecked(lockHoursToModel);
   connect(lockHoursToModelAct, SIGNAL(toggled(bool)), this,
@@ -455,7 +455,7 @@ void qtsMain::about()
   QMessageBox::about(
       this,
       tr("About T-series"),
-      tr("T-series: Times series viewer\nVersion: %1\n\nmet.no 2016")
+      tr("T-series: Time series viewer\nVersion: %1\nCopyright: met.no 2016")
       .arg(VERSION));
 }
 
@@ -1042,7 +1042,7 @@ void qtsMain::toggleLang(QAction* action)
   QMessageBox::information(
       this,
       tr("Language Changed"),
-      tr("tseries must be restarted to reset the language to: [%1] ").arg(qlang));
+      tr("tseries must be restarted to reset the language to: [%1]").arg(qlang));
 }
 
 void qtsMain::selectionTypeChanged()
