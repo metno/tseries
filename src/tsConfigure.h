@@ -41,7 +41,7 @@ class tsConfigure {
 
 public:
 
-  bool read(const std::string&);
+  bool read(const std::string&,std::string="");
 
   bool get(const std::string& key, std::string& cont);
   bool get(const std::string& key, float& cont);

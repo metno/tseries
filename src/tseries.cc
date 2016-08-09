@@ -62,10 +62,10 @@ int main(int argc, char **argv)
 
   // read setup
 
-  string    site      = "FOU";
-  string    setupfile = "tseries.ctl";
-  string    title     = "T-series";
-  QString   instancename = "tseries";
+  string    site         = "FOU";
+  string    setupfile    = "tseries.ctl";
+  string    title        = "T-series";
+  string    instancename = "";
   tsSetup     setup;
   tsConfigure config;
   std::string    lang;
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
   if(cl.hasFlag('S')) site         = cl.arg('S')[0];
   if(cl.hasFlag('s')) setupfile    = cl.arg('s')[0];
   if(cl.hasFlag('T')) title += " " + cl.arg('T')[0];
-  if(cl.hasFlag('I')) instancename = QString::fromStdString(cl.arg('I')[0]);
+  if(cl.hasFlag('I')) instancename = (cl.arg('I')[0]);
 
 
   if(!setup.read(setupfile,site))
@@ -96,15 +96,10 @@ int main(int argc, char **argv)
 
 
 
-
-
-
-
-
   if(!setup.lang.empty())
     lang=setup.lang;
 
-  config.read(setup.files.configure);
+  config.read(setup.files.configure,instancename);
   config.get("LANG",lang);
 
   if(cl.hasFlag('d')) {
@@ -152,7 +147,7 @@ int main(int argc, char **argv)
   }
 
 
-  qtsMain *main = new qtsMain(lang, instancename);
+  qtsMain *main = new qtsMain(lang, instancename.c_str());
 
   main->setWindowTitle(title.c_str());
   main->show();

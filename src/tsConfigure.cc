@@ -107,9 +107,15 @@ void tsConfigure::stripComments(string& token)
 }
 
 
-bool tsConfigure::read(const string& fname)
+bool tsConfigure::read(const string& fname, string instancename)
 {
-  ifstream in(fname.c_str());
+  ostringstream ost;
+  ost << fname;
+	if(instancename.size() > 0)
+	  ost << "-" << instancename;
+
+
+  ifstream in(ost.str().c_str());
 
   setDefaults();
 
