@@ -67,6 +67,15 @@ using namespace miutil;
 const std::string thisTM = "MARKEDTIME";
 const std::string dianaTM = "DIANATIME";
 
+namespace /* anonymous */ {
+
+inline QString asQString(bool b)
+{
+  return b ? "true" : "false";
+}
+
+} // namespace
+
 qtsMain::qtsMain(std::string l, const QString& name)
   : lang(l)
 {
@@ -261,7 +270,7 @@ void qtsMain::makeSettingsMenu()
   menu_setting->addAction(tmarkAct);
 
   config.get("SHOWGRIDLINES", showGridLines);
-  showGridLinesAct = new QAction(tr("Show Gridlines "), this);
+  showGridLinesAct = new QAction(tr("Show Gridlines"), this);
   showGridLinesAct->setCheckable(true);
   showGridLinesAct->setChecked(showGridLines);
   connect(showGridLinesAct, SIGNAL(toggled(bool)), this,
@@ -282,7 +291,7 @@ void qtsMain::makeSettingsMenu()
 
 
   config.get("LOCKHOURSTOMODEL", lockHoursToModel);
-  lockHoursToModelAct = new QAction(tr("Lock Hours to Model "), this);
+  lockHoursToModelAct = new QAction(tr("Lock Hours to Model"), this);
   lockHoursToModelAct->setCheckable(true);
   lockHoursToModelAct->setChecked(lockHoursToModel);
   connect(lockHoursToModelAct, SIGNAL(toggled(bool)), this,
@@ -446,7 +455,7 @@ void qtsMain::about()
   QMessageBox::about(
       this,
       tr("About T-series"),
-      tr("T-series: Times series viewer\nVersion: %1\n\nmet.no 2016")
+      tr("T-series: Time series viewer\nVersion: %1\nCopyright: met.no 2016")
       .arg(VERSION));
 }
 
@@ -546,7 +555,6 @@ void qtsMain::toggleIcon(bool isOn)
 
 void qtsMain::togglePositions(bool isOn)
 {
-
   sposition = isOn;
   if (!dianaconnected)
     return;
@@ -644,14 +652,12 @@ void qtsMain::sendImage(const std::string name, const QImage& image)
 
 void qtsMain::refreshDianaStations()
 {
-
   if (!dianaconnected || !sposition)
     return;
 
   std::string prevModel = currentModel;
 
-
-  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX){
+  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
     sendNewPoslist();
     sendNamePolicy();
     disablePoslist(prevModel);
@@ -670,7 +676,6 @@ void qtsMain::refreshDianaStations()
   sendNamePolicy();
   enableCurrentPoslist();
   disablePoslist(prevModel);
-
 }
 
 void qtsMain::disablePoslist(std::string prev)
@@ -819,9 +824,9 @@ void qtsMain::sendNamePolicy()
   m.addDataDesc("normal").addDataDesc("selected").addDataDesc("icon");
 
   QStringList values;
-  values << (snormal ? "true" : "false");
-  values << (sselect ? ":true" : ":false");
-  values << (sicon ? ":true" : ":false");
+  values << asQString(snormal);
+  values << asQString(sselect);
+  values << asQString(sicon);
   m.addDataValues(values);
 
   sendLetter(m);
@@ -909,8 +914,6 @@ void qtsMain::cleanConnection()
 }
 
 
-
-
 void qtsMain::changeObservationStart()
 {
   miTime start = work->getObservationStartTime();
@@ -957,11 +960,6 @@ void qtsMain::manageFimexFilter()
     work->refresh(true);
   }
 }
-
-
-
-
-
 
 
 void qtsMain::manageFilter()
@@ -1031,21 +1029,20 @@ void qtsMain::findLanguages()
 
   QAction * action = new QAction("en", languageGroup);
   action->setCheckable(true);
-  action->setChecked((not !lang.empty()) || lang == "en");
+  action->setChecked(lang.empty() || lang == "en");
   languageGroup->addAction(action);
   menu_lang->addAction(action);
 }
 
 void qtsMain::toggleLang(QAction* action)
 {
-  lang = action->text().toStdString();
+  const QString qlang = action->text();
+  lang = qlang.toStdString();
 
   QMessageBox::information(
       this,
       tr("Language Changed"),
-      tr("tseries must be restarted to reset the language to: [%1] ").arg(
-          lang.c_str()));
-
+      tr("tseries must be restarted to reset the language to: [%1]").arg(qlang));
 }
 
 void qtsMain::selectionTypeChanged()
