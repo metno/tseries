@@ -1,3 +1,11 @@
+tseries (7.0.6-1) unstable; urgency=low
+
+  * optional disabling mora streams / fixing timeslider
+  * do not work with undefined miTime
+  * added RRAC_x streams to enable MEPS
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Tue, 09 Aug 2016 13:13:09 +0200
+
 tseries (7.0.5-1) unstable; urgency=low
 
   * bugfix show/hide icons in diana
