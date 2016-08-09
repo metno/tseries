@@ -217,7 +217,7 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
   }
 
   tmpLength = theData->timeLineLengthInHours();
-  //if (tmpLength != totalLength)
+  if (tmpLength != totalLength)
     lengthChanged=true;
   totalLength = tmpLength;
   return true;
@@ -258,7 +258,7 @@ bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
   }
 
   tmpLength = theData->timeLineLengthInHours();
-  //if (tmpLength != totalLength)
+  if (tmpLength != totalLength)
     lengthChanged=true;
   totalLength = tmpLength;
   return true;
