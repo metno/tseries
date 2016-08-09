@@ -122,7 +122,9 @@ public:
     bool hdf;
     bool wdb;
     bool fimex;
-    disablestruct() : hdf(false), wdb(false), fimex(false) {}
+    bool klima;
+    bool mora;
+    disablestruct() : hdf(false), wdb(false), fimex(false), klima(false), mora(false) {}
   };
 
   struct klstruct {

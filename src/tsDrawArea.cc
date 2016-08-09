@@ -184,6 +184,10 @@ bool tsDrawArea::prepareData()
 
 bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
 {
+  tsSetup setup;
+  if (setup.disabled.klima)
+    return false;
+
   lengthChanged=false;
   int tmpLength = theData->timeLineLengthInHours();
   lengthChanged = (tmpLength != forecastLength);
@@ -217,14 +221,18 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
   }
 
   tmpLength = theData->timeLineLengthInHours();
-  if (tmpLength != totalLength)
-    lengthChanged=true;
+ // if (tmpLength != totalLength)
+  lengthChanged=true;
   totalLength = tmpLength;
   return true;
 }
 
 bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
 {
+  tsSetup setup;
+  if (setup.disabled.mora)
+    return false;
+
   lengthChanged=false;
   int tmpLength = theData->timeLineLengthInHours();
   lengthChanged = (tmpLength != forecastLength);
@@ -258,7 +266,7 @@ bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
   }
 
   tmpLength = theData->timeLineLengthInHours();
-  if (tmpLength != totalLength)
+ // if (tmpLength != totalLength)
     lengthChanged=true;
   totalLength = tmpLength;
   return true;
