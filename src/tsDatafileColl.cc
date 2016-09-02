@@ -755,11 +755,11 @@ void DatafileColl::initialiseFimexParameters()
 vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
 {
   vector<std::string> runtimes;
-  cerr << "trying to find runtimes for model: " << model << endl;
+  cerr << "Indexing Model: " << model << endl;
 
   for (std::vector<FimexInfo>::iterator it = fimexStreams.begin(); it != fimexStreams.end(); ++it) {
     if (model == it->model) {
-      cerr << "Trying to read from Fimex file " << it->streamname << endl;
+      cerr << "Indexing file " << it->streamname << endl;
 
       if (it->run.empty()) {
 
@@ -779,6 +779,7 @@ vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
               fimex_streams_opened = true;
             } else {
               // Get from the stream...
+              cerr << "Unable to get referencetime from streamname - opening it : " << it->streamname  << endl;
               boost::posix_time::ptime time = it->dataStream->getReferencetime();
               //std::string stime = boost::posix_time::to_simple_string(time);
               ostringstream stime;
@@ -790,7 +791,7 @@ vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
             }
           } catch (exception & e) {
             cerr << e.what() << endl;
-            cerr << "using streamname instead of runtime to identify model" << endl;
+            cerr << "using streamname instead of runtime to index model" << endl;
             string streamname =  it->streamname;
             string::size_type n = streamname.rfind("/");
             string::size_type p = streamname.rfind(".");
