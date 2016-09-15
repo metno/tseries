@@ -157,7 +157,7 @@ private:
   pets::MoraStream*      moraStream;     // the stream from SMHO observation database 'Mora'
   std::vector<ExtStation> stations;   // List of stations
   std::vector<std::string> datasetname;  // name of dataset
-  std::map<std::string,miPosition> pos_info; // all positions ordered by name....
+  std::map<std::string, miPosition> pos_info; // all positions ordered by name....
 
   int numStationsDS[MAXDATASETS];// number of positions in each dataset
   float tolerance;               // 10000*degrees
@@ -231,7 +231,7 @@ public:
   bool getPosition(int,int&,std::string&,int&,float&,float&,int&);
   // returns info about position idx in dset
   bool getPosition(int dset, int &idx, ExtStation** es);
-  std::map<std::string,std::string> getPositions(const std::string mod);
+  std::map<std::string, miCoordinates> getPositions(const std::string mod);
   // get list of indices for files which contain data for a
   // specific model and run. Returns number of files found
   int findModel(const Model& mid, const Run& rid, int* idx, int max);

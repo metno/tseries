@@ -110,7 +110,8 @@ public:
   QPushButton*  targetButton() const {return targetB;}
   void setStationInfo(QString s) { stationtab->setStationInfo(s); }
   void setObsInfo(QString s);
-  std::string coordinateString() const { return wdbtab->coordinateString(); }
+  miCoordinates coordinates()
+    const { return wdbtab->coordinates(); }
 
   void writeBookmarks();
   void setTab(int idx);
@@ -157,7 +158,8 @@ public:
 
   std::string getFimexExpanded() const { return fimextab->getExpandedDirs(); }
   bool restoreFimexFromLog(std::string mod, std::string sty, std::string expanded);
-  std::string fimexCoordinateString() const { return fimextab->coordinateString(); }
+  miCoordinates fimexCoordinates() const
+    { return fimextab->coordinates(); }
 
 Q_SIGNALS:
   void changestyle(const QString&);

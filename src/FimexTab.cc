@@ -223,11 +223,9 @@ void FimexTab::coordinatesChanged()
   emit changeCoordinates(longitude,latitude,"");
 }
 
-std::string FimexTab::coordinateString()
+miCoordinates FimexTab::coordinates() const
 {
-  ostringstream ost;
-  ost <<  latitude << ":" << longitude;
-  return ost.str();
+  return miCoordinates(longitude, latitude);
 }
 
 

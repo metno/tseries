@@ -232,11 +232,9 @@ void CoordinateTab::coordinatesChanged()
 
 }
 
-std::string CoordinateTab::coordinateString()
+miCoordinates CoordinateTab::coordinates() const
 {
-  ostringstream ost;
-  ost <<  latitude->getValue() << ":" << longitude->getValue();
-  return ost.str();
+  return miCoordinates(longitude->getValue(), latitude->getValue());
 }
 
 

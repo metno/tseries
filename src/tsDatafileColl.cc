@@ -508,9 +508,9 @@ bool DatafileColl::getPosition(int dset, int &idx, ExtStation** es)
   return true;
 }
 
-map<std::string, std::string> DatafileColl::getPositions(const std::string mod)
+map<std::string, miCoordinates> DatafileColl::getPositions(const std::string mod)
 {
-  map<std::string, std::string> result;
+  map<std::string, miCoordinates> result;
 
   dataset ds;
 
@@ -525,8 +525,7 @@ map<std::string, std::string> DatafileColl::getPositions(const std::string mod)
   n = stations.size();
   for (i = 0; i < n; i++) {
     if (Union(ds, stations[i].d)) {
-      result[stations[i].station.Name()] = miutil::from_number(stations[i].station.lat())
-                          + ":" + miutil::from_number(stations[i].station.lon());
+      result[stations[i].station.Name()] = stations[i].station.Coordinates();
     }
   }
   return result;

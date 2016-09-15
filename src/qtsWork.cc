@@ -58,16 +58,11 @@ bool qStr2miStr(const QString& i, std::string& o)
   }
 }
 
-inline QStringList split_colon(const QString& s)
+//! insert first lat, then lon
+QStringList& operator<<(QStringList& s, const miCoordinates& co)
 {
-  return s.split(":");
+  return s << QString::number(co.dLat()) << QString::number(co.dLon());
 }
-
-inline QStringList split_colon(const std::string& s)
-{
-  return split_colon(QString::fromStdString(s));
-}
-
 } // namespace
 
 const QString C_DATASET = "dataset";
@@ -276,7 +271,7 @@ void qtsWork::makeStationList(bool forced)
   myStations.clear();
 
   myList = data.getPositions(request.model());
-  map<std::string,std::string>::iterator itr = myList.begin();
+  map<std::string, miCoordinates>::iterator itr = myList.begin();
   for (;itr!=myList.end();itr++) {
     const std::string& pos = itr->first;
 
@@ -287,7 +282,7 @@ void qtsWork::makeStationList(bool forced)
 
     QString qpos = QString::fromStdString(pos);
     slist << qpos;
-    myStations << (QStringList() << qpos  << split_colon(itr->second));
+    myStations << (QStringList() << qpos << itr->second);
   }
 
   sidebar->fillStations(slist);
@@ -474,7 +469,7 @@ void qtsWork::changeStation(const std::string& st)
     sidebar->searchStation(QString::fromLatin1(st.c_str()));
 
   } else if (selectionType==SELECT_BY_FIMEX) {
-    sidebar->changeFimexPosition(  QString::fromLatin1(st.c_str()));
+    sidebar->changeFimexPosition(QString::fromLatin1(st.c_str()));
   }
 }
 
@@ -704,20 +699,21 @@ void qtsWork::restoreModelFromLog()
 
 miQMessage qtsWork::target()
 {
-  std::string co;
-  if( selectionType==SELECT_BY_STATION ) {
+  miCoordinates coord;
+  if (selectionType == SELECT_BY_STATION) {
     const std::string po = request.posname();
     changeStation(po);
-    co=myList[po];
-  } else if( selectionType== SELECT_BY_FIMEX ) {
-    co = sidebar->fimexCoordinateString();
+    coord = myList[po];
+  } else if (selectionType == SELECT_BY_FIMEX) {
+    coord = sidebar->fimexCoordinates();
     // cerr << "select by fimex : " << co  << endl;
-  } else
-    co = sidebar->coordinateString();
+  } else {
+    coord = sidebar->coordinates();
+  }
 
   miQMessage m(qmstrings::positions);
   m.addDataDesc(TARGETS_TSERIES+";name").addDataDesc("lat").addDataDesc("lon").addDataDesc("image");
-  m.addDataValues(QStringList() << "." << split_colon(co) << IMG_FIN_TSERIES);
+  m.addDataValues(QStringList() << "." << coord << IMG_FIN_TSERIES);
   return m;
 }
 

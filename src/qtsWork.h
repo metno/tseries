@@ -84,7 +84,7 @@ private:
   std::map<std::string,Model>    modelMap;
   std::map<std::string,Model>    fimexModelMap;
   QList<QStringList>             myStations;
-  std::map<std::string,std::string> myList;
+  std::map<std::string, miCoordinates> myList;
   std::set<std::string>          filter;
 
 
