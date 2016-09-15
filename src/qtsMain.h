@@ -106,7 +106,7 @@ private:
   ClientSelection* pluginB;
   QPushButton*  targetB;
 
-  bool dianaconnected;
+  std::set<int> dianaconnected;
 
   std::string      lang;
   QString      currentModel;
@@ -143,8 +143,11 @@ private:
   void enableCurrentPoslist();
   void sendNewPoslist();
 
-  /// check for "Diana" clients and update dianaconnected; returns true if changed
-  bool updateDianaConnected();
+  bool isDianaConnected() const
+    { return !dianaconnected.empty(); }
+  void processConnect(int diana_id);
+  void cleanConnection(int diana_id);
+
 
   QString lastFimexPosition;
 
@@ -173,15 +176,13 @@ private Q_SLOTS:
   void toggleShowGridlines(bool);
 
   void processLetter(int from, const miQMessage&);
+  void cleanConnections();
   void sendLetter(const miQMessage& qmsg);
-  void processConnect();
   void sendTarget();
   void clearTarget();
   void clearFimexList();
   void showHelp();
   void showNews();
-  void cleanConnection();
-
   void manageFilter();
   void manageParameterFilter();
   void manageFimexFilter();
@@ -193,6 +194,7 @@ private Q_SLOTS:
   void coordinatesChanged();
   void fimexPoslistChanged();
   void fimexPositionChanged(const QString&);
+
 public:
   qtsMain(std::string l, const QString& name);
 

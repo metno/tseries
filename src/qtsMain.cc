@@ -85,7 +85,6 @@ qtsMain::qtsMain(std::string l, const QString& name)
 
   latlond = false;
   makeMenuBar();
-  dianaconnected = false;
 
   work = new qtsWork(this,lang.c_str());
   setCentralWidget(work);
@@ -324,8 +323,7 @@ void qtsMain::makeConnectButtons()
 
   connect(pluginB, SIGNAL(receivedMessage(int, const miQMessage&)),
       SLOT(processLetter(int, const miQMessage&)));
-  connect(pluginB->client(), SIGNAL(addressListChanged()), SLOT(processConnect()));
-  connect(pluginB, SIGNAL(disconnected()), SLOT(cleanConnection()));
+  connect(pluginB, SIGNAL(disconnected()), SLOT(cleanConnections()));
 
   // makeConnectButtons is called after makeMenuBar
   menu_setting->addAction(pluginB->getMenuBarAction());
@@ -556,7 +554,7 @@ void qtsMain::toggleIcon(bool isOn)
 void qtsMain::togglePositions(bool isOn)
 {
   sposition = isOn;
-  if (!dianaconnected)
+  if (!isDianaConnected())
     return;
 
   if (sposition)
@@ -614,7 +612,7 @@ void qtsMain::setTimemark(miTime mark)
 void qtsMain::setDianaTimemark(miTime mark)
 {
   if (work) {
-    if (dianaconnected)
+    if (isDianaConnected())
       work->Show()->setTimemark(mark, dianaTM);
     else
       work->Show()->clearTimemarks(dianaTM);
@@ -624,7 +622,7 @@ void qtsMain::setDianaTimemark(miTime mark)
 // send one image to diana (with name)
 void qtsMain::sendImage(const QString& name, const QImage& image)
 {
-  if (!dianaconnected)
+  if (!isDianaConnected())
     return;
   if (image.isNull())
     return;
@@ -652,7 +650,7 @@ void qtsMain::sendImage(const QString& name, const QImage& image)
 
 void qtsMain::refreshDianaStations()
 {
-  if (!dianaconnected || !sposition)
+  if (!isDianaConnected() || !sposition)
     return;
 
   QString prevModel = currentModel;
@@ -683,7 +681,7 @@ void qtsMain::disablePoslist(const QString& prev)
 {
   if (prev == NOMODEL_TSERIES)
     return;
-  if (!dianaconnected)
+  if (!isDianaConnected())
     return;
 
   miQMessage m(qmstrings::hidepositions);
@@ -693,7 +691,7 @@ void qtsMain::disablePoslist(const QString& prev)
 
 void qtsMain::enableCurrentPoslist()
 {
-  if (!dianaconnected)
+  if (!isDianaConnected())
     return;
   miQMessage m(qmstrings::showpositions);
   if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
@@ -707,7 +705,7 @@ void qtsMain::enableCurrentPoslist()
 void qtsMain::sendNewPoslist()
 {
   sendModels.insert(currentModel);
-  if (!dianaconnected)
+  if (!isDianaConnected())
     return;
   miQMessage m = work->getStationList();
   m.addCommon("normal", (snormal ? "true" : "false"))
@@ -717,7 +715,7 @@ void qtsMain::sendNewPoslist()
 
 void qtsMain::sendTarget()
 {
-  if (!dianaconnected)
+  if (!isDianaConnected())
     return;
 
   miQMessage m = work->target();
@@ -731,7 +729,7 @@ void qtsMain::sendTarget()
 
 void qtsMain::clearFimexList()
 {
-  if (!dianaconnected)
+  if (!isDianaConnected())
     return;
 
   miQMessage m(qmstrings::hidepositions);
@@ -742,7 +740,7 @@ void qtsMain::clearFimexList()
 
 void qtsMain::clearTarget()
 {
-  if (!dianaconnected)
+  if (!isDianaConnected())
     return;
 
   miQMessage m(qmstrings::hidepositions);
@@ -750,53 +748,49 @@ void qtsMain::clearTarget()
   sendLetter(m);
 }
 
-bool qtsMain::updateDianaConnected()
-{
-  tsSetup s;
-  const bool old_dianaconnected = dianaconnected;
-  dianaconnected = pluginB->client()->hasClientOfType(QString::fromStdString(s.server.client));
-  return old_dianaconnected != dianaconnected;
-}
-
 // called when client-list changes
 
-void qtsMain::processConnect()
+void qtsMain::processConnect(int diana_id)
 {
-  if (updateDianaConnected() && dianaconnected) {
-
-    tsSetup s;
-    cerr << ttc::color(ttc::Blue) << "< CONNECTING TO: " << s.server.client
-        << " > " << ttc::reset << endl;
-
-    QImage sImage(s.files.std_image.c_str());
-    QImage fImage(s.files.fin_image.c_str());
-    QImage iImage(s.files.icon_image.c_str());
-    QImage nImage(s.files.new_station_image.c_str());
-    QImage aImage(s.files.active_image.c_str());
-
-    sendImage(IMG_STD_TSERIES,  sImage);
-    sendImage(IMG_FIN_TSERIES,  fImage);
-    sendImage(IMG_NEW_TSERIES,  nImage);
-    sendImage(IMG_ICON_TSERIES, iImage);
-    sendImage(IMG_ACTIVE_TSERIES, aImage);
-
-    sendNamePolicy();
-    selectionTypeChanged();
-    refreshDianaStations();
-
+  if (dianaconnected.find(diana_id) != dianaconnected.end()) {
+    // already connected, strange
+    return;
   }
+  dianaconnected.insert(diana_id);
+
+  tsSetup s;
+  cerr << ttc::color(ttc::Blue) << "< CONNECTING TO: " << s.server.client
+       << " > " << ttc::reset << endl;
+
+  QImage sImage(s.files.std_image.c_str());
+  QImage fImage(s.files.fin_image.c_str());
+  QImage iImage(s.files.icon_image.c_str());
+  QImage nImage(s.files.new_station_image.c_str());
+  QImage aImage(s.files.active_image.c_str());
+
+  // FIXME these send messages to all diana clients
+  sendImage(IMG_STD_TSERIES,  sImage);
+  sendImage(IMG_FIN_TSERIES,  fImage);
+  sendImage(IMG_NEW_TSERIES,  nImage);
+  sendImage(IMG_ICON_TSERIES, iImage);
+  sendImage(IMG_ACTIVE_TSERIES, aImage);
+
+  sendNamePolicy();
+  selectionTypeChanged();
+  refreshDianaStations();
 
   setRemoteParameters();
 }
 
 void qtsMain::setRemoteParameters()
 {
-  targetB->setEnabled(dianaconnected);
-  normalAct->setEnabled(dianaconnected);
-  selectAct->setEnabled(dianaconnected);
-  iconAct->setEnabled(dianaconnected);
+  const bool dc = isDianaConnected();
+  targetB->setEnabled(dc);
+  normalAct->setEnabled(dc);
+  selectAct->setEnabled(dc);
+  iconAct->setEnabled(dc);
 
-  if (!dianaconnected) {
+  if (!dc) {
     currentModel = NOMODEL_TSERIES;
     sendModels.clear();
   }
@@ -809,7 +803,7 @@ void qtsMain::sendLetter(const miQMessage& qmsg)
 
 void qtsMain::sendNamePolicy()
 {
-  if (!dianaconnected)
+  if (!isDianaConnected())
     return;
 
   miQMessage m(qmstrings::showpositionname);
@@ -832,12 +826,18 @@ void qtsMain::processLetter(int from, const miQMessage& letter)
   cerr << "Message: " << letter << endl;
 #endif
 
-  if (letter.command() == qmstrings::removeclient) {
+  const QString& cmd = letter.command();
+  if (cmd == qmstrings::removeclient || cmd == qmstrings::newclient) {
     tsSetup s;
-    if (letter.getCommonValue("type") == QString::fromStdString(s.server.client))
-      cleanConnection();
-  } else if (letter.command() == qmstrings::positions) {
-    if (letter.getCommonValue("type") == "diana") {
+    if (letter.getCommonValue("type") == QString::fromStdString(s.server.client)) {
+      const int diana_id = letter.getCommonValue("id").toInt();
+      if (cmd == qmstrings::newclient)
+        processConnect(diana_id);
+      else
+        cleanConnection(diana_id);
+    }
+  } else if (cmd == qmstrings::positions) {
+    if (letter.getCommonValue("dataset") == "diana") {
       if (letter.countDataRows()) {
         const int i_lon = letter.findDataDesc("lon"), i_lat = letter.findDataDesc("lat");
         const float lon = letter.getDataValue(0, i_lon).toFloat();
@@ -845,13 +845,13 @@ void qtsMain::processLetter(int from, const miQMessage& letter)
         work->changePositions(lon, lat);
       }
     }
-  } else if (letter.command() == qmstrings::selectposition) {
+  } else if (cmd == qmstrings::selectposition) {
     if (letter.countDataRows()) {
       const int i_station = letter.findDataDesc("station");
       if (i_station >= 0)
         work->changeStation(letter.getDataValue(0, i_station));
     }
-  } else if (letter.command() == qmstrings::timechanged) {
+  } else if (cmd == qmstrings::timechanged) {
     // Added to avoid invalid updates from diana when diana
     // is in automatic update mode
     const miTime timeFromDiana(letter.getCommonValue("time").toStdString());
@@ -889,9 +889,14 @@ void qtsMain::timerEvent(QTimerEvent* e)
       work->updateProgress();
 }
 
-void qtsMain::cleanConnection()
+void qtsMain::cleanConnection(int diana_id)
 {
-  if (updateDianaConnected() && !dianaconnected) {
+  if (dianaconnected.find(diana_id) == dianaconnected.end()) {
+    // not connected, strange
+    return;
+  }
+  dianaconnected.erase(diana_id);
+  if (!isDianaConnected()) {
     cout << ttc::color(ttc::Red) << "< DISCONNECTING >" << ttc::reset << endl;
 
     setRemoteParameters();
@@ -899,6 +904,16 @@ void qtsMain::cleanConnection()
   }
 }
 
+void qtsMain::cleanConnections()
+{
+  if (dianaconnected.empty())
+    return;
+  dianaconnected.clear();
+  cout << ttc::color(ttc::Red) << "< DISCONNECTING >" << ttc::reset << endl;
+
+  setRemoteParameters();
+  setDianaTimemark(miTime::nowTime());
+}
 
 void qtsMain::changeObservationStart()
 {
@@ -958,7 +973,7 @@ void qtsMain::manageFilter()
 
   if (fm->exec()) {
     // clean out the old filters from diana
-    if (dianaconnected) {
+    if (isDianaConnected()) {
       set<QString>::iterator itr = sendModels.begin();
       while (itr != sendModels.end()) {
         const set<QString>::iterator ite = itr++; // set::erase invalidates iterator
@@ -1060,7 +1075,7 @@ void qtsMain::fimexPoslistChanged()
 
 void qtsMain::fimexPositionChanged(const QString& qname)
 {
-  if (!dianaconnected)
+  if (!isDianaConnected())
     return;
 
   miQMessage m(qmstrings::changeimageandtext);
