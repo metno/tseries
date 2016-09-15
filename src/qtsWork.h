@@ -52,16 +52,17 @@
 #include <set>
 
 
-const std::string DATASET_TSERIES= "T-series ";
-const std::string DATASET_FIMEX=   "T-series Fimex";
-const std::string TARGETS_TSERIES= "TARGETS_TSERIES";
-const std::string IMG_STD_TSERIES= "IMG_STD_TSERIES";
-const std::string IMG_FIN_TSERIES= "IMG_FIN_TSERIES";
-const std::string IMG_NEW_TSERIES= "IMG_NEW_TSERIES";
-const std::string IMG_ACTIVE_TSERIES= "IMG_ACTIVE_TSERIES";
-const std::string IMG_ICON_TSERIES= "IMG_ICON_TSERIES";
-const std::string NOMODEL_TSERIES= "NONE";
-const std::string TS_MINE        = " -- ";
+extern const QString DATASET_TSERIES;
+extern const QString DATASET_FIMEX;
+extern const QString TARGETS_TSERIES;
+extern const QString IMG_STD_TSERIES;
+extern const QString IMG_FIN_TSERIES;
+extern const QString IMG_NEW_TSERIES;
+extern const QString IMG_ACTIVE_TSERIES;
+extern const QString IMG_ICON_TSERIES;
+extern const QString NOMODEL_TSERIES;
+extern const QString TS_MINE;
+
 
 class qtsWork: public QWidget
 {
@@ -79,11 +80,10 @@ private:
   tsRequest      request;
   SelectionType  selectionType;
   unsigned int   maxWDBreadTime;
-  std::string               oldModel;
+  QString               oldModel;
   std::map<std::string,Model>    modelMap;
   std::map<std::string,Model>    fimexModelMap;
-  std::vector<std::string>            myStations;
-  miMessage              myTarget;
+  QList<QStringList>             myStations;
   std::map<std::string,std::string> myList;
   std::set<std::string>          filter;
 
@@ -125,17 +125,17 @@ public:
   std::set<std::string> Filter() const {return filter;}
   std::set<std::string> fullPosList();
   std::set<std::string> createFilter(bool orig=false);
-  miMessage getFimexStationList();
-  miMessage getStationList();
-  std::string  model() const {return request.model();}
-  std::string  lastList() { return (filterOn ? TS_MINE : "" ) + request.model();}
+  miQMessage getFimexStationList();
+  miQMessage getStationList();
+  QString  model() const { return QString::fromStdString(request.model()); }
+  QString  lastList() const;
 
-  miMessage target();
+  miQMessage target();
   std::string  file(const std::string typ) const { return request.file(typ);}
   qtsShow*  Show() {return show;}
   qtsSidebar* sideBar() const {return sidebar;}
 
-  void changePositions(const std::string&);
+  void changePositions(float lon, float lat);
   SelectionType getSelectionType() const {return selectionType;};
   void toggleLockHoursToModel(bool lockHoursToModel) { if(sidebar) sidebar->toggleLockHoursToModel(lockHoursToModel);}
   void setShowGridLines( bool s ){ if(show) show->setShowGridLines(s); }

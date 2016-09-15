@@ -144,7 +144,8 @@ public:
   void setFimexRuns(const QStringList& newRuns)    { fimextab->setRuns(newRuns);        }
 
   // visible positions (for diana)
-  std::vector<std::string> getFimexPositions()     { return fimextab->getPoslist();     }
+  QList<QStringList> getFimexPositions()
+    { return fimextab->getPoslist(); }
 
   // all positions (refresh interpolation)
   std::vector<std::string> allFimexPositions() { return fimextab->allFimexPositions();     }

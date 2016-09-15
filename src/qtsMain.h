@@ -109,9 +109,9 @@ private:
   bool dianaconnected;
 
   std::string      lang;
-  std::string      currentModel;
+  QString      currentModel;
   miutil::miTime        currentTime;
-  std::set<std::string> sendModels;
+  std::set<QString> sendModels;
 
 
   void timerEvent(QTimerEvent*);
@@ -134,24 +134,24 @@ private:
   void makeSettingsMenu();
 
   void restoreLog();
-  void sendImage(const std::string, const QImage&);
+  void sendImage(const QString&, const QImage&);
   void setRemoteParameters();
   void setTimemark(miutil::miTime);
   void setDianaTimemark(miutil::miTime);
 
-  void disablePoslist(std::string);
+  void disablePoslist(const QString&);
   void enableCurrentPoslist();
   void sendNewPoslist();
 
   /// check for "Diana" clients and update dianaconnected; returns true if changed
   bool updateDianaConnected();
 
-  std::string lastFimexPosition;
+  QString lastFimexPosition;
 
 protected:
  void closeEvent ( QCloseEvent * );
 
-private slots:
+private Q_SLOTS:
   void quit();
   void print();
   void raster();
@@ -172,8 +172,7 @@ private slots:
   void toggleLockHoursToModel(bool);
   void toggleShowGridlines(bool);
 
-  void processLetter(const miMessage&);
-  void sendLetter(miMessage&);
+  void processLetter(int from, const miQMessage&);
   void sendLetter(const miQMessage& qmsg);
   void processConnect();
   void sendTarget();

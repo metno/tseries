@@ -46,15 +46,42 @@
 using namespace std;
 using namespace miutil;
 
+namespace {
 bool qStr2miStr(const QString& i, std::string& o)
 {
-  o="";
-
-  if(i.isEmpty())
+  if (i.isEmpty()) {
+    o = "";
     return false;
-  o=i.toStdString();
-  return true;
+  } else {
+    o = i.toStdString();
+    return true;
+  }
 }
+
+inline QStringList split_colon(const QString& s)
+{
+  return s.split(":");
+}
+
+inline QStringList split_colon(const std::string& s)
+{
+  return split_colon(QString::fromStdString(s));
+}
+
+} // namespace
+
+const QString C_DATASET = "dataset";
+
+const QString DATASET_TSERIES= "T-series ";
+const QString DATASET_FIMEX=   "T-series Fimex";
+const QString TARGETS_TSERIES= "TARGETS_TSERIES";
+const QString IMG_STD_TSERIES= "IMG_STD_TSERIES";
+const QString IMG_FIN_TSERIES= "IMG_FIN_TSERIES";
+const QString IMG_NEW_TSERIES= "IMG_NEW_TSERIES";
+const QString IMG_ACTIVE_TSERIES= "IMG_ACTIVE_TSERIES";
+const QString IMG_ICON_TSERIES= "IMG_ICON_TSERIES";
+const QString NOMODEL_TSERIES= "NONE";
+const QString TS_MINE        = " -- ";
 
 qtsWork::qtsWork(QWidget* parent, QString language)
 : QWidget(parent) , activeRefresh(true)
@@ -175,9 +202,6 @@ void qtsWork::Initialise()
   //data.openStreams();
   //getStationList();
 
-  myTarget.command       = qmstrings::positions;
-  myTarget.description   = TARGETS_TSERIES+";name:lat:lon:image";
-
   makeStyleList();
 
   int t,f;
@@ -187,42 +211,40 @@ void qtsWork::Initialise()
   filter = createFilter();
 }
 
-miMessage qtsWork::getStationList()
+miQMessage qtsWork::getStationList()
 {
   if(selectionType == SELECT_BY_FIMEX)
     return getFimexStationList();
 
-
-  std::string f = ( filterOn ? TS_MINE : "");
-  std::string iconname  = "tseries.png";
-  std::string annotation = DATASET_TSERIES +f+ request.model() ;
-  miMessage m;
-  m.command     = qmstrings::positions;
-  m.commondesc  = "dataset:image:icon:annotation:normal:selected";
-  m.common      =  DATASET_TSERIES +f+ request.model() + ":"
-      + IMG_STD_TSERIES + ":" + IMG_ICON_TSERIES +":"+annotation + ":";
-  m.description = "name:lat:lon";
-  m.data = myStations;
+  miQMessage m(qmstrings::positions);
+  m.addCommon(C_DATASET, DATASET_TSERIES)
+      .addCommon("image", IMG_STD_TSERIES)
+      .addCommon("icon", IMG_ICON_TSERIES)
+      .addCommon("annotation", DATASET_TSERIES + lastList());
+  m.setData((QStringList() << "name" << "lat" << "lon"),
+            myStations);
   return m;
 }
 
-miMessage qtsWork::getFimexStationList()
+miQMessage qtsWork::getFimexStationList()
 {
-
-  std::string iconname  = "tseries.png";
-  std::string annotation = DATASET_FIMEX;
-  miMessage m;
-  m.command     = qmstrings::positions;
-  m.commondesc  = "dataset:image:icon:annotation:normal:selected";
-  m.common      =  annotation + ":" + IMG_STD_TSERIES + ":" + IMG_ICON_TSERIES +":"+annotation + ":";
-  m.description = "name:lat:lon";
-  m.data = sidebar->getFimexPositions();
+  miQMessage m(qmstrings::positions);
+  m.addCommon(C_DATASET, DATASET_FIMEX)
+      .addCommon("image", IMG_STD_TSERIES)
+      .addCommon("icon", IMG_ICON_TSERIES)
+      .addCommon("annotation", DATASET_FIMEX + lastList());
+  m.setData((QStringList() << "name" << "lat" << "lon"),
+            sidebar->getFimexPositions());
   return m;
 }
 
-
-
-
+QString qtsWork::lastList() const
+{
+  if (filterOn)
+    return TS_MINE + model();
+  else
+    return model();
+}
 
 set<std::string> qtsWork::fullPosList()
 {
@@ -239,32 +261,33 @@ set<std::string> qtsWork::fullPosList()
 
 void qtsWork::makeStationList(bool forced)
 {
-  if(request.model().empty())
+  const QString rmodel = model();
+  if (rmodel.isEmpty())
     restoreModelFromLog();
 
 
   if(!forced)
-    if( oldModel == request.model())
+    if (oldModel == rmodel)
       return;
 
-  oldModel = request.model();
+  oldModel = rmodel;
 
   QStringList slist;
   myStations.clear();
 
   myList = data.getPositions(request.model());
   map<std::string,std::string>::iterator itr = myList.begin();
-  std::string pos;
   for (;itr!=myList.end();itr++) {
-    pos = itr->first;
+    const std::string& pos = itr->first;
 
     if(filterOn)
       if(!filter.empty())
         if(!filter.count(pos))
           continue;
 
-    slist << pos.c_str();
-    myStations.push_back(string(pos  + ":" + itr->second));
+    QString qpos = QString::fromStdString(pos);
+    slist << qpos;
+    myStations << (QStringList() << qpos  << split_colon(itr->second));
   }
 
   sidebar->fillStations(slist);
@@ -383,16 +406,10 @@ void qtsWork::changeModel(const QString& qstr)
   makeStationList();
 }
 
-void qtsWork::changePositions(const std::string& pos)
+void qtsWork::changePositions(float lon, float lat)
 {
-
   if (selectionType == SELECT_BY_STATION)
     return;
-
-  vector<std::string> vcoor = miutil::split(pos, ":");
-  if(vcoor.size() < 2) return;
-  float lat = atof(vcoor[0].c_str());
-  float lon = atof(vcoor[1].c_str());
 
   sidebar->setCoordinates(lon,lat);
 }
@@ -401,10 +418,9 @@ void qtsWork::changeStation(const QString& qstr)
 {
   if(selectionType==SELECT_BY_WDB)
     return;
-    std::string st;
-    if(qStr2miStr(qstr,st))
-      changeStation(st);
-
+  std::string st;
+  if (qStr2miStr(qstr, st))
+    changeStation(st);
 }
 
 void qtsWork::changeRun(const QString& qstr)
@@ -441,18 +457,17 @@ void qtsWork::changeModel(const std::string& st)
 
 void qtsWork::changeStation(const std::string& st)
 {
-  if(selectionType==SELECT_BY_STATION) {
+  if (selectionType==SELECT_BY_STATION) {
 
-  miPosition p=data.getPositionInfo(st);
-  miCoordinates cor=p.Coordinates();
-  checkObsPosition(cor);
-
+    miPosition p=data.getPositionInfo(st);
+    miCoordinates cor=p.Coordinates();
+    checkObsPosition(cor);
 
     if(!request.setPos(st)) {
-    std::string ST = miutil::to_upper_latin1(st);
+      std::string ST = miutil::to_upper_latin1(st);
 
-    if(!request.setPos(ST))
-      return;
+      if(!request.setPos(ST))
+        return;
     }
     refresh(true);
     // Set current station
@@ -461,16 +476,15 @@ void qtsWork::changeStation(const std::string& st)
   } else if (selectionType==SELECT_BY_FIMEX) {
     sidebar->changeFimexPosition(  QString::fromLatin1(st.c_str()));
   }
-
-
-
 }
 
 void qtsWork::checkPosition(std::string name)
 {
-  if(name.empty()) return;
+  if (name.empty())
+    return;
   miPosition p=data.getPositionInfo(name);
-  if(p.Name()!=name ) return;
+  if (p.Name()!=name)
+    return;
 
   miCoordinates cor=p.Coordinates();
   checkObsPosition(cor);
@@ -481,15 +495,11 @@ void qtsWork::checkPosition(std::string name)
   } else {
     ost <<  "<b>Lat:</b> " << cor.sLat()<< " <b>Lon:</b> " << cor.sLon();
   }
-
   //  ost << " <b>Hoh:</b> " << p.height();
 
-
   sidebar->setStationInfo(ost.str().c_str());
-
-
-
 }
+
 void  qtsWork::setKlimaBlackList(std::set<std::string>& bl)
 {
   data.setKlimaBlacklist(bl);
@@ -542,7 +552,6 @@ void qtsWork::refresh(bool readData)
 
     checkPosition(request.posname());
   }
-
 //  QApplication::restoreOverrideCursor();
 }
 
@@ -646,7 +655,6 @@ void qtsWork::restoreLog()
   changeFimexStyle(qstyle);
 
   sidebar->restoreFimexFromLog(fimexmodel,fimexstyle,fimexexpand);
-
 }
 
 
@@ -682,15 +690,8 @@ void qtsWork::collectLog()
   c.set("FIMEXFILTER",pets::FimexStream::getParameterFilterAsString());
 
 
-
-
   sidebar->writeBookmarks();
-
-
-
-
 }
-
 
 void qtsWork::restoreModelFromLog()
 {
@@ -701,31 +702,23 @@ void qtsWork::restoreModelFromLog()
 }
 
 
-
-miMessage qtsWork::target()
+miQMessage qtsWork::target()
 {
-  std::string t,po,co;
-
-  if(myTarget.data.empty())
-    myTarget.data.push_back(std::string());
-
+  std::string co;
   if( selectionType==SELECT_BY_STATION ) {
-    po=request.posname();
+    const std::string po = request.posname();
     changeStation(po);
     co=myList[po];
   } else if( selectionType== SELECT_BY_FIMEX ) {
     co = sidebar->fimexCoordinateString();
-    cerr << "select by fimex : " << co  << endl;
+    // cerr << "select by fimex : " << co  << endl;
   } else
     co = sidebar->coordinateString();
 
-  t =  ".:" + co + ":" + IMG_FIN_TSERIES;
-
-  if(t != myTarget.data[0] )
-    myTarget.data[0] = t;
-
-  return myTarget;
-
+  miQMessage m(qmstrings::positions);
+  m.addDataDesc(TARGETS_TSERIES+";name").addDataDesc("lat").addDataDesc("lon").addDataDesc("image");
+  m.addDataValues(QStringList() << "." << split_colon(co) << IMG_FIN_TSERIES);
+  return m;
 }
 
 void qtsWork::updateStreams()
@@ -748,17 +741,12 @@ void qtsWork::updateStreams()
 
     if (idx.size())
       data.makeStationList();
-
   }
-
 
   if(data.updateFimexStreams(request.getFimexModel())) {
     vector<std::string> times = data.getFimexTimes(request.getFimexModel());
     sidebar->fillList(times,StationTab::CMFIMEXRUN);
   }
-
-
-
 }
 
 void qtsWork::filterToggled(bool f)
@@ -774,14 +762,12 @@ void qtsWork::latlonInDecimalToggled(bool f)
 }
 
 
-
 set<std::string> qtsWork::createFilter(bool orig)
 {
   tsSetup s;
   set<std::string> fl;
 
   std::string fname =  s.files.baseFilter;
-
 
   if(!orig) {
     fname = s.files.filter;
@@ -800,8 +786,6 @@ set<std::string> qtsWork::createFilter(bool orig)
     cerr << "NO filter " << endl;
     return fl;
   }
-
-
 
 
   std::string token;
@@ -860,10 +844,10 @@ void qtsWork::makeWdbModels()
 }
 
 
-
 void qtsWork::changeWdbModel(const QString& newmodel)
 {
-  if(!has_wdb_stream) return;
+  if (!has_wdb_stream)
+    return;
 
   set<miTime> wdbtimes = data.getWdbReferenceTimes(newmodel.toStdString());
   QStringList newruns;
@@ -882,7 +866,8 @@ void qtsWork::changeWdbModel(const QString& newmodel)
 
 void qtsWork::changeWdbRun(const QString& nrun)
 {
-  if(!has_wdb_stream) return;
+  if(!has_wdb_stream)
+    return;
 
   miTime newrun= miTime(nrun.toStdString());
 
@@ -893,7 +878,8 @@ void qtsWork::changeWdbRun(const QString& nrun)
 
 void qtsWork::changeWdbStyle(const QString& nsty)
 {
-  if(!has_wdb_stream) return;
+  if(!has_wdb_stream)
+    return;
 
   if(request.setWdbStyle(nsty.toStdString()))
     refresh(true);
@@ -921,8 +907,8 @@ void qtsWork::changeType(const tsRequest::Streamtype s)
 
 void qtsWork::changeCoordinates(float lon, float lat,QString name)
 {
-
-  if(!has_wdb_stream) return;
+  if (!has_wdb_stream)
+    return;
 
   request.setWdbStationName(name.toStdString());
   if(request.setWdbPos(lon,lat)) {
@@ -931,7 +917,6 @@ void qtsWork::changeCoordinates(float lon, float lat,QString name)
     refresh(true);
   }
   emit coordinatesChanged();
-
 }
 
 void qtsWork::refreshFinished()
@@ -940,11 +925,12 @@ void qtsWork::refreshFinished()
     bool enableCacheButton =  (request.getWdbReadTime() > maxWDBreadTime );
     sidebar->enableCacheButton(enableCacheButton,false,request.getWdbReadTime());
   }
-
 }
+
 void qtsWork::requestWdbCacheQuery()
 {
-  if(!has_wdb_stream) return;
+  if(!has_wdb_stream)
+    return;
 
   vector<string> parameters=data.getWdbParameterNames();
   string  model  = request.getWdbModel();
@@ -984,12 +970,12 @@ void qtsWork::makeFimexModels(const QString& activeStyle)
 
   int choice =  session.getModels(st, fimexModelMap, modname,SessionManager::ADD_TO_FIMEX_TAB  );
 
-  if(choice < 0 )
-    if(modname.size() > 1 )
-      modname.erase(modname.begin()+1,modname.end());
+  if (choice < 0) {
+    if(modname.size() > 1)
+      modname.erase(modname.begin()+1, modname.end());
+  }
 
-    sidebar->fillList(modname,StationTab::CMFIMEXMODEL);
-
+  sidebar->fillList(modname,StationTab::CMFIMEXMODEL);
 }
 
 
@@ -997,18 +983,14 @@ void qtsWork::makeFimexModels(const QString& activeStyle)
 void qtsWork::changeFimexModel(const QString& newmodel)
 {
   request.setFimexModel(newmodel.toStdString());
-
-    vector<std::string> times = data.getFimexTimes(newmodel.toStdString());
-
-    sidebar->fillList(times,StationTab::CMFIMEXRUN);
-
-
+  vector<std::string> times = data.getFimexTimes(newmodel.toStdString());
+  sidebar->fillList(times,StationTab::CMFIMEXRUN);
 }
 
 void qtsWork::changeFimexRun(const QString& nrun)
 {
   if(request.setFimexRun(nrun.toStdString())) {
-      refresh(true);
+    refresh(true);
   }
 }
 
@@ -1025,34 +1007,27 @@ void qtsWork::changeFimexStyle(const QString& nsty)
     refresh(true);
 }
 
-
 void qtsWork::changeFimexCoordinates(float lon, float lat,QString name)
 {
-
   if(request.setFimexLocation(lat,lon,name.toStdString())) {
     miCoordinates cor(lon,lat);
     checkObsPosition(cor);
     refresh(true);
   }
   emit fimexPositionChanged(name);
-
 }
+
 void qtsWork::newFimexPoslist()
 {
-
   vector<string> newfimexposlist = sidebar->allFimexPositions();
 
   pets::FimexStream::setCommonPoslistFromStringlist(newfimexposlist);
-
-
-
 }
 
 void qtsWork::dataread_started()
 {
   cerr << "DATAREAD STARTED" << endl;
   reading_data = true;
-
 }
 
 void qtsWork::dataread_ended()
@@ -1061,12 +1036,8 @@ void qtsWork::dataread_ended()
   sidebar->endProgress();
 }
 
-
-
-
 void qtsWork::updateProgress()
 {
-
   if(reading_data) {
     int newprogress = pets::FimexStream::getProgress();
     if (newprogress > 0 && newprogress < 100) {
@@ -1075,9 +1046,5 @@ void qtsWork::updateProgress()
       sidebar->setProgress(newprogress,progressText);
     }
   }
-
 }
-
-
-
 

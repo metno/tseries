@@ -105,7 +105,7 @@ public:
   void setActiveCacheRequest(bool b) { activeCacheRequest=b;}
   bool getActiveCacheRequest() const { return activeCacheRequest;}
   void writeBookmarks();
-  std::vector<std::string> getPoslist();
+  QList<QStringList> getPoslist();
   bool findPosition(QString newpos, QModelIndex& idx);
   void selectFirstPosition(); // find the first position i a filter
 

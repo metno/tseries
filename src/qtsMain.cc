@@ -322,8 +322,8 @@ void qtsMain::makeConnectButtons()
   connect(targetB, SIGNAL(pressed()), this, SLOT(sendTarget()));
   connect(targetB, SIGNAL(released()), this, SLOT(clearTarget()));
 
-  connect(pluginB, SIGNAL(receivedMessage(const miMessage&)),
-      SLOT(processLetter(const miMessage&)));
+  connect(pluginB, SIGNAL(receivedMessage(int, const miQMessage&)),
+      SLOT(processLetter(int, const miQMessage&)));
   connect(pluginB->client(), SIGNAL(addressListChanged()), SLOT(processConnect()));
   connect(pluginB, SIGNAL(disconnected()), SLOT(cleanConnection()));
 
@@ -563,10 +563,10 @@ void qtsMain::togglePositions(bool isOn)
     refreshDianaStations();
 
   miQMessage m(sposition ? qmstrings::showpositions : qmstrings::hidepositions);
-  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX){
-    m.addDataDesc(QString::fromStdString(DATASET_FIMEX));
+  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
+    m.addDataDesc(DATASET_FIMEX);
   } else {
-    m.addDataDesc(QString::fromStdString(DATASET_TSERIES + work->lastList()));
+    m.addDataDesc(DATASET_TSERIES + work->lastList());
   }
   sendLetter(m);
 }
@@ -622,7 +622,7 @@ void qtsMain::setDianaTimemark(miTime mark)
 }
 
 // send one image to diana (with name)
-void qtsMain::sendImage(const std::string name, const QImage& image)
+void qtsMain::sendImage(const QString& name, const QImage& image)
 {
   if (!dianaconnected)
     return;
@@ -637,7 +637,7 @@ void qtsMain::sendImage(const std::string name, const QImage& image)
   m.addDataDesc("name").addDataDesc("image");
 
   QStringList values;
-  values << QString::fromStdString(name);
+  values << name;
 
   QString img;
   int n = a->count();
@@ -655,7 +655,7 @@ void qtsMain::refreshDianaStations()
   if (!dianaconnected || !sposition)
     return;
 
-  std::string prevModel = currentModel;
+  QString prevModel = currentModel;
 
   if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
     sendNewPoslist();
@@ -665,10 +665,11 @@ void qtsMain::refreshDianaStations()
     return;
   }
 
-  if (currentModel == work->lastList())
+  const QString ll = work->lastList();
+  if (currentModel == ll)
     return;
 
-  currentModel = work->lastList();
+  currentModel = ll;
 
   if (!sendModels.count(currentModel))
     sendNewPoslist();
@@ -678,7 +679,7 @@ void qtsMain::refreshDianaStations()
   disablePoslist(prevModel);
 }
 
-void qtsMain::disablePoslist(std::string prev)
+void qtsMain::disablePoslist(const QString& prev)
 {
   if (prev == NOMODEL_TSERIES)
     return;
@@ -686,7 +687,7 @@ void qtsMain::disablePoslist(std::string prev)
     return;
 
   miQMessage m(qmstrings::hidepositions);
-  m.addDataDesc(QString::fromStdString(DATASET_TSERIES + prev));
+  m.addDataDesc(DATASET_TSERIES + prev);
   sendLetter(m);
 }
 
@@ -695,10 +696,10 @@ void qtsMain::enableCurrentPoslist()
   if (!dianaconnected)
     return;
   miQMessage m(qmstrings::showpositions);
-  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX){
-    m.addDataDesc(QString::fromStdString(DATASET_FIMEX));
+  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
+    m.addDataDesc(DATASET_FIMEX);
   } else {
-    m.addDataDesc(QString::fromStdString(DATASET_TSERIES + currentModel));
+    m.addDataDesc(DATASET_TSERIES + currentModel);
   }
   sendLetter(m);
 }
@@ -708,10 +709,9 @@ void qtsMain::sendNewPoslist()
   sendModels.insert(currentModel);
   if (!dianaconnected)
     return;
-  miMessage m = work->getStationList();
-
-  m.common += (snormal ? "true" : "false");
-  m.common += (sselect ? ":true" : ":false");
+  miQMessage m = work->getStationList();
+  m.addCommon("normal", (snormal ? "true" : "false"))
+      .addCommon("selected", sselect ? "true" : "false");
   sendLetter(m);
 }
 
@@ -720,11 +720,11 @@ void qtsMain::sendTarget()
   if (!dianaconnected)
     return;
 
-  miMessage m = work->target();
+  miQMessage m = work->target();
   sendLetter(m);
 
   miQMessage m2(qmstrings::showpositions);
-  m2.addDataDesc(QString::fromStdString(TARGETS_TSERIES));
+  m2.addDataDesc(TARGETS_TSERIES);
   sendLetter(m2);
 }
 
@@ -735,7 +735,7 @@ void qtsMain::clearFimexList()
     return;
 
   miQMessage m(qmstrings::hidepositions);
-  m.addDataDesc(QString::fromStdString(DATASET_FIMEX));
+  m.addDataDesc(DATASET_FIMEX);
   sendLetter(m);
 }
 
@@ -746,7 +746,7 @@ void qtsMain::clearTarget()
     return;
 
   miQMessage m(qmstrings::hidepositions);
-  m.addDataDesc(QString::fromStdString(TARGETS_TSERIES));
+  m.addDataDesc(TARGETS_TSERIES);
   sendLetter(m);
 }
 
@@ -802,14 +802,6 @@ void qtsMain::setRemoteParameters()
   }
 }
 
-void qtsMain::sendLetter(miMessage& letter)
-{
-  miQMessage qmsg;
-  int from, to;
-  convert(letter, from, to, qmsg);
-  pluginB->sendMessage(qmsg);
-}
-
 void qtsMain::sendLetter(const miQMessage& qmsg)
 {
   pluginB->sendMessage(qmsg); // send to all
@@ -834,41 +826,35 @@ void qtsMain::sendNamePolicy()
 
 // processes incoming miMessages
 
-void qtsMain::processLetter(const miMessage& letter)
+void qtsMain::processLetter(int from, const miQMessage& letter)
 {
-  #ifdef DEBUG
-  cerr <<"Command: "<<letter.command<<"  ";
-  cerr <<endl;
-  cerr <<" Description: "<<letter.description<<"  ";
-  cerr <<endl;
-  cerr <<" commonDesc: "<<letter.commondesc<<"  ";
-  cerr <<endl;
-  cerr <<" Common: "<<letter.common<<"  ";
-  cerr <<endl;
-  for (int i=0;i<letter.data.size();i++)
-    if (letter.data[i].length()<80)
-      cerr <<" data["<<i<<"]:"<<letter.data[i]<<endl;;
-  cerr <<" From: "<<letter.from<<endl;
-  cerr <<"To: "<<letter.to<<endl;
+#ifdef DEBUG
+  cerr << "Message: " << letter << endl;
+#endif
 
-  #endif
-  if (letter.command == qmstrings::removeclient) {
+  if (letter.command() == qmstrings::removeclient) {
     tsSetup s;
-    if (letter.common.find(s.server.client.c_str()) != string::npos)
+    if (letter.getCommonValue("type") == QString::fromStdString(s.server.client))
       cleanConnection();
-  }
-
-  if (letter.command == qmstrings::positions && letter.common == "diana")
-    if (letter.data.size())
-      work->changePositions(letter.data[0]);
-
-  if (letter.command == qmstrings::selectposition) {
-    if (letter.data.size())
-      work->changeStation(letter.data[0]);
-  } else if (letter.command == qmstrings::timechanged) {
+  } else if (letter.command() == qmstrings::positions) {
+    if (letter.getCommonValue("type") == "diana") {
+      if (letter.countDataRows()) {
+        const int i_lon = letter.findDataDesc("lon"), i_lat = letter.findDataDesc("lat");
+        const float lon = letter.getDataValue(0, i_lon).toFloat();
+        const float lat = letter.getDataValue(0, i_lat).toFloat();
+        work->changePositions(lon, lat);
+      }
+    }
+  } else if (letter.command() == qmstrings::selectposition) {
+    if (letter.countDataRows()) {
+      const int i_station = letter.findDataDesc("station");
+      if (i_station >= 0)
+        work->changeStation(letter.getDataValue(0, i_station));
+    }
+  } else if (letter.command() == qmstrings::timechanged) {
     // Added to avoid invalid updates from diana when diana
     // is in automatic update mode
-    miTime timeFromDiana = miTime(letter.common);
+    const miTime timeFromDiana(letter.getCommonValue("time").toStdString());
     if (timeFromDiana != currentTime) {
       currentTime = timeFromDiana;
       setDianaTimemark(currentTime);
@@ -973,18 +959,17 @@ void qtsMain::manageFilter()
   if (fm->exec()) {
     // clean out the old filters from diana
     if (dianaconnected) {
-      set<std::string>::iterator itr = sendModels.begin();
-      for (; itr != sendModels.end(); itr++)
-        if (miutil::contains(*itr, TS_MINE)) {
-          sendModels.erase(*itr);
-          itr--;
-        }
-      if (miutil::contains(currentModel, TS_MINE))
+      set<QString>::iterator itr = sendModels.begin();
+      while (itr != sendModels.end()) {
+        const set<QString>::iterator ite = itr++; // set::erase invalidates iterator
+        if (ite->contains(TS_MINE))
+          sendModels.erase(*ite);
+      }
+      if (currentModel.contains(TS_MINE))
         currentModel = NOMODEL_TSERIES;
     }
     // new filter
     work->newFilter(fm->result());
-
   }
 }
 
@@ -1078,22 +1063,20 @@ void qtsMain::fimexPositionChanged(const QString& qname)
   if (!dianaconnected)
     return;
 
-  std::string name = qname.toStdString();
-
   miQMessage m(qmstrings::changeimageandtext);
-  m.addCommon("", QString::fromStdString(DATASET_FIMEX));
+  m.addCommon("", DATASET_FIMEX);
   m.addDataDesc("name").addDataDesc("image");
 
   QStringList values;
-  values << QString::fromStdString(name) << QString::fromStdString(IMG_ACTIVE_TSERIES);
+  values << qname << IMG_ACTIVE_TSERIES;
   m.addDataValues(values);
 
-  if (!lastFimexPosition.empty()) {
+  if (!lastFimexPosition.isEmpty()) {
     QStringList last;
-    last << QString::fromStdString(lastFimexPosition) << QString::fromStdString(IMG_STD_TSERIES);
+    last << lastFimexPosition << IMG_STD_TSERIES;
     m.addDataValues(last);
   }
-  lastFimexPosition = name;
+  lastFimexPosition = qname;
 
   sendLetter(m);
 }

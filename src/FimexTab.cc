@@ -444,10 +444,10 @@ void FimexTab::setExpandedDirs(std::string e)
   }
 }
 
-vector<string> FimexTab::getPoslist()
+QList<QStringList> FimexTab::getPoslist()
 {
   set<QString> positionfilter;
-  vector<string> activePositions;
+  QList<QStringList> activePositions;
   unsigned int num_rows = model->rowCount();
 
   const QRegExp & filterreg = proxyModel->filterRegExp();
@@ -464,18 +464,13 @@ vector<string> FimexTab::getPoslist()
           QStandardItem * child = item->child(item_row,0);
 
           if(child) {
-
-            QVariant var =child->data();
-            QString  coor=var.toString();
             QString  name=child->text();
-
-
             if (filterreg.indexIn(name) == 0 ||noFilterApplied ) {
-              if( !positionfilter.count(name)) {
+              if (!positionfilter.count(name)) {
                 positionfilter.insert(name); // avoid doublets
-                ostringstream ost;
-                ost << name.toStdString() << ":" << coor.toStdString();
-                activePositions.push_back(ost.str());
+                QVariant var = child->data();
+                QStringList coor = var.toString().split(":");
+                activePositions << (QStringList() << name << coor);
               }
             }
           }
@@ -486,8 +481,6 @@ vector<string> FimexTab::getPoslist()
   }
   return activePositions;
 }
-
-
 
 void FimexTab::recordToggled(bool rec)
 {
