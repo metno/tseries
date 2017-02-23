@@ -11,8 +11,9 @@ FIND_PACKAGE(Boost COMPONENTS date_time REQUIRED)
 METNO_FIND_QT4(Gui Core Network Xml)
 
 SET(PKGS
-  pets2${METNO_QT_SUFFIX}>=6.0.3
+  pets2${METNO_QT_SUFFIX}>=6.0.5
   puMet>=5.1.0
+  tsData>=5.5.0
   puDatatypes
   coserver${METNO_QT_SUFFIX}>=2.1.0
 )

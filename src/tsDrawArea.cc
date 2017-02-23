@@ -210,7 +210,7 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
 
     set<ParId>::iterator itr = allObservations.begin();
 
-    bool result = theData->fetchDataFromKlimaDB(data->getKlimaStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
+    bool result = pets::fetchDataFromKlimaDB(theData, data->getKlimaStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
     if (!result) {
         cerr << "error in fetchDataFromKlimaDB" << endl;
     }
@@ -255,7 +255,7 @@ bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
 
     set<ParId>::iterator itr = allObservations.begin();
 
-    bool result = theData->fetchDataFromMoraDB(data->getMoraStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
+    bool result = pets::fetchDataFromMoraDB(theData, data->getMoraStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
     if (!result) {
         cerr << "error in fetchDataFromMoraDB" << endl;
     }
@@ -417,7 +417,7 @@ bool tsDrawArea::prepareWdbData()
   for (int i = 0; i < options.numModels(); i++) {
     inlist = options.paramVector(i);
 
-    theData->fetchDataFromWDB(data->getWdbStream(), request->getWdbLat(),
+    pets::fetchDataFromWDB(theData, data->getWdbStream(), request->getWdbLat(),
         request->getWdbLon(), request->getWdbModel(), request->getWdbRun(),
         inlist, outlist, readtime, request->getWdbStationName());
   }
@@ -528,7 +528,7 @@ bool tsDrawArea::prepareFimexData()
         pets::FimexStream* currentStream = data->getFimexStream(inlist[0].model,fimexrun);
 
         if(readFimexData(currentStream, lat, lon, fimexname, inlist, outlist, true))
-          theData->fetchDataFromFimex(currentStream, lat, lon, fimexname, inlist, outlist);
+          pets::fetchDataFromFimex(theData, currentStream, lat, lon, fimexname, inlist, outlist);
 
       } catch (exception& e) {
         cerr <<  e.what() << endl;
