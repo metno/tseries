@@ -136,7 +136,7 @@ public:
   qtsSidebar* sideBar() const {return sidebar;}
 
   void changePositions(float lon, float lat);
-  SelectionType getSelectionType() const {return selectionType;};
+  SelectionType getSelectionType() const {return selectionType;}
   void toggleLockHoursToModel(bool lockHoursToModel) { if(sidebar) sidebar->toggleLockHoursToModel(lockHoursToModel);}
   void setShowGridLines( bool s ){ if(show) show->setShowGridLines(s); }
 
