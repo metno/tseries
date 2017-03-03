@@ -346,17 +346,18 @@ void qtsMain::quit()
 
 void qtsMain::raster()
 {
-  std::string format = "PNG";
   std::string fname = "./" + work->file("png");
 
   QString fpath = fname.c_str();
   QString fcaption = "save file dialog";
+  const QString fpattern = "Pictures (*.png *.xpm *.bmp *.pdf"
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+                           " *.ps *.eps"
+#endif
 #ifdef HAVE_QTSVG
-  const QString fpattern = "Pictures (*.png *.xpm *.bmp *.pdf *.ps *.eps *.svg);;All (*.*)";
-#else // !HAVE_QTSVG
-  const QString fpattern = "Pictures (*.png *.xpm *.bmp *.pdf *.ps *.eps);;All (*.*)";
-#endif // !HAVE_QTSVG
-
+                           " *.svg"
+#endif
+                           ");;All (*.*)";
   QString s = QFileDialog::getSaveFileName(this, fcaption, fpath, fpattern);
   if (s.isNull())
     return;
@@ -367,12 +368,20 @@ void qtsMain::raster()
   qtsShow* w = work->Show();
   QImage* image = 0;
   QPaintDevice* device = 0;
-  if (s.endsWith(".pdf") || s.endsWith(".ps") || s.endsWith(".eps")) {
+  const bool isPDF = s.endsWith(".pdf");
+  const bool isPS = s.endsWith(".ps") || s.endsWith(".eps");
+  if (isPDF || isPS) {
     QPrinter* printer = new QPrinter(QPrinter::ScreenResolution);
     if (s.endsWith(".pdf"))
       printer->setOutputFormat(QPrinter::PdfFormat);
-    else
+    else {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
       printer->setOutputFormat(QPrinter::PostScriptFormat);
+#else // Qt4
+      QMessageBox::warning(this, tr("No PostScript support"),
+                           tr("Sorry, PostScript output is not supported in this Qt version."));
+#endif
+    }
     printer->setOutputFileName(s);
     printer->setFullPage(true);
     printer->setPaperSize(QSizeF(w->width(), w->height()), QPrinter::DevicePixel);
