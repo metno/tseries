@@ -3,19 +3,20 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 INCLUDE(MetnoUtils)
+INCLUDE(MetnoQtUtils)
 INCLUDE(MetnoVersions)
 METNO_PVERSION(7.0.6)
 
 FIND_PACKAGE(Boost COMPONENTS date_time REQUIRED)
 
-METNO_FIND_QT4(Gui Core Network Xml)
+METNO_FIND_QT(Gui Core Network Xml PrintSupport)
 
 SET(PKGS
-  pets2${METNO_QT_SUFFIX}>=6.0.5
-  puMet>=5.1.0
-  tsData>=5.5.0
-  puDatatypes
-  coserver${METNO_QT_SUFFIX}>=2.1.0
+  metlibs-pets2${METNO_QT_SUFFIX}>=7.0.0
+  metlibs-pumet>=6.0.0
+  tsData>=6.0.0
+  metlibs-pudatatypes>=6.0.0
+  metlibs-coserver${METNO_QT_SUFFIX}>=3.0.0
 )
 
 SET(ENABLE_FIMEX ON CACHE BOOL "use fimex to read NetCDF and other files")

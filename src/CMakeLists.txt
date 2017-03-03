@@ -73,7 +73,7 @@ SET(tseries_IMG
   search_folder.xpm
 )
 
-QT4_ADD_TRANSLATION(tseries_QM
+METNO_QT_ADD_TRANSLATION(tseries_QM
   ../lang/tseries_de.ts
   ../lang/tseries_fr.ts
   ../lang/tseries_nn.ts
