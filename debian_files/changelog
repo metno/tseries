@@ -1,3 +1,9 @@
+tseries (7.1.0~a1-1) unstable; urgency=low
+
+  * build with Qt5
+
+ -- Alexander Bürger <alexander.buerger@met.no>  Fri, 03 Mar 2017 08:00:08 +0100
+
 tseries (7.0.6-1) unstable; urgency=low
 
   * optional disabling mora streams / fixing timeslider
