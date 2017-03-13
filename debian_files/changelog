@@ -1,3 +1,9 @@
+tseries (7.0.6-2) unstable; urgency=low
+
+  * rebuild with metlibs-coserver 2.3.0
+
+ -- Alexander Bürger <alexanderb@met.no>  Mon, 12 Mar 2017 08:08:08 +0100
+
 tseries (7.0.6-1) unstable; urgency=low
 
   * optional disabling mora streams / fixing timeslider
