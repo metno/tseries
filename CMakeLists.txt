@@ -5,16 +5,16 @@ SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 INCLUDE(MetnoUtils)
 INCLUDE(MetnoQtUtils)
 INCLUDE(MetnoVersions)
-METNO_PVERSION(7.1.0~a1)
+METNO_PVERSION(7.1.0~a2)
 
 FIND_PACKAGE(Boost COMPONENTS date_time REQUIRED)
 
 METNO_FIND_QT(Gui Core Network Xml PrintSupport)
 
 SET(PKGS
-  metlibs-pets2${METNO_QT_SUFFIX}>=7.0.0
-  metlibs-pumet>=6.0.0
-  tsData>=6.0.0
+  metlibs-pets2${METNO_QT_SUFFIX}>=7.0.1
+  metlibs-pumet>=6.0.1
+  tsData>=6.0.1
   metlibs-pudatatypes>=6.0.0
   metlibs-coserver${METNO_QT_SUFFIX}>=3.0.0
 )
