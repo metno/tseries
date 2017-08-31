@@ -73,7 +73,9 @@ SET(tseries_IMG
   search_folder.xpm
 )
 
-METNO_QT_ADD_TRANSLATION(tseries_QM
+METNO_QT_CREATE_TRANSLATION(tseries_QM
+  ${lib_SOURCES}
+  ${tseries_SOURCES}
   ../lang/tseries_de.ts
   ../lang/tseries_fr.ts
   ../lang/tseries_nn.ts
