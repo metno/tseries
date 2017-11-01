@@ -119,8 +119,7 @@ int main(int argc, char **argv)
   QTranslator  myapp( 0 );
   QTranslator  qt( 0 );
 
-  miTime defTime;
-  defTime.setDefaultLanguage(lang.c_str());
+  miTime::setDefaultLanguage(lang);
 
   if(!setup.gui.style.empty())
     a.setStyle(setup.gui.style.c_str());

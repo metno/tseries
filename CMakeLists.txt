@@ -12,9 +12,10 @@ FIND_PACKAGE(Boost COMPONENTS date_time REQUIRED)
 METNO_FIND_QT(Gui Core Network Xml PrintSupport)
 
 SET(PKGS
-  metlibs-pets2${METNO_QT_SUFFIX}>=7.0.1
-  metlibs-pumet>=6.0.1
-  tsData>=6.0.1
+  metlibs-pets2${METNO_QT_SUFFIX}>=8.0.0
+  metlibs-putools>=8.0.0
+  metlibs-pumet>=7.0.0
+  tsData>=7.0.0
   metlibs-pudatatypes>=6.0.0
   metlibs-coserver${METNO_QT_SUFFIX}>=3.0.0
 )
@@ -22,7 +23,7 @@ SET(PKGS
 SET(ENABLE_FIMEX ON CACHE BOOL "use fimex to read NetCDF and other files")
 IF(ENABLE_FIMEX)
 LIST(APPEND PKGS
-  fimex>=0.61
+  fimex>=0.65
 )
 ENDIF() # ENABLE_FIMEX
 PKG_CHECK_MODULES(PC REQUIRED ${PKGS})
