@@ -73,14 +73,20 @@ SET(tseries_IMG
   search_folder.xpm
 )
 
-METNO_QT_CREATE_TRANSLATION(tseries_QM
+ADD_CUSTOM_TARGET(lupdate)
+SET(TS_DIR "${CMAKE_SOURCE_DIR}/lang")
+METNO_QT5_CREATE_TRANSLATION(tseries_QM
+UPDATE_SOURCES
   ${lib_SOURCES}
   ${tseries_SOURCES}
-  ../lang/tseries_de.ts
-  ../lang/tseries_fr.ts
-  ../lang/tseries_nn.ts
-  ../lang/tseries_no.ts
-  ../lang/tseries_se.ts
+TSFILES
+  ${TS_DIR}/tseries_de.ts
+  ${TS_DIR}/tseries_fr.ts
+  ${TS_DIR}/tseries_nn.ts
+  ${TS_DIR}/tseries_no.ts
+  ${TS_DIR}/tseries_se.ts
+UPDATE_TARGET
+  lupdate
 )
 
 ADD_EXECUTABLE(tseries
