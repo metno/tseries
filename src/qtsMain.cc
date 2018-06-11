@@ -856,9 +856,8 @@ void qtsMain::processLetter(int from, const miQMessage& letter)
     }
   } else if (cmd == qmstrings::selectposition) {
     if (letter.countDataRows()) {
-      const int i_station = letter.findDataDesc("station");
-      if (i_station >= 0)
-        work->changeStation(letter.getDataValue(0, i_station));
+      if (letter.countDataColumns())
+        work->changeStation(letter.getDataValue(0, 0));
     }
   } else if (cmd == qmstrings::timechanged) {
     // Added to avoid invalid updates from diana when diana
