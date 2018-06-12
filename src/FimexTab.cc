@@ -349,7 +349,7 @@ bool FimexTab::findPosition(QString newpos, QModelIndex& found_idx)
 
             QString  name=child->text();
 
-            if(name == newpos) {
+            if (QString::compare(name, newpos, Qt::CaseInsensitive) == 0) {
               found_idx=model->indexFromItem(child);
               return true;
             }

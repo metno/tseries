@@ -452,6 +452,7 @@ void qtsWork::changeModel(const std::string& st)
 
 void qtsWork::changeStation(const std::string& st)
 {
+  const QString qst = QString::fromStdString(st);
   if (selectionType==SELECT_BY_STATION) {
 
     miPosition p=data.getPositionInfo(st);
@@ -459,17 +460,16 @@ void qtsWork::changeStation(const std::string& st)
     checkObsPosition(cor);
 
     if(!request.setPos(st)) {
-      std::string ST = miutil::to_upper_latin1(st);
-
+      std::string ST = qst.toUpper().toStdString();
       if(!request.setPos(ST))
         return;
     }
     refresh(true);
     // Set current station
-    sidebar->searchStation(QString::fromLatin1(st.c_str()));
+    sidebar->searchStation(qst);
 
   } else if (selectionType==SELECT_BY_FIMEX) {
-    sidebar->changeFimexPosition(QString::fromLatin1(st.c_str()));
+    sidebar->changeFimexPosition(qst);
   }
 }
 
