@@ -1,3 +1,9 @@
+tseries (7.1.1-1) unstable; urgency=low
+
+  * qed connection UTF-8
+
+ -- Juergen Schulze <juergen.schulze@met.no>  Mon, 18 Jun 2018 09:32:09 +0200
+
 tseries (7.1.0~a2-1) unstable; urgency=low
 
   * build with new putools
