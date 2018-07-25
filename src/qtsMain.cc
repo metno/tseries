@@ -1,7 +1,7 @@
 /*
  Tseries - A Free Meteorological Timeseries Viewer
 
- Copyright (C) 2006 met.no
+ Copyright (C) 2006-2018 met.no
 
  Contact information:
  Norwegian Meteorological Institute
