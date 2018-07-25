@@ -429,7 +429,7 @@ void qtsMain::print()
   if (!printer)
     printer = new QPrinter();
 
-  QString fname = QString::fromStdString(work->file("ps"));
+  QString fname = QString::fromStdString(work->file("pdf"));
   QString ofn = printer->outputFileName();
 
   if (ofn.isNull()) {
@@ -440,7 +440,6 @@ void qtsMain::print()
     printer->setOutputFileName(p.path() + "/" + fname);
   }
 
-  printer->setOutputFormat(QPrinter::NativeFormat);
   printer->setOrientation(QPrinter::Landscape);
 
   QPrintDialog *dialog = new QPrintDialog(printer, this);
