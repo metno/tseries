@@ -1,3 +1,9 @@
+tseries (7.1.2-2) unstable; urgency=low
+
+  * Build-Depends on qttools5-dev for bionic
+
+ -- Alexander Bürger <alexander.buerger@met.no>  Fri, 02 Nov 2018 08:00:08 +0100
+
 tseries (7.1.2-1) unstable; urgency=low
 
   * try to fix printing
