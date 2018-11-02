@@ -1,3 +1,9 @@
+tseries (7.1.2-3) unstable; urgency=low
+
+  * fix typo in Build-Depends
+
+ -- Alexander Bürger <alexander.buerger@met.no>  Fri, 02 Nov 2018 08:00:08 +0100
+
 tseries (7.1.2-2) unstable; urgency=low
 
   * Build-Depends on qttools5-dev for bionic
