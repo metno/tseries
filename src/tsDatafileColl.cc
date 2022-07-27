@@ -30,9 +30,6 @@
 #include "tsSetup.h"
 
 #include <tsData/ptAsciiStream.h>
-#ifdef GRIBSTREAM
-#include <tsData/ptGribStream.h>
-#endif
 
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/posix_time/posix_time_io.hpp>
@@ -216,12 +213,6 @@ bool DatafileColl::openStream(const int idx)
   if (datastreams[idx].sType == "ASCII") {
     datastreams[idx].dataStream = new AsciiStream(datastreams[idx].streamname);
   }
-#ifdef GRIBSTREAM
-  else if (datastreams[idx].sType == "GRIB") {
-    datastreams[idx].dataStream =
-        new GribStream(datastreams[idx].streamname);
-  }
-#endif
   else if (datastreams[idx].sType == "MORA") {
     openMoraStream();
     datastreams[idx].dataStream = moraStream;
