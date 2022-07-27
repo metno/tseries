@@ -42,26 +42,25 @@ using namespace miutil;
 
 static const pets2::ptStyle emptysty;
 
-int SessionManager::getStyleTypes(vector<std::string>& stylename,DiagramTab tab)
+int SessionManager::getStyleTypes(vector<std::string>& stylename)
 {
   for (const auto& s : styles) {
-    if (s.diagramtab == tab)
-      stylename.push_back(s.stylename);
+    stylename.push_back(s.stylename);
   }
   return styles.size();
 }
 
-const pets2::ptStyle& SessionManager::getStyle(const std::string name,DiagramTab tab)
+const pets2::ptStyle& SessionManager::getStyle(const std::string name)
 {
-  return getStyle( getStyleIndex(name, tab) );
+  return getStyle( getStyleIndex(name) );
 }
 
-int SessionManager::getStyleIndex(const std::string name,DiagramTab tab)
+int SessionManager::getStyleIndex(const std::string name)
 {
-   for (unsigned int i=0; i<styles.size();i++)
-    if(styles[i].diagramtab == tab)
-      if (name==styles[i].stylename)
-        return i;
+  for (unsigned int i=0; i<styles.size();i++) {
+    if (name==styles[i].stylename)
+      return i;
+  }
   return -1;
 }
 
@@ -76,9 +75,9 @@ const pets2::ptStyle& SessionManager::getStyle(int idx)
 
 int SessionManager::getModels(const std::string& stylename,
     map<std::string,Model>& modid,
-    vector<std::string>& modname, DiagramTab tab)
+    vector<std::string>& modname)
 {
-  const int idx = getStyleIndex(stylename, tab);
+  const int idx = getStyleIndex(stylename);
   modid.clear();
 
   // return models contained in given style
@@ -250,8 +249,6 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
     // check for commands (keyword in brackets)
     if (buf[0]=='['){
       if (miutil::contains(buf, "DIAGRAM")){
-        sdata.diagramtab = ADD_TO_FIMEX_TAB;
-
         // Starting new diagram-definition
         sdata.modelchoice= false;
         sdata.modelidx.clear();

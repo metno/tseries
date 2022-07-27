@@ -159,7 +159,7 @@ QString qtsWork::lastList() const
 bool qtsWork::makeStyleList()
 {
   vector<std::string> fimexStyles;
-  session.getStyleTypes( fimexStyles, SessionManager::ADD_TO_FIMEX_TAB);
+  session.getStyleTypes(fimexStyles);
 
   const QString fstyle = sidebar->fillList(fimexStyles, CMFIMEXSTYLE);
   makeFimexModels(fstyle);
@@ -335,7 +335,7 @@ void qtsWork::makeFimexModels(const QString& activeStyle)
 
   vector<std::string>    modname;
 
-  int choice =  session.getModels(st, fimexModelMap, modname,SessionManager::ADD_TO_FIMEX_TAB  );
+  int choice =  session.getModels(st, fimexModelMap, modname);
 
   if (choice < 0) {
     if(modname.size() > 1)

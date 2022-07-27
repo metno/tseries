@@ -42,9 +42,6 @@
 // Should have a list of required models for a station
 // for each style type
 class SessionManager {
-public:
-  enum DiagramTab { ADD_TO_FIMEX_TAB };
-
 private:
   ParameterDefinition pdef;
   struct modeldata{       // name of menu and id to models
@@ -65,7 +62,6 @@ private:
     std::vector<int> modelidx;       // model indices for modelchoice
     std::vector<ParId> params;       // id without model
     std::vector<pardata> fullparams; // full id with model
-    DiagramTab diagramtab;
   };
   std::vector<styledata> styles;
 
@@ -73,13 +69,13 @@ private:
 
 public:
   // get defined stylenames, return number of style
-  int getStyleTypes(std::vector<std::string>& stylenam, SessionManager::DiagramTab tab);
+  int getStyleTypes(std::vector<std::string>& stylenam);
   // get a PETS style by name
-  const pets2::ptStyle& getStyle(const std::string, SessionManager::DiagramTab tab);
+  const pets2::ptStyle& getStyle(const std::string);
   // get a PETS style by index
   const pets2::ptStyle& getStyle(int idx);
   // get the PETS style index - WDBadd
-  int getStyleIndex(const std::string name, SessionManager::DiagramTab tab);
+  int getStyleIndex(const std::string name);
 
   // make a sessionoption with given style,model and run
   bool getShowOption(SessionOptions&, int, Model, Run);
@@ -87,8 +83,7 @@ public:
   // get a list of available models for a given styleindex
   int getModels(const std::string& s,
       std::map<std::string,Model>& modid,
-      std::vector<std::string>& modname,
-      SessionManager::DiagramTab tab);
+      std::vector<std::string>& modname);
 
   // get a list of available runs for style/model
   int getRuns(const int sidx, const int midx,

@@ -266,11 +266,11 @@ bool tsDrawArea::prepareFimexData()
   SessionOptions options;
   vector<ParId> inlist, outlist;
   // the style (for plot)
-  diaStyle = session->getStyle(fimexstyle,SessionManager::ADD_TO_FIMEX_TAB);
+  diaStyle = session->getStyle(fimexstyle);
 
   // the style index - needed to find parameters according to our model which
   // is probably unknown in tsDiagrams
-  int styleIndex = session->getStyleIndex(fimexstyle,SessionManager::ADD_TO_FIMEX_TAB);
+  int styleIndex = session->getStyleIndex(fimexstyle);
 
   //  Run=0; run is not used in the function at all!
 
