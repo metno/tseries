@@ -33,7 +33,9 @@
 #include <puTools/miStringFunctions.h>
 
 #include <fstream>
-#include <iostream>
+
+#define MILOGGER_CATEGORY "tseries.tsSession"
+#include <miLogger/miLogging.h>
 
 using namespace std;
 using namespace miutil;
@@ -223,6 +225,7 @@ bool SessionManager::checkEnvironment(std::string& t)
 
 void SessionManager::readSessions(const std::string& fname,const std::string& stylepath, bool verbose)
 {
+  METLIBS_LOG_SCOPE();
   const int f_models= 1;
   const int f_diagram= 2;
   const int f_legalmodels= 3;
@@ -241,11 +244,11 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
   int nums= 0;
   int status= 0;
 
-  cerr << "Reading diagramdefinitions from: " << fname << endl;
-  cerr << "Reading styles from: " << stylepath << endl;
-  sfile.open(fname.c_str());
-  if (sfile.bad()){
-    cerr << "SessionManager::readSessions. Can't open file: " << fname << endl;
+  METLIBS_LOG_INFO("Reading diagramdefinitions from '" << fname << "'");
+  METLIBS_LOG_INFO("Reading styles from '" << stylepath << "'");
+  ifstream sfile(fname.c_str());
+  if (!sfile) {
+    METLIBS_LOG_ERROR("Cannot open file '" << fname << "'");
     return;
   }
 
@@ -283,7 +286,7 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
           if (!styles[nums].stylefile.empty())
             styles[nums].style.readStyle(styles[nums].stylefile, verbose);
           else
-            cerr << "ptStyle::readStyle. name of stylefile undefined" << endl;
+            METLIBS_LOG_ERROR("Name of stylefile undefined");
           nums++;
         }
       } else if (miutil::contains(buf, "LEGALMODELS")){
@@ -305,16 +308,13 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
           if (pdata.params.size() && pdata.midx!=-1)
             sdata.fullparams.push_back(pdata);
           else
-            cerr << "rgSessionManager::readSessions." <<
-            " error in modelspecific list for diagram: " <<
-            sdata.stylename << endl;
+            METLIBS_LOG_ERROR("Error in modelspecific list for diagram: '" << sdata.stylename << "'");
         }
       } else if (miutil::contains(buf, "MODELS")){
         // Starting global model definition
         status= f_models;
       } else
-        cout << "rgSessionManager::readSessions: unknown command:" <<
-        buf << endl;
+        METLIBS_LOG_ERROR("Unknown command '" << buf << "'");
       continue;
     }
     // split into keyword and argument
@@ -365,9 +365,7 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
         }
       }
       if (i==n)
-        cerr << "ptStyle::readStyle. model: " <<
-        argu << " for diagram: " << sdata.stylename <<
-        " not found in global list" << endl;
+        METLIBS_LOG_ERROR("Model '" << argu << "' for diagram '" << sdata.stylename << "' not found in global list");
       continue;
     }
     // parameter

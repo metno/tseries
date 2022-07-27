@@ -34,6 +34,9 @@
 #include <pets2/ptSymbolElement.h>
 #include <pets2/ptTimemarkerElement.h>
 
+#define MILOGGER_CATEGORY "tseries.tsDrawArea"
+#include <miLogger/miLogging.h>
+
 using namespace std;
 using namespace miutil;
 using namespace pets2;
@@ -66,10 +69,11 @@ tsDrawArea::~tsDrawArea()
 
 void tsDrawArea::prepare(bool)
 {
+  METLIBS_LOG_SCOPE();
   if (prepareData()) {
     prepareDiagram();
   } else {
-    cerr << "tsDrawArea Warning: prepareData failed" << endl;
+    METLIBS_LOG_WARN("prepareData failed");
   }
 }
 
@@ -167,6 +171,7 @@ bool tsDrawArea::prepareData()
 
 bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
 {
+  METLIBS_LOG_SCOPE();
   if (setup.disabled.klima)
     return false;
 
@@ -189,7 +194,7 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
 
     bool result = pets::fetchDataFromKlimaDB(theData, data->getKlimaStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
     if (!result) {
-        cerr << "error in fetchDataFromKlimaDB" << endl;
+      METLIBS_LOG_ERROR("Error in fetchDataFromKlimaDB");
     }
 
     if (unresolvedObs.size()) {
@@ -204,6 +209,7 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
 
 bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
 {
+  METLIBS_LOG_SCOPE();
   if (setup.disabled.mora)
     return false;
 
@@ -225,7 +231,7 @@ bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
 
     bool result = pets::fetchDataFromMoraDB(theData, data->getMoraStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
     if (!result) {
-        cerr << "error in fetchDataFromMoraDB" << endl;
+        METLIBS_LOG_ERROR("Error in fetchDataFromMoraDB");
     }
 
     if (unresolvedObs.size()) {
@@ -240,8 +246,9 @@ bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
 
 void tsDrawArea::prepareDiagram()
 {
+  METLIBS_LOG_SCOPE();
   if (!theData) {
-    cerr << "tsDrawArea::prepareDiagram(): !theData  - prepareDiagram failed  " << endl;
+    METLIBS_LOG_INFO("!theData  - prepareDiagram failed");
     return;
   }
 
@@ -249,8 +256,7 @@ void tsDrawArea::prepareDiagram()
   diagram = new ptDiagram(&diaStyle, showGridLines);
 
   if (!diagram->attachData(theData)) {
-    cerr << "tsDrawArea::prepareDiagram(): !diagram->attachData(theData) - prepareDiagram failed "
-        << endl;
+    METLIBS_LOG_INFO("!diagram->attachData(theData) - prepareDiagram failed");
     return;
   }
 
@@ -262,7 +268,7 @@ void tsDrawArea::prepareDiagram()
   }
 
   if (!diagram->makeDefaultPlotElements()) {
-    cerr << "tsDrawArea::prepareDiagram(): !diagram->makeDefaultPlotElements(&bgColor) - prepareDiagram failed" << endl;
+    METLIBS_LOG_INFO("!diagram->makeDefaultPlotElements(&bgColor) - prepareDiagram failed");
     return;
   }
 
@@ -333,13 +339,14 @@ void tsDrawArea::plot(ptPainter& painter)
 
 bool tsDrawArea::prepareFimexData()
 {
+  METLIBS_LOG_SCOPE();
   std::string fimexname;
   double lat,lon;
   const std::string& fimexmodel = request->getFimexModel();
   const std::string& fimexstyle = request->getFimexStyle();
   const std::string& fimexrun   = request->getFimexRun();
   if(!request->getFimexLocation(lat,lon,fimexname)) {
-    cerr << "Empty position - dropping interpolation" << endl;
+    METLIBS_LOG_DEBUG("Empty position - dropping interpolation");
     return false;
   }
 
@@ -357,7 +364,7 @@ bool tsDrawArea::prepareFimexData()
   session->getShowOption(options, styleIndex, fimexmodel, 0);
 
   if (!options.numModels()) {
-    cerr << "empty model list in options in the retry" << endl;
+    METLIBS_LOG_DEBUG("Empty model list in options in the retry");
     return false;
   }
 
@@ -395,7 +402,7 @@ bool tsDrawArea::prepareFimexData()
       try {
         readFimexData(currentStream, lat, lon, fimexname, inlist, outlist,false);
       } catch (exception& e) {
-       cerr << e.what() << endl;
+        METLIBS_LOG_ERROR("Exception from readFimexData: " << e.what());
       }
     }
 
@@ -410,10 +417,12 @@ bool tsDrawArea::prepareFimexData()
 
       try {
         pets::FimexStream* currentStream = data->getFimexStream(inlist[0].model,fimexrun);
-        if(readFimexData(currentStream, lat, lon, fimexname, inlist, outlist, true))
-          pets::fetchDataFromFimex(theData, currentStream, lat, lon, fimexname, inlist, outlist);
+        if (readFimexData(currentStream, lat, lon, fimexname, inlist, outlist, true)) {
+          const bool fetched_ok = pets::fetchDataFromFimex(theData, currentStream, lat, lon, fimexname, inlist, outlist);
+          METLIBS_LOG_DEBUG(LOGVAL(fetched_ok));
+        }
       } catch (exception& e) {
-        cerr <<  e.what() << endl;
+        METLIBS_LOG_ERROR("Exception while reading fimex data: " << e.what());
       }
     }
 
@@ -430,6 +439,7 @@ bool tsDrawArea::prepareFimexData()
 bool tsDrawArea::readFimexData(pets::FimexStream* fimex, double lat, double lon, std::string stationname,
     std::vector<ParId>& inpars, std::vector<ParId>& outpars, bool sequential_read)
 {
+  METLIBS_LOG_SCOPE();
   inpars.erase(std::remove_if(inpars.begin(), inpars.end(), [&](const ParId& p) { return pets::FimexStream::isFiltered(p.alias); }), inpars.end());
 
   // we already got the data in cache - just take them and paint - no extra thread needed
@@ -439,7 +449,7 @@ bool tsDrawArea::readFimexData(pets::FimexStream* fimex, double lat, double lon,
         return false;
       }
     } catch(exception& e) {
-      cerr << "FIMEX::READDATA FAILED: " << e.what() << endl;
+      METLIBS_LOG_ERROR("FIMEX::READDATA FAILED: " << e.what());
       return false;
     }
   } else  {

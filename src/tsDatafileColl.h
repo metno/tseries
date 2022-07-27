@@ -161,7 +161,6 @@ private:
   float tolerance;               // 10000*degrees
   dataset customerds;            // datasets with customerinfo
   ParameterDefinition parDef;
-  bool verbose;
   bool streams_opened;
   bool fimex_streams_opened;  // at least one open fimexstream required to enable fimex
 
@@ -230,7 +229,6 @@ public:
   int findModel(const Model& mid, const Run& rid, int* idx, int max);
   std::vector<std::string> findRuns(const Model& mid);
 
-  void setVerbose(bool v){verbose= v;}
   bool has_opened_streams() {
     bool b= streams_opened;
     streams_opened = false;

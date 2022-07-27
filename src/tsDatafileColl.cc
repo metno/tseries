@@ -46,6 +46,9 @@
 #include <glob.h>
 #include <time.h>
 
+#define MILOGGER_CATEGORY "tseries.tsDatafileColl"
+#include <miLogger/miLogging.h>
+
 using namespace std;
 using namespace miutil;
 
@@ -91,7 +94,6 @@ DatafileColl::DatafileColl()
     : klimaStream(0)
     , moraStream(0)
     , tolerance(1000.0)
-    , verbose(false)
     , streams_opened(false)
     , fimex_streams_opened(false)
 {
@@ -180,8 +182,7 @@ int DatafileColl::addStream(const std::string name, const std::string desc,
 
 bool DatafileColl::openStreams(const std::string& mod)
 {
-  if (verbose)
-    cout << "- Open streams with model " << mod << endl;
+  METLIBS_LOG_SCOPE("Open streams with model " << mod);
   bool b = false;
   for (unsigned int i = 0; i < datastreams.size(); i++) {
     if (datastreams[i].streamOpen)
@@ -198,6 +199,7 @@ bool DatafileColl::openStreams(const std::string& mod)
 
 bool DatafileColl::openStream(const int idx)
 {
+  METLIBS_LOG_SCOPE();
   ErrorFlag ef = OK;
 
   if (idx < 0 || idx >= (signed int) datastreams.size())
@@ -210,8 +212,7 @@ bool DatafileColl::openStream(const int idx)
     datastreams[idx].dataStream = 0;
   }
 
-  if (verbose)
-    cout << "About to open stream:" << datastreams[idx].streamname << endl;
+  METLIBS_LOG_DEBUG("About to open stream:" << datastreams[idx].streamname);
 
   if (datastreams[idx].sType == "HDF") {
     datastreams[idx].dataStream = new HDFFile(datastreams[idx].streamname);
@@ -235,12 +236,9 @@ bool DatafileColl::openStream(const int idx)
     else
       datastreams[idx].mtime = time(NULL);
     if (datastreams[idx].dataStream)
-      datastreams[idx].streamOpen = datastreams[idx].dataStream->openStream(
-          &ef);
+      datastreams[idx].streamOpen = datastreams[idx].dataStream->openStream(&ef);
     if (!datastreams[idx].streamOpen) {
-      // error message
-      cerr << "ERROR Datafilecollection: could not open stream: "
-          << datastreams[idx].streamname << endl;
+      METLIBS_LOG_ERROR("Could not open stream: '" << datastreams[idx].streamname << "'");
       return false;
     } else {
       // get model list from file
@@ -254,13 +252,16 @@ bool DatafileColl::openStream(const int idx)
         numm++;
       }
       datastreams[idx].numModels = numm;
-#ifdef DEBUG
-      cout << "FILECOLLECTION: numModels:"<<datastreams[idx].numModels<<endl;
-      for (int k=0;k<datastreams[idx].numModels;k++)
-        cout << "Model:"<<datastreams[idx].modelList[k]<<
-        " Run:"<<datastreams[idx].runList[k]<<
-        " Id:"<<datastreams[idx].idList[k]<<endl;
-#endif
+      if (METLIBS_LOG_DEBUG_ENABLED()) {
+        std::ostringstream msg;
+        msg << "numModels:"<<datastreams[idx].numModels << endl;
+        for (int k=0;k<datastreams[idx].numModels;k++)
+          msg << "Model:"<<datastreams[idx].modelList[k]
+              << " Run:"<<datastreams[idx].runList[k]
+              << " Id:"<<datastreams[idx].idList[k]
+              << endl;
+        METLIBS_LOG_DEBUG("FILECOLLECTION: " << msg.str());
+      }
     }
   }
   streams_opened = true;
@@ -269,8 +270,7 @@ bool DatafileColl::openStream(const int idx)
 
 bool DatafileColl::openStreams()
 {
-  if (verbose)
-    cout << "- Open streams.." << endl;
+  METLIBS_LOG_SCOPE("Open streams...");
   for (unsigned int i = 0; i < datastreams.size(); i++) {
     openStream(i);
   }
@@ -349,13 +349,13 @@ bool DatafileColl::check(vector<int>& idx)
 
 void DatafileColl::makeStationList()
 {
+  METLIBS_LOG_SCOPE();
   int nums, posidx, ns = 0;
   bool exists;
   miPosition st;
   vector<ExtStation>::iterator p;
 
-  if (verbose)
-    cout << "- Reading positions from streams.." << endl;
+  METLIBS_LOG_DEBUG("Reading positions from streams...");
   stations.clear();
   pos_info.clear();
   for (unsigned int i = 0; i < datasetname.size(); i++)
@@ -673,12 +673,13 @@ void DatafileColl::initialiseFimexParameters()
 
 vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
 {
-  vector<std::string> runtimes;
-  cerr << "Indexing Model: " << model << endl;
+  METLIBS_LOG_SCOPE();
+  METLIBS_LOG_INFO("Indexing model '" << model << "'");
 
+  vector<std::string> runtimes;
   for (std::vector<FimexInfo>::iterator it = fimexStreams.begin(); it != fimexStreams.end(); ++it) {
     if (model == it->model) {
-      cerr << "Indexing file " << it->streamname << endl;
+      METLIBS_LOG_INFO("Indexing file '" << it->streamname << "'");
 
       if (it->run.empty()) {
         try {
@@ -697,7 +698,7 @@ vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
               fimex_streams_opened = true;
             } else {
               // Get from the stream...
-              cerr << "Unable to get referencetime from streamname - opening it : " << it->streamname  << endl;
+              METLIBS_LOG_INFO("Unable to get referencetime from streamname - opening file");
               boost::posix_time::ptime time = it->dataStream->getReferencetime();
               //std::string stime = boost::posix_time::to_simple_string(time);
               ostringstream stime;
@@ -708,8 +709,8 @@ vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
               it->run = stime.str();
             }
           } catch (exception & e) {
-            cerr << e.what() << endl;
-            cerr << "using streamname instead of runtime to index model" << endl;
+            METLIBS_LOG_ERROR(e.what());
+            METLIBS_LOG_INFO("using streamname instead of runtime to index model");
             string streamname =  it->streamname;
             string::size_type n = streamname.rfind("/");
             string::size_type p = streamname.rfind(".");
@@ -777,7 +778,7 @@ bool DatafileColl::createFimexStreams(FimexFileindex& findex)
 
   for( unsigned int i=0; i< streamfilenames.size();i++) {
     finfo.streamname = streamfilenames[i];
-    cerr << "Added to fimexstreams" << finfo.streamname << " as " << finfo.sType << endl;
+    METLIBS_LOG_INFO("Added to fimexstreams" << finfo.streamname << " as " << finfo.sType);
     fimexStreams.push_back(finfo);
 
     fimexStreams.back().dataStream = new pets::FimexStream(finfo.streamname, finfo.model, finfo.sType, finfo.configfile);

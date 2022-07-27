@@ -19,6 +19,7 @@ SET(PKGS
   tsData>=7.0.0
   metlibs-pudatatypes>=6.0.0
   metlibs-coserver${METNO_QT_SUFFIX}>=3.0.0
+  metlibs-milogger>=6.0.0
 )
 
 SET(ENABLE_FIMEX ON CACHE BOOL "use fimex to read NetCDF and other files")

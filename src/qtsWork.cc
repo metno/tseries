@@ -135,8 +135,6 @@ void qtsWork::Initialise()
 {
   session.readSessions(setup.files.defs,setup.path.styles);
 
-  data.setVerbose(false);
-
   for (unsigned int i=0; i<setup.streams.size(); i++) {
     data.addDataset(setup.streams[i].collectionName);
 

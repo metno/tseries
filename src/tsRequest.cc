@@ -30,7 +30,6 @@
 
 #include <puTools/miStringFunctions.h>
 
-#include <ostream>
 #include <sstream>
 
 using namespace std;
