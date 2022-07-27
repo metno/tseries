@@ -115,9 +115,9 @@ public:
   void setObservationStartTime(miutil::miTime st) {show->setObservationStartTime(st); refresh(true);}
   miutil::miTime getObservationStartTime() const { return show->getObservationStartTime(); }
 
+  void updateStreams();
 
 public Q_SLOTS:
-  void updateStreams();
   void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(false);}
   void observationToggled(bool showobs) { show->setShowObservations(showobs);refresh(true);}
 
