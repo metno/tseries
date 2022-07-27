@@ -230,10 +230,6 @@ void qtsWork::restoreLog()
   activeRefresh = true;
   refresh(true);
 
-  int tabindex;
-  c.get("TABINDEX",tabindex);
-  sidebar->setTab(tabindex);
-
   std::string observationfilter;
   c.get("OBSERVATIONFILTER",observationfilter);
   data.setObservationBlacklistFromString(observationfilter);
@@ -271,8 +267,6 @@ void qtsWork::restoreLog()
 void qtsWork::collectLog()
 {
   tsConfigure c;
-
-  c.set("TABINDEX",sidebar->getTab());
 
   c.set("VALIDREQUEST",true);
 

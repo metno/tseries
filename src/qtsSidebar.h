@@ -55,8 +55,6 @@ class qtsSidebar : public QWidget
 {
   Q_OBJECT
 private:
-
-  QTabWidget  *   tabs;
   TimeControl *   timecontrol;
   ClientSelection*   pluginB;
   QPushButton*    targetB;
@@ -76,7 +74,6 @@ private:
   bool fimexRexordToggled;
 
 private Q_SLOTS:
-  void tabChanged(int);
   void recordToggled(bool record);
 
 public Q_SLOTS:
@@ -91,8 +88,6 @@ public:
   void setObsInfo(QString s);
 
   void writeBookmarks();
-  void setTab(int idx);
-  int getTab() { return tabs->currentIndex(); }
 
   std::string getTimecontrolLog() { return timecontrol->getTimecontrolLog(); }
   void setTimeControlFromLog(std::string t) { timecontrol->setTimecontrolFromlLog(t); }

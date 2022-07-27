@@ -55,8 +55,6 @@ qtsSidebar::qtsSidebar(QString language)
 {
   fimexRexordToggled = false;
 
-  tabs       = new QTabWidget(this);
-
   fimextab = new FimexTab(this, language);
   connect(fimextab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeFimexStyle(const QString& )));
   connect(fimextab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeFimexModel(const QString& )));
@@ -74,8 +72,6 @@ qtsSidebar::qtsSidebar(QString language)
   QFont progressfont=progress->font();
   progressfont.setPointSize(progressfont.pointSize()-3);
   progress->setFont(progressfont);
-
-  connect(tabs,SIGNAL(currentChanged(int)), this,SLOT(tabChanged(int)));
 
   // Control the start and length
 
@@ -139,10 +135,7 @@ qtsSidebar::qtsSidebar(QString language)
   // LAYOUT ---------------------------
 
   QVBoxLayout * vlayout = new QVBoxLayout(this);
-
-
-  vlayout->addWidget(tabs);
-
+  vlayout->addWidget(fimextab);
   vlayout->addWidget(timecontrol);
   vlayout->addWidget(progressHeader);
   vlayout->addWidget(progress);
@@ -178,14 +171,6 @@ void qtsSidebar::recordToggled(bool record)
     setObsInfo("<b><font color=red>Recording Positions</font></b>");
   else
     setObsInfo("");
-}
-
-
-void qtsSidebar::setTab(int tabIdx)
-{
-  if(tabIdx < tabs->count() && tabIdx >= 0 ) {
-    tabs->setCurrentIndex(tabIdx);
-  }
 }
 
 void qtsSidebar::setCoordinates(float lon, float lat)
@@ -228,15 +213,6 @@ QString qtsSidebar::fillList(const vector<std::string>& v, const StationTab_lEnt
   return QString("");
 }
 
-void qtsSidebar::tabChanged(int /*idx*/)
-{
-  addFimexBookmarkButton->show();
-  recordFimexButton->show();
-  collapseFimexButton->show();
-  expandFimexButton->show();
-  targetB->show();
-  recordToggled(fimexRexordToggled);
-}
 bool qtsSidebar::restoreFimexFromLog(std::string mod, std::string sty, std::string expanded)
 {
   fimextab->setStyle(QString::fromStdString(sty));

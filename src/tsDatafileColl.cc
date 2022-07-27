@@ -780,5 +780,5 @@ bool DatafileColl::createFimexStreams(FimexFileindex& findex)
 
     fimexStreams.back().dataStream = new pets::FimexStream(finfo.streamname, finfo.model, finfo.sType, finfo.configfile);
   }
-  return (streamfilenames.size() > 0);
+  return !streamfilenames.empty();
 }
