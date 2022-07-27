@@ -82,7 +82,6 @@ private:
   ClearLineEdit   * filter;    // filter stations
   FetchStations   * fetchstations; // findstations on the web
 
-  bool                activeCacheRequest;
   WdbBookmarkTools    bookmarkTools;
   QStandardItemModel* model;
   FilterProxyModel*   proxyModel;
@@ -98,8 +97,6 @@ public:
   QString setStyles(const QStringList& qlist);
 
   miCoordinates coordinates() const;
-  void setActiveCacheRequest(bool b) { activeCacheRequest=b;}
-  bool getActiveCacheRequest() const { return activeCacheRequest;}
   void writeBookmarks();
   QList<QStringList> getPoslist();
   bool findPosition(QString newpos, QModelIndex& idx);

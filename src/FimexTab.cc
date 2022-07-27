@@ -61,7 +61,6 @@ FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
   recordingPositions=false;
   addToRecord=false;
 
-  activeCacheRequest=false;
   modell    = new QComboBox(this);
   runl      = new QComboBox(this);
   stylel    = new QComboBox(this);
@@ -222,7 +221,6 @@ void FimexTab::setModel(const QString nmodel)
   int idx = modell->findText(nmodel);
   if( idx >= 0) {
     modell->setCurrentIndex(idx);
-    activeCacheRequest=false;
     emit changemodel(nmodel);
   }
 }
@@ -236,7 +234,6 @@ void FimexTab::setRun(const QString nrun)
   } else {
     newrun=runl->currentText();
   }
-  activeCacheRequest=false;
   emit changerun(newrun);
 }
 
@@ -284,13 +281,11 @@ void FimexTab::setRuns(const QStringList& newruns)
 
 void FimexTab::changeModel(const QString& s)
 {
-  activeCacheRequest=false;
   emit changemodel(s);
 }
 
 void FimexTab::changeRun(const QString& s)
 {
-  activeCacheRequest=false;
   emit changerun(s);
 }
 
