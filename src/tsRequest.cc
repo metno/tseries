@@ -115,16 +115,3 @@ bool tsRequest::getFimexLocation(double& lat, double& lon, std::string& name)
 
   return !(lat == 0 && lon == 0 && name == "");
 }
-
-std::string  tsRequest::getFimexInfo()
-{
-  ostringstream ost;
-  ost << "fimexLat:   " <<  fimexLat     << endl
-      << "fimexLat:   " <<  fimexLat     << endl
-      << "fimexLon:   " <<  fimexLon     << endl
-      << "fimexModel: " <<  fimexModel   << endl
-      << "fimexStyle: " <<  fimexStyle   << endl
-      << "fimexName:  " <<  fimexName    << endl
-      << "fimexRun:   " <<  fimexRun     << endl;
-  return ost.str();
-}

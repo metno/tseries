@@ -84,9 +84,6 @@ public:
   const std::string& getFimexRun() const { return fimexRun; }
   bool getFimexLocation(double& lat, double& lon, std::string& name);
 
-  std::string getFimexInfo();
-
-
   friend std::ostream& operator<<(std::ostream&, const tsRequest&);
 };
 
