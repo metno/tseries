@@ -21,10 +21,10 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Provides: tseries
 Description: Meteorological time series viewer
- This program shows time series from hdf4 and ASCII input.
- The curves are displayed in openGL using the pets2 library.
+ This program shows time series from fimex and ASCII input.
+ The curves are displayed using the pets2 library.
  Tseries can be connected to the diana meteorological visualisation
- system by using QSockets.
+ system by using coserver.
 
 Package: tseries-@METNO_VERSION@-dbg
 Architecture: any
