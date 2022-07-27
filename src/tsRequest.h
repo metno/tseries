@@ -56,8 +56,7 @@ private:
   bool setString(const std::string&, std::string&);
 
 public:
-  tsRequest() : run_(-1), streamtype(tsRequest::FIMEXSTREAM), fimexStyle("Meteogram") {}
-
+  tsRequest();
 
   bool setModel(const std::string& i) {              return setString(i,mod_); }
   bool setPos(  const std::string& i) { posname_= i; return setString(i,pos_); }

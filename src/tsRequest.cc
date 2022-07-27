@@ -36,6 +36,15 @@
 using namespace std;
 using namespace miutil;
 
+tsRequest::tsRequest()
+    : run_(-1)
+    , streamtype(tsRequest::FIMEXSTREAM)
+    , fimexLat(-1000)
+    , fimexLon(-1000)
+    , fimexStyle("Meteogram")
+{
+}
+
 bool tsRequest::setString(const std::string& i, std::string& o)
 {
   if (o == i)
@@ -113,5 +122,5 @@ bool tsRequest::getFimexLocation(double& lat, double& lon, std::string& name)
   lon = fimexLon;
   name = fimexName;
 
-  return !(lat == 0 && lon == 0 && name == "");
+  return (lat >= -91 && lat <= 91 && lon >= -361 && lon <= 361 && !name.empty());
 }
