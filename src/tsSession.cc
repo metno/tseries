@@ -189,22 +189,6 @@ bool SessionManager::getShowOption(SessionOptions& opt,
   return true;
 }
 
-bool SessionManager::getShowOption(SessionOptions& opt,
-    const tsRequest* req, SessionManager::DiagramTab tab )
-{
-  int idx = -1;
-  std::string stylename = req->style();
-  Model mod = req->model();
-  Run run = req->run();
-
-  for (unsigned int i=0; i< styles.size();i++)
-    if( tab == styles[i].diagramtab )
-      if (stylename==styles[i].stylename)
-        idx = i;
-
-  return getShowOption(opt,idx,mod,run);
-}
-
 bool SessionManager::checkEnvironment(std::string& t)
 {
   std::string::size_type start = t.find("${");
@@ -266,9 +250,7 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
     // check for commands (keyword in brackets)
     if (buf[0]=='['){
       if (miutil::contains(buf, "DIAGRAM")){
-        sdata.diagramtab = ADD_TO_STATION_TAB;
-        if (miutil::contains(buf, "FIMEX"))
-          sdata.diagramtab = ADD_TO_FIMEX_TAB;
+        sdata.diagramtab = ADD_TO_FIMEX_TAB;
 
         // Starting new diagram-definition
         sdata.modelchoice= false;

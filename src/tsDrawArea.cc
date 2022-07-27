@@ -86,87 +86,7 @@ void tsDrawArea::setViewport(ptCanvas* c)
 
 bool tsDrawArea::prepareData()
 {
-  if(request->type() == tsRequest::FIMEXSTREAM)
-    return prepareFimexData();
-
-  SessionOptions options;
-
-  if (!session->getShowOption(options, request))
-    return false;
-  diaStyle = session->getStyle(request->style());
-
-  DataStream *datastream; // Current datafile
-  vector<ParId> inlist, outlist;
-
-  int first, last;
-  ErrorFlag error;
-  ParId modid = ID_UNDEF;
-  int i, numstreams, streamidx[10];
-  bool datafound;
-  WeatherParameter wp;
-  miTime btime, etime;
-  //int currunidx = request->run();
-
-  delete theData;
-  theData = new ptDiagramData(setup.wsymbols);
-
-  // fetch data
-
-  for (i = 0; i < options.numModels(); i++) {
-    inlist = options.paramVector(i); // ParId vector
-
-
-    if (inlist.size()) {
-      modid.model = options.getmodel(i);
-      modid.run = (request->run() > -1) ? request->run() : R_UNDEF;
-      numstreams = data->findModel(modid.model, modid.run, streamidx, 10);
-
-
-      if (numstreams > 0) {
-        datafound = false;
-
-        for (int j = 0; j < numstreams && !datafound; j++) {
-          datastream = data->getDataStream(streamidx[j]);
-          if (datastream) {
-            if (!(datastream->isOpen())) {
-              data->openStream(streamidx[j]);
-              datastream = data->getDataStream(streamidx[j]);
-            }
-            miPosition station;
-            station.setName(request->pos());
-
-            //vector<ParId> parlist;
-            theData->fetchDataFromFile(datastream, station, modid, M_UNDEF,
-                btime, etime, inlist, &first, &last, outlist, true, &error);
-
-            datafound = ((error != DF_STATION_NOT_FOUND)
-                && (error != DD_NO_PARAMETERS_FOUND));
-            if (datafound && error == DD_SOME_PARAMETERS_NOT_FOUND) {
-              // Find any missing params
-              ParId inpid;
-              bool pidok;
-              vector<ParId> missingwp;
-              for (unsigned int inp = 0; inp < inlist.size(); inp++) {
-                inpid = inlist[inp];
-                pidok = false;
-                for (unsigned int outp = 0; outp < outlist.size(); outp++)
-                  if (inpid == outlist[outp]) {
-                    pidok = true;
-                    break;
-                  }
-                if (!pidok)
-                  missingwp.push_back(inpid);
-              }
-              theData->makeParameters(missingwp, true);
-            }
-            prepareKlimaData(inlist);
-          }
-        }
-      }
-    }
-  }
-
-  return true;
+  return prepareFimexData();
 }
 
 bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
@@ -258,13 +178,6 @@ void tsDrawArea::prepareDiagram()
   if (!diagram->attachData(theData)) {
     METLIBS_LOG_INFO("!diagram->attachData(theData) - prepareDiagram failed");
     return;
-  }
-
-  // this is the place to change the station name
-  if (request->posname() != request->pos()) {
-    miPosition s = theData->getStation();
-    s.setName(request->posname());
-    theData->setStation(s);
   }
 
   if (!diagram->makeDefaultPlotElements()) {

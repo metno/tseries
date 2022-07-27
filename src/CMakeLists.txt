@@ -32,7 +32,6 @@ SET(tseries_SOURCES
   qtsShow.cc
   qtsFilterManager.cc
   qtsTimeControl.cc
-  StationTab.cc
   FimexTab.cc
   WdbBookmarkTools.cc
   ParameterFilterDialog.cc

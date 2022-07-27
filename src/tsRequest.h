@@ -33,19 +33,7 @@
 #include <string>
 
 class tsRequest {
-public:
-  enum Streamtype { HDFSTREAM, FIMEXSTREAM };
-
 private:
-  std::string mod_;
-  int run_;
-  std::string pos_;
-  std::string sty_;
-
-  std::string posname_;
-
-  Streamtype        streamtype;
-
   double            fimexLat;
   double            fimexLon;
   std::string  fimexModel;
@@ -58,19 +46,6 @@ private:
 public:
   tsRequest();
 
-  bool setModel(const std::string& i) {              return setString(i,mod_); }
-  bool setPos(  const std::string& i) { posname_= i; return setString(i,pos_); }
-  bool setPos(  const std::string& n1, const std::string& n2) { posname_= n2; return setString(n1,pos_); }
-  bool setStyle(const std::string& i) { return setString(i,sty_); }
-  void setType(tsRequest::Streamtype s);
-  bool setRun(int);
-
-  const std::string& model() const { return mod_; }
-  const std::string& style() const { return sty_; }
-  int run() const { return run_; }
-  const std::string& pos() const { return pos_; }
-  const std::string& posname() const { return posname_; }
-  tsRequest::Streamtype type() const { return streamtype;}
   std::string file(const std::string& type) const;
 
   bool setFimexModel(const std::string& nmod) { return setString(nmod, fimexModel); }
@@ -82,8 +57,6 @@ public:
   const std::string& getFimexStyle() const { return fimexStyle; }
   const std::string& getFimexRun() const { return fimexRun; }
   bool getFimexLocation(double& lat, double& lon, std::string& name);
-
-  friend std::ostream& operator<<(std::ostream&, const tsRequest&);
 };
 
 #endif

@@ -29,7 +29,6 @@
 #include "tsDatafileColl.h"
 #include "tsSetup.h"
 
-#include <tsData/ptHDFFile.h>
 #include <tsData/ptAsciiStream.h>
 #ifdef GRIBSTREAM
 #include <tsData/ptGribStream.h>
@@ -214,9 +213,7 @@ bool DatafileColl::openStream(const int idx)
 
   METLIBS_LOG_DEBUG("About to open stream:" << datastreams[idx].streamname);
 
-  if (datastreams[idx].sType == "HDF") {
-    datastreams[idx].dataStream = new HDFFile(datastreams[idx].streamname);
-  } else if (datastreams[idx].sType == "ASCII") {
+  if (datastreams[idx].sType == "ASCII") {
     datastreams[idx].dataStream = new AsciiStream(datastreams[idx].streamname);
   }
 #ifdef GRIBSTREAM

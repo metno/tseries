@@ -55,39 +55,15 @@ qtsSidebar::qtsSidebar(QString language)
 {
   fimexRexordToggled = false;
 
-  fimexDisabled = s.disabled.fimex;
-  hdfDisabled   = s.disabled.hdf;
-
-
   tabs       = new QTabWidget(this);
 
-  // The Station Tabulator
-  stationtab = new StationTab(this);
-
-  if(hdfDisabled) {
-    stationtab->hide();
-  } else {
-
-    connect(stationtab,SIGNAL(changestyle( const QString&)),  this, SIGNAL(changestyle(const QString& )));
-    connect(stationtab,SIGNAL(changemodel( const QString&)),  this, SIGNAL(changemodel(const QString& )));
-    connect(stationtab,SIGNAL(changerun(    const QString&)), this, SIGNAL(changerun(  const QString& )));
-    connect(stationtab,SIGNAL(changestation(const QString&)), this, SIGNAL(changestation(  const QString& )));
-    stationIdx = tabs->addTab(stationtab,tr("Stations"));
-  }
-
   fimextab = new FimexTab(this, language);
-  if(fimexDisabled) {
-    fimextab->hide();
-  } else {
-
-    connect(fimextab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeFimexStyle(const QString& )));
-    connect(fimextab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeFimexModel(const QString& )));
-    connect(fimextab,SIGNAL(changerun(   const QString&)), this, SIGNAL(changeFimexRun(  const QString& )));
-    connect(fimextab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeFimexCoordinates(float,float,QString)));
-    connect(fimextab,SIGNAL(changePoslist()), this, SIGNAL(changeFimexPoslist()));
-    connect(fimextab,SIGNAL(newPoslist()), this, SIGNAL(newFimexPoslist()));
-    fimexIdx     = tabs->addTab(fimextab,"fields");
-  }
+  connect(fimextab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeFimexStyle(const QString& )));
+  connect(fimextab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeFimexModel(const QString& )));
+  connect(fimextab,SIGNAL(changerun(   const QString&)), this, SIGNAL(changeFimexRun(  const QString& )));
+  connect(fimextab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeFimexCoordinates(float,float,QString)));
+  connect(fimextab,SIGNAL(changePoslist()), this, SIGNAL(changeFimexPoslist()));
+  connect(fimextab,SIGNAL(newPoslist()), this, SIGNAL(newFimexPoslist()));
 
   progressHeader = new QLabel(this);
   progressHeader->hide();
@@ -143,15 +119,6 @@ qtsSidebar::qtsSidebar(QString language)
   targetB->setMaximumWidth(find_pix.width());
   targetB->setToolTip(tr("Show position (DIANA)") );
 
-
-
-  filterB = new QPushButton(filter_pix,"",this);
-  filterB->setMaximumWidth(filter_pix.width());
-  filterB->setCheckable(true);
-  filterB->setToolTip(  tr("Position filter") );
-
-  connect(filterB,SIGNAL(toggled(bool)), this, SIGNAL(filterToggled(bool)));
-
   addFimexBookmarkButton =  new QPushButton(add_pix, "",this);
   connect(addFimexBookmarkButton,SIGNAL(clicked()),fimextab, SLOT(addBookmarkFolder()));
 
@@ -195,7 +162,6 @@ qtsSidebar::qtsSidebar(QString language)
   blayout->addWidget(connectStatus);
   blayout->addStretch(2);
   blayout->addWidget(observationB);
-  blayout->addWidget(filterB);
   blayout->addWidget(targetB);
   QToolButton* clientbutton = new QToolButton(this);
   clientbutton->setDefaultAction(pluginB->getToolButtonAction());
@@ -232,17 +198,6 @@ void qtsSidebar::newTimeRange(int total,int fcast)
   timecontrol->setTimeRange(total,fcast);
 }
 
-void qtsSidebar::searchStation(const QString& s)
-{
-  stationtab->searchStation(s);
-}
-
-void qtsSidebar::currentStationChanged ( QListWidgetItem * current, QListWidgetItem * previous )
-{
-  stationtab->currentStationChanged(current,previous);
-}
-
-
 void qtsSidebar::setObsInfo(QString s)
 {
   obsInfo->setText(s);
@@ -252,54 +207,35 @@ void qtsSidebar::setObsInfo(QString s)
     obsInfo->show();
 }
 
-
-QString  qtsSidebar::fillList(const vector<std::string>& v, const StationTab::lEntry l)
+QString qtsSidebar::fillList(const vector<std::string>& v, const StationTab_lEntry l)
 {
   QStringList qlist;
   for(unsigned int i=0;i<v.size();i++) {
     qlist << QString::fromStdString(v[i]);
   }
 
-  if(l==StationTab::CMFIMEXSTYLE)
+  switch (l) {
+  case CMFIMEXSTYLE:
     return fimextab->setStyles(qlist);
-
-  if(l==StationTab::CMFIMEXMODEL) {
+  case CMFIMEXMODEL:
     fimextab->setModels(qlist);
-    return QString("");
-  }
-
-  if(l==StationTab::CMFIMEXRUN) {
+    break;
+  case CMFIMEXRUN:
     qSort(qlist.begin(), qlist.end(), qGreater<QString>());
     fimextab->setRuns(qlist);
-    return QString("");
+    break;
   }
-
-  return stationtab->fillList(qlist,l);
+  return QString("");
 }
 
-void qtsSidebar::tabChanged(int idx)
+void qtsSidebar::tabChanged(int /*idx*/)
 {
-  actualIndex=idx;
-  if (idx == stationIdx) {
-    addFimexBookmarkButton->hide();
-    collapseFimexButton->hide();
-    expandFimexButton->hide();
-    recordFimexButton->hide();
-    targetB->show();
-    filterB->show();
-    setObsInfo("");
-
-    emit changetype(tsRequest::HDFSTREAM);
-  } else if (idx == fimexIdx) {
-    addFimexBookmarkButton->show();
-    recordFimexButton->show();
-    collapseFimexButton->show();
-    expandFimexButton->show();
-    targetB->show();
-    filterB->hide();
-    recordToggled(fimexRexordToggled);
-    Q_EMIT changetype(tsRequest::FIMEXSTREAM);
-  }
+  addFimexBookmarkButton->show();
+  recordFimexButton->show();
+  collapseFimexButton->show();
+  expandFimexButton->show();
+  targetB->show();
+  recordToggled(fimexRexordToggled);
 }
 bool qtsSidebar::restoreFimexFromLog(std::string mod, std::string sty, std::string expanded)
 {

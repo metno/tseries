@@ -529,18 +529,12 @@ void tsSetup::setPublic(string& key, string& content)
   if(key == "LANG")
     setup(lang,content);
 
-  if(key == "DISABLEHDF")
-    disabled.hdf = setBool(content);
-  if(key == "DISABLEFIMEX")
-    disabled.fimex = setBool(content);
-
   if(key == "DISABLEMORA")
     disabled.mora = setBool(content);
 
   if(key == "DISABLEKLIMA")
     disabled.klima = setBool(content);
 }
-
 
 void tsSetup::setFimexParameter(string& token)
 {

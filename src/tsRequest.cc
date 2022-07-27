@@ -36,9 +36,7 @@ using namespace std;
 using namespace miutil;
 
 tsRequest::tsRequest()
-    : run_(-1)
-    , streamtype(tsRequest::FIMEXSTREAM)
-    , fimexLat(-1000)
+    : fimexLat(-1000)
     , fimexLon(-1000)
     , fimexStyle("Meteogram")
 {
@@ -52,29 +50,9 @@ bool tsRequest::setString(const std::string& i, std::string& o)
   return true;
 }
 
-bool tsRequest::setRun(int i)
-{
-  if (run_ == i)
-    return false;
-  run_ = i;
-  return true;
-}
-
-ostream& operator<<(ostream& out, const tsRequest& rhs)
-{
-  out <<           rhs.sty_
-      << " : " <<  rhs.pos_
-      << " : " <<  rhs.mod_
-      << " "   <<  rhs.run_;
-  return out;
-};
-
 std::string tsRequest::file(const std::string& type) const
 {
-  std::string rst = mod_ + "_" + pos_;
-
-  if(streamtype == FIMEXSTREAM)
-    rst = fimexModel + "_" + fimexName;
+  std::string rst = fimexModel + "_" + fimexName;
 
   miutil::replace(rst, ".","");
 
@@ -97,11 +75,6 @@ std::string tsRequest::file(const std::string& type) const
 
   rst +="."+type;
   return rst;
-}
-
-void tsRequest::setType(tsRequest::Streamtype s)
-{
-  streamtype=s;
 }
 
 bool tsRequest::setFimexLocation(double flat, double flon, const std::string& name)

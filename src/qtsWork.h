@@ -51,8 +51,6 @@
 #include <vector>
 #include <set>
 
-
-extern const QString DATASET_TSERIES;
 extern const QString DATASET_FIMEX;
 extern const QString TARGETS_TSERIES;
 extern const QString IMG_STD_TSERIES;
@@ -61,15 +59,11 @@ extern const QString IMG_NEW_TSERIES;
 extern const QString IMG_ACTIVE_TSERIES;
 extern const QString IMG_ICON_TSERIES;
 extern const QString NOMODEL_TSERIES;
-extern const QString TS_MINE;
 
 
 class qtsWork: public QWidget
 {
   Q_OBJECT
-
-public:
-  enum SelectionType { SELECT_BY_STATION, SELECT_BY_FIMEX };
 
 private:
   qtsSidebar*    sidebar;
@@ -78,31 +72,21 @@ private:
   DatafileColl   data;
   tsSetup        setup;
   tsRequest      request;
-  SelectionType  selectionType;
   QString               oldModel;
   std::map<std::string,Model>    modelMap;
   std::map<std::string,Model>    fimexModelMap;
   QList<QStringList>             myStations;
   std::map<std::string, miCoordinates> myList;
-  std::set<std::string>          filter;
-
 
   bool reading_data;
   bool activeRefresh;
-  bool filterOn;
-  bool latlonInDecimal;
-  bool has_fimex_stream;
 
   void Initialise();
 
-  void makeStationList(bool  = false);
   bool makeStyleList();
-  bool makeModelList(const std::string&);
-  bool makeRunList(const std::string&);
-  bool makeRunList(const std::string&,const std::string&);
-  void restoreModelFromLog();
-  void checkPosition(std::string st);
   void checkObsPosition(miCoordinates cor);
+
+  QString lastList() const;
 
 public:
   qtsWork(QWidget*, QString language);
@@ -110,20 +94,10 @@ public:
   void collectLog();
   void restoreLog();
   void refresh(bool readData = false);
-  void changeStyle(const std::string&);
-  void changeModel(const std::string&);
-  void changeStation(const std::string&);
-  void changeRun(const std::string&);
+  void changeStation(const QString&);
   void updateProgress();
 
-
-  std::set<std::string> Filter() const {return filter;}
-  std::set<std::string> fullPosList();
-  std::set<std::string> createFilter(bool orig=false);
-  miQMessage getFimexStationList();
   miQMessage getStationList();
-  QString  model() const { return QString::fromStdString(request.model()); }
-  QString  lastList() const;
 
   miQMessage target();
   std::string  file(const std::string typ) const { return request.file(typ);}
@@ -131,7 +105,6 @@ public:
   qtsSidebar* sideBar() const {return sidebar;}
 
   void changePositions(float lon, float lat);
-  SelectionType getSelectionType() const {return selectionType;}
   void toggleLockHoursToModel(bool lockHoursToModel) { if(sidebar) sidebar->toggleLockHoursToModel(lockHoursToModel);}
   void setShowGridLines( bool s ){ if(show) show->setShowGridLines(s); }
 
@@ -144,19 +117,9 @@ public:
 
 
 public Q_SLOTS:
-  void changeStyle(const QString&);
-  void changeModel(const QString&);
-  void changeStation(const QString&);
-  void changeRun(const QString&);
   void updateStreams();
-  void filterToggled(bool);
-  void newFilter(const std::set<std::string>&);
-  void latlonInDecimalToggled(bool);
-  //void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(true);}
   void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(false);}
   void observationToggled(bool showobs) { show->setShowObservations(showobs);refresh(true);}
-
-  void changeType(const tsRequest::Streamtype);
 
   // FIMEX
 
@@ -175,7 +138,6 @@ Q_SIGNALS:
   void coordinatesChanged();
   void fimexPoslistChanged();
   void fimexPositionChanged(const QString&);
-
 };
 
 #endif

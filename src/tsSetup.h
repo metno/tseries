@@ -108,11 +108,9 @@ public:
   };
 
   struct disablestruct {
-    bool hdf;
-    bool fimex;
     bool klima;
     bool mora;
-    disablestruct() : hdf(false), fimex(false), klima(false), mora(false) {}
+    disablestruct() : klima(false), mora(false) {}
   };
 
   struct klstruct {

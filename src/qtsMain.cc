@@ -82,7 +82,6 @@ qtsMain::qtsMain(std::string l, const QString& name)
   // and diana is in automatic update mode
   currentTime = miTime::nowTime();
 
-  latlond = false;
   makeMenuBar();
 
   work = new qtsWork(this,lang.c_str());
@@ -90,8 +89,6 @@ qtsMain::qtsMain(std::string l, const QString& name)
 
   makeConnectButtons();
   pluginB->setClientName(name);
-
-  work->latlonInDecimalToggled(latlond);
 
   toggleLockHoursToModel(lockHoursToModel);
   toggleShowGridlines(showGridLines);
@@ -161,20 +158,15 @@ void qtsMain::makeFileMenu()
   connect(rasterAct, SIGNAL(triggered()), this, SLOT( raster() ));
   menu_file->addAction(rasterAct);
 
-  filterAct = new QAction(tr("Change filter"), this);
-  connect(filterAct, SIGNAL(triggered()), this, SLOT( manageFilter() ));
-  menu_file->addAction(filterAct);
-
   filterParametersAct = new QAction(tr("Change Observation filter"), this);
   connect(filterParametersAct, SIGNAL(triggered()), this,
       SLOT( manageParameterFilter() ));
   menu_file->addAction(filterParametersAct);
 
-
   filterFimexAct = new QAction(tr("Change Fimex filter"), this);
-    connect(filterFimexAct, SIGNAL(triggered()), this,
-        SLOT( manageFimexFilter() ));
-    menu_file->addAction(filterFimexAct);
+  connect(filterFimexAct, SIGNAL(triggered()), this,
+      SLOT( manageFimexFilter() ));
+  menu_file->addAction(filterFimexAct);
 
 
   observationStartAct = new QAction(tr("Change Observation start date"), this);
@@ -274,17 +266,8 @@ void qtsMain::makeSettingsMenu()
       SLOT(toggleShowGridlines(bool)));
   menu_setting->addAction(showGridLinesAct);
 
-  config.get("LATLONDEC", latlond);
-  latlonAct = new QAction(tr("Lat/Lon in decimal"), this);
-  latlonAct->setCheckable(true);
-  latlonAct->setChecked(latlond);
-  connect(latlonAct, SIGNAL(toggled(bool)), this, SLOT(toggleLatLon(bool)));
-  menu_setting->addAction(latlonAct);
 
   menu_setting->addSeparator();
-
-
-
 
 
   config.get("LOCKHOURSTOMODEL", lockHoursToModel);
@@ -476,7 +459,6 @@ void qtsMain::writeLog()
   config.set("SHOWSELECT", sselect);
   config.set("SHOWICON", sicon);
   config.set("TIMEMARK", tmark);
-  config.set("LATLONDEC", latlond);
   config.set("FONT", std::string(qApp->font().toString().toStdString()));
   config.set("LOCKHOURSTOMODEL", lockHoursToModel);
   config.set("SHOWGRIDLINES", showGridLines);
@@ -567,11 +549,7 @@ void qtsMain::togglePositions(bool isOn)
     refreshDianaStations();
 
   miQMessage m(sposition ? qmstrings::showpositions : qmstrings::hidepositions);
-  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
-    m.addDataDesc(DATASET_FIMEX);
-  } else {
-    m.addDataDesc(DATASET_TSERIES + work->lastList());
-  }
+  m.addDataDesc(DATASET_FIMEX);
   sendLetter(m);
 }
 
@@ -579,13 +557,6 @@ void qtsMain::toggleTimemark(bool isOn)
 {
   tmark = isOn;
   setTimemark(miTime::nowTime());
-}
-
-void qtsMain::toggleLatLon(bool isOn)
-{
-  latlond = isOn;
-  if (work)
-    work->latlonInDecimalToggled(latlond);
 }
 
 void qtsMain::toggleShowGridlines(bool isOn)
@@ -661,26 +632,10 @@ void qtsMain::refreshDianaStations()
 
   QString prevModel = currentModel;
 
-  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
-    sendNewPoslist();
-    sendNamePolicy();
-    disablePoslist(prevModel);
-    enableCurrentPoslist();
-    return;
-  }
-
-  const QString ll = work->lastList();
-  if (currentModel == ll)
-    return;
-
-  currentModel = ll;
-
-  if (!sendModels.count(currentModel))
-    sendNewPoslist();
-
+  sendNewPoslist();
   sendNamePolicy();
-  enableCurrentPoslist();
   disablePoslist(prevModel);
+  enableCurrentPoslist();
 }
 
 void qtsMain::disablePoslist(const QString& prev)
@@ -691,7 +646,7 @@ void qtsMain::disablePoslist(const QString& prev)
     return;
 
   miQMessage m(qmstrings::hidepositions);
-  m.addDataDesc(DATASET_TSERIES + prev);
+  m.addDataDesc(DATASET_FIMEX);
   sendLetter(m);
 }
 
@@ -700,11 +655,7 @@ void qtsMain::enableCurrentPoslist()
   if (!isDianaConnected())
     return;
   miQMessage m(qmstrings::showpositions);
-  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
-    m.addDataDesc(DATASET_FIMEX);
-  } else {
-    m.addDataDesc(DATASET_TSERIES + currentModel);
-  }
+  m.addDataDesc(DATASET_FIMEX);
   sendLetter(m);
 }
 
@@ -826,7 +777,7 @@ void qtsMain::sendNamePolicy()
 
 // processes incoming miMessages
 
-void qtsMain::processLetter(int from, const miQMessage& letter)
+void qtsMain::processLetter(int /*from*/, const miQMessage& letter)
 {
 #ifdef DEBUG
   cerr << "Message: " << letter << endl;
@@ -966,31 +917,6 @@ void qtsMain::manageFimexFilter()
 }
 
 
-void qtsMain::manageFilter()
-{
-  set<std::string> p = work->fullPosList();
-  set<std::string> f = work->Filter();
-  set<std::string> o = work->createFilter(true);
-
-  qtsFilterManager * fm = new qtsFilterManager(p, f, o, this);
-
-  if (fm->exec()) {
-    // clean out the old filters from diana
-    if (isDianaConnected()) {
-      set<QString>::iterator itr = sendModels.begin();
-      while (itr != sendModels.end()) {
-        const set<QString>::iterator ite = itr++; // set::erase invalidates iterator
-        if (ite->contains(TS_MINE))
-          sendModels.erase(*ite);
-      }
-      if (currentModel.contains(TS_MINE))
-        currentModel = NOMODEL_TSERIES;
-    }
-    // new filter
-    work->newFilter(fm->result());
-  }
-}
-
 void qtsMain::chooseFont()
 {
   bool ok;
@@ -1050,14 +976,8 @@ void qtsMain::toggleLang(QAction* action)
 
 void qtsMain::selectionTypeChanged()
 {
-  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
-    clearTarget();
-    togglePositions(true);
-  } else {
-    togglePositions(true);
-    clearTarget();
-    clearFimexList();
-  }
+  clearTarget();
+  togglePositions(true);
 }
 
 void qtsMain::coordinatesChanged()
@@ -1065,12 +985,10 @@ void qtsMain::coordinatesChanged()
   sendTarget();
 }
 
-
 void qtsMain::fimexPoslistChanged()
 {
   refreshDianaStations();
 }
-
 
 void qtsMain::fimexPositionChanged(const QString& qname)
 {

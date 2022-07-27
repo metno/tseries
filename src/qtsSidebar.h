@@ -42,13 +42,14 @@
 #include "qtsTimeControl.h"
 #include "tsRequest.h"
 
-#include "StationTab.h"
 #include "FimexTab.h"
 
 #include <vector>
 #include <string>
 
 class ClientSelection;
+
+enum StationTab_lEntry { CMFIMEXSTYLE, CMFIMEXMODEL, CMFIMEXRUN };
 
 class qtsSidebar : public QWidget
 {
@@ -59,7 +60,6 @@ private:
   TimeControl *   timecontrol;
   ClientSelection*   pluginB;
   QPushButton*    targetB;
-  QPushButton*    filterB;
   QPushButton*    observationB;
   QPushButton *   addFimexBookmarkButton;
   QPushButton *   recordFimexButton;
@@ -70,37 +70,24 @@ private:
   QLabel*         obsInfo;
   QLabel*         progressHeader;
 
-  StationTab*     stationtab;
   FimexTab*       fimextab;
   QProgressBar*   progress;
 
-  int stationIdx, fimexIdx;
-  int actualIndex;
   bool fimexRexordToggled;
-  bool fimexDisabled, hdfDisabled;
 
 private Q_SLOTS:
   void tabChanged(int);
   void recordToggled(bool record);
 
 public Q_SLOTS:
-  void searchStation(const QString&);
   void newTimeRange(int,int);
-  void currentStationChanged ( QListWidgetItem * current, QListWidgetItem * previous );
 
 public:
   qtsSidebar(QString language);
 
-  QString fillList(const std::vector<std::string>& v, const StationTab::lEntry l);
-  QString fillStations(const QStringList& s) { return stationtab->fillStations(s);}
-
-  QString current(const StationTab::lEntry l) { return stationtab->current(l);}
-  QString station()               { return stationtab->station(); }
-  void set(const std::string& s,const  StationTab::lEntry c) {stationtab->set(s,c);}
-
+  QString fillList(const std::vector<std::string>& v, const StationTab_lEntry l);
   ClientSelection* pluginButton() const {return pluginB;}
   QPushButton*  targetButton() const {return targetB;}
-  void setStationInfo(QString s) { stationtab->setStationInfo(s); }
   void setObsInfo(QString s);
 
   void writeBookmarks();
@@ -134,15 +121,8 @@ public:
     { return fimextab->coordinates(); }
 
 Q_SIGNALS:
-  void changestyle(const QString&);
-  void changemodel(const QString&);
-  void changerun(const QString&);
-  void changestation(const QString&);
-  void filterToggled(bool);
   void observationToggled(bool);
   void minmaxProg(int,int);
-
-  void changetype(const tsRequest::Streamtype);
 
   // Fimex
 
