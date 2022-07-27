@@ -36,7 +36,6 @@
 #include <QPushButton>
 #include <QTabWidget>
 #include <QLabel>
-#include <QMovie>
 #include <QPixmap>
 #include <QProgressBar>
 
@@ -44,7 +43,6 @@
 #include "tsRequest.h"
 
 #include "StationTab.h"
-#include "CoordinateTab.h"
 #include "FimexTab.h"
 
 #include <vector>
@@ -63,8 +61,6 @@ private:
   QPushButton*    targetB;
   QPushButton*    filterB;
   QPushButton*    observationB;
-  QPushButton *   cacheQueryButton;
-  QPushButton *   addWdbBookmarkButton;
   QPushButton *   addFimexBookmarkButton;
   QPushButton *   recordFimexButton;
   QPushButton *   expandFimexButton;
@@ -73,22 +69,18 @@ private:
   QLabel*         connectStatus;
   QLabel*         obsInfo;
   QLabel*         progressHeader;
-  QMovie*         busyLabel;
 
   StationTab*     stationtab;
-  CoordinateTab*  wdbtab;
   FimexTab*       fimextab;
   QProgressBar*   progress;
 
-  int wdbIdx, stationIdx,fimexIdx;
+  int stationIdx, fimexIdx;
   int actualIndex;
   bool fimexRexordToggled;
-  bool wdbDisabled,fimexDisabled,hdfDisabled;
-
+  bool fimexDisabled, hdfDisabled;
 
 private Q_SLOTS:
   void tabChanged(int);
-  void chacheQueryActivated();
   void recordToggled(bool record);
 
 public Q_SLOTS:
@@ -110,8 +102,6 @@ public:
   QPushButton*  targetButton() const {return targetB;}
   void setStationInfo(QString s) { stationtab->setStationInfo(s); }
   void setObsInfo(QString s);
-  miCoordinates coordinates()
-    const { return wdbtab->coordinates(); }
 
   void writeBookmarks();
   void setTab(int idx);
@@ -124,18 +114,7 @@ public:
   void setObservationsEnabled(bool e) {if(e) observationB->setChecked(e);}
   bool getObservationsEnabled() {return observationB->isChecked();}
 
-  // WDB ------
-
-  void enableWdb(bool);
-  void setWdbModels(const QStringList& newModels){ wdbtab->setModels(newModels);    }
-  void setWdbRuns(const QStringList& newRuns)    { wdbtab->setRuns(newRuns);        }
   void setCoordinates(float lon, float lat);
-
-  void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat) {wdbtab->setWdbGeometry(minLon, maxLon, minLat, maxLat);}
-  bool restoreWdbFromLog(std::string mod, std::string sty, double lat, double lon, std::string run, std::string posname);
-  void enableBusyLabel(bool enable);
-  void enableCacheButton(bool enable, bool force, unsigned long querytime);
-
 
   // Fimex
 
@@ -170,14 +149,7 @@ Q_SIGNALS:
   void observationToggled(bool);
   void minmaxProg(int,int);
 
-    // WDB ---------
-  void changeWdbStyle(const QString& );
-  void changeWdbModel(const QString& );
-  void changeWdbRun(  const QString& );
-  void changeWdbLevel(const QString& );
-  void changeCoordinates(float lon, float lat,QString name);
   void changetype(const tsRequest::Streamtype);
-  void requestWdbCacheQuery();
 
   // Fimex
 

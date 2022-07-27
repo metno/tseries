@@ -285,11 +285,8 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
     if (buf[0]=='['){
       if (miutil::contains(buf, "DIAGRAM")){
         sdata.diagramtab = ADD_TO_STATION_TAB;
-        if(miutil::contains(buf, "WDB")) {
-          sdata.diagramtab = ADD_TO_WDB_TAB;
-        }
-        else if(miutil::contains(buf, "FIMEX"))
-         sdata.diagramtab = ADD_TO_FIMEX_TAB;
+        if (miutil::contains(buf, "FIMEX"))
+          sdata.diagramtab = ADD_TO_FIMEX_TAB;
 
 
         // Starting new diagram-definition

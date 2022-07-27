@@ -30,8 +30,6 @@
 #include "qtsWork.h"
 #include "tsConfigure.h"
 
-#include "WdbCacheThread.h"
-
 #include <tsData/FimexStream.h>
 #include <puTools/miStringFunctions.h>
 #include <coserver/QLetterCommands.h>
@@ -95,8 +93,6 @@ qtsWork::qtsWork(QWidget* parent, QString language)
   show    = new qtsShow(&request,&data,&session);
 
 
-  connect (show,SIGNAL(refreshFinished()),this,SLOT(refreshFinished()));
-
   connect (show,SIGNAL(dataread_started()),this,SLOT(dataread_started()));
   connect (show,SIGNAL(dataread_ended()),this,SLOT(dataread_ended()));
 
@@ -148,35 +144,13 @@ qtsWork::qtsWork(QWidget* parent, QString language)
 
   Initialise(); // the none gui stuff...
 
-
-
-  // WDB signals
-
-  connect(sidebar,SIGNAL(changeWdbModel(const QString&)),  this,SLOT(changeWdbModel(const QString&)));
-
-
   connect(sidebar,SIGNAL(changetype(const tsRequest::Streamtype)), this,SLOT(changeType(const tsRequest::Streamtype)));
-  connect(sidebar,SIGNAL(changeWdbStyle(const QString&)), this,SLOT(changeWdbStyle(const QString&)));
-  connect(sidebar,SIGNAL(changeWdbRun(const QString&)),   this,SLOT(changeWdbRun(const QString&)));
-  connect(sidebar,SIGNAL(changeCoordinates(float, float,QString)),this,SLOT(changeCoordinates(float,float,QString)));
-  connect(sidebar,SIGNAL(requestWdbCacheQuery()),this,SLOT(requestWdbCacheQuery()));
-
-
-
-
-
-  has_wdb_stream = data.has_wdb_stream();
-  sidebar->enableWdb(has_wdb_stream);
-  makeWdbModels();
-
 }
 
 
 void qtsWork::Initialise()
 {
   session.readSessions(setup.files.defs,setup.path.styles);
-
-  maxWDBreadTime = setup.wdb.readtime;
 
   data.setVerbose(false);
 
@@ -293,15 +267,13 @@ void qtsWork::makeStationList(bool forced)
 
 bool qtsWork::makeStyleList()
 {
-  vector<std::string> stationStyles, wdbStyles, fimexStyles;
+  vector<std::string> stationStyles, fimexStyles;
 
   session.getStyleTypes( stationStyles, SessionManager::ADD_TO_STATION_TAB);
-  session.getStyleTypes( wdbStyles,     SessionManager::ADD_TO_WDB_TAB    );
   session.getStyleTypes( fimexStyles,   SessionManager::ADD_TO_FIMEX_TAB  );
 
 
   QString cstyle = sidebar->fillList( stationStyles, StationTab::CMSTYLE      );
-  QString wstyle = sidebar->fillList( wdbStyles,     StationTab::CMWDBSTYLE   );
   QString fstyle = sidebar->fillList( fimexStyles,   StationTab::CMFIMEXSTYLE );
 
   makeFimexModels(fstyle);
@@ -310,9 +282,6 @@ bool qtsWork::makeStyleList()
   qStr2miStr(cstyle,st);
   bool changed = request.setStyle(st);
 
-
-  qStr2miStr(wstyle,st);
-  request.setWdbStyle(st);
 
   qStr2miStr(fstyle,st);
   request.setFimexStyle(st);
@@ -411,8 +380,6 @@ void qtsWork::changePositions(float lon, float lat)
 
 void qtsWork::changeStation(const QString& qstr)
 {
-  if(selectionType==SELECT_BY_WDB)
-    return;
   std::string st;
   if (qStr2miStr(qstr, st))
     changeStation(st);
@@ -436,8 +403,6 @@ void qtsWork::changeStyle(const std::string& st)
 
 void qtsWork::changeModel(const std::string& st)
 {
-  std::map<std::string,Model>::iterator itr = modelMap.begin();
-
   std::string tmp = modelMap[st];
   QApplication::setOverrideCursor( Qt::WaitCursor );
   data.openStreams(tmp);
@@ -601,20 +566,9 @@ void qtsWork::restoreLog()
   sidebar->setTab(tabindex);
 
 
-  float lat,lon;
-  std::string run;
-  std::string posname;
   std::string observationfilter;
-
   c.get("OBSERVATIONFILTER",observationfilter);
   data.setObservationBlacklistFromString(observationfilter);
-
-  c.get("WDBMODEL",mo);
-  c.get("WDBSTYLE",st);
-  c.get("WDBLAT",lat);
-  c.get("WDBLON",lon);
-  c.get("WDBRUN",run);
-  c.get("WDBPOSNAME",posname);
 
   std::string timecontrol;
   c.get("TIMECONTROL",timecontrol);
@@ -628,9 +582,6 @@ void qtsWork::restoreLog()
   sidebar->setObservationsEnabled(showobs);
   show->setShowObservations(showobs);
 
-
-  request.restoreWdbFromLog(mo,st,lat,lon,miTime(run),posname);
-  sidebar->restoreWdbFromLog(mo,st,lat,lon,run,posname);
 
   std::string fimexmodel,fimexstyle,fimexexpand,fimexfilter;
 
@@ -665,14 +616,6 @@ void qtsWork::collectLog()
   c.set("REQUESTSTYLE",request.style());
   c.set("VALIDREQUEST",true);
 
-  request.setType(tsRequest::WDBSTREAM);
-  c.set("WDBMODEL",request.getWdbModel());
-  c.set("WDBSTYLE",request.getWdbStyle());
-  c.set("WDBLAT",float(request.getWdbLat()) );
-  c.set("WDBLON",float(request.getWdbLon()) );
-  c.set("WDBRUN",request.getWdbRun().isoTime());
-  c.set("WDBPOSNAME",request.getWdbStationName());
-
   c.set("SHOWOBSERVATIONS",sidebar->getObservationsEnabled());
   c.set("TIMECONTROL",sidebar->getTimecontrolLog());
   c.set("OBSERVATIONFILTER",data.getObservationBlacklistAsString());
@@ -706,9 +649,6 @@ miQMessage qtsWork::target()
     coord = myList[po];
   } else if (selectionType == SELECT_BY_FIMEX) {
     coord = sidebar->fimexCoordinates();
-    // cerr << "select by fimex : " << co  << endl;
-  } else {
-    coord = sidebar->coordinates();
   }
 
   miQMessage m(qmstrings::positions);
@@ -820,73 +760,11 @@ void qtsWork::newFilter(const set<std::string>& f)
 
   for(;itr!=filter.end();itr++)
     of << *itr << endl;
-
-  of.close();
-}
-
-
-/// WDB --------------------------------------------
-//
-void qtsWork::makeWdbModels()
-{
-  if(!has_wdb_stream) return;
-
-  QStringList newmodels;
-  set<string> providers = data.getWdbProviders();
-  set<string>::iterator itr = providers.begin();
-  for(;itr!=providers.end();itr++)
-    newmodels << itr->c_str();
-  sidebar->setWdbModels(newmodels);
-}
-
-
-void qtsWork::changeWdbModel(const QString& newmodel)
-{
-  if (!has_wdb_stream)
-    return;
-
-  set<miTime> wdbtimes = data.getWdbReferenceTimes(newmodel.toStdString());
-  QStringList newruns;
-
-  set<miTime>::reverse_iterator itr = wdbtimes.rbegin();
-  for(;itr!=wdbtimes.rend();itr++)
-    newruns << itr->isoTime().c_str();
-  sidebar->setWdbRuns(newruns);
-
-
-  pets::WdbStream::BoundaryBox bb = data.getWdbGeometry();
-  sidebar->setWdbGeometry(bb.minLon,bb.maxLon,bb.minLat,bb.maxLat);
-  if(request.setWdbModel(newmodel.toStdString()))
-    refresh(true);
-}
-
-void qtsWork::changeWdbRun(const QString& nrun)
-{
-  if(!has_wdb_stream)
-    return;
-
-  miTime newrun= miTime(nrun.toStdString());
-
-  if(request.setWdbRun(newrun))
-    refresh(true);
-}
-
-
-void qtsWork::changeWdbStyle(const QString& nsty)
-{
-  if(!has_wdb_stream)
-    return;
-
-  if(request.setWdbStyle(nsty.toStdString()))
-    refresh(true);
 }
 
 void qtsWork::changeType(const tsRequest::Streamtype s)
 {
   switch(s) {
-  case tsRequest::WDBSTREAM:
-    selectionType=SELECT_BY_WDB;
-    break;
   case tsRequest::FIMEXSTREAM:
     selectionType=SELECT_BY_FIMEX;
     break;
@@ -901,55 +779,7 @@ void qtsWork::changeType(const tsRequest::Streamtype s)
   emit selectionTypeChanged();
 }
 
-void qtsWork::changeCoordinates(float lon, float lat,QString name)
-{
-  if (!has_wdb_stream)
-    return;
-
-  request.setWdbStationName(name.toStdString());
-  if(request.setWdbPos(lon,lat)) {
-    miCoordinates cor(lon,lat);
-    checkObsPosition(cor);
-    refresh(true);
-  }
-  emit coordinatesChanged();
-}
-
-void qtsWork::refreshFinished()
-{
-  if(selectionType==SELECT_BY_WDB ) {
-    bool enableCacheButton =  (request.getWdbReadTime() > maxWDBreadTime );
-    sidebar->enableCacheButton(enableCacheButton,false,request.getWdbReadTime());
-  }
-}
-
-void qtsWork::requestWdbCacheQuery()
-{
-  if(!has_wdb_stream)
-    return;
-
-  vector<string> parameters=data.getWdbParameterNames();
-  string  model  = request.getWdbModel();
-  string  run    = request.getWdbRun().isoTime();
-  string  height = "NULL";
-  tsSetup setup;
-  string  host   = setup.wdb.host;
-  string  usr    = setup.wdb.user;
-
-  WdbCacheThread *cachethread = new WdbCacheThread(host,usr);
-  cachethread->setParameters(model,run,height,parameters);
-  connect(cachethread,SIGNAL(finished()),this,SLOT(cacheRequestDone()));
-  cachethread->start();
-}
-
-void   qtsWork::cacheRequestDone()
-{
-  sidebar->enableBusyLabel(false);
-}
-
 ////////////////////////////////////////////////////////////
-
-
 
 /// FIMEX --------------------------------------------
 //

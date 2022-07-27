@@ -66,9 +66,6 @@ std::string tsRequest::file(const std::string type) const
 {
   std::string rst = mod_ + "_" + pos_;
 
-  if(streamtype == WDBSTREAM)
-    rst = wdbModel + "_" + wdbstationname;
-
   if(streamtype == FIMEXSTREAM)
     rst = fimexModel + "_" + fimexName;
 
@@ -95,22 +92,6 @@ std::string tsRequest::file(const std::string type) const
   return rst;
 }
 
-/// WDB
-bool tsRequest::setWdbPos(double lon,double lat)
-{
-  if( (fabs(lon-wdbLon) < 0.00001 ) && (fabs(lat-wdbLat) < 0.00001 )) return false;
-  wdbLat=lat;
-  wdbLon=lon;
-  return true;
-}
-
-bool tsRequest::setWdbRun(miutil::miTime nrun)
-{
-  if(nrun == wdbRun) return false;
-  wdbRun = nrun;
-  return true;
-}
-
 
 void tsRequest::setType(tsRequest::Streamtype s)
 {
@@ -118,16 +99,6 @@ void tsRequest::setType(tsRequest::Streamtype s)
 }
 
 
-
-bool tsRequest::restoreWdbFromLog(std::string mod, std::string sty, double lat, double lon, miutil::miTime run,std::string posname)
-{
-  setWdbPos(lon,lat);
-  setWdbStationName(posname);
-  setWdbRun(run);
-  setWdbModel(mod);
-  setWdbStyle(sty);
-  return true;
-}
 
 
 

@@ -47,7 +47,8 @@
 // for each style type
 class SessionManager {
 public:
-  enum DiagramTab { ADD_TO_STATION_TAB, ADD_TO_WDB_TAB, ADD_TO_FIMEX_TAB};
+  enum DiagramTab { ADD_TO_STATION_TAB, ADD_TO_FIMEX_TAB };
+
 private:
   ParameterDefinition pdef;
   struct modeldata{       // name of menu and id to models

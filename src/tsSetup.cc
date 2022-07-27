@@ -49,7 +49,6 @@ vector<tsSetup::dsStruct>  tsSetup::streams;
 
 tsSetup::klstruct          tsSetup::klima;
 tsSetup::morastruct        tsSetup::mora;
-tsSetup::wdbstruct         tsSetup::wdb;
 tsSetup::fistruct          tsSetup::files;
 tsSetup::svstruct          tsSetup::server;
 tsSetup::ptstruct          tsSetup::path;
@@ -72,8 +71,6 @@ tsSetup::tsSetup() : sec(PUBLIC) , line(0)
     // giving standard values...
     idx=0;
     ids=0;
-    wdb.readtime=2000;
-    wdb.maxRecord=20;
     klima.baseQuery="?ct=text/plain&del=semicolon&nmt=0";
     klima.url="http://klapp.oslo.dnmi.no/metnopub/production/metno"+klima.baseQuery;
     klima.maxDistance=50;
@@ -134,12 +131,6 @@ string tsSetup::inSection()
     return ", in <moraparameter>";
   case MORANORMAL:
     return ", in <moranormal>"; 
-  case WDB:
-    return ", in <wdb>";
-  case WDBPARAMETER:
-    return  ", in <wdbparameter>";
-  case WDBVECTORFUNCTIONS:
-    return  ", in <wdbVectorFunctions>";
   case INFIMEX:
     return ", in <fimex>";
   case FIMEXPARAMETER:
@@ -226,21 +217,13 @@ void tsSetup::fetchSection(string token)
     sec = MORANORMAL;
   else if( find_first(token,"MORA"))
     sec = MORA;
-  else if( find_first(token,"WDBPARAMETER"))
-    sec = WDBPARAMETER;
-  else if ( find_first(token,"WDBVECTORFUNCTIONS"))
-    sec = WDBVECTORFUNCTIONS;
-  else if( find_first(token,"WDB"))
-    sec = WDB;
   else if( find_first(token,"FIMEXPARAMETER"))
     sec = FIMEXPARAMETER;
   else if (find_first(token,"FIMEX"))
     sec = INFIMEX;
   else
     warn(token,wSECTION);
-
 }
-
 
 std::string tsSetup::timetrans(std::string tstr)
 {
@@ -316,7 +299,6 @@ bool tsSetup::read(const string& f, string s)
   lookup["HOME"] = path.home;
 
   files.filter = path.home + "/.tseries/tseries.filter";
-  files.wdbBookmarks=path.home + "/.tseries/bookmarks.wdb";
   files.fimexBookmarks=path.home + "/.tseries/bookmarks.fimex";
 
   string package_version=PVERSION;
@@ -452,12 +434,7 @@ void tsSetup::setSimpleToken(string token)
     if(!actualSites.count(site))
       return;
 
-  if(sec==WDBVECTORFUNCTIONS) {
-    wdb.vectorFunctions.push_back(token);
-    return;
-  }
-
-  bool upper=(sec != WDBPARAMETER && sec != KLIMAPARAMETER && sec != KLIMANORMAL && sec != MORAPARAMETER && sec != MORANORMAL && sec != INFIMEX && sec != FIMEXPARAMETER);
+  bool upper = (sec != KLIMAPARAMETER && sec != KLIMANORMAL && sec != MORAPARAMETER && sec != MORANORMAL && sec != INFIMEX && sec != FIMEXPARAMETER);
 
   string content,key;
 
@@ -524,20 +501,11 @@ void tsSetup::setSimpleToken(string token)
   case PATH:
     setPath(key,content);
     break;
-  case WDB:
-    setWdb(key,content);
-    break;
-  case WDBPARAMETER:
-    setWdbParameter(key,content);
-    break;
   case INFIMEX:
     setFimex(key,content);
     break;
   case FIMEXPARAMETER:
     setFimexParameter(token);
-    break;
-  case WDBVECTORFUNCTIONS:
-    // ignore here, handled above
     break;
   }
 }
@@ -561,8 +529,6 @@ void tsSetup::setPublic(string& key, string& content)
   if(key == "LANG")
     setup(lang,content);
 
-  if(key == "DISABLEWDB")
-    disabled.wdb = setBool(content);
   if(key == "DISABLEHDF")
     disabled.hdf = setBool(content);
   if(key == "DISABLEFIMEX")
@@ -691,8 +657,6 @@ void tsSetup::setFiles(string& key, string& content)
     setup(files.baseFilter,content);
   else if(key == "COMMONBOOKMARKS")
     setup(files.commonBookmarks,content);
-  else if(key == "WDBBOOKMARKS")
-    setup(files.wdbBookmarks,content);
   else if(key == "FIMEXBOOKMARKS")
     setup(files.fimexBookmarks,content);
   else
@@ -747,12 +711,6 @@ void tsSetup::setStreams(string& key, string& content)
   }
   else
     warn(key,wKEY);
-
-}
-
-void tsSetup::setWdbParameter(string& key, string& content)
-{
-  wdb.parameters[key]=content;
 }
 
 void tsSetup::setKlimaParameter(string& key, string& content)
@@ -773,25 +731,6 @@ void tsSetup::setMoraNormal(string& key, string& content)
   mora.normals[key]=content;
 }
 
-
-
-void tsSetup::setWdb(string& key, string& content)
-{
-  if(key == "HOST" )
-    setup(wdb.host,content);
-  else if(key == "USER")
-    setup(wdb.user,content);
-  else if(key=="READTIME") {
-    int rtime;
-    setup(rtime,content);
-    wdb.readtime=rtime;
-  } else if(key == "BUSYMOVIE") {
-    setup(wdb.busyMovie,content);
-  }else if (key == "MAXRECORD") {
-    setup(wdb.maxRecord,content);
-  }else
-    warn(key,wKEY);
-}
 
 
 

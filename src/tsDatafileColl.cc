@@ -86,15 +86,13 @@ bool Union(const dataset& d1, const dataset& d2, dataset& result)
 }
 
 DatafileColl::DatafileColl()
-    : wdbStream(0)
-    , klimaStream(0)
+    : klimaStream(0)
     , moraStream(0)
     , tolerance(1000.0)
     , verbose(false)
     , streams_opened(false)
     , fimex_streams_opened(false)
 {
-  openWdbStream();
   openKlimaStream();
   openMoraStream();
   initialiseFimexPositions();
@@ -104,7 +102,6 @@ DatafileColl::DatafileColl()
 DatafileColl::~DatafileColl()
 {
   closeStreams();
-  closeWdbStream();
   closeKlimaStream();
   closeMoraStream();
 }
@@ -638,76 +635,6 @@ void DatafileColl::closeMoraStream()
                         << endl;
   }
   moraStream = NULL;
-}
-
-/////// WDB ------------------------------------------
-
-void DatafileColl::openWdbStream()
-{
-  wdbStreamIsOpen=false;
-  try {
-
-    tsSetup setup;
-
-    wdbStream = new pets::WdbStream(setup.wdb.host, setup.wdb.parameters,
-        setup.wdb.vectorFunctions, setup.wdb.user);
-
-    set<string> providers = wdbStream->getDataProviders();
-    wdbStreamIsOpen = !providers.empty();
-
-  } catch (exception& e) {
-    cerr << " Exception caught while trying to open WdbStream " << e.what()
-                        << endl;
-  }
-}
-
-void DatafileColl::closeWdbStream()
-{
-  try {
-    delete wdbStream;
-  } catch (exception& e) {
-    cerr << " Exception caught while trying to delete WdbStream " << e.what()
-                        << endl;
-  }
-  wdbStream = NULL;
-}
-
-set<string> DatafileColl::getWdbProviders()
-{
-  set<string> providers;
-  try {
-    providers = wdbStream->getDataProviders();
-  } catch (exception& e) {
-    cerr << "Exception in getWdbProviders(): " << e.what() << endl;
-  }
-  return providers;
-}
-
-set<miTime> DatafileColl::getWdbReferenceTimes(string provider)
-{
-  set<miTime> referenceTimes;
-  try {
-
-    wdbStream->setCurrentProvider(provider);
-    referenceTimes = wdbStream->getReferenceTimes();
-
-  } catch (exception& e) {
-    cerr << "Exception in getWdbReferenceTimes(): " << e.what() << endl;
-  }
-  return referenceTimes;
-}
-
-pets::WdbStream::BoundaryBox DatafileColl::getWdbGeometry()
-{
-  pets::WdbStream::BoundaryBox boundaries;
-  try {
-
-    boundaries = wdbStream->getGeometry();
-  } catch (exception& e) {
-    cerr << "Exception in getGeometry(): " << e.what() << endl;
-  }
-
-  return boundaries;
 }
 
 /////// FIMEX ------------------------------------------

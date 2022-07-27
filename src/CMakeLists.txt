@@ -33,10 +33,7 @@ SET(tseries_SOURCES
   qtsFilterManager.cc
   qtsTimeControl.cc
   StationTab.cc
-  CoordinateTab.cc
   FimexTab.cc
-  WdbCacheThread.cc
-  CoordinateManager.cc
   WdbBookmarkTools.cc
   ParameterFilterDialog.cc
   PopupCalendar.cc

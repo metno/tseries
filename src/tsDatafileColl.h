@@ -39,7 +39,6 @@
 
 #include <tsData/ptDataStream.h>
 #include <tsData/ptParameterDefinition.h>
-#include <tsData/WdbStream.h>
 #include <tsData/KlimaStream.h>
 #include <tsData/SMHIMoraStream.h>
 #include <tsData/FimexStream.h>
@@ -152,7 +151,6 @@ private:
   std::vector<FimexInfo> fimexStreams;    // List of fimex datastreams
   std::vector<FimexFileindex> fimexFileindex;  // list of known files (to check if new ones popped up)
 
-  pets::WdbStream*       wdbStream;      // the wdb data stream
   pets::KlimaStream*     klimaStream;    // the klima database from an url interface
   pets::MoraStream*      moraStream;     // the stream from SMHO observation database 'Mora'
   std::vector<ExtStation> stations;   // List of stations
@@ -174,9 +172,6 @@ private:
   void _filestat(std::string&, struct stat&); // get file stats
   bool _isafile(const std::string&); // check if stream is a file
 
-  void openWdbStream();
-  void closeWdbStream();
-
   void openKlimaStream();
   void closeKlimaStream();
 
@@ -185,7 +180,6 @@ private:
 
   void initialiseFimexPositions();
   void initialiseFimexParameters();
-  bool wdbStreamIsOpen;
   std::string getCleanStreamType(const std::string&);
 
 protected:
@@ -243,14 +237,6 @@ public:
     streams_opened = false;
     return b;
   }
-
-  // wdb --------------------
-  bool has_wdb_stream() const { return wdbStreamIsOpen;}
-  std::set<std::string> getWdbProviders();
-  std::set<miutil::miTime> getWdbReferenceTimes(std::string provider);
-  std::vector<std::string> getWdbParameterNames() const { return wdbStream->getWdbParameterNames(); }
-  pets::WdbStream::BoundaryBox getWdbGeometry();
-  pets::WdbStream*  getWdbStream() { return wdbStream;}
 
   // klima -----------------------
 

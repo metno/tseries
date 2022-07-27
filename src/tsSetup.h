@@ -100,16 +100,6 @@ public:
     std::vector<sStruct> data;
   };
 
-  struct wdbstruct {
-    std::string    host;
-    std::string    user;
-    std::string    busyMovie;
-    unsigned long       readtime;            /// time to enable cache button (ms)
-    std::vector<std::string> vectorFunctions;     ///< run vector transformations on these
-    std::map<std::string,std::string> parameters; ///< translate parameters from wdb
-    int                 maxRecord;           ///< size of record ringbuffer;
-  };
-
   // define loglevels foe DATA DIAGRAM TSERIES
   struct logstruct {
     std::string data;
@@ -120,11 +110,10 @@ public:
 
   struct disablestruct {
     bool hdf;
-    bool wdb;
     bool fimex;
     bool klima;
     bool mora;
-    disablestruct() : hdf(false), wdb(false), fimex(false), klima(false), mora(false) {}
+    disablestruct() : hdf(false), fimex(false), klima(false), mora(false) {}
   };
 
   struct klstruct {
@@ -161,7 +150,6 @@ public:
     std::string active_image;
     std::string filter;
     std::string baseFilter;
-    std::string wdbBookmarks;
     std::string fimexBookmarks;
     std::string commonBookmarks;
   };
@@ -218,7 +206,6 @@ public:
 
   static std::vector<dsStruct> streams; ///< Data streams
 
-  static wdbstruct wdb;            ///< wdb information
   static fistruct files;           ///< All filenames
   static svstruct server;          ///< Server information
   static ptstruct path;            ///< General path info
@@ -234,7 +221,7 @@ public:
   static disablestruct disabled;
 
 private:
-  enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,WDB,WDBPARAMETER,WDBVECTORFUNCTIONS,
+  enum { PUBLIC, FILES, STREAMS, SERVER, GUI, PATH, DIANA, DOC,
     KLIMA,KLIMAPARAMETER,KLIMANORMAL,MORA,MORAPARAMETER,MORANORMAL,INFIMEX,FIMEXPARAMETER,LOGLEVEL} sec;
   enum warning { wKEY, wTOKEN, wSECTION, wFILE };
 
@@ -268,8 +255,6 @@ private:
   void setPath(std::string&, std::string&);
   void setDiana(std::string&, std::string&);
   void setDoc(std::string&, std::string&);
-  void setWdb(std::string&, std::string&);
-  void setWdbParameter(std::string&, std::string&);
   void setKlimaParameter(std::string&, std::string&);
   void setKlimaNormal(std::string&, std::string&);
   void setKlima(std::string&, std::string&);

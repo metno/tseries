@@ -1054,11 +1054,7 @@ void qtsMain::toggleLang(QAction* action)
 
 void qtsMain::selectionTypeChanged()
 {
-  if (work->getSelectionType() == qtsWork::SELECT_BY_WDB) {
-    togglePositions(false);
-    sendTarget();
-    clearFimexList();
-  } else if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
+  if (work->getSelectionType() == qtsWork::SELECT_BY_FIMEX) {
     clearTarget();
     togglePositions(true);
   } else {

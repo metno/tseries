@@ -55,8 +55,6 @@ int main(int argc, char **argv)
   o.push_back(miCommandLine::option( 'T',"title"    , 1 ));
   o.push_back(miCommandLine::option( 'I',"instancename", 1 ));
   o.push_back(miCommandLine::option( 'd',"define"   , 1 ));
-  o.push_back(miCommandLine::option( 'H',"host"     , 1 ));
-  o.push_back(miCommandLine::option( 'u',"user"     , 1 ));
 
   miCommandLine cl(o,argc, argv);
 
@@ -78,8 +76,6 @@ int main(int argc, char **argv)
                 << "  -l lang      "  << endl
                 << "  -T title     "  << endl
                 << "  -I instancename" << endl
-                << "  -H wdbhost   "  << endl
-                << "  -u wdbuser   "  << endl
                 << "  -d section1:key1=token1 section2:key2=token2 "
                 << endl << endl;
     exit (0);
@@ -107,9 +103,6 @@ int main(int argc, char **argv)
     for (vector<std::string>::iterator it = overridetokens.begin(); it != overridetokens.end(); ++it)
       setup.overrideToken(*it);
   }
-
-  if(cl.hasFlag('H')) setup.overrideToken("WDB:host="+cl.arg('H')[0]);
-  if(cl.hasFlag('u')) setup.overrideToken("WDB:user="+cl.arg('u')[0]);
 
 
   if(cl.hasFlag('l')) lang=cl.arg('l')[0];

@@ -69,7 +69,7 @@ class qtsWork: public QWidget
   Q_OBJECT
 
 public:
-  enum SelectionType{SELECT_BY_STATION,SELECT_BY_WDB, SELECT_BY_FIMEX};
+  enum SelectionType { SELECT_BY_STATION, SELECT_BY_FIMEX };
 
 private:
   qtsSidebar*    sidebar;
@@ -79,7 +79,6 @@ private:
   tsSetup        setup;
   tsRequest      request;
   SelectionType  selectionType;
-  unsigned int   maxWDBreadTime;
   QString               oldModel;
   std::map<std::string,Model>    modelMap;
   std::map<std::string,Model>    fimexModelMap;
@@ -92,7 +91,6 @@ private:
   bool activeRefresh;
   bool filterOn;
   bool latlonInDecimal;
-  bool has_wdb_stream;
   bool has_fimex_stream;
 
   void Initialise();
@@ -105,9 +103,6 @@ private:
   void restoreModelFromLog();
   void checkPosition(std::string st);
   void checkObsPosition(miCoordinates cor);
-
-  // WDB ------
-  void makeWdbModels();
 
 public:
   qtsWork(QWidget*, QString language);
@@ -157,20 +152,12 @@ public Q_SLOTS:
   void filterToggled(bool);
   void newFilter(const std::set<std::string>&);
   void latlonInDecimalToggled(bool);
-  void refreshFinished();
   //void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(true);}
   void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(false);}
   void observationToggled(bool showobs) { show->setShowObservations(showobs);refresh(true);}
 
 
-  // WDB
-  void changeWdbModel(const QString&);
   void changeType(const tsRequest::Streamtype);
-  void changeWdbStyle(const QString&);
-  void changeWdbRun(const QString&);
-  void changeCoordinates(float lon, float lat, QString name);
-  void requestWdbCacheQuery();
-  void cacheRequestDone();
 
   // FIMEX
 

@@ -96,7 +96,6 @@ FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
   variableBookmarkfile = setup.files.fimexBookmarks;
 
 
-  bookmarkTools.setMaxRecords(setup.wdb.maxRecord);
   bookmarkTools.setModel(model);
   bookmarkTools.addFolder("TRASH",true);
   bookmarkTools.addFolder("RECORD",true);

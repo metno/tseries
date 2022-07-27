@@ -18,7 +18,6 @@ using namespace std;
 
 WdbBookmarkTools::WdbBookmarkTools()
 {
-  maxRecords=30;
   record=0;
   folders.clear();
   directoryIcon.addPixmap(QPixmap(directory_xpm));
@@ -231,9 +230,6 @@ void WdbBookmarkTools::cutRecord()
 
   if(!item                          ) return;
   if(!item->hasChildren()           ) return;
-  if( item->rowCount() < maxRecords ) return;
-
-  item->setRowCount(maxRecords);
 
 }
 
@@ -245,9 +241,6 @@ void WdbBookmarkTools::cutSearch()
 
   if(!item                          ) return;
   if(!item->hasChildren()           ) return;
-  if( item->rowCount() < maxRecords ) return;
-
-  item->setRowCount(maxRecords);
 
 }
 

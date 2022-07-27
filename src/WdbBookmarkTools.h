@@ -52,7 +52,6 @@ private:
   QIcon trashIcon;
   QIcon searchIcon;
   int record;
-  int maxRecords;
   std::vector<std::string> buffer;
 
 public:
@@ -66,7 +65,6 @@ public:
   void cutRecord();
   void cutSearch();
   void addSearch(std::string searchPos);
-  void setMaxRecords(int m) { maxRecords=m;}
   std::string createRecordName(float f,char pos, char neg);
   QStandardItem * createFolder(std::string folder,bool ignoreFromSave);
   std::vector<std::string> getAllBookmarks();

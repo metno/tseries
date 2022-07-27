@@ -101,7 +101,6 @@ public:
   FimexTab(QWidget*,QString language);
 
   QString setStyles(const QStringList& qlist);
-  void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat);
 
   miCoordinates coordinates() const;
   void setActiveCacheRequest(bool b) { activeCacheRequest=b;}

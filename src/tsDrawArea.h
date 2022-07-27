@@ -81,7 +81,6 @@ private:
   bool prepareKlimaData(std::vector<ParId>&);
   bool prepareMoraData(std::vector<ParId>&);
   bool prepareFimexData();
-  bool prepareWdbData();
   bool showGridLines;
   int  maxProg;
   int  minProg;

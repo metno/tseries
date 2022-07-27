@@ -12,8 +12,6 @@
 [\fB\-l\fR \fIlang\fR]
 [\fB\-T\fR \fItitle\fR]
 [\fB\-I\fR \fIinstancename\fR]
-[\fB\-H\fR \fIwdbhost\fR]
-[\fB\-u\fR \fIwdbuser\fR]
 [\fB\-d\fR \fIsection1:key1=token1 section2:key2=token2\fR]
 .Sh DESCRIPTION
 .Nm

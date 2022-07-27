@@ -56,7 +56,6 @@ qtsSidebar::qtsSidebar(QString language)
   fimexRexordToggled = false;
   tsSetup s;
 
-  wdbDisabled   = s.disabled.wdb;
   fimexDisabled = s.disabled.fimex;
   hdfDisabled   = s.disabled.hdf;
 
@@ -76,26 +75,6 @@ qtsSidebar::qtsSidebar(QString language)
     connect(stationtab,SIGNAL(changestation(const QString&)), this, SIGNAL(changestation(  const QString& )));
     stationIdx = tabs->addTab(stationtab,tr("Stations"));
   }
-
-  // The WDB Tabulator
-
-
-  wdbtab  = new CoordinateTab(this);
-
-  if(wdbDisabled) {
-    wdbtab->hide();
-  } else {
-
-    connect(wdbtab,SIGNAL(changestyle( const QString&)), this, SIGNAL(changeWdbStyle(const QString& )));
-    connect(wdbtab,SIGNAL(changemodel( const QString&)), this, SIGNAL(changeWdbModel(const QString& )));
-    connect(wdbtab,SIGNAL(changerun(   const QString&)), this, SIGNAL(changeWdbRun(  const QString& )));
-    connect(wdbtab,SIGNAL(changelevel( const QString&)), this, SIGNAL(changeWdbLevel(const QString& )));
-    connect(wdbtab,SIGNAL(changeCoordinates(float, float,QString)), this, SIGNAL(changeCoordinates(float,float,QString)));
-    QString dbname= s.wdb.host.c_str();
-    dbname.truncate( dbname.indexOf(".") );
-    wdbIdx     = tabs->addTab(wdbtab,dbname);
-  }
-
 
   fimextab = new FimexTab(this, language);
   if(fimexDisabled) {
@@ -175,9 +154,6 @@ qtsSidebar::qtsSidebar(QString language)
   connect(filterB,SIGNAL(toggled(bool)), this, SIGNAL(filterToggled(bool)));
 
 
-  addWdbBookmarkButton =  new QPushButton(add_pix, "",this);
-  connect(addWdbBookmarkButton,SIGNAL(clicked()),wdbtab, SLOT(addBookmarkFolder()));
-
 
   addFimexBookmarkButton =  new QPushButton(add_pix, "",this);
   connect(addFimexBookmarkButton,SIGNAL(clicked()),fimextab, SLOT(addBookmarkFolder()));
@@ -200,9 +176,6 @@ qtsSidebar::qtsSidebar(QString language)
 
 
 
-  cacheQueryButton  =  new QPushButton(refresh_pix, "",this);
-  connect(cacheQueryButton,SIGNAL(clicked()),    this, SLOT(chacheQueryActivated()));
-
   // LAYOUT ---------------------------
 
   QVBoxLayout * vlayout = new QVBoxLayout(this);
@@ -220,17 +193,13 @@ qtsSidebar::qtsSidebar(QString language)
 
   connectStatus = new QLabel(this);
   connectStatus->setMinimumSize(50,32);
-  cacheQueryButton->setMinimumSize(32,32);
-  busyLabel     = new QMovie(s.wdb.busyMovie.c_str());
 
   QHBoxLayout * blayout = new QHBoxLayout();
-  blayout->addWidget(addWdbBookmarkButton);
   blayout->addWidget(addFimexBookmarkButton);
   blayout->addWidget(recordFimexButton);
 
   blayout->addWidget(collapseFimexButton);
   blayout->addWidget(expandFimexButton);
-  blayout->addWidget(cacheQueryButton);
   blayout->addWidget(connectStatus);
   blayout->addStretch(2);
   blayout->addWidget(observationB);
@@ -241,7 +210,6 @@ qtsSidebar::qtsSidebar(QString language)
   blayout->addWidget(clientbutton);
   vlayout->addLayout(blayout);
 
-  addWdbBookmarkButton->hide();
   addFimexBookmarkButton->hide();
   recordFimexButton->hide();
   collapseFimexButton->hide();
@@ -249,8 +217,6 @@ qtsSidebar::qtsSidebar(QString language)
 
 
   progress->hide();
-
-  cacheQueryButton->hide();
 }
 
 void qtsSidebar::recordToggled(bool record)
@@ -272,11 +238,7 @@ void qtsSidebar::setTab(int tabIdx)
 
 void qtsSidebar::setCoordinates(float lon, float lat)
 {
-  if(actualIndex==wdbIdx) {
-    wdbtab->setCoordinates(lon, lat);
-  } else {
-    fimextab->setCoordinates(lon, lat);
-  }
+  fimextab->setCoordinates(lon, lat);
 }
 
 
@@ -327,36 +289,18 @@ QString  qtsSidebar::fillList(const vector<std::string>& v, const StationTab::lE
     return QString("");
   }
 
-  if(l==StationTab::CMWDBSTYLE)
-    return wdbtab->setStyles(qlist);
-
   return stationtab->fillList(qlist,l);
 }
 
-///  Wdb ---------------------------
 
 
 void qtsSidebar::tabChanged(int idx)
 {
   actualIndex=idx;
-  if(idx==wdbIdx){
-    addWdbBookmarkButton->show();
-    cacheQueryButton->show();
-    addFimexBookmarkButton->hide();
-    recordFimexButton->hide();
-    collapseFimexButton->hide();
-    expandFimexButton->hide();
-    setObsInfo("");
-    targetB->show();
-    filterB->hide();
-    emit changetype(tsRequest::WDBSTREAM);
-
-  } else if (idx==stationIdx) {
-    addWdbBookmarkButton->hide();
+  if (idx == stationIdx) {
     addFimexBookmarkButton->hide();
     collapseFimexButton->hide();
     expandFimexButton->hide();
-    cacheQueryButton->hide();
     recordFimexButton->hide();
     targetB->show();
     filterB->show();
@@ -368,8 +312,6 @@ void qtsSidebar::tabChanged(int idx)
     recordFimexButton->show();
     collapseFimexButton->show();
     expandFimexButton->show();
-    addWdbBookmarkButton->hide();
-    cacheQueryButton->hide();
     targetB->show();
     filterB->hide();
     recordToggled(fimexRexordToggled);
@@ -378,13 +320,6 @@ void qtsSidebar::tabChanged(int idx)
 }
 
 
-
-void qtsSidebar::enableWdb(bool has_wdb)
-{
-  wdbtab->setEnabled(has_wdb);
-  int wdbtabindex =  tabs->indexOf(wdbtab);
-  tabs->setTabEnabled(wdbtabindex,has_wdb);
-}
 
 
 void qtsSidebar::enableFimex(bool has_fimex)
@@ -397,32 +332,8 @@ void qtsSidebar::enableFimex(bool has_fimex)
 
 
 
-void qtsSidebar::enableBusyLabel(bool enable)
-{
-  if(enable) {
-    connectStatus->setMovie(busyLabel);
-    busyLabel->start();
-  } else {
-    connectStatus->clear();
-  }
-}
 
 
-
-
-bool qtsSidebar::restoreWdbFromLog(std::string mod, std::string sty, double lat, double lon, std::string run,std::string posname)
-{
-  if(!wdbtab->isEnabled()) {
-    cout << "WDB-tab disabled log information discarded" << endl;
-    return false;
-  }
-
-  wdbtab->setStyle( sty.c_str() );
-  wdbtab->setModel( mod.c_str() );
-  wdbtab->setRun(   run.c_str() );
-  wdbtab->setCoordinates(lon,lat,posname.c_str());
-  return true;
-}
 
 bool qtsSidebar::restoreFimexFromLog(std::string mod, std::string sty, std::string expanded)
 {
@@ -437,38 +348,9 @@ bool qtsSidebar::restoreFimexFromLog(std::string mod, std::string sty, std::stri
 }
 
 
-void qtsSidebar::enableCacheButton(bool enable, bool force, unsigned long querytime)
-{
-
-  if(wdbtab->getActiveCacheRequest() && !force) return;
-  bool cacheenabled = cacheQueryButton->isEnabled();
-
-  if  (!enable) {
-    if (!cacheenabled ) return;
-    cacheQueryButton->setToolTip( QString("WDB Query is fast enough ( %1 ms ) query caching disabled ").arg(querytime) );
-  } else {
-    cacheQueryButton->setToolTip( QString("WDB Query is slow ( %1 ms )- query caching enabled").arg(querytime) );
-  }
-
-  cacheQueryButton->setEnabled(enable);
-}
-
-
-void qtsSidebar::chacheQueryActivated()
-{
-  wdbtab->setActiveCacheRequest(true);
-
-  cacheQueryButton->setToolTip( QString("WDB caching already done for this model"));
-  cacheQueryButton->setEnabled(false);
-
-  enableBusyLabel(true);
-  Q_EMIT requestWdbCacheQuery();
-}
 
 void qtsSidebar::writeBookmarks()
 {
-  if(wdbtab)
-    wdbtab->writeBookmarks();
   if(fimextab)
     fimextab->writeBookmarks();
 }
