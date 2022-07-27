@@ -158,11 +158,6 @@ void qtsMain::makeFileMenu()
   connect(rasterAct, SIGNAL(triggered()), this, SLOT( raster() ));
   menu_file->addAction(rasterAct);
 
-  filterParametersAct = new QAction(tr("Change Observation filter"), this);
-  connect(filterParametersAct, SIGNAL(triggered()), this,
-      SLOT( manageParameterFilter() ));
-  menu_file->addAction(filterParametersAct);
-
   filterFimexAct = new QAction(tr("Change Fimex filter"), this);
   connect(filterFimexAct, SIGNAL(triggered()), this,
       SLOT( manageFimexFilter() ));
@@ -884,20 +879,6 @@ void qtsMain::changeObservationStart()
     qstart.getDate(&year,&month,&day);
     start.setTime(year,month,day,0,0,0);
     work->setObservationStartTime(start);
-  }
-}
-
-
-void qtsMain::manageParameterFilter()
-{
-  set<string>    blacklist= work->getKlimaBlacklist();
-  vector<string> allklimaParameters = work->getAllKlimaParameters();
-
-  ParameterFilterDialog * filterdialog = new ParameterFilterDialog(blacklist,allklimaParameters, this);
-
-  if (filterdialog->exec()) {
-    blacklist=filterdialog->result();
-    work->setKlimaBlackList(blacklist);
   }
 }
 

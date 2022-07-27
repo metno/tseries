@@ -83,7 +83,6 @@ private:
   QAction * tmarkAct;
   QAction * fontAct;
   QAction * lockHoursToModelAct;
-  QAction * filterParametersAct;
   QAction * filterFimexAct;
   QAction * observationStartAct;
   QAction * showGridLinesAct;
@@ -179,7 +178,6 @@ private Q_SLOTS:
   void clearFimexList();
   void showHelp();
   void showNews();
-  void manageParameterFilter();
   void manageFimexFilter();
   void changeObservationStart();
   void chooseFont();

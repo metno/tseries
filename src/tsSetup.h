@@ -108,9 +108,8 @@ public:
   };
 
   struct disablestruct {
-    bool klima;
     bool mora;
-    disablestruct() : klima(false), mora(false) {}
+    disablestruct() : mora(false) {}
   };
 
   struct klstruct {

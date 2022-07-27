@@ -89,44 +89,6 @@ bool tsDrawArea::prepareData()
   return prepareFimexData();
 }
 
-bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
-{
-  METLIBS_LOG_SCOPE();
-  if (setup.disabled.klima)
-    return false;
-
-  forecastLength= theData->timeLineLengthInHours();
-
-  if (showObservations) {
-    vector<ParId> obsParameters, unresolvedObs;
-    set<ParId> allObservations;
-    miTime lastTime=  theData->timelineEnd();
-
-    for (const ParId& p : inlist) {
-      ParId obsTmp = p;
-      obsTmp.model = "OBS";
-      if(allObservations.count(obsTmp))
-        continue;
-      allObservations.insert(obsTmp);
-      obsParameters.push_back(obsTmp);
-    }
-
-
-    bool result = pets::fetchDataFromKlimaDB(theData, data->getKlimaStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
-    if (!result) {
-      METLIBS_LOG_ERROR("Error in fetchDataFromKlimaDB");
-    }
-
-    if (unresolvedObs.size()) {
-      theData->makeParameters(unresolvedObs, true);
-    }
-  }
-
-  lengthChanged = true;
-  totalLength = theData->timeLineLengthInHours();
-  return true;
-}
-
 bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
 {
   METLIBS_LOG_SCOPE();
@@ -340,7 +302,6 @@ bool tsDrawArea::prepareFimexData()
     }
 
     // Find any missing params
-    prepareKlimaData(inlist);
     prepareMoraData(inlist);
 
     if (outlist.size())

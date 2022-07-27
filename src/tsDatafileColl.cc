@@ -26,7 +26,9 @@
  along with Tseries; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 #include "tsDatafileColl.h"
+
 #include "tsSetup.h"
 
 #include <tsData/ptAsciiStream.h>
@@ -87,13 +89,11 @@ bool Union(const dataset& d1, const dataset& d2, dataset& result)
 }
 
 DatafileColl::DatafileColl()
-    : klimaStream(0)
-    , moraStream(0)
+    : moraStream(0)
     , tolerance(1000.0)
     , streams_opened(false)
     , fimex_streams_opened(false)
 {
-  openKlimaStream();
   openMoraStream();
   initialiseFimexPositions();
   initialiseFimexParameters();
@@ -102,7 +102,6 @@ DatafileColl::DatafileColl()
 DatafileColl::~DatafileColl()
 {
   closeStreams();
-  closeKlimaStream();
   closeMoraStream();
 }
 
@@ -572,28 +571,6 @@ bool DatafileColl::findpos(const std::string& name, int& idx)
   // pos not found, increase index by one for frontal insertion
   idx = max + 1;
   return false;
-}
-
-/////// Klima database -----------------------------
-
-void DatafileColl::openKlimaStream()
-{
-  tsSetup setup;
-  if (klimaStream == NULL)
-    klimaStream = new pets::KlimaStream(setup.klima.url, setup.klima.parameters,
-      setup.klima.normals,setup.klima.maxDistance);
-}
-
-void DatafileColl::closeKlimaStream()
-{
-  try {
-    if (klimaStream != NULL)
-      delete klimaStream;
-  } catch (exception& e) {
-    cerr << " Exception caught while trying to delete klimaStream " << e.what()
-                        << endl;
-  }
-  klimaStream = NULL;
 }
 
 /////// SMHI mora database -----------------------------

@@ -108,10 +108,6 @@ public:
   void toggleLockHoursToModel(bool lockHoursToModel) { if(sidebar) sidebar->toggleLockHoursToModel(lockHoursToModel);}
   void setShowGridLines( bool s ){ if(show) show->setShowGridLines(s); }
 
-  std::set<std::string>    getKlimaBlacklist() const { return data.getKlimaBlacklist();}
-  std::vector<std::string> getAllKlimaParameters() const {return data.getAllKlimaParameters();}
-  void  setKlimaBlackList(std::set<std::string>& bl);
-
   void setObservationStartTime(miutil::miTime st) {show->setObservationStartTime(st); refresh(true);}
   miutil::miTime getObservationStartTime() const { return show->getObservationStartTime(); }
 

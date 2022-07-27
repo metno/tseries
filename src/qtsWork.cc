@@ -179,28 +179,14 @@ void qtsWork::changeStation(const QString& qstr)
   sidebar->changeFimexPosition(qstr);
 }
 
-void  qtsWork::setKlimaBlackList(std::set<std::string>& bl)
-{
-  data.setKlimaBlacklist(bl);
-  refresh(true);
-}
-
 void qtsWork::checkObsPosition(miCoordinates cor)
 {
-  pets::KlimaStation s = data.getNearestKlimaStation(cor);
-
-  if(!s.stationid) {
-    // try mora station
-    pets::MoraStation s;
-    s = data.getNearestMoraStation(cor);
-    if(s.name.empty()) {
-      sidebar->setObsInfo("");
-      return;
-    }
-    sidebar->setObsInfo(s.description().c_str());
-    return; 
+  QString oi;
+  pets::MoraStation s = data.getNearestMoraStation(cor);
+  if (!s.name.empty()) {
+    oi = QString::fromStdString(s.description());
   }
-  sidebar->setObsInfo(s.description().c_str());
+  sidebar->setObsInfo(oi);
 }
 
 void qtsWork::refresh(bool readData)
@@ -229,10 +215,6 @@ void qtsWork::restoreLog()
 
   activeRefresh = true;
   refresh(true);
-
-  std::string observationfilter;
-  c.get("OBSERVATIONFILTER",observationfilter);
-  data.setObservationBlacklistFromString(observationfilter);
 
   std::string timecontrol;
   c.get("TIMECONTROL",timecontrol);
@@ -272,8 +254,6 @@ void qtsWork::collectLog()
 
   c.set("SHOWOBSERVATIONS",sidebar->getObservationsEnabled());
   c.set("TIMECONTROL",sidebar->getTimecontrolLog());
-  c.set("OBSERVATIONFILTER",data.getObservationBlacklistAsString());
-
 
   c.set("FIMEXMODEL",request.getFimexModel());
   c.set("FIMEXSTYLE",request.getFimexStyle());

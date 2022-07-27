@@ -531,9 +531,6 @@ void tsSetup::setPublic(string& key, string& content)
 
   if(key == "DISABLEMORA")
     disabled.mora = setBool(content);
-
-  if(key == "DISABLEKLIMA")
-    disabled.klima = setBool(content);
 }
 
 void tsSetup::setFimexParameter(string& token)

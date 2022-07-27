@@ -39,7 +39,6 @@
 
 #include <tsData/ptDataStream.h>
 #include <tsData/ptParameterDefinition.h>
-#include <tsData/KlimaStream.h>
 #include <tsData/SMHIMoraStream.h>
 #include <tsData/FimexStream.h>
 #include <tsData/FimexTools.h>
@@ -151,7 +150,6 @@ private:
   std::vector<FimexInfo> fimexStreams;    // List of fimex datastreams
   std::vector<FimexFileindex> fimexFileindex;  // list of known files (to check if new ones popped up)
 
-  pets::KlimaStream*     klimaStream;    // the klima database from an url interface
   pets::MoraStream*      moraStream;     // the stream from SMHO observation database 'Mora'
   std::vector<ExtStation> stations;   // List of stations
   std::vector<std::string> datasetname;  // name of dataset
@@ -171,9 +169,6 @@ private:
   void _filestat(std::string&, struct stat&); // get file stats
   bool _isafile(const std::string&); // check if stream is a file
 
-  void openKlimaStream();
-  void closeKlimaStream();
-
   void openMoraStream();
   void closeMoraStream();
 
@@ -187,12 +182,6 @@ protected:
 public:
   DatafileColl();
   ~DatafileColl();
-
-  std::set<std::string>    getKlimaBlacklist() const { return klimaStream->getBlacklist();}
-  std::vector<std::string> getAllKlimaParameters() const {return klimaStream->getAllParameters();}
-  void  setKlimaBlacklist(std::set<std::string>& bl) { klimaStream->setBlacklist(bl);}
-  std::string getObservationBlacklistAsString() {return  klimaStream->getObservationBlacklistAsString() ;}
-  void setObservationBlacklistFromString(std::string blist) { klimaStream->setObservationBlacklistFromString(blist);}
 
   // adds a new dataset
   int  addDataset(std::string);
@@ -234,11 +223,6 @@ public:
     streams_opened = false;
     return b;
   }
-
-  // klima -----------------------
-
-  pets::KlimaStream* getKlimaStream() { return klimaStream;}
-  pets::KlimaStation getNearestKlimaStation(miCoordinates& pos) { return klimaStream->getNearestKlimaStation(pos);}
 
   // SMHI mora --------------------
   pets::MoraStream* getMoraStream() { return moraStream;}
