@@ -47,7 +47,6 @@ tsDrawArea::tsDrawArea(tsRequest* tsr, DatafileColl* tsd, SessionManager* ses, Q
   , diagram(0)
   , theData(0)
   , showGridLines(true)
-  , forceSequentialRead(false)
 {
   minProg = 0;
   maxProg = 300;
@@ -464,9 +463,8 @@ bool tsDrawArea::readFimexData(pets::FimexStream* fimex, double lat, double lon,
   return true;
 }
 
-void tsDrawArea::dataLoad_finished(bool read_success)
+void tsDrawArea::dataLoad_finished(bool /*read_success*/)
 {
-  forceSequentialRead = read_success;
   emit dataread_ended();
   emit post_dataLoad(threadedLoadRequest);
 }

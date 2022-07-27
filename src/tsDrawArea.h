@@ -84,7 +84,6 @@ private:
   bool showGridLines;
   int  maxProg;
   int  minProg;
-  bool forceSequentialRead;
 
   bool readFimexData(pets::FimexStream* fimex, double lat, double lon, std::string stationname,
       std::vector<ParId>& inpars, std::vector<ParId>& outpars, bool sequential_read);
