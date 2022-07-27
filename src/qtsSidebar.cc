@@ -24,7 +24,10 @@
   along with Tseries; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 #include "qtsSidebar.h"
+
+#include "tsSetup.h"
 
 #include <coserver/ClientSelection.h>
 
@@ -33,8 +36,6 @@
 #include <QRegExp>
 #include <QVBoxLayout>
 
-
-#include "tsSetup.h"
 #include "ts_find.xpm"
 #include "ts_filter.xpm"
 #include "view-refresh.xpm"
@@ -46,7 +47,6 @@
 
 #include <iostream>
 
-
 using namespace miutil;
 using namespace std;
 
@@ -54,7 +54,6 @@ qtsSidebar::qtsSidebar(QString language)
 : QWidget()
 {
   fimexRexordToggled = false;
-  tsSetup s;
 
   fimexDisabled = s.disabled.fimex;
   hdfDisabled   = s.disabled.hdf;
@@ -108,7 +107,6 @@ qtsSidebar::qtsSidebar(QString language)
   connect(timecontrol,SIGNAL(minmaxProg(int,int)),this, SIGNAL(minmaxProg(int,int)));
 
 
-
   obsInfo = new QLabel(this);
   obsInfo->setFrameStyle(QFrame::Panel | QFrame::Sunken);
   obsInfo->hide();
@@ -130,6 +128,7 @@ qtsSidebar::qtsSidebar(QString language)
   QPixmap collapse_pix(collapse_xpm);
 
   pluginB = new ClientSelection("TSeries", this);
+  tsSetup s;
   pluginB->client()->setServerCommand(QString::fromStdString(s.server.command));
   pluginB->setClientName(QString::fromStdString(s.server.name));
 
@@ -153,11 +152,8 @@ qtsSidebar::qtsSidebar(QString language)
 
   connect(filterB,SIGNAL(toggled(bool)), this, SIGNAL(filterToggled(bool)));
 
-
-
   addFimexBookmarkButton =  new QPushButton(add_pix, "",this);
   connect(addFimexBookmarkButton,SIGNAL(clicked()),fimextab, SLOT(addBookmarkFolder()));
-
 
   recordFimexButton =  new QPushButton(record_pix, "",this);
   recordFimexButton->setCheckable(true);
@@ -173,9 +169,6 @@ qtsSidebar::qtsSidebar(QString language)
   connect(collapseFimexButton,SIGNAL(clicked()),fimextab, SLOT(collapseAll()));
 
 
-
-
-
   // LAYOUT ---------------------------
 
   QVBoxLayout * vlayout = new QVBoxLayout(this);
@@ -189,7 +182,6 @@ qtsSidebar::qtsSidebar(QString language)
   vlayout->addWidget(obsInfo);
 
   // Buttons -------------------
-
 
   connectStatus = new QLabel(this);
   connectStatus->setMinimumSize(50,32);
@@ -209,12 +201,6 @@ qtsSidebar::qtsSidebar(QString language)
   clientbutton->setDefaultAction(pluginB->getToolButtonAction());
   blayout->addWidget(clientbutton);
   vlayout->addLayout(blayout);
-
-  addFimexBookmarkButton->hide();
-  recordFimexButton->hide();
-  collapseFimexButton->hide();
-  expandFimexButton->hide();
-
 
   progress->hide();
 }
@@ -240,7 +226,6 @@ void qtsSidebar::setCoordinates(float lon, float lat)
 {
   fimextab->setCoordinates(lon, lat);
 }
-
 
 void qtsSidebar::newTimeRange(int total,int fcast)
 {
@@ -272,7 +257,7 @@ QString  qtsSidebar::fillList(const vector<std::string>& v, const StationTab::lE
 {
   QStringList qlist;
   for(unsigned int i=0;i<v.size();i++) {
-    qlist << v[i].c_str();
+    qlist << QString::fromStdString(v[i]);
   }
 
   if(l==StationTab::CMFIMEXSTYLE)
@@ -292,8 +277,6 @@ QString  qtsSidebar::fillList(const vector<std::string>& v, const StationTab::lE
   return stationtab->fillList(qlist,l);
 }
 
-
-
 void qtsSidebar::tabChanged(int idx)
 {
   actualIndex=idx;
@@ -307,7 +290,7 @@ void qtsSidebar::tabChanged(int idx)
     setObsInfo("");
 
     emit changetype(tsRequest::HDFSTREAM);
-  } else if (idx==fimexIdx) {
+  } else if (idx == fimexIdx) {
     addFimexBookmarkButton->show();
     recordFimexButton->show();
     collapseFimexButton->show();
@@ -318,51 +301,25 @@ void qtsSidebar::tabChanged(int idx)
     Q_EMIT changetype(tsRequest::FIMEXSTREAM);
   }
 }
-
-
-
-
-void qtsSidebar::enableFimex(bool has_fimex)
-{
-  fimextab->setEnabled(has_fimex);
-  int fimextabindex =  tabs->indexOf(fimextab);
-  tabs->setTabEnabled(fimextabindex,has_fimex);
-}
-
-
-
-
-
-
-
 bool qtsSidebar::restoreFimexFromLog(std::string mod, std::string sty, std::string expanded)
 {
-  if(!fimextab)
-    return false;
-
-  fimextab->setStyle(sty.c_str());
-  fimextab->setModel(mod.c_str());
+  fimextab->setStyle(QString::fromStdString(sty));
+  fimextab->setModel(QString::fromStdString(mod));
   fimextab->setExpandedDirs(expanded);
-
   return true;
 }
 
-
-
 void qtsSidebar::writeBookmarks()
 {
-  if(fimextab)
-    fimextab->writeBookmarks();
+  fimextab->writeBookmarks();
 }
 
 void qtsSidebar::setProgress(int progr, std::string text)
 {
-
-  QString txt(text.c_str());
+  QString txt = QString::fromStdString(text);
 
   progressHeader->setText(QString("<b>Leser Data for:  %1</b>").arg(txt.section(':',0,0)));
   progressHeader->show();
-
 
   progress->show();
   progress->setValue(progr);

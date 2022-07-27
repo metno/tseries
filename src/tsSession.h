@@ -33,10 +33,6 @@
 #include "tsSessionOptions.h"
 #include "tsRequest.h"
 
-#include <puTools/miTime.h>
-
-#include <pets2/ptGlobals.h>
-#include <tsData/ptParameterDefinition.h>
 #include <pets2/ptStyle.h>
 
 #include <string>
@@ -74,8 +70,8 @@ private:
   std::vector<styledata> styles;
 
   bool checkEnvironment(std::string& t);
-public:
 
+public:
   // get defined stylenames, return number of style
   int getStyleTypes(std::vector<std::string>& stylenam, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
   // get a PETS style by name
@@ -89,13 +85,11 @@ public:
   bool getShowOption(SessionOptions&, int, Model, Run);
   bool getShowOption(SessionOptions&,const tsRequest *, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
 
-
   // get a list of available models for a given styleindex
   int getModels(const std::string& s,
       std::map<std::string,Model>& modid,
       std::vector<std::string>& modname,
       SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
-
 
   // get a list of available runs for style/model
   int getRuns(const int sidx, const int midx,

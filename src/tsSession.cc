@@ -42,22 +42,17 @@ static const pets2::ptStyle emptysty;
 
 int SessionManager::getStyleTypes(vector<std::string>& stylename,DiagramTab tab)
 {
-  if (styles.size()){
-    for (unsigned int i=0; i<styles.size();i++){
-      if(styles[i].diagramtab == tab)
-        stylename.push_back(styles[i].stylename);
-    }
-    return (signed int)styles.size();
-  } else return 0;
+  for (const auto& s : styles) {
+    if (s.diagramtab == tab)
+      stylename.push_back(s.stylename);
+  }
+  return styles.size();
 }
-
-
 
 const pets2::ptStyle& SessionManager::getStyle(const std::string name,DiagramTab tab)
 {
   return getStyle( getStyleIndex(name, tab) );
 }
-
 
 int SessionManager::getStyleIndex(const std::string name,DiagramTab tab)
 {
@@ -68,10 +63,8 @@ int SessionManager::getStyleIndex(const std::string name,DiagramTab tab)
   return -1;
 }
 
-
-
-const pets2::ptStyle& SessionManager::getStyle(int idx){
-
+const pets2::ptStyle& SessionManager::getStyle(int idx)
+{
   if (idx>=0 && idx <(signed int)styles.size()){
     return styles[idx].style;
   } else {
@@ -81,27 +74,23 @@ const pets2::ptStyle& SessionManager::getStyle(int idx){
 
 int SessionManager::getModels(const std::string& stylename,
     map<std::string,Model>& modid,
-    vector<std::string>& modname, DiagramTab tab){
-  int midx;
-  int idx = -1;
-  for (unsigned int i=0; i<styles.size();i++)
-    if(styles[i].diagramtab == tab)
-      if (stylename==styles[i].stylename)
-        idx = i;
+    vector<std::string>& modname, DiagramTab tab)
+{
+  const int idx = getStyleIndex(stylename, tab);
   modid.clear();
 
   // return models contained in given style
   if (idx>=0 && idx <(signed int)styles.size()){
     if (styles[idx].modelchoice){
       for (int i=0; i<(signed int)styles[idx].modelidx.size();i++){
-        midx = styles[idx].modelidx[i];
+        int midx = styles[idx].modelidx[i];
         modname.push_back(models[midx].modelname);
         modid[models[midx].modelname] =  models[midx].modelid;
       }
       return modname.size();
     } else { // style does not permit modelchoices, but it still needs models!!
       for (unsigned int i=0; i<styles[idx].fullparams.size();i++){
-        midx = styles[idx].fullparams[i].midx;
+        int midx = styles[idx].fullparams[i].midx;
         modname.push_back(models[midx].modelname);
         modid[models[midx].modelname] =  models[midx].modelid;
       }
@@ -117,10 +106,10 @@ int SessionManager::getModels(const std::string& stylename,
   return 0;
 }
 
-
 int SessionManager::getRuns(const int sidx, const int /*midx*/,
     vector<Run>& runid,
-    vector<std::string>& runname){
+    vector<std::string>& runname)
+{
   runid.clear();
   runname.clear();
 
@@ -149,7 +138,6 @@ int SessionManager::getRuns(const int sidx, const int /*midx*/,
   }
   return runname.size();
 }
-
 
 bool SessionManager::getShowOption(SessionOptions& opt,
     int idx,
@@ -217,25 +205,19 @@ bool SessionManager::getShowOption(SessionOptions& opt,
 
 bool SessionManager::checkEnvironment(std::string& t)
 {
-  if (!miutil::contains(t, "${"))
+  std::string::size_type start = t.find("${");
+  if (start == std::string::npos)
     return false;
-
-  int start = t.find("${",0) + 2;
-  int stop  = t.find("}",start);
-
-  if (stop < start) {
-    cerr << "Missing end }" << endl;
+  start += 2;
+  std::string::size_type stop  = t.find("}", start);
+  if (stop == std::string::npos) {
+    METLIBS_LOG_ERROR("Missing end }");
     return false;
   }
 
-  std::string s = t.substr(start, stop-start);
-  std::string r = std::string("${") + s + "}";
-
-  s = miutil::to_upper(s);
-
-  std::string n = getenv(s.c_str());
-
-  miutil::replace(t, r,n);
+  const std::string envvar = t.substr(start, stop - start);
+  const std::string envval = miutil::from_c_str(getenv(envvar.c_str()));
+  t.replace(start - 2, stop - start + 3, envval);
   return true;
 }
 
@@ -247,7 +229,6 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
   const int f_modelindependent= 4;
   const int f_modelspecific= 5;
 
-  ifstream sfile;
   std::string buf, keyw, argu;
   vector<std::string> parts;
 
@@ -272,15 +253,13 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
   styles.clear();
   models.clear();
 
-  //   buf.setMaxIstream(150);
-
-  while (sfile.good()){
-    //     sfile >> buf;
-    getline(sfile,buf);
+  while (getline(sfile,buf)) {
     miutil::trim(buf);
     checkEnvironment(buf);
     // discard empty lines and comments
-    if (!buf.length() || buf[0]=='#') continue;
+    if (!buf.length() || buf[0]=='#')
+      continue;
+
     // check for commands (keyword in brackets)
     if (buf[0]=='['){
       if (miutil::contains(buf, "DIAGRAM")){
@@ -288,17 +267,12 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
         if (miutil::contains(buf, "FIMEX"))
           sdata.diagramtab = ADD_TO_FIMEX_TAB;
 
-
         // Starting new diagram-definition
         sdata.modelchoice= false;
-        sdata.modelidx.erase(sdata.modelidx.begin(),
-            sdata.modelidx.end());
-        sdata.params.erase(sdata.params.begin(),
-            sdata.params.end());
-        sdata.fullparams.erase(sdata.fullparams.begin(),
-            sdata.fullparams.end());
-        pdata.params.erase(pdata.params.begin(),
-            pdata.params.end());
+        sdata.modelidx.clear();
+        sdata.params.clear();
+        sdata.fullparams.clear();
+        pdata.params.clear();
         status= f_diagram;
 
       } else if (miutil::contains(buf, "ADD")){
@@ -306,9 +280,8 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
           // Add a new diagram
           styles.push_back(sdata);
           // read style
-          if ((not styles[nums].stylefile.empty()))
-            styles[nums].style.readStyle(styles[nums].stylefile,
-                verbose);
+          if (!styles[nums].stylefile.empty())
+            styles[nums].style.readStyle(styles[nums].stylefile, verbose);
           else
             cerr << "ptStyle::readStyle. name of stylefile undefined" << endl;
           nums++;
@@ -385,7 +358,8 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
             pdata.midx= i;
             // set model for parameters already defined
             m= pdata.params.size();
-            for (j=0; j<m; j++) pdata.params[j].model= model;
+            for (j=0; j<m; j++)
+              pdata.params[j].model= model;
           }
           break;
         }
@@ -411,5 +385,4 @@ void SessionManager::readSessions(const std::string& fname,const std::string& st
       continue;
     }
   }
-  sfile.close();
 }

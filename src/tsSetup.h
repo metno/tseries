@@ -107,7 +107,6 @@ public:
     std::string tseries;
   };
 
-
   struct disablestruct {
     bool hdf;
     bool fimex;
@@ -161,7 +160,6 @@ public:
     std::string               xmlSyntax; // How to parse the result from externalPosService, default metno
     std::vector<std::string>  filters;
   };
-
 
   /// Struct containing coserver-info
   struct svstruct {

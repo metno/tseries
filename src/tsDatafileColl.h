@@ -189,7 +189,6 @@ public:
   DatafileColl();
   ~DatafileColl();
 
-
   std::set<std::string>    getKlimaBlacklist() const { return klimaStream->getBlacklist();}
   std::vector<std::string> getAllKlimaParameters() const {return klimaStream->getAllParameters();}
   void  setKlimaBlacklist(std::set<std::string>& bl) { klimaStream->setBlacklist(bl);}
@@ -202,7 +201,7 @@ public:
   int  addStream(const std::string,const std::string,
       const std::string, const int, const int, const std::string, const std::string="");
   // opens streams containing this model
-  bool openStreams(const std::string mod);
+  bool openStreams(const std::string& mod);
   // opens one stream
   bool openStream(const int);
   // opens all streams in collection
@@ -253,7 +252,7 @@ public:
   std::vector<std::string> getFimexTimes(const std::string& model);
 
   pets::FimexStream* getFimexStream(const std::string& model, const std::string& run);
-  bool has_fimex_stream() const { return fimex_streams_opened;}
+
   // returns true if the currentModel has an update (reloads the active runtime list in the GUI)
   bool updateFimexStreams(std::string currentModel);
 };

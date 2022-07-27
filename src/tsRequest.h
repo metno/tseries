@@ -38,7 +38,7 @@ public:
 
 private:
   std::string mod_;
-  int              run_;
+  int run_;
   std::string pos_;
   std::string sty_;
 
@@ -46,14 +46,12 @@ private:
 
   Streamtype        streamtype;
 
-
   double            fimexLat;
   double            fimexLon;
   std::string  fimexModel;
   std::string  fimexStyle;
   std::string  fimexName;
   std::string  fimexRun;
-
 
   bool setString(const std::string&, std::string&);
 
@@ -68,23 +66,22 @@ public:
   void setType(tsRequest::Streamtype s);
   bool setRun(int);
 
-  std::string model()     const { return mod_;}
-  std::string style()     const { return sty_;}
-  int              run()       const { return run_;}
-  std::string pos()       const { return pos_;}
-  std::string posname()   const { return posname_;}
+  const std::string& model() const { return mod_; }
+  const std::string& style() const { return sty_; }
+  int run() const { return run_; }
+  const std::string& pos() const { return pos_; }
+  const std::string& posname() const { return posname_; }
   tsRequest::Streamtype type() const { return streamtype;}
-  std::string file(const std::string type) const;
+  std::string file(const std::string& type) const;
 
-  bool setFimexModel(std::string nmod) { return setString(nmod,fimexModel);  }
-  bool setFimexStyle(std::string nsty) { return setString(nsty,fimexStyle);  }
-  bool setFimexRun(  std::string nrun) { return setString(nrun,fimexRun);    }
-  bool setFimexLocation(double flat,double flon, std::string name);
+  bool setFimexModel(const std::string& nmod) { return setString(nmod, fimexModel); }
+  bool setFimexStyle(const std::string& nsty) { return setString(nsty, fimexStyle); }
+  bool setFimexRun(const std::string& nrun) { return setString(nrun, fimexRun); }
+  bool setFimexLocation(double flat, double flon, const std::string& name);
 
-
-  std::string getFimexModel()   const { return fimexModel; }
-  std::string getFimexStyle()   const { return fimexStyle; }
-  std::string getFimexRun()      const { return fimexRun; }
+  const std::string& getFimexModel() const { return fimexModel; }
+  const std::string& getFimexStyle() const { return fimexStyle; }
+  const std::string& getFimexRun() const { return fimexRun; }
   bool getFimexLocation(double& lat, double& lon, std::string& name);
 
   std::string getFimexInfo();

@@ -116,13 +116,6 @@ public:
 
   void setCoordinates(float lon, float lat);
 
-  // Fimex
-
-  void enableFimex(bool);
-
-  void setFimexModels(const QStringList& newModels){ fimextab->setModels(newModels);    }
-  void setFimexRuns(const QStringList& newRuns)    { fimextab->setRuns(newRuns);        }
-
   // visible positions (for diana)
   QList<QStringList> getFimexPositions()
     { return fimextab->getPoslist(); }

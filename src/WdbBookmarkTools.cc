@@ -1,20 +1,23 @@
 #include "WdbBookmarkTools.h"
-#include <fstream>
-#include <iostream>
-#include <boost/algorithm/string.hpp>
+
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/trim.hpp>
+
 #include "boost/date_time/posix_time/posix_time.hpp"
+
+#include <QStringList>
+
+#include <fstream>
+#include <iostream>
+
 #include "directory.xpm"
 #include "media-record.xpm"
 #include "metno.xpm"
 #include "trashcan.xpm"
 #include "search_folder.xpm"
-#include <QStringList>
 
-
-using namespace std; 
+using namespace std;
 
 WdbBookmarkTools::WdbBookmarkTools()
 {
@@ -25,8 +28,6 @@ WdbBookmarkTools::WdbBookmarkTools()
   metnoIcon.addPixmap(QPixmap(metno_xpm));
   trashIcon.addPixmap(QPixmap(trashcan_xpm));
   searchIcon.addPixmap(QPixmap(search_folder_xpm));
-
-
 }
 
 bool WdbBookmarkTools::read(std::string filename,bool ignoreFromSave)
@@ -55,7 +56,8 @@ void WdbBookmarkTools::addLine(string line,bool ignoreFromSave, bool reverse)
 {
   vector<string> words;
   boost::split( words, line, boost::is_any_of("|") );
-  if(words.size() < 2 ) return;
+  if (words.size() < 2)
+    return;
   string data  = words[1];
   string token = words[0];
   string folder;
@@ -66,7 +68,6 @@ void WdbBookmarkTools::addLine(string line,bool ignoreFromSave, bool reverse)
 
   int size = words.size();
   int last = size-1;
-
 
   for (int col = 0; col < size; ++col) {
     // this is the item
@@ -121,11 +122,8 @@ QStandardItem * WdbBookmarkTools::createFolder(string folder,bool ignoreFromSave
   }
   childItem->setDragEnabled(false);
 
-
   return childItem;
 }
-
-
 
 void WdbBookmarkTools::addFolder(string folder,bool ignoreFromSave)
 {
@@ -143,17 +141,14 @@ void WdbBookmarkTools::addFolder(string folder,bool ignoreFromSave)
   }
 }
 
-
 void WdbBookmarkTools::write(string filename)
 {
-
   cerr << "writing bookmarks to " << filename << endl;
   ofstream out(filename.c_str());
   if(!out) {
     cerr << "Unable to write stationlist to " << filename << endl;
     return;
   }
-
 
   QStandardItem *parentItem = model->invisibleRootItem();
   if(!parentItem->hasChildren()) return;
@@ -174,10 +169,7 @@ void WdbBookmarkTools::write(string filename)
       out << dirname << "." << name.toStdString() << "|" << coor.toStdString() << endl;
     }
   }
-
 }
-
-
 
 std::string WdbBookmarkTools::createRecordName(float f,char pos, char neg)
 {
@@ -188,23 +180,18 @@ std::string WdbBookmarkTools::createRecordName(float f,char pos, char neg)
   int min = int(fdeg);
 
   ostringstream ost;
-  ost << abs(deg) << "° " << abs(min) << "\' " << ( deg >=0 ? pos : neg );
+  ost << abs(deg) << "Â° " << abs(min) << "\' " << ( deg >=0 ? pos : neg );
   return ost.str();
 }
 
-
-
-
 void WdbBookmarkTools::addRecord(float lon,float lat,std::string name)
 {
-
   ostringstream ost;
   ost << "RECORD.";
   if(name.empty()) {
     ost << createRecordName(lon,'E','W') << " " << createRecordName(lat,'N','S');
   } else
     ost << name;
-
 
   ost << "|" << lat << ":" << lon;
   addLine(ost.str(),false,true);
@@ -221,7 +208,6 @@ void WdbBookmarkTools::addSearch(std::string searchPos)
    cutSearch();
 }
 
-
 void WdbBookmarkTools::cutRecord()
 {
   if(!folders.count("RECORD")      ) return;
@@ -230,7 +216,6 @@ void WdbBookmarkTools::cutRecord()
 
   if(!item                          ) return;
   if(!item->hasChildren()           ) return;
-
 }
 
 void WdbBookmarkTools::cutSearch()
@@ -241,39 +226,29 @@ void WdbBookmarkTools::cutSearch()
 
   if(!item                          ) return;
   if(!item->hasChildren()           ) return;
-
 }
-
-
-
 
 std::vector<std::string> WdbBookmarkTools::getAllBookmarks()
 {
   std::vector<std::string> allBookmarks;
 
-
   QStandardItem *parentItem = model->invisibleRootItem();
   if(parentItem->hasChildren()) {
-
     for(int i=0;i<parentItem->rowCount();i++) {
       QStandardItem* item = parentItem->child(i);
-      if(!item->hasChildren()) continue;
-      string dirname= item->text().toStdString();
-      if(dirname=="TRASH") continue;
+      if(!item->hasChildren() || item->text()=="TRASH")
+        continue;
 
       for(int i=0;i<item->rowCount();i++) {
-        string newbookmark = stringFromItem(item->child(i));
-
-        if(newbookmark.empty()) continue;
-        allBookmarks.push_back(newbookmark);
+        const string newbookmark = stringFromItem(item->child(i));
+        if(!newbookmark.empty())
+          allBookmarks.push_back(newbookmark);
       }
     }
   }
+
   return allBookmarks;
-
 }
-
-
 
 void WdbBookmarkTools::copySelected(QModelIndexList indexlist)
 {
@@ -287,7 +262,6 @@ void WdbBookmarkTools::copySelected(QModelIndexList indexlist)
 
     if(!itemstr.empty())
       buffer.push_back(itemstr);
-
   }
 }
 
@@ -314,7 +288,6 @@ void WdbBookmarkTools::removeSelected(QModelIndexList indexlist)
   }
 }
 
-
 void WdbBookmarkTools::paste(QModelIndex index)
 {
   QStandardItem* child = model->itemFromIndex(index);
@@ -339,23 +312,28 @@ QStandardItem* WdbBookmarkTools::itemFromString(std::string line)
 {
   vector<string> words;
   boost::split( words, line, boost::is_any_of("|") );
-  if(words.size() < 2 ) return 0;
-  string data  = words[1];
-  string token = words[0];
+  if (words.size() < 2)
+    return 0;
 
-  QStandardItem *item  = new QStandardItem(token.c_str());
-  item->setData(data.c_str());
+  const string& data  = words[1];
+  const string& token = words[0];
+
+  QStandardItem *item  = new QStandardItem(QString::fromStdString(token));
+  item->setData(QString::fromStdString(data));
   item->setDropEnabled(false);
   return item;
 }
 
 std::string WdbBookmarkTools::stringFromItem(QStandardItem* item)
 {
-  QVariant var         = item->data();
-  QString  coor        = var.toString();
   QString  name        = item->text();
+  if (name.isEmpty())
+    return std::string();
+  QString  coor        = item->data().toString();
+  if (coor.isEmpty())
+    return std::string();
+
   ostringstream ost;
-  if(name.isEmpty() || coor.isEmpty()) return "";
   ost << name.toStdString() << "|" << coor.toStdString();
   return ost.str();
 }

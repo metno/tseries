@@ -75,7 +75,6 @@ public:
   void paste(QModelIndex);
   QStandardItem* itemFromString(std::string line);
   std::string stringFromItem(QStandardItem* item);
-
 };
 
 #endif

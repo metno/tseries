@@ -27,27 +27,29 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 #include "tsDatafileColl.h"
+#include "tsSetup.h"
+
 #include <tsData/ptHDFFile.h>
 #include <tsData/ptAsciiStream.h>
-#include <glob.h>
-#include <time.h>
-#include <string>
-#include <sstream>
-#include "tsSetup.h"
+#ifdef GRIBSTREAM
+#include <tsData/ptGribStream.h>
+#endif
+
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/posix_time/posix_time_io.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#ifdef GRIBSTREAM
-#include <tsData/ptGribStream.h>
-#endif
 #include <set>
+#include <string>
+#include <sstream>
+
+#include <glob.h>
+#include <time.h>
 
 using namespace std;
 using namespace miutil;
 
 // Modify to use timefilter, se GridCollection::makeGridIOinstances() in GridCollection.cc.
-
 
 vector<string> FimexFileindex::findNewFiles()
 {
@@ -151,7 +153,6 @@ int DatafileColl::addStream(const std::string name, const std::string desc,
     } else {
 
       DsInfo dsinfo;
-      //datastreams.push_back(dsinfo);
       dsinfo.streamname = name;
       dsinfo.descript = desc;
       dsinfo.sType = streamtype;
@@ -162,26 +163,22 @@ int DatafileColl::addStream(const std::string name, const std::string desc,
       dsinfo.mtime = 0;
 
       const std::vector<std::string> sp = miutil::split(sparid, ":");
-      int m = sp.size();
-      ParId parid;
-      if (m > MAXMODELSINSTREAM) m = MAXMODELSINSTREAM;
-      dsinfo.numModels = m;
-      for (int i = 0; i < m; i++) {
-        parid = parDef.Str2ParId(sp[i]);
+      dsinfo.numModels = std::min((int)sp.size(), MAXMODELSINSTREAM);
+      for (int i = 0; i < dsinfo.numModels; i++) {
+        ParId parid = parDef.Str2ParId(sp[i]);
         dsinfo.modelList[i] = parid.model;
         dsinfo.runList[i] = parid.run;
       }
 
       datastreams.push_back(dsinfo);
     }
-    //    return datastreams.size();
     return 1;
   } else {
     return -1;
   }
 }
 
-bool DatafileColl::openStreams(const std::string mod)
+bool DatafileColl::openStreams(const std::string& mod)
 {
   if (verbose)
     cout << "- Open streams with model " << mod << endl;
@@ -272,16 +269,13 @@ bool DatafileColl::openStream(const int idx)
 
 bool DatafileColl::openStreams()
 {
-  bool ok = true;
-  //ErrorFlag ef=OK;
-
   if (verbose)
     cout << "- Open streams.." << endl;
   for (unsigned int i = 0; i < datastreams.size(); i++) {
     openStream(i);
   }
   makeStationList();
-  return ok;
+  return true;
 }
 
 void DatafileColl::closeStreams()
@@ -677,7 +671,6 @@ void DatafileColl::initialiseFimexParameters()
   pets::FimexStream::addToAllParameters(setup.fimex.filters);
 }
 
-
 vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
 {
   vector<std::string> runtimes;
@@ -688,7 +681,6 @@ vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
       cerr << "Indexing file " << it->streamname << endl;
 
       if (it->run.empty()) {
-
         try {
             miTime refTime;
             int index = -1;
@@ -729,21 +721,16 @@ vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
                streamname.erase(0,n+1);
 
              it->run = streamname;
-
           }
 
           if (it->dataStream->isOpen())
             fimex_streams_opened=true;
-
         }
         runtimes.push_back(it->run);
-
     }
   }
-
   return runtimes;
 }
-
 
 pets::FimexStream* DatafileColl::getFimexStream(const std::string& model, const std::string& run)
 {
@@ -763,7 +750,6 @@ pets::FimexStream* DatafileColl::getFimexStream(const std::string& model, const 
   throw pets::FimexstreamException(ost.str());
 }
 
-
 bool DatafileColl::updateFimexStreams(std::string currentModel)
 {
   if(!fimex_streams_opened)
@@ -781,12 +767,8 @@ bool DatafileColl::updateFimexStreams(std::string currentModel)
   return currentModelUpdated;
 }
 
-
-
-
 bool DatafileColl::createFimexStreams(FimexFileindex& findex)
 {
-
   FimexInfo finfo;
   finfo.model      = findex.model;
   finfo.sType      = findex.sType;
@@ -800,5 +782,5 @@ bool DatafileColl::createFimexStreams(FimexFileindex& findex)
 
     fimexStreams.back().dataStream = new pets::FimexStream(finfo.streamname, finfo.model, finfo.sType, finfo.configfile);
   }
-  return bool ( streamfilenames.size());
+  return (streamfilenames.size() > 0);
 }

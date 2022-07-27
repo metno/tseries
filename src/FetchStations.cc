@@ -96,8 +96,8 @@ void FetchStations::replyFinished(QNetworkReply* reply)
               <Vto>1988-07-01T06:00:00.000Z</Vto>
               <Pfrom>1930-07-02T06:00:00.000Z</Pfrom>
               <Pto>1988-07-01T06:00:00.000Z</Pto>
-              <Landskap>SkÂne</Landskap>
-              <Lan>SkÂne l‰n</Lan>
+              <Landskap>Sk√•ne</Landskap>
+              <Lan>Sk√•ne l√§n</Lan>
             </Clim>
             <Ikv>
               <Name>Smygehuk</Name>

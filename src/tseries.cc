@@ -86,7 +86,6 @@ int main(int argc, char **argv)
   if(cl.hasFlag('T')) title += " " + cl.arg('T')[0];
   if(cl.hasFlag('I')) instancename = (cl.arg('I')[0]);
 
-
   if(!setup.read(setupfile,site))
     exit(0);
 
@@ -104,9 +103,7 @@ int main(int argc, char **argv)
       setup.overrideToken(*it);
   }
 
-
   if(cl.hasFlag('l')) lang=cl.arg('l')[0];
-
 
   QApplication a( argc, argv );
   QTranslator  myapp( 0 );
@@ -117,9 +114,7 @@ int main(int argc, char **argv)
   if(!setup.gui.style.empty())
     a.setStyle(setup.gui.style.c_str());
 
-
   if(!lang.empty()) {
-
     string qtlang   = "qt_"     +lang;
     string langfile = "tseries_"+lang;
 
@@ -135,9 +130,7 @@ int main(int argc, char **argv)
 
     a.installTranslator( &qt    );
     a.installTranslator( &myapp );
-
   }
-
 
   qtsMain *main = new qtsMain(lang, instancename.c_str());
 

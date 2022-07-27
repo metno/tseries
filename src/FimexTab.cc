@@ -33,6 +33,7 @@
  */
 
 #include "FimexTab.h"
+
 #include "tsSetup.h"
 
 #include <QFont>
@@ -41,7 +42,6 @@
 #include <QEvent>
 #include <QtGui>
 
-#include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
@@ -52,21 +52,14 @@ using namespace std;
 
 FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
 {
-
   tsSetup setup;
-  fetchstations = new FetchStations(setup.fimex.externalPosService.c_str(), lang );
+  fetchstations = new FetchStations(QString::fromStdString(setup.fimex.externalPosService), lang);
 
   connect(fetchstations,SIGNAL(searchResult(std::vector<std::string>)),this,
       SLOT(searchResult(std::vector<std::string>)));
 
-
-
-
-
   recordingPositions=false;
   addToRecord=false;
-
-
 
   activeCacheRequest=false;
   modell    = new QComboBox(this);
@@ -77,7 +70,6 @@ FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
   connect(modell,SIGNAL(activated(const QString&)),    this, SLOT(changeModel(const QString&)));
   connect(runl,SIGNAL(activated(const QString&)),      this, SLOT(changeRun(const QString&)));
 
-
   QStringList head;
   head << tr("Bookmarks");
 
@@ -87,20 +79,15 @@ FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
 
   connect(bookmarks,SIGNAL( customContextMenuRequested ( const QPoint &)), this, SLOT(showContextMenu(const QPoint& )));
 
-
-
-  model     = new QStandardItemModel();
+  model = new QStandardItemModel();
   model->setHorizontalHeaderLabels ( head );
 
-
   variableBookmarkfile = setup.files.fimexBookmarks;
-
 
   bookmarkTools.setModel(model);
   bookmarkTools.addFolder("TRASH",true);
   bookmarkTools.addFolder("RECORD",true);
   bookmarkTools.addFolder("SEARCH",true);
-
 
   bookmarkTools.read(variableBookmarkfile,false);
   bookmarkTools.read(setup.files.commonBookmarks,true);
@@ -111,8 +98,6 @@ FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
 
   bookmarks->setModel(proxyModel);
 
-
-
   bookmarks->setDragDropMode(QAbstractItemView::InternalMove);
   bookmarks->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -120,9 +105,6 @@ FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
   connect(bookmarks, SIGNAL(clicked(QModelIndex)),         this, SLOT(bookmarkClicked(QModelIndex)));
   connect(bookmarks, SIGNAL(expanded(const QModelIndex &)),this, SLOT(poslistChanged(const QModelIndex &)));
   connect(bookmarks, SIGNAL(collapsed(const QModelIndex &)),this, SLOT(poslistChanged(const QModelIndex &)));
-
-
-
 
   cutAction   = new QAction(tr("C&ut..."),  this);
   copyAction  = new QAction(tr("&Copy..."),  this);
@@ -134,19 +116,15 @@ FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
   pasteAction->setShortcut( QKeySequence::Paste  );
   delAction->setShortcut(   QKeySequence::Delete );
 
-
   connect( cutAction,   SIGNAL( triggered() ) , this, SLOT( cut()  ) );
   connect( copyAction,  SIGNAL( triggered() ) , this, SLOT( copy() ) );
   connect( pasteAction, SIGNAL( triggered() ) , this, SLOT( paste()) );
   connect( delAction,   SIGNAL( triggered() ) , this, SLOT( remove()));
 
-
   bookmarks->addAction(cutAction);
   bookmarks->addAction(copyAction);
   bookmarks->addAction(pasteAction);
   bookmarks->addAction(delAction);
-
-
 
   cutAction->setEnabled(true);
   copyAction->setEnabled(true);
@@ -154,13 +132,10 @@ FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
 
   // layout -------------------------------
 
-
-  QVBoxLayout * vlayout     = new QVBoxLayout();  // main layout
-
+  QVBoxLayout * vlayout     = new QVBoxLayout();
   vlayout->addWidget(stylel);
   vlayout->addWidget(modell);
   vlayout->addWidget(runl);
-
   vlayout->addWidget(bookmarks,3);
 
   filter = new ClearLineEdit(this);
@@ -169,8 +144,6 @@ FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
   filter->setPlaceholderText(tr("Set Filter"));
 
   vlayout->addWidget(filter);
-
-
   setLayout(vlayout);
 }
 
@@ -181,11 +154,9 @@ void FimexTab::filterBookmarks(const QString& text)
   emit changePoslist();
 }
 
-
 void FimexTab::setCoordinates(float lon, float lat, QString name)
 {
   cerr << "SET COORDINATES WITH VALUES: " << name.toStdString() << " " << lat << "  :  " << lon << endl;
-
 
   if(fabs(latitude -lat ) < 0.00001 )
     if(fabs(longitude -lon ) < 0.00001 )
@@ -215,7 +186,6 @@ void FimexTab::setCoordinates(float lon, float lat, QString name)
   addToRecord=true;
 }
 
-
 void FimexTab::coordinatesChanged()
 {
   bookmarkTools.addRecord(longitude,latitude,"");
@@ -227,7 +197,6 @@ miCoordinates FimexTab::coordinates() const
   return miCoordinates(longitude, latitude);
 }
 
-
 QString FimexTab::setStyles(const QStringList& qlist)
 {
   QString cur = stylel->currentText();
@@ -235,14 +204,11 @@ QString FimexTab::setStyles(const QStringList& qlist)
   stylel->clear();
   stylel->addItems(qlist);
 
-  if(!cur.isEmpty()) {
-    int idx = stylel->findText(cur);
-    if( idx >= 0)
-      stylel->setCurrentIndex(idx);
+  if(!cur.isEmpty())  {
+    setStyle(cur);
   }
   return stylel->currentText();
 }
-
 
 void FimexTab::setStyle(const QString nstyle)
 {
@@ -277,7 +243,6 @@ void FimexTab::setRun(const QString nrun)
 void FimexTab::writeBookmarks()
 {
   bookmarkTools.write(variableBookmarkfile);
-
 }
 
 void FimexTab::setModels(const QStringList& newmodels)
@@ -329,7 +294,6 @@ void FimexTab::changeRun(const QString& s)
   emit changerun(s);
 }
 
-
 bool FimexTab::findPosition(QString newpos, QModelIndex& found_idx)
 {
   unsigned int num_rows = model->rowCount();
@@ -370,7 +334,6 @@ void FimexTab::changePosition(QString newpos)
   }
 }
 
-
 void FimexTab::bookmarkClicked(QModelIndex idx)
 {
   QStandardItem *item = model->itemFromIndex(proxyModel->mapToSource(idx));
@@ -389,7 +352,6 @@ void FimexTab::bookmarkClicked(QModelIndex idx)
 
   float lat= atof(c[0].c_str());
   float lon= atof(c[1].c_str());
-
 
   addToRecord=false;
 
@@ -418,13 +380,11 @@ std::string FimexTab::getExpandedDirs()
       if(item) {
         ost <<   delimiter << item->text().toStdString();
         delimiter = ",";
-
       }
     }
   }
   return ost.str();
 }
-
 
 void FimexTab::setExpandedDirs(std::string e)
 {
@@ -493,10 +453,8 @@ void FimexTab::recordToggled(bool rec)
   emit newPoslist();
 }
 
-
 void FimexTab::cut()
 {
-
   QItemSelection selections = proxyModel->mapSelectionToSource(bookmarks->selectionModel()->selection());
 
   QModelIndexList selectedIndexes = selections.indexes();
@@ -505,7 +463,6 @@ void FimexTab::cut()
   bookmarkTools.removeSelected(selectedIndexes);
   emit changePoslist();
 }
-
 
 void FimexTab::remove()
 {
@@ -516,7 +473,6 @@ void FimexTab::remove()
   emit changePoslist();
 }
 
-
 void FimexTab::copy()
 {
   QItemSelection selections = proxyModel->mapSelectionToSource(bookmarks->selectionModel()->selection());
@@ -525,13 +481,11 @@ void FimexTab::copy()
   bookmarkTools.copySelected(selectedIndexes);
 }
 
-
 void FimexTab::paste()
 {
   QModelIndex index = bookmarks->currentIndex();
   bookmarkTools.paste(proxyModel->mapToSource(index));
 }
-
 
 void FimexTab::showContextMenu(const QPoint& pos)
 {
@@ -547,7 +501,6 @@ void FimexTab::showContextMenu(const QPoint& pos)
   pmenu.exec(globalPos);
 }
 
-
 void FimexTab::expandAll()
 {
   bookmarks->expandAll();
@@ -560,8 +513,6 @@ void FimexTab::collapseAll()
 
   emit changePoslist();
 }
-
-
 
 bool FilterProxyModel::filterAcceptsRow(int row, const QModelIndex &parent) const
 {
@@ -578,9 +529,6 @@ bool FilterProxyModel::filterAcceptsRow(int row, const QModelIndex &parent) cons
   // do not match other columns
   return false;
 }
-
-
-
 
 void FimexTab::selectFirstPosition()
 {
@@ -618,13 +566,10 @@ void FimexTab::selectFirstPosition()
   }
 }
 
-
-
 void FimexTab::search(QString query)
 {
   fetchstations->getData(query);
 }
-
 
 void FimexTab::searchResult(const std::vector<std::string>& stat)
 {

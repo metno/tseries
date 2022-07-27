@@ -27,8 +27,10 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 #include "tsDrawArea.h"
+
 #include <puMet/miSymbol.h>
 #include <puMet/symbolMaker.h>
+
 #include <pets2/ptSymbolElement.h>
 #include <pets2/ptTimemarkerElement.h>
 
@@ -63,25 +65,13 @@ tsDrawArea::~tsDrawArea()
 {
 }
 
-void tsDrawArea::prepare(bool readData)
+void tsDrawArea::prepare(bool)
 {
-  readData=true;
-
-  if (readData) {
-    if (!prepareData()) {
-      cerr << "tsDrawArea Warning: prepareData failed" << endl;
-      return;
-    }
+  if (prepareData()) {
+    prepareDiagram();
   } else {
-    if (!theData) {
-      if (!prepareData()) {
-        cerr << "tsDrawArea Warning: prepareData failed" << endl;
-        return;
-      }
-    }
+    cerr << "tsDrawArea Warning: prepareData failed" << endl;
   }
-
-  prepareDiagram();
 }
 
 void tsDrawArea::setViewport(ptCanvas* c)
@@ -114,9 +104,7 @@ bool tsDrawArea::prepareData()
   miTime btime, etime;
   //int currunidx = request->run();
 
-  if (theData)
-    delete theData;
-
+  delete theData;
   theData = new ptDiagramData(setup.wsymbols);
 
   // fetch data
@@ -178,25 +166,20 @@ bool tsDrawArea::prepareData()
   return true;
 }
 
-
 bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
 {
-  tsSetup setup;
   if (setup.disabled.klima)
     return false;
 
-  lengthChanged=false;
-  int tmpLength = theData->timeLineLengthInHours();
-  lengthChanged = (tmpLength != forecastLength);
-  forecastLength= tmpLength;
+  forecastLength= theData->timeLineLengthInHours();
 
   if (showObservations) {
     vector<ParId> obsParameters, unresolvedObs;
     set<ParId> allObservations;
     miTime lastTime=  theData->timelineEnd();
 
-    for (vector<ParId>::const_iterator it = inlist.begin(); it != inlist.end(); ++it) {
-      ParId obsTmp = *it;
+    for (const ParId& p : inlist) {
+      ParId obsTmp = p;
       obsTmp.model = "OBS";
       if(allObservations.count(obsTmp))
         continue;
@@ -204,8 +187,6 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
       obsParameters.push_back(obsTmp);
     }
 
-
-    set<ParId>::iterator itr = allObservations.begin();
 
     bool result = pets::fetchDataFromKlimaDB(theData, data->getKlimaStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
     if (!result) {
@@ -217,40 +198,31 @@ bool tsDrawArea::prepareKlimaData(vector<ParId>& inlist)
     }
   }
 
-  tmpLength = theData->timeLineLengthInHours();
- // if (tmpLength != totalLength)
-  lengthChanged=true;
-  totalLength = tmpLength;
+  lengthChanged = true;
+  totalLength = theData->timeLineLengthInHours();
   return true;
 }
 
 bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
 {
-  tsSetup setup;
   if (setup.disabled.mora)
     return false;
 
-  lengthChanged=false;
-  int tmpLength = theData->timeLineLengthInHours();
-  lengthChanged = (tmpLength != forecastLength);
-  forecastLength= tmpLength;
+  forecastLength= theData->timeLineLengthInHours();
 
   if (showObservations) {
     vector<ParId> obsParameters, unresolvedObs;
     set<ParId> allObservations;
     miTime lastTime=  theData->timelineEnd();
 
-    for (vector<ParId>::const_iterator it = inlist.begin(); it != inlist.end(); ++it) {
-      ParId obsTmp = *it;
+    for (const ParId& p : inlist) {
+      ParId obsTmp = p;
       obsTmp.model = "OBS";
       if(allObservations.count(obsTmp))
         continue;
       allObservations.insert(obsTmp);
       obsParameters.push_back(obsTmp);
     }
-
-
-    set<ParId>::iterator itr = allObservations.begin();
 
     bool result = pets::fetchDataFromMoraDB(theData, data->getMoraStream(), obsParameters, unresolvedObs, observationStartTime, lastTime);
     if (!result) {
@@ -262,14 +234,10 @@ bool tsDrawArea::prepareMoraData(vector<ParId>& inlist)
     }
   }
 
-  tmpLength = theData->timeLineLengthInHours();
- // if (tmpLength != totalLength)
-    lengthChanged=true;
-  totalLength = tmpLength;
+  lengthChanged = true;
+  totalLength = theData->timeLineLengthInHours();
   return true;
 }
-
-
 
 void tsDrawArea::prepareDiagram()
 {
@@ -277,9 +245,9 @@ void tsDrawArea::prepareDiagram()
     cerr << "tsDrawArea::prepareDiagram(): !theData  - prepareDiagram failed  " << endl;
     return;
   }
-  if (diagram)
-    delete diagram;
-  diagram = new ptDiagram(&diaStyle,showGridLines);
+
+  delete diagram;
+  diagram = new ptDiagram(&diaStyle, showGridLines);
 
   if (!diagram->attachData(theData)) {
     cerr << "tsDrawArea::prepareDiagram(): !diagram->attachData(theData) - prepareDiagram failed "
@@ -308,6 +276,7 @@ void tsDrawArea::prepareDiagram()
     sev.push_back((SymbolElement*) pe);
     pe = pe->next;
   }
+
   if (!sev.empty()) {
     const int minsymb = setup.wsymbols.minCustom(), maxsymb = setup.wsymbols.maxCustom();
     vector<std::string> symbimages;
@@ -316,20 +285,20 @@ void tsDrawArea::prepareDiagram()
       std::string stmp = setup.path.images + tmpSymbol.picture();
       symbimages.push_back(stmp);
     }
-    for (int i = 0; i < (signed int) sev.size(); i++) {
-      sev[i]->setImages(minsymb, symbimages);
+    for (const auto& s : sev) {
+      s->setImages(minsymb, symbimages);
     }
   }
 }
 
-void tsDrawArea::setTimemark(miTime nt, std::string name)
+void tsDrawArea::setTimemark(const miTime& nt, const std::string& name)
 {
   timemarks[name] = nt;
 }
 
-void tsDrawArea::clearTimemarks(std::string el)
+void tsDrawArea::clearTimemarks(const std::string& el)
 {
-  if ((not !el.empty()))
+  if (el.empty())
     timemarks.clear();
 
   if (timemarks.count(el))
@@ -341,15 +310,11 @@ void tsDrawArea::useTimemarks()
   if (timemarks.empty() || !theData || !diagram)
     return;
 
-  map<std::string, miTime>::iterator itr = timemarks.begin();
   vector<miTime> mark(1);
-
-  for (; itr != timemarks.end(); itr++) {
-    PlotElement* pe = 0;
-    TimemarkerElement* ptm;
-    if ((pe = diagram->findElement(itr->first, pe)) != 0) {
-      ptm = (TimemarkerElement*) pe;
-      mark[0] = itr->second;
+  for (const auto& tm : timemarks) {
+    if (PlotElement* pe = diagram->findElement(tm.first)) {
+      TimemarkerElement* ptm = (TimemarkerElement*) pe;
+      mark[0] = tm.second;
       ptm->setTimes(mark);
     }
   }
@@ -371,9 +336,9 @@ bool tsDrawArea::prepareFimexData()
 {
   std::string fimexname;
   double lat,lon;
-  std::string fimexmodel = request->getFimexModel();
-  std::string fimexstyle = request->getFimexStyle();
-  std::string fimexrun   = request->getFimexRun();
+  const std::string& fimexmodel = request->getFimexModel();
+  const std::string& fimexstyle = request->getFimexStyle();
+  const std::string& fimexrun   = request->getFimexRun();
   if(!request->getFimexLocation(lat,lon,fimexname)) {
     cerr << "Empty position - dropping interpolation" << endl;
     return false;
@@ -388,23 +353,18 @@ bool tsDrawArea::prepareFimexData()
   // is probably unknown in tsDiagrams
   int styleIndex = session->getStyleIndex(fimexstyle,SessionManager::ADD_TO_FIMEX_TAB);
 
-
   //  Run=0; run is not used in the function at all!
 
   session->getShowOption(options, styleIndex, fimexmodel, 0);
-
 
   if (!options.numModels()) {
     cerr << "empty model list in options in the retry" << endl;
     return false;
   }
 
-  if (theData)
-    delete theData;
-
   // fetch data
+  delete theData;
   theData = new ptDiagramData(setup.wsymbols);
-  theData->Erase();
 
   // precheck - is something missing in the cache?
 
@@ -417,24 +377,20 @@ bool tsDrawArea::prepareFimexData()
       continue;
     hasAtLeastOneParameter=true;
     try {
-    currentStream = data->getFimexStream(inlist[0].model,fimexrun);
-    if(currentStream)
-      if(!currentStream->hasCompleteDataset(fimexname,lat,lon,inlist)) {
+      currentStream = data->getFimexStream(inlist[0].model,fimexrun);
+      if (currentStream && !currentStream->hasCompleteDataset(fimexname,lat,lon,inlist)) {
         cacheIsComplete = false;
         break;
       }
-
     } catch (exception& e){
       currentStream=0;
     }
-
   }
 
   if(!hasAtLeastOneParameter)
     return false;
 
-
-  if(!cacheIsComplete) {
+  if (!cacheIsComplete) {
     // read from file - push to the cache
     if(currentStream) {
       try {
@@ -448,33 +404,26 @@ bool tsDrawArea::prepareFimexData()
 
     // cache is complete - everything is read sequential
 
-
     for (int i = 0; i < options.numModels(); i++) {
       inlist = options.distinctParamVector(i);
-
-
       if(inlist.empty())
         continue;
+
       try {
-
         pets::FimexStream* currentStream = data->getFimexStream(inlist[0].model,fimexrun);
-
         if(readFimexData(currentStream, lat, lon, fimexname, inlist, outlist, true))
           pets::fetchDataFromFimex(theData, currentStream, lat, lon, fimexname, inlist, outlist);
-
       } catch (exception& e) {
         cerr <<  e.what() << endl;
       }
     }
+
     // Find any missing params
-
     prepareKlimaData(inlist);
-
     prepareMoraData(inlist);
 
     if (outlist.size())
       theData->makeParameters(outlist, true);
-
   }
   return true;
 }
@@ -482,27 +431,14 @@ bool tsDrawArea::prepareFimexData()
 bool tsDrawArea::readFimexData(pets::FimexStream* fimex, double lat, double lon, std::string stationname,
     std::vector<ParId>& inpars, std::vector<ParId>& outpars, bool sequential_read)
 {
-
-  for(unsigned int i=0;i<inpars.size();i++) {
-    if(pets::FimexStream::isFiltered(inpars[i].alias)) {
-      inpars.erase(inpars.begin()+i);
-      i--;
-    }
-  }
-
-  //cleanDataStructure_();
-  // find station and read in data block
-
+  inpars.erase(std::remove_if(inpars.begin(), inpars.end(), [&](const ParId& p) { return pets::FimexStream::isFiltered(p.alias); }), inpars.end());
 
   // we already got the data in cache - just take them and paint - no extra thread needed
   if(sequential_read)  {
     try {
-
       if (!fimex->readData(stationname,lat,lon,inpars,outpars)) {
         return false;
       }
-
-
     } catch(exception& e) {
       cerr << "FIMEX::READDATA FAILED: " << e.what() << endl;
       return false;
@@ -514,23 +450,19 @@ bool tsDrawArea::readFimexData(pets::FimexStream* fimex, double lat, double lon,
     // Painting will be done by forced reititeration and sequential cache read when the thread is
     // finished
 
-    if(datathread->isRunning())
-      return false;
+    if(!datathread->isRunning()) {
+      threadedLoadRequest = dataloadrequest;
 
-    threadedLoadRequest = dataloadrequest;
+      datathread->setFimexParameters(fimex,stationname,lat,lon,inpars,outpars);
+      datathread->start();
 
-    datathread->setFimexParameters(fimex,stationname.c_str(),lat,lon,inpars,outpars);
-    datathread->start();
-
-    emit dataread_started();
+      emit dataread_started();
+    }
     return false;
   }
 
   return true;
 }
-
-
-
 
 void tsDrawArea::dataLoad_finished(bool read_success)
 {

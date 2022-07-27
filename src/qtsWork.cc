@@ -92,14 +92,8 @@ qtsWork::qtsWork(QWidget* parent, QString language)
   sidebar = new qtsSidebar(language);
   show    = new qtsShow(&request,&data,&session);
 
-
   connect (show,SIGNAL(dataread_started()),this,SLOT(dataread_started()));
   connect (show,SIGNAL(dataread_ended()),this,SLOT(dataread_ended()));
-
-
-  //sidebar->setMinimumWidth(170);
-  //sidebar->setMaximumWidth(255);
-
 
   connect( sidebar, SIGNAL( minmaxProg(int,int)),
       this,    SLOT(setProgintervall(int,int)));
@@ -109,18 +103,11 @@ qtsWork::qtsWork(QWidget* parent, QString language)
   connect( sidebar, SIGNAL(  observationToggled(bool)), this, SLOT(observationToggled(bool)));
   connect( sidebar, SIGNAL(changeFimexPoslist()), this, SIGNAL(fimexPoslistChanged()));
 
-
   splitter->addWidget(show);
-
   splitter->addWidget(sidebar);
-
-  splitter->setStretchFactor (0,3);
-  splitter->setStretchFactor (1,1);
-
+  splitter->setStretchFactor (0, 3);
 
   hlayout->addWidget(splitter);
-
-
 
   connect(sidebar,SIGNAL(changestyle(const QString&)),
       this,SLOT(changeStyle(const QString&)));
@@ -133,9 +120,6 @@ qtsWork::qtsWork(QWidget* parent, QString language)
   connect(sidebar,SIGNAL(filterToggled(bool)),
       this,SLOT(filterToggled(bool)));
 
-
-
-
   connect(sidebar,SIGNAL(changeFimexModel(const QString&)), this,SLOT(changeFimexModel(const QString& )));
   connect(sidebar,SIGNAL(changeFimexStyle(const QString&)), this,SLOT(changeFimexStyle(const QString& )));
   connect(sidebar,SIGNAL(changeFimexRun(const QString&)),   this,SLOT(changeFimexRun(  const QString& )));
@@ -146,7 +130,6 @@ qtsWork::qtsWork(QWidget* parent, QString language)
 
   connect(sidebar,SIGNAL(changetype(const tsRequest::Streamtype)), this,SLOT(changeType(const tsRequest::Streamtype)));
 }
-
 
 void qtsWork::Initialise()
 {
@@ -167,9 +150,6 @@ void qtsWork::Initialise()
           setup.streams[i].data[j].config);  // fimexconfigfile
     }
   }
-
-  //data.openStreams();
-  //getStationList();
 
   makeStyleList();
 
@@ -234,7 +214,6 @@ void qtsWork::makeStationList(bool forced)
   if (rmodel.isEmpty())
     restoreModelFromLog();
 
-
   if(!forced)
     if (oldModel == rmodel)
       return;
@@ -264,14 +243,12 @@ void qtsWork::makeStationList(bool forced)
   emit(refreshStations());
 }
 
-
 bool qtsWork::makeStyleList()
 {
   vector<std::string> stationStyles, fimexStyles;
 
   session.getStyleTypes( stationStyles, SessionManager::ADD_TO_STATION_TAB);
   session.getStyleTypes( fimexStyles,   SessionManager::ADD_TO_FIMEX_TAB  );
-
 
   QString cstyle = sidebar->fillList( stationStyles, StationTab::CMSTYLE      );
   QString fstyle = sidebar->fillList( fimexStyles,   StationTab::CMFIMEXSTYLE );
@@ -282,18 +259,14 @@ bool qtsWork::makeStyleList()
   qStr2miStr(cstyle,st);
   bool changed = request.setStyle(st);
 
-
   qStr2miStr(fstyle,st);
   request.setFimexStyle(st);
 
-
   return (  makeModelList(st) || changed );
-
 }
 
 bool qtsWork::makeModelList(const std::string& st)
 {
-
   vector<std::string>    modname;
   bool changed = false;
 
@@ -342,14 +315,12 @@ bool qtsWork::makeRunList(const std::string& st,const std::string& ru)
         return request.setRun(atoi(ru.c_str()));
       }
 
-
     sidebar->set(runList[0],StationTab::CMRUN);
     return request.setRun(atoi(runList[0].c_str()));
   }
 
   return false;
 }
-
 
 ///////////////////////// SLOTS
 
@@ -391,7 +362,6 @@ void qtsWork::changeRun(const QString& qstr)
   if(qStr2miStr(qstr,st))
     changeRun(st);
 }
-
 
 void qtsWork::changeStyle(const std::string& st)
 {
@@ -484,9 +454,6 @@ void qtsWork::checkObsPosition(miCoordinates cor)
   sidebar->setObsInfo(s.description().c_str());
 }
 
-
-
-
 void qtsWork::changeRun(const std::string& st)
 {
   if(request.setRun(atoi(st.c_str())))
@@ -495,14 +462,10 @@ void qtsWork::changeRun(const std::string& st)
 
 void qtsWork::refresh(bool readData)
 {
- // QApplication::setOverrideCursor( Qt::WaitCursor );
   if (activeRefresh){
     show->refresh(readData);
   }
-
-
   if(request.type() == tsRequest::HDFSTREAM) {
-
     // check if any streams recently opened
 
     if (data.has_opened_streams() && readData){
@@ -512,9 +475,7 @@ void qtsWork::refresh(bool readData)
 
     checkPosition(request.posname());
   }
-//  QApplication::restoreOverrideCursor();
 }
-
 
 void qtsWork::restoreLog()
 {
@@ -528,16 +489,12 @@ void qtsWork::restoreLog()
   if(!validR)
     return;
 
-
-
   c.get("REQUESTMODEL",mo);
   c.get("REQUESTPOS",po);
   c.get("REQUESTRUN",ru);
   c.get("REQUESTSTYLE",st);
 
-
   activeRefresh = false;
-
 
   sidebar->set(st,StationTab::CMSTYLE);
   changeStyle(st);
@@ -565,7 +522,6 @@ void qtsWork::restoreLog()
   c.get("TABINDEX",tabindex);
   sidebar->setTab(tabindex);
 
-
   std::string observationfilter;
   c.get("OBSERVATIONFILTER",observationfilter);
   data.setObservationBlacklistFromString(observationfilter);
@@ -574,8 +530,6 @@ void qtsWork::restoreLog()
   c.get("TIMECONTROL",timecontrol);
 
   sidebar->setTimeControlFromLog(timecontrol);
-
-
 
   bool showobs=false;
   c.get("SHOWOBSERVATIONS",showobs);
@@ -603,7 +557,6 @@ void qtsWork::restoreLog()
   sidebar->restoreFimexFromLog(fimexmodel,fimexstyle,fimexexpand);
 }
 
-
 void qtsWork::collectLog()
 {
   tsConfigure c;
@@ -627,7 +580,6 @@ void qtsWork::collectLog()
 
   c.set("FIMEXFILTER",pets::FimexStream::getParameterFilterAsString());
 
-
   sidebar->writeBookmarks();
 }
 
@@ -638,7 +590,6 @@ void qtsWork::restoreModelFromLog()
   c.get("REQUESTMODEL",mo);
   request.setModel(mo);
 }
-
 
 miQMessage qtsWork::target()
 {
@@ -697,7 +648,6 @@ void qtsWork::latlonInDecimalToggled(bool f)
   checkPosition(request.posname());
 }
 
-
 set<std::string> qtsWork::createFilter(bool orig)
 {
   tsSetup s;
@@ -715,14 +665,11 @@ set<std::string> qtsWork::createFilter(bool orig)
     tst.close();
   }
 
-
   ifstream in(fname.c_str());
-
   if(!in) {
     cerr << "NO filter " << endl;
     return fl;
   }
-
 
   std::string token;
   while(in) {
@@ -734,10 +681,8 @@ set<std::string> qtsWork::createFilter(bool orig)
     if(!token.empty())
       fl.insert(token);
   }
-  in.close();
   return fl;
 }
-
 
 void qtsWork::newFilter(const set<std::string>& f)
 {
@@ -748,18 +693,14 @@ void qtsWork::newFilter(const set<std::string>& f)
   tsSetup s;
 
   ofstream of( s.files.filter.c_str());
-
   if(!of) {
     cerr << "could not write filter to file " <<  s.files.filter << endl;
     return;
   }
 
   of << "# automatic generated file. Do not edit!" << endl;
-
-  set<std::string>::iterator itr=filter.begin();
-
-  for(;itr!=filter.end();itr++)
-    of << *itr << endl;
+  for (const auto& fe : filter)
+    of << fe << endl;
 }
 
 void qtsWork::changeType(const tsRequest::Streamtype s)
@@ -804,8 +745,6 @@ void qtsWork::makeFimexModels(const QString& activeStyle)
   sidebar->fillList(modname,StationTab::CMFIMEXMODEL);
 }
 
-
-
 void qtsWork::changeFimexModel(const QString& newmodel)
 {
   request.setFimexModel(newmodel.toStdString());
@@ -819,7 +758,6 @@ void qtsWork::changeFimexRun(const QString& nrun)
     refresh(true);
   }
 }
-
 
 void qtsWork::changeFimexStyle(const QString& nsty)
 {
@@ -846,7 +784,6 @@ void qtsWork::changeFimexCoordinates(float lon, float lat,QString name)
 void qtsWork::newFimexPoslist()
 {
   vector<string> newfimexposlist = sidebar->allFimexPositions();
-
   pets::FimexStream::setCommonPoslistFromStringlist(newfimexposlist);
 }
 
@@ -873,4 +810,3 @@ void qtsWork::updateProgress()
     }
   }
 }
-

@@ -234,17 +234,18 @@ std::string tsSetup::timetrans(std::string tstr)
   cerr << "created time: " << transtime << endl;
 
   return transtime;
-
 }
 
 void tsSetup::setup(int& to, const string& from)
 {
   to = atoi(from.c_str());
 }
+
 void tsSetup::setup(float& to, const string& from)
 {
   to = atof(from.c_str());
 }
+
 void tsSetup::setup(string& to, const string& from)
 {
   to = from;
@@ -429,7 +430,6 @@ bool tsSetup::checkEnvironment(string& t)
 
 void tsSetup::setSimpleToken(string token)
 {
-
   if(!actualSites.empty())
     if(!actualSites.count(site))
       return;
@@ -539,8 +539,6 @@ void tsSetup::setPublic(string& key, string& content)
 
   if(key == "DISABLEKLIMA")
     disabled.klima = setBool(content);
-
-
 }
 
 
@@ -731,9 +729,6 @@ void tsSetup::setMoraNormal(string& key, string& content)
   mora.normals[key]=content;
 }
 
-
-
-
 void tsSetup::setServer(string& key, string& content)
 {
   if(key == "CLIENT" )
@@ -744,7 +739,6 @@ void tsSetup::setServer(string& key, string& content)
     setup(server.name,content);
   else
     warn(key,wKEY);
-
 }
 
 void tsSetup::setGui(string& key, string& content)
@@ -758,7 +752,6 @@ void tsSetup::setGui(string& key, string& content)
   else
     warn(key,wKEY);
 }
-
 
 void tsSetup::setPath(string& key, string& content)
 {
@@ -826,6 +819,3 @@ void tsSetup::overrideToken(std::string line )
 
   setSimpleToken(token);
 }
-
-
-

@@ -30,7 +30,7 @@
 
 #include <puTools/miStringFunctions.h>
 
-#include <boost/algorithm/string.hpp>
+#include <ostream>
 #include <sstream>
 
 using namespace std;
@@ -43,7 +43,6 @@ bool tsRequest::setString(const std::string& i, std::string& o)
   o = i;
   return true;
 }
-
 
 bool tsRequest::setRun(int i)
 {
@@ -62,7 +61,7 @@ ostream& operator<<(ostream& out, const tsRequest& rhs)
   return out;
 };
 
-std::string tsRequest::file(const std::string type) const
+std::string tsRequest::file(const std::string& type) const
 {
   std::string rst = mod_ + "_" + pos_;
 
@@ -92,19 +91,14 @@ std::string tsRequest::file(const std::string type) const
   return rst;
 }
 
-
 void tsRequest::setType(tsRequest::Streamtype s)
 {
   streamtype=s;
 }
 
-
-
-
-
-bool  tsRequest::setFimexLocation(double flat,double flon, std::string name)
+bool tsRequest::setFimexLocation(double flat, double flon, const std::string& name)
 {
-  if(name == fimexName)
+  if (name == fimexName)
     return false;
 
   fimexLat = flat;
@@ -119,11 +113,8 @@ bool tsRequest::getFimexLocation(double& lat, double& lon, std::string& name)
   lon = fimexLon;
   name = fimexName;
 
-  if(lat==0 && lon==0 && name =="")
-    return false;
-  return true;
+  return !(lat == 0 && lon == 0 && name == "");
 }
-
 
 std::string  tsRequest::getFimexInfo()
 {

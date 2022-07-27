@@ -26,9 +26,6 @@ public slots:
 
 signals:
   void searchResult(std::vector<std::string>);
-
-
 };
-
 
 #endif

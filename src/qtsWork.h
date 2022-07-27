@@ -156,7 +156,6 @@ public Q_SLOTS:
   void setProgintervall(int mi,int ma) { show->setProgintervall(mi,ma);refresh(false);}
   void observationToggled(bool showobs) { show->setShowObservations(showobs);refresh(true);}
 
-
   void changeType(const tsRequest::Streamtype);
 
   // FIMEX

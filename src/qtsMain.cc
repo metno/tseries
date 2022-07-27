@@ -60,7 +60,6 @@
 
 #include "tseries.xpm"
 
-
 using namespace std;
 using namespace miutil;
 
@@ -115,7 +114,6 @@ qtsMain::qtsMain(std::string l, const QString& name)
 
   // milliseconds
   int updatetimeout = (1000 * 60) * 2;
-
   updateTimer   = startTimer(updatetimeout);
   progressTimer = startTimer(500);
 }
@@ -880,8 +878,6 @@ void qtsMain::showNews()
   tsSetup setup;
   QDesktopServices::openUrl(QUrl( setup.doc.newsURL.c_str()));
 }
-
-
 
 void qtsMain::timerEvent(QTimerEvent* e)
 {
