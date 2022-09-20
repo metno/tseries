@@ -70,7 +70,6 @@ private:
   QMenu   * menu_file;
   QAction * printAct;
   QAction * rasterAct;
-  QAction * filterAct;
   QAction * quitAct;
 
   QMenu   * menu_setting;
@@ -82,10 +81,8 @@ private:
   QAction * iconAct;
   QAction * positionAct;
   QAction * tmarkAct;
-  QAction * latlonAct;
   QAction * fontAct;
   QAction * lockHoursToModelAct;
-  QAction * filterParametersAct;
   QAction * filterFimexAct;
   QAction * observationStartAct;
   QAction * showGridLinesAct;
@@ -123,7 +120,6 @@ private:
   bool sselect;
   bool sicon;
   bool sposition;
-  bool latlond;
   bool lockHoursToModel;
   bool showGridLines;
 
@@ -171,7 +167,6 @@ private Q_SLOTS:
   void togglePositions(bool);
   void toggleTimemark(bool);
   void toggleLang(QAction*);
-  void toggleLatLon(bool);
   void toggleLockHoursToModel(bool);
   void toggleShowGridlines(bool);
 
@@ -183,8 +178,6 @@ private Q_SLOTS:
   void clearFimexList();
   void showHelp();
   void showNews();
-  void manageFilter();
-  void manageParameterFilter();
   void manageFimexFilter();
   void changeObservationStart();
   void chooseFont();

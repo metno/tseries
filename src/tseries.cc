@@ -41,6 +41,9 @@
 
 #include <fstream>
 
+#define MILOGGER_CATEGORY "tseries.main"
+#include <miLogger/miLogging.h>
+
 using namespace std;
 using namespace miutil;
 
@@ -52,11 +55,10 @@ int main(int argc, char **argv)
   o.push_back(miCommandLine::option( 'f',"file"     , 1 ));
   o.push_back(miCommandLine::option( 'S',"site"     , 1 ));
   o.push_back(miCommandLine::option( 'l',"lang"     , 1 ));
+  o.push_back(miCommandLine::option( 'L',"logging"  , 1 ));
   o.push_back(miCommandLine::option( 'T',"title"    , 1 ));
   o.push_back(miCommandLine::option( 'I',"instancename", 1 ));
   o.push_back(miCommandLine::option( 'd',"define"   , 1 ));
-  o.push_back(miCommandLine::option( 'H',"host"     , 1 ));
-  o.push_back(miCommandLine::option( 'u',"user"     , 1 ));
 
   miCommandLine cl(o,argc, argv);
 
@@ -66,6 +68,7 @@ int main(int argc, char **argv)
   string    setupfile    = "tseries.ctl";
   string    title        = "T-series";
   string    instancename = "";
+  string    loggingconfig;
   tsSetup     setup;
   tsConfigure config;
   std::string    lang;
@@ -76,25 +79,27 @@ int main(int argc, char **argv)
                 << "  -s setupfile "  << endl
                 << "  -S site      "  << endl
                 << "  -l lang      "  << endl
+                << "  -L logging   "  << endl
                 << "  -T title     "  << endl
                 << "  -I instancename" << endl
-                << "  -H wdbhost   "  << endl
-                << "  -u wdbuser   "  << endl
                 << "  -d section1:key1=token1 section2:key2=token2 "
                 << endl << endl;
     exit (0);
   }
+
+  if (cl.hasFlag('L'))
+    loggingconfig = (cl.arg('L')[0]);
+  milogger::LoggingConfig log4cpp(loggingconfig);
 
   if(cl.hasFlag('S')) site         = cl.arg('S')[0];
   if(cl.hasFlag('s')) setupfile    = cl.arg('s')[0];
   if(cl.hasFlag('T')) title += " " + cl.arg('T')[0];
   if(cl.hasFlag('I')) instancename = (cl.arg('I')[0]);
 
-
-  if(!setup.read(setupfile,site))
+  if(!setup.read(setupfile,site)) {
+    METLIBS_LOG_ERROR("Failed to read setup file '" << setupfile << "' for site '" << site << "'");
     exit(0);
-
-
+  }
 
   if(!setup.lang.empty())
     lang=setup.lang;
@@ -108,12 +113,7 @@ int main(int argc, char **argv)
       setup.overrideToken(*it);
   }
 
-  if(cl.hasFlag('H')) setup.overrideToken("WDB:host="+cl.arg('H')[0]);
-  if(cl.hasFlag('u')) setup.overrideToken("WDB:user="+cl.arg('u')[0]);
-
-
   if(cl.hasFlag('l')) lang=cl.arg('l')[0];
-
 
   QApplication a( argc, argv );
   QTranslator  myapp( 0 );
@@ -124,9 +124,7 @@ int main(int argc, char **argv)
   if(!setup.gui.style.empty())
     a.setStyle(setup.gui.style.c_str());
 
-
   if(!lang.empty()) {
-
     string qtlang   = "qt_"     +lang;
     string langfile = "tseries_"+lang;
 
@@ -142,9 +140,7 @@ int main(int argc, char **argv)
 
     a.installTranslator( &qt    );
     a.installTranslator( &myapp );
-
   }
-
 
   qtsMain *main = new qtsMain(lang, instancename.c_str());
 

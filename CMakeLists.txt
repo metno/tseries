@@ -1,12 +1,12 @@
 PROJECT(tseries)
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 INCLUDE(MetnoUtils)
 INCLUDE(MetnoQtTranslation)
 INCLUDE(MetnoQtUtils)
 INCLUDE(MetnoVersions)
-METNO_PVERSION(7.1.2)
+METNO_PVERSION(7.2.0)
 
 FIND_PACKAGE(Boost COMPONENTS date_time REQUIRED)
 
@@ -19,12 +19,13 @@ SET(PKGS
   tsData>=7.0.0
   metlibs-pudatatypes>=6.0.0
   metlibs-coserver${METNO_QT_SUFFIX}>=3.0.0
+  metlibs-milogger>=6.0.0
 )
 
 SET(ENABLE_FIMEX ON CACHE BOOL "use fimex to read NetCDF and other files")
 IF(ENABLE_FIMEX)
 LIST(APPEND PKGS
-  fimex>=0.65
+  fimex>=1.7.0
 )
 ENDIF() # ENABLE_FIMEX
 PKG_CHECK_MODULES(PC REQUIRED ${PKGS})

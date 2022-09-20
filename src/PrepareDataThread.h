@@ -28,11 +28,16 @@
 #ifndef PREPAREDATATHREAD_H_
 #define PREPAREDATATHREAD_H_
 
+#include <tsData/ptParameterDefinition.h>
+
 #include <QThread>
+
 #include <string>
-#include <tsData/FimexStream.h>
+#include <vector>
 
 namespace pets {
+
+class FimexStream;
 
 class PrepareDataThread  : public QThread {
   Q_OBJECT
@@ -47,8 +52,8 @@ private:
 
 public:
   PrepareDataThread(QObject* parent=0) :  QThread (parent){}
-  void setFimexParameters(pets::FimexStream* f, std::string pl, float lat, float lon,  std::vector<ParId>& ip, std::vector<ParId>& op);
-  void run();
+  void setFimexParameters(pets::FimexStream* f, const std::string& pl, double lat, double lon, std::vector<ParId>& ip, std::vector<ParId>& op);
+  void run() override;
 
 Q_SIGNALS:
   void post_dataLoad(bool);

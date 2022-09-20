@@ -2,8 +2,8 @@ Source: tseries-@METNO_VERSION@
 Section: science
 Priority: extra
 Maintainer: Norwegian Meteorological Institute met.no <diana@met.no>
-Build-Depends: debhelper (>= 9),
- cmake,
+Build-Depends: debhelper (>= 11),
+ cmake (>= 3.10),
  pkg-config,
  qtbase5-dev, qtbase5-dev-tools, qttools5-dev-tools, qttools5-dev,
  metlibs-putools-dev (>= 8.0.0),
@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 9),
  metlibs-tsdata-dev (>= 7.0.0),
  metlibs-coserver-qt5-dev (>= 3.0.0),
  metlibs-milogger-dev (>= 6.0.0),
- libfimex-dev (>= 0.65.0),
+ libfimex-dev (>= 1.7.0),
  libboost-dev,
  libboost-date-time-dev
 Standards-Version: 3.9.2
@@ -21,10 +21,10 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Provides: tseries
 Description: Meteorological time series viewer
- This program shows time series from hdf4 and ASCII input.
- The curves are displayed in openGL using the pets2 library.
+ This program shows time series from fimex and ASCII input.
+ The curves are displayed using the pets2 library.
  Tseries can be connected to the diana meteorological visualisation
- system by using QSockets.
+ system by using coserver.
 
 Package: tseries-@METNO_VERSION@-dbg
 Architecture: any

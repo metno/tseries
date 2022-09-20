@@ -39,8 +39,6 @@
 
 #include <tsData/ptDataStream.h>
 #include <tsData/ptParameterDefinition.h>
-#include <tsData/WdbStream.h>
-#include <tsData/KlimaStream.h>
 #include <tsData/SMHIMoraStream.h>
 #include <tsData/FimexStream.h>
 #include <tsData/FimexTools.h>
@@ -152,8 +150,6 @@ private:
   std::vector<FimexInfo> fimexStreams;    // List of fimex datastreams
   std::vector<FimexFileindex> fimexFileindex;  // list of known files (to check if new ones popped up)
 
-  pets::WdbStream*       wdbStream;      // the wdb data stream
-  pets::KlimaStream*     klimaStream;    // the klima database from an url interface
   pets::MoraStream*      moraStream;     // the stream from SMHO observation database 'Mora'
   std::vector<ExtStation> stations;   // List of stations
   std::vector<std::string> datasetname;  // name of dataset
@@ -163,7 +159,6 @@ private:
   float tolerance;               // 10000*degrees
   dataset customerds;            // datasets with customerinfo
   ParameterDefinition parDef;
-  bool verbose;
   bool streams_opened;
   bool fimex_streams_opened;  // at least one open fimexstream required to enable fimex
 
@@ -174,18 +169,11 @@ private:
   void _filestat(std::string&, struct stat&); // get file stats
   bool _isafile(const std::string&); // check if stream is a file
 
-  void openWdbStream();
-  void closeWdbStream();
-
-  void openKlimaStream();
-  void closeKlimaStream();
-
   void openMoraStream();
   void closeMoraStream();
 
   void initialiseFimexPositions();
   void initialiseFimexParameters();
-  bool wdbStreamIsOpen;
   std::string getCleanStreamType(const std::string&);
 
 protected:
@@ -195,20 +183,13 @@ public:
   DatafileColl();
   ~DatafileColl();
 
-
-  std::set<std::string>    getKlimaBlacklist() const { return klimaStream->getBlacklist();}
-  std::vector<std::string> getAllKlimaParameters() const {return klimaStream->getAllParameters();}
-  void  setKlimaBlacklist(std::set<std::string>& bl) { klimaStream->setBlacklist(bl);}
-  std::string getObservationBlacklistAsString() {return  klimaStream->getObservationBlacklistAsString() ;}
-  void setObservationBlacklistFromString(std::string blist) { klimaStream->setObservationBlacklistFromString(blist);}
-
   // adds a new dataset
   int  addDataset(std::string);
   // adds file to collection, return index
   int  addStream(const std::string,const std::string,
       const std::string, const int, const int, const std::string, const std::string="");
   // opens streams containing this model
-  bool openStreams(const std::string mod);
+  bool openStreams(const std::string& mod);
   // opens one stream
   bool openStream(const int);
   // opens all streams in collection
@@ -237,25 +218,11 @@ public:
   int findModel(const Model& mid, const Run& rid, int* idx, int max);
   std::vector<std::string> findRuns(const Model& mid);
 
-  void setVerbose(bool v){verbose= v;}
   bool has_opened_streams() {
     bool b= streams_opened;
     streams_opened = false;
     return b;
   }
-
-  // wdb --------------------
-  bool has_wdb_stream() const { return wdbStreamIsOpen;}
-  std::set<std::string> getWdbProviders();
-  std::set<miutil::miTime> getWdbReferenceTimes(std::string provider);
-  std::vector<std::string> getWdbParameterNames() const { return wdbStream->getWdbParameterNames(); }
-  pets::WdbStream::BoundaryBox getWdbGeometry();
-  pets::WdbStream*  getWdbStream() { return wdbStream;}
-
-  // klima -----------------------
-
-  pets::KlimaStream* getKlimaStream() { return klimaStream;}
-  pets::KlimaStation getNearestKlimaStation(miCoordinates& pos) { return klimaStream->getNearestKlimaStation(pos);}
 
   // SMHI mora --------------------
   pets::MoraStream* getMoraStream() { return moraStream;}
@@ -267,7 +234,7 @@ public:
   std::vector<std::string> getFimexTimes(const std::string& model);
 
   pets::FimexStream* getFimexStream(const std::string& model, const std::string& run);
-  bool has_fimex_stream() const { return fimex_streams_opened;}
+
   // returns true if the currentModel has an update (reloads the active runtime list in the GUI)
   bool updateFimexStreams(std::string currentModel);
 };

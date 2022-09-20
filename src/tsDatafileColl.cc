@@ -26,28 +26,31 @@
  along with Tseries; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 #include "tsDatafileColl.h"
-#include <tsData/ptHDFFile.h>
-#include <tsData/ptAsciiStream.h>
-#include <glob.h>
-#include <time.h>
-#include <string>
-#include <sstream>
+
 #include "tsSetup.h"
+
+#include <tsData/ptAsciiStream.h>
+
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/posix_time/posix_time_io.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#ifdef GRIBSTREAM
-#include <tsData/ptGribStream.h>
-#endif
 #include <set>
+#include <string>
+#include <sstream>
+
+#include <glob.h>
+#include <time.h>
+
+#define MILOGGER_CATEGORY "tseries.tsDatafileColl"
+#include <miLogger/miLogging.h>
 
 using namespace std;
 using namespace miutil;
 
 // Modify to use timefilter, se GridCollection::makeGridIOinstances() in GridCollection.cc.
-
 
 vector<string> FimexFileindex::findNewFiles()
 {
@@ -86,16 +89,11 @@ bool Union(const dataset& d1, const dataset& d2, dataset& result)
 }
 
 DatafileColl::DatafileColl()
-    : wdbStream(0)
-    , klimaStream(0)
-    , moraStream(0)
+    : moraStream(0)
     , tolerance(1000.0)
-    , verbose(false)
     , streams_opened(false)
     , fimex_streams_opened(false)
 {
-  openWdbStream();
-  openKlimaStream();
   openMoraStream();
   initialiseFimexPositions();
   initialiseFimexParameters();
@@ -104,8 +102,6 @@ DatafileColl::DatafileColl()
 DatafileColl::~DatafileColl()
 {
   closeStreams();
-  closeWdbStream();
-  closeKlimaStream();
   closeMoraStream();
 }
 
@@ -154,7 +150,6 @@ int DatafileColl::addStream(const std::string name, const std::string desc,
     } else {
 
       DsInfo dsinfo;
-      //datastreams.push_back(dsinfo);
       dsinfo.streamname = name;
       dsinfo.descript = desc;
       dsinfo.sType = streamtype;
@@ -165,29 +160,24 @@ int DatafileColl::addStream(const std::string name, const std::string desc,
       dsinfo.mtime = 0;
 
       const std::vector<std::string> sp = miutil::split(sparid, ":");
-      int m = sp.size();
-      ParId parid;
-      if (m > MAXMODELSINSTREAM) m = MAXMODELSINSTREAM;
-      dsinfo.numModels = m;
-      for (int i = 0; i < m; i++) {
-        parid = parDef.Str2ParId(sp[i]);
+      dsinfo.numModels = std::min((int)sp.size(), MAXMODELSINSTREAM);
+      for (int i = 0; i < dsinfo.numModels; i++) {
+        ParId parid = parDef.Str2ParId(sp[i]);
         dsinfo.modelList[i] = parid.model;
         dsinfo.runList[i] = parid.run;
       }
 
       datastreams.push_back(dsinfo);
     }
-    //    return datastreams.size();
     return 1;
   } else {
     return -1;
   }
 }
 
-bool DatafileColl::openStreams(const std::string mod)
+bool DatafileColl::openStreams(const std::string& mod)
 {
-  if (verbose)
-    cout << "- Open streams with model " << mod << endl;
+  METLIBS_LOG_SCOPE("Open streams with model " << mod);
   bool b = false;
   for (unsigned int i = 0; i < datastreams.size(); i++) {
     if (datastreams[i].streamOpen)
@@ -204,6 +194,7 @@ bool DatafileColl::openStreams(const std::string mod)
 
 bool DatafileColl::openStream(const int idx)
 {
+  METLIBS_LOG_SCOPE();
   ErrorFlag ef = OK;
 
   if (idx < 0 || idx >= (signed int) datastreams.size())
@@ -216,20 +207,11 @@ bool DatafileColl::openStream(const int idx)
     datastreams[idx].dataStream = 0;
   }
 
-  if (verbose)
-    cout << "About to open stream:" << datastreams[idx].streamname << endl;
+  METLIBS_LOG_DEBUG("About to open stream:" << datastreams[idx].streamname);
 
-  if (datastreams[idx].sType == "HDF") {
-    datastreams[idx].dataStream = new HDFFile(datastreams[idx].streamname);
-  } else if (datastreams[idx].sType == "ASCII") {
+  if (datastreams[idx].sType == "ASCII") {
     datastreams[idx].dataStream = new AsciiStream(datastreams[idx].streamname);
   }
-#ifdef GRIBSTREAM
-  else if (datastreams[idx].sType == "GRIB") {
-    datastreams[idx].dataStream =
-        new GribStream(datastreams[idx].streamname);
-  }
-#endif
   else if (datastreams[idx].sType == "MORA") {
     openMoraStream();
     datastreams[idx].dataStream = moraStream;
@@ -241,12 +223,9 @@ bool DatafileColl::openStream(const int idx)
     else
       datastreams[idx].mtime = time(NULL);
     if (datastreams[idx].dataStream)
-      datastreams[idx].streamOpen = datastreams[idx].dataStream->openStream(
-          &ef);
+      datastreams[idx].streamOpen = datastreams[idx].dataStream->openStream(&ef);
     if (!datastreams[idx].streamOpen) {
-      // error message
-      cerr << "ERROR Datafilecollection: could not open stream: "
-          << datastreams[idx].streamname << endl;
+      METLIBS_LOG_ERROR("Could not open stream: '" << datastreams[idx].streamname << "'");
       return false;
     } else {
       // get model list from file
@@ -260,13 +239,16 @@ bool DatafileColl::openStream(const int idx)
         numm++;
       }
       datastreams[idx].numModels = numm;
-#ifdef DEBUG
-      cout << "FILECOLLECTION: numModels:"<<datastreams[idx].numModels<<endl;
-      for (int k=0;k<datastreams[idx].numModels;k++)
-        cout << "Model:"<<datastreams[idx].modelList[k]<<
-        " Run:"<<datastreams[idx].runList[k]<<
-        " Id:"<<datastreams[idx].idList[k]<<endl;
-#endif
+      if (METLIBS_LOG_DEBUG_ENABLED()) {
+        std::ostringstream msg;
+        msg << "numModels:"<<datastreams[idx].numModels << endl;
+        for (int k=0;k<datastreams[idx].numModels;k++)
+          msg << "Model:"<<datastreams[idx].modelList[k]
+              << " Run:"<<datastreams[idx].runList[k]
+              << " Id:"<<datastreams[idx].idList[k]
+              << endl;
+        METLIBS_LOG_DEBUG("FILECOLLECTION: " << msg.str());
+      }
     }
   }
   streams_opened = true;
@@ -275,16 +257,12 @@ bool DatafileColl::openStream(const int idx)
 
 bool DatafileColl::openStreams()
 {
-  bool ok = true;
-  //ErrorFlag ef=OK;
-
-  if (verbose)
-    cout << "- Open streams.." << endl;
+  METLIBS_LOG_SCOPE("Open streams...");
   for (unsigned int i = 0; i < datastreams.size(); i++) {
     openStream(i);
   }
   makeStationList();
-  return ok;
+  return true;
 }
 
 void DatafileColl::closeStreams()
@@ -358,13 +336,13 @@ bool DatafileColl::check(vector<int>& idx)
 
 void DatafileColl::makeStationList()
 {
+  METLIBS_LOG_SCOPE();
   int nums, posidx, ns = 0;
   bool exists;
   miPosition st;
   vector<ExtStation>::iterator p;
 
-  if (verbose)
-    cout << "- Reading positions from streams.." << endl;
+  METLIBS_LOG_DEBUG("Reading positions from streams...");
   stations.clear();
   pos_info.clear();
   for (unsigned int i = 0; i < datasetname.size(); i++)
@@ -595,28 +573,6 @@ bool DatafileColl::findpos(const std::string& name, int& idx)
   return false;
 }
 
-/////// Klima database -----------------------------
-
-void DatafileColl::openKlimaStream()
-{
-  tsSetup setup;
-  if (klimaStream == NULL)
-    klimaStream = new pets::KlimaStream(setup.klima.url, setup.klima.parameters,
-      setup.klima.normals,setup.klima.maxDistance);
-}
-
-void DatafileColl::closeKlimaStream()
-{
-  try {
-    if (klimaStream != NULL)
-      delete klimaStream;
-  } catch (exception& e) {
-    cerr << " Exception caught while trying to delete klimaStream " << e.what()
-                        << endl;
-  }
-  klimaStream = NULL;
-}
-
 /////// SMHI mora database -----------------------------
 
 void DatafileColl::openMoraStream()
@@ -638,76 +594,6 @@ void DatafileColl::closeMoraStream()
                         << endl;
   }
   moraStream = NULL;
-}
-
-/////// WDB ------------------------------------------
-
-void DatafileColl::openWdbStream()
-{
-  wdbStreamIsOpen=false;
-  try {
-
-    tsSetup setup;
-
-    wdbStream = new pets::WdbStream(setup.wdb.host, setup.wdb.parameters,
-        setup.wdb.vectorFunctions, setup.wdb.user);
-
-    set<string> providers = wdbStream->getDataProviders();
-    wdbStreamIsOpen = !providers.empty();
-
-  } catch (exception& e) {
-    cerr << " Exception caught while trying to open WdbStream " << e.what()
-                        << endl;
-  }
-}
-
-void DatafileColl::closeWdbStream()
-{
-  try {
-    delete wdbStream;
-  } catch (exception& e) {
-    cerr << " Exception caught while trying to delete WdbStream " << e.what()
-                        << endl;
-  }
-  wdbStream = NULL;
-}
-
-set<string> DatafileColl::getWdbProviders()
-{
-  set<string> providers;
-  try {
-    providers = wdbStream->getDataProviders();
-  } catch (exception& e) {
-    cerr << "Exception in getWdbProviders(): " << e.what() << endl;
-  }
-  return providers;
-}
-
-set<miTime> DatafileColl::getWdbReferenceTimes(string provider)
-{
-  set<miTime> referenceTimes;
-  try {
-
-    wdbStream->setCurrentProvider(provider);
-    referenceTimes = wdbStream->getReferenceTimes();
-
-  } catch (exception& e) {
-    cerr << "Exception in getWdbReferenceTimes(): " << e.what() << endl;
-  }
-  return referenceTimes;
-}
-
-pets::WdbStream::BoundaryBox DatafileColl::getWdbGeometry()
-{
-  pets::WdbStream::BoundaryBox boundaries;
-  try {
-
-    boundaries = wdbStream->getGeometry();
-  } catch (exception& e) {
-    cerr << "Exception in getGeometry(): " << e.what() << endl;
-  }
-
-  return boundaries;
 }
 
 /////// FIMEX ------------------------------------------
@@ -750,18 +636,17 @@ void DatafileColl::initialiseFimexParameters()
   pets::FimexStream::addToAllParameters(setup.fimex.filters);
 }
 
-
 vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
 {
-  vector<std::string> runtimes;
-  cerr << "Indexing Model: " << model << endl;
+  METLIBS_LOG_SCOPE();
+  METLIBS_LOG_INFO("Indexing model '" << model << "'");
 
+  vector<std::string> runtimes;
   for (std::vector<FimexInfo>::iterator it = fimexStreams.begin(); it != fimexStreams.end(); ++it) {
     if (model == it->model) {
-      cerr << "Indexing file " << it->streamname << endl;
+      METLIBS_LOG_INFO("Indexing file '" << it->streamname << "'");
 
       if (it->run.empty()) {
-
         try {
             miTime refTime;
             int index = -1;
@@ -778,7 +663,7 @@ vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
               fimex_streams_opened = true;
             } else {
               // Get from the stream...
-              cerr << "Unable to get referencetime from streamname - opening it : " << it->streamname  << endl;
+              METLIBS_LOG_INFO("Unable to get referencetime from streamname - opening file");
               boost::posix_time::ptime time = it->dataStream->getReferencetime();
               //std::string stime = boost::posix_time::to_simple_string(time);
               ostringstream stime;
@@ -789,8 +674,8 @@ vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
               it->run = stime.str();
             }
           } catch (exception & e) {
-            cerr << e.what() << endl;
-            cerr << "using streamname instead of runtime to index model" << endl;
+            METLIBS_LOG_ERROR(e.what());
+            METLIBS_LOG_INFO("using streamname instead of runtime to index model");
             string streamname =  it->streamname;
             string::size_type n = streamname.rfind("/");
             string::size_type p = streamname.rfind(".");
@@ -802,21 +687,16 @@ vector<std::string> DatafileColl::getFimexTimes(const std::string& model)
                streamname.erase(0,n+1);
 
              it->run = streamname;
-
           }
 
           if (it->dataStream->isOpen())
             fimex_streams_opened=true;
-
         }
         runtimes.push_back(it->run);
-
     }
   }
-
   return runtimes;
 }
-
 
 pets::FimexStream* DatafileColl::getFimexStream(const std::string& model, const std::string& run)
 {
@@ -836,7 +716,6 @@ pets::FimexStream* DatafileColl::getFimexStream(const std::string& model, const 
   throw pets::FimexstreamException(ost.str());
 }
 
-
 bool DatafileColl::updateFimexStreams(std::string currentModel)
 {
   if(!fimex_streams_opened)
@@ -854,12 +733,8 @@ bool DatafileColl::updateFimexStreams(std::string currentModel)
   return currentModelUpdated;
 }
 
-
-
-
 bool DatafileColl::createFimexStreams(FimexFileindex& findex)
 {
-
   FimexInfo finfo;
   finfo.model      = findex.model;
   finfo.sType      = findex.sType;
@@ -868,10 +743,10 @@ bool DatafileColl::createFimexStreams(FimexFileindex& findex)
 
   for( unsigned int i=0; i< streamfilenames.size();i++) {
     finfo.streamname = streamfilenames[i];
-    cerr << "Added to fimexstreams" << finfo.streamname << " as " << finfo.sType << endl;
+    METLIBS_LOG_INFO("Added to fimexstreams" << finfo.streamname << " as " << finfo.sType);
     fimexStreams.push_back(finfo);
 
     fimexStreams.back().dataStream = new pets::FimexStream(finfo.streamname, finfo.model, finfo.sType, finfo.configfile);
   }
-  return bool ( streamfilenames.size());
+  return !streamfilenames.empty();
 }

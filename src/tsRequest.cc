@@ -30,11 +30,17 @@
 
 #include <puTools/miStringFunctions.h>
 
-#include <boost/algorithm/string.hpp>
 #include <sstream>
 
 using namespace std;
 using namespace miutil;
+
+tsRequest::tsRequest()
+    : fimexLat(-1000)
+    , fimexLon(-1000)
+    , fimexStyle("Meteogram")
+{
+}
 
 bool tsRequest::setString(const std::string& i, std::string& o)
 {
@@ -44,33 +50,9 @@ bool tsRequest::setString(const std::string& i, std::string& o)
   return true;
 }
 
-
-bool tsRequest::setRun(int i)
+std::string tsRequest::file(const std::string& type) const
 {
-  if (run_ == i)
-    return false;
-  run_ = i;
-  return true;
-}
-
-ostream& operator<<(ostream& out, const tsRequest& rhs)
-{
-  out <<           rhs.sty_
-      << " : " <<  rhs.pos_
-      << " : " <<  rhs.mod_
-      << " "   <<  rhs.run_;
-  return out;
-};
-
-std::string tsRequest::file(const std::string type) const
-{
-  std::string rst = mod_ + "_" + pos_;
-
-  if(streamtype == WDBSTREAM)
-    rst = wdbModel + "_" + wdbstationname;
-
-  if(streamtype == FIMEXSTREAM)
-    rst = fimexModel + "_" + fimexName;
+  std::string rst = fimexModel + "_" + fimexName;
 
   miutil::replace(rst, ".","");
 
@@ -95,45 +77,9 @@ std::string tsRequest::file(const std::string type) const
   return rst;
 }
 
-/// WDB
-bool tsRequest::setWdbPos(double lon,double lat)
+bool tsRequest::setFimexLocation(double flat, double flon, const std::string& name)
 {
-  if( (fabs(lon-wdbLon) < 0.00001 ) && (fabs(lat-wdbLat) < 0.00001 )) return false;
-  wdbLat=lat;
-  wdbLon=lon;
-  return true;
-}
-
-bool tsRequest::setWdbRun(miutil::miTime nrun)
-{
-  if(nrun == wdbRun) return false;
-  wdbRun = nrun;
-  return true;
-}
-
-
-void tsRequest::setType(tsRequest::Streamtype s)
-{
-  streamtype=s;
-}
-
-
-
-bool tsRequest::restoreWdbFromLog(std::string mod, std::string sty, double lat, double lon, miutil::miTime run,std::string posname)
-{
-  setWdbPos(lon,lat);
-  setWdbStationName(posname);
-  setWdbRun(run);
-  setWdbModel(mod);
-  setWdbStyle(sty);
-  return true;
-}
-
-
-
-bool  tsRequest::setFimexLocation(double flat,double flon, std::string name)
-{
-  if(name == fimexName)
+  if (name == fimexName)
     return false;
 
   fimexLat = flat;
@@ -148,21 +94,5 @@ bool tsRequest::getFimexLocation(double& lat, double& lon, std::string& name)
   lon = fimexLon;
   name = fimexName;
 
-  if(lat==0 && lon==0 && name =="")
-    return false;
-  return true;
-}
-
-
-std::string  tsRequest::getFimexInfo()
-{
-  ostringstream ost;
-  ost << "fimexLat:   " <<  fimexLat     << endl
-      << "fimexLat:   " <<  fimexLat     << endl
-      << "fimexLon:   " <<  fimexLon     << endl
-      << "fimexModel: " <<  fimexModel   << endl
-      << "fimexStyle: " <<  fimexStyle   << endl
-      << "fimexName:  " <<  fimexName    << endl
-      << "fimexRun:   " <<  fimexRun     << endl;
-  return ost.str();
+  return (lat >= -91 && lat <= 91 && lon >= -361 && lon <= 361 && !name.empty());
 }

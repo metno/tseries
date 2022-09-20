@@ -33,10 +33,6 @@
 #include "tsSessionOptions.h"
 #include "tsRequest.h"
 
-#include <puTools/miTime.h>
-
-#include <pets2/ptGlobals.h>
-#include <tsData/ptParameterDefinition.h>
 #include <pets2/ptStyle.h>
 
 #include <string>
@@ -46,8 +42,6 @@
 // Should have a list of required models for a station
 // for each style type
 class SessionManager {
-public:
-  enum DiagramTab { ADD_TO_STATION_TAB, ADD_TO_WDB_TAB, ADD_TO_FIMEX_TAB};
 private:
   ParameterDefinition pdef;
   struct modeldata{       // name of menu and id to models
@@ -68,33 +62,28 @@ private:
     std::vector<int> modelidx;       // model indices for modelchoice
     std::vector<ParId> params;       // id without model
     std::vector<pardata> fullparams; // full id with model
-    DiagramTab diagramtab;
   };
   std::vector<styledata> styles;
 
   bool checkEnvironment(std::string& t);
-public:
 
+public:
   // get defined stylenames, return number of style
-  int getStyleTypes(std::vector<std::string>& stylenam, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
+  int getStyleTypes(std::vector<std::string>& stylenam);
   // get a PETS style by name
-  const pets2::ptStyle& getStyle(const std::string, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
+  const pets2::ptStyle& getStyle(const std::string);
   // get a PETS style by index
   const pets2::ptStyle& getStyle(int idx);
   // get the PETS style index - WDBadd
-  int getStyleIndex(const std::string name, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
+  int getStyleIndex(const std::string name);
 
   // make a sessionoption with given style,model and run
   bool getShowOption(SessionOptions&, int, Model, Run);
-  bool getShowOption(SessionOptions&,const tsRequest *, SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
-
 
   // get a list of available models for a given styleindex
   int getModels(const std::string& s,
       std::map<std::string,Model>& modid,
-      std::vector<std::string>& modname,
-      SessionManager::DiagramTab tab = ADD_TO_STATION_TAB);
-
+      std::vector<std::string>& modname);
 
   // get a list of available runs for style/model
   int getRuns(const int sidx, const int midx,

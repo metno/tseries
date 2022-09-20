@@ -47,6 +47,7 @@
 #include <QStandardItemModel>
 #include <QSortFilterProxyModel>
 #include <QAction>
+
 #include "WdbBookmarkTools.h"
 #include "ClearLineEdit.h"
 #include "FetchStations.h"
@@ -56,17 +57,12 @@
 #include <string>
 #include <vector>
 
-
 class FilterProxyModel : public QSortFilterProxyModel {
 public:
   FilterProxyModel(QObject* parent=0)  : QSortFilterProxyModel(parent) { }
 protected:
   bool filterAcceptsRow(int row, const QModelIndex &parent) const;
 };
-
-
-
-
 
 class FimexTab : public QWidget {
   Q_OBJECT
@@ -86,7 +82,6 @@ private:
   ClearLineEdit   * filter;    // filter stations
   FetchStations   * fetchstations; // findstations on the web
 
-  bool                activeCacheRequest;
   WdbBookmarkTools    bookmarkTools;
   QStandardItemModel* model;
   FilterProxyModel*   proxyModel;
@@ -96,16 +91,12 @@ private:
   float latitude;
   float longitude;
 
-
 public:
   FimexTab(QWidget*,QString language);
 
   QString setStyles(const QStringList& qlist);
-  void setWdbGeometry(int minLon, int maxLon, int minLat, int maxLat);
 
   miCoordinates coordinates() const;
-  void setActiveCacheRequest(bool b) { activeCacheRequest=b;}
-  bool getActiveCacheRequest() const { return activeCacheRequest;}
   void writeBookmarks();
   QList<QStringList> getPoslist();
   bool findPosition(QString newpos, QModelIndex& idx);
@@ -114,6 +105,10 @@ public:
   std::string getExpandedDirs();
   void setExpandedDirs(std::string);
   std::vector<std::string> allFimexPositions() {return  bookmarkTools.getAllBookmarks();}
+
+  void setModel(QString model);
+  void setStyle(QString style);
+  void setRuns(const QStringList& newmodels);
 
 private Q_SLOTS:
   void coordinatesChanged();
@@ -131,12 +126,9 @@ private Q_SLOTS:
 
 public Q_SLOTS:
   void setCoordinates(float lon, float lat, QString name="");
-  void setModel(QString model);
-  void setStyle(QString style);
   void setRun(QString run);
 
   void setModels(const QStringList& newmodels);
-  void setRuns(const QStringList& newmodels);
   void addBookmarkFolder();
   void changePosition(QString);
   void recordToggled(bool);
@@ -145,8 +137,6 @@ public Q_SLOTS:
 
   void expandAll();
   void collapseAll();
-
-
 
 Q_SIGNALS:
     void changestyle(const QString&);

@@ -78,18 +78,14 @@ private:
   void useTimemarks();
   bool prepareData();
   void prepareDiagram();
-  bool prepareKlimaData(std::vector<ParId>&);
   bool prepareMoraData(std::vector<ParId>&);
   bool prepareFimexData();
-  bool prepareWdbData();
   bool showGridLines;
   int  maxProg;
   int  minProg;
-  bool forceSequentialRead;
 
   bool readFimexData(pets::FimexStream* fimex, double lat, double lon, std::string stationname,
       std::vector<ParId>& inpars, std::vector<ParId>& outpars, bool sequential_read);
-
 
 public:
   tsDrawArea( tsRequest* tsr, DatafileColl* tsd, SessionManager* ses, QObject* parent=0);
@@ -106,8 +102,8 @@ public:
   void resetNewLength() { lengthChanged = false; }
   void plot(pets2::ptPainter& painter);
 
-  void setTimemark(miutil::miTime nt,std::string name="");
-  void clearTimemarks(std::string name="");
+  void setTimemark(const miutil::miTime& nt, const std::string& name="");
+  void clearTimemarks(const std::string& name="");
   void setShowObservations(bool o) { showObservations=o;}
   void setObservationStartTime(miutil::miTime st) {observationStartTime=st;}
   miutil::miTime getObservationStartTime() const { return observationStartTime; }
@@ -129,7 +125,6 @@ Q_SIGNALS:
 
 public Q_SLOTS:
   void dataLoad_finished(bool);
-
 };
 
 #endif
