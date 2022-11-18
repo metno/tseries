@@ -1,3 +1,9 @@
+tseries (7.2.1-1) unstable; urgency=low
+
+  * bugfix start/length slider update
+
+ -- Alexander Bürger <alexander.buerger@met.no>  Fri, 18 Nov 2022 08:00:08 +0100
+
 tseries (7.2.0-1) unstable; urgency=low
 
   * drop hdf4, wdb, klima (metlibs-tsdata)

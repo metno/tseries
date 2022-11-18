@@ -6,7 +6,7 @@ INCLUDE(MetnoUtils)
 INCLUDE(MetnoQtTranslation)
 INCLUDE(MetnoQtUtils)
 INCLUDE(MetnoVersions)
-METNO_PVERSION(7.2.0)
+METNO_PVERSION(7.2.1)
 
 FIND_PACKAGE(Boost COMPONENTS date_time REQUIRED)
 
