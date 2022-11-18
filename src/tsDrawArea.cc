@@ -307,6 +307,12 @@ bool tsDrawArea::prepareFimexData()
     if (outlist.size())
       theData->makeParameters(outlist, true);
   }
+
+  const int tmpLength = theData->timeLineLengthInHours();
+  lengthChanged = (tmpLength != forecastLength);
+  forecastLength = tmpLength;
+  totalLength = tmpLength;
+
   return true;
 }
 
