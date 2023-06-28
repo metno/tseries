@@ -6,7 +6,7 @@
  */
 
 /*
- Copyright (C) 2006 met.no
+ Copyright (C) 2006-2023 met.no
 
  Contact information:
  Norwegian Meteorological Institute
@@ -50,7 +50,9 @@
 
 using namespace std;
 
-FimexTab::FimexTab(QWidget* parent, QString lang)   : QWidget(parent)
+FimexTab::FimexTab(QWidget* parent, QString lang)
+  : QWidget(parent)
+  , inhibitPosListChangedSignal(false)
 {
   tsSetup setup;
   fetchstations = new FetchStations(QString::fromStdString(setup.fimex.externalPosService), lang);
@@ -358,9 +360,11 @@ void FimexTab::addBookmarkFolder()
   bookmarkTools.addFolder("NEW",false);
 }
 
-void FimexTab::poslistChanged(const QModelIndex &)
+void FimexTab::poslistChanged(const QModelIndex&)
 {
-  emit changePoslist();
+  if (!inhibitPosListChangedSignal) {
+    emit changePoslist();
+  }
 }
 
 std::string FimexTab::getExpandedDirs()
@@ -498,14 +502,17 @@ void FimexTab::showContextMenu(const QPoint& pos)
 
 void FimexTab::expandAll()
 {
+  inhibitPosListChangedSignal = true;
   bookmarks->expandAll();
+  inhibitPosListChangedSignal = false;
   emit changePoslist();
 }
 
 void FimexTab::collapseAll()
 {
+  inhibitPosListChangedSignal = true;
   bookmarks->collapseAll();
-
+  inhibitPosListChangedSignal = false;
   emit changePoslist();
 }
 

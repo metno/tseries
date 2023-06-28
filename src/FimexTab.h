@@ -9,7 +9,7 @@
 #define FIMEXTAB_H_
 
 /*
- Copyright (C) 2006 met.no
+ Copyright (C) 2006-2023 met.no
 
  Contact information:
  Norwegian Meteorological Institute
@@ -90,6 +90,7 @@ private:
   bool addToRecord;
   float latitude;
   float longitude;
+  bool inhibitPosListChangedSignal;
 
 public:
   FimexTab(QWidget*,QString language);
