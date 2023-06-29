@@ -1,3 +1,9 @@
+tseries (7.2.2-1) unstable; urgency=low
+
+  * when using expandAll / collapseAll, sending position list to diana only once
+
+ -- Alexander Bürger <alexander.buerger@met.no>  Thu, 29 Jun 2023 08:00:08 +0200
+
 tseries (7.2.1-1) unstable; urgency=low
 
   * bugfix start/length slider update
